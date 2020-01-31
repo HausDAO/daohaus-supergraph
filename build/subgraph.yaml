@@ -1,0 +1,23 @@
+specVersion: 0.0.2
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Contract
+    network: kovan
+    source:
+      address: "0xDE69b4dCe6f3a911fa148b7Bc6526dd29d5EC3a0"
+      abi: Contract
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Register
+      abis:
+        - name: Contract
+          file: Contract/abis/Contract.json
+      eventHandlers:
+        - event: Register(address,indexed address,uint256,string,uint256,uint256)
+          handler: handleRegister
+      file: Contract/Contract.wasm
