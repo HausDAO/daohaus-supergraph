@@ -3,14 +3,14 @@ import { Contract, Register } from "../generated/Contract/Contract";
 import { MolochV2 } from "../generated/schema";
 
 export function handleRegister(event: Register): void {
-  let entity = MolochV2.load(event.transaction.from.toHex());
+  let entity = MolochV2.load(event.params.moloch.toHexString());
 
   log.info("**************** event fired. contract address: {}", [
     event.params.moloch.toHexString()
   ]);
 
   if (entity == null) {
-    entity = new MolochV2(event.transaction.from.toHex());
+    entity = new MolochV2(event.params.moloch.toHexString());
     entity.count = BigInt.fromI32(0);
   }
 
