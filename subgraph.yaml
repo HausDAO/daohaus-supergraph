@@ -6,8 +6,9 @@ dataSources:
     name: Contract
     network: kovan
     source:
-      address: "0x8C0AB3AfC112036A83934898102e197E901c616A"
+      address: "0x85c5851D282C2CD76999556fb0adedCffc8C4e55"
       abi: Contract
+      startBlock: 16703110
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -27,7 +28,6 @@ templates:
     network: kovan
     source:
       abi: Moloch
-      # startBlock: 16681585
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -42,7 +42,7 @@ templates:
         - Proposal
       abis:
         - name: Moloch
-          file: ./abis/MolochV2.json
+          file: ./abis/Moloch.json
       eventHandlers:
         - event: SummonComplete(indexed address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleSummonComplete

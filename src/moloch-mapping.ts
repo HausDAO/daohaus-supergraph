@@ -254,6 +254,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   let proposal = new Proposal(newProposalId);
   proposal.proposalId = event.params.proposalId;
+  proposal.proposalIndex = event.params.proposalId;
   proposal.moloch = molochId;
   proposal.timestamp = event.block.timestamp.toString();
   proposal.member = memberId;

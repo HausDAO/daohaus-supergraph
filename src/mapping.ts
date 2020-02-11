@@ -1,6 +1,7 @@
 import { BigInt, log } from "@graphprotocol/graph-ts";
 import { Contract, Register } from "../generated/Contract/Contract";
 import { MolochV2 } from "../generated/schema";
+import { Moloch } from "../generated/templates";
 
 export function handleRegister(event: Register): void {
   let entity = MolochV2.load(event.params.moloch.toHexString());
@@ -22,6 +23,8 @@ export function handleRegister(event: Register): void {
   entity.index = event.params.daoIdx.toString();
   entity.newContract = event.params.newContract.toString();
   entity.version = event.params.version.toString();
+
+  Moloch.create(event.params.moloch);
 
   entity.save();
 }
