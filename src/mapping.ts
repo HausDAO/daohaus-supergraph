@@ -29,14 +29,14 @@ export function handleRegister(event: Register): void {
   entity.summoner = event.params.summoner;
   entity.title = event.params.title;
   entity.index = event.params.daoIdx.toString();
-  // entity.newContract = event.params.newContract.toString();
   entity.version = event.params.version.toString();
 
   MolochTemplate.create(event.params.moloch);
 
   entity.save();
 
-  let molochId = event.address.toHex();
+  // let molochId = event.address.toHex();
+  let molochId = event.params.moloch.toHex();
   let moloch = new Moloch(molochId);
   let tokens = event.params.tokens;
 
@@ -74,6 +74,8 @@ export function handleRegister(event: Register): void {
   moloch.proposedToKick = new Array<string>();
   moloch.proposedToFund = new Array<string>();
   moloch.proposedToTrade = new Array<string>();
+
+  log.info("SAVING MOLOCH {}", [molochId]);
 
   moloch.save();
 

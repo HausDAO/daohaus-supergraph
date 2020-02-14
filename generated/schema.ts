@@ -103,23 +103,6 @@ export class Dao extends Entity {
     }
   }
 
-  get newContract(): string | null {
-    let value = this.get("newContract");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set newContract(value: string | null) {
-    if (value === null) {
-      this.unset("newContract");
-    } else {
-      this.set("newContract", Value.fromString(value as string));
-    }
-  }
-
   get version(): string | null {
     let value = this.get("version");
     if (value === null) {
