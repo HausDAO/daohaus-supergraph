@@ -1,4 +1,4 @@
-type MolochV2 @entity {
+type Dao @entity {
   id: ID!
   index: String
   count: BigInt!
@@ -80,6 +80,7 @@ type Member @entity {
   id: ID!
   "TODO: members can be a part of multiple molochs"
   moloch: Moloch!
+  molochAddress: Bytes!
   memberAddress: Bytes!
   delegateKey: Bytes!
   shares: BigInt!
@@ -107,9 +108,10 @@ type Vote @entity {
 type Proposal @entity {
   id: ID!
   "NOTE: tracks Proposals for multiple Moloch instances (no change required for upgrade)"
-  proposalIndex: BigInt!
-  proposalId: BigInt
+  proposalIndex: BigInt
+  proposalId: BigInt!
   moloch: Moloch!
+  molochAddress: Bytes!
   timestamp: String!
   member: Member!
   memberAddress: Bytes!

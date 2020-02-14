@@ -38,7 +38,7 @@ function loadOrCreateTokenBalance(
 ): TokenBalance | null {
   let memberTokenBalanceId = token.concat("-member-").concat(member.toHex());
   let tokenBalance = TokenBalance.load(memberTokenBalanceId);
-  let tokenBalanceDNE = tokenBalance ? true : false;
+  let tokenBalanceDNE = tokenBalance == null ? true : false;
   if (tokenBalanceDNE) {
     createMemberTokenBalance(molochId, member, token, BigInt.fromI32(0));
     return TokenBalance.load(memberTokenBalanceId);
@@ -76,6 +76,7 @@ function subtractFromBalance(
   balance.save();
   return tokenBalanceId;
 }
+
 function internalTransfer(
   molochId: string,
   from: Bytes,
@@ -83,10 +84,12 @@ function internalTransfer(
   token: string,
   amount: BigInt
 ): void {
+  log.info("Value = {internalTransfer}, other = {}", [""]);
   subtractFromBalance(molochId, from, token, amount);
   addToBalance(molochId, to, token, amount);
 }
-function createMemberTokenBalance(
+
+export function createMemberTokenBalance(
   molochId: string,
   member: Bytes,
   token: string,
@@ -107,7 +110,11 @@ function createMemberTokenBalance(
   memberTokenBalance.save();
   return memberTokenBalanceId;
 }
-function createEscrowTokenBalance(molochId: string, token: Bytes): string {
+
+export function createEscrowTokenBalance(
+  molochId: string,
+  token: Bytes
+): string {
   let memberId = molochId.concat("-member-").concat(ESCROW.toHex());
   let tokenId = molochId.concat("-token-").concat(token.toHex());
   let escrowTokenBalanceId = tokenId.concat("-member-").concat(ESCROW.toHex());
@@ -123,7 +130,11 @@ function createEscrowTokenBalance(molochId: string, token: Bytes): string {
   escrowTokenBalance.save();
   return escrowTokenBalanceId;
 }
-function createGuildTokenBalance(molochId: string, token: Bytes): string {
+
+export function createGuildTokenBalance(
+  molochId: string,
+  token: Bytes
+): string {
   let memberId = molochId.concat("-member-").concat(GUILD.toHex());
   let tokenId = molochId.concat("-token-").concat(token.toHex());
   let guildTokenBalanceId = tokenId.concat("-member-").concat(GUILD.toHex());
@@ -140,7 +151,7 @@ function createGuildTokenBalance(molochId: string, token: Bytes): string {
   guildTokenBalance.save();
   return guildTokenBalanceId;
 }
-function createAndApproveToken(molochId: string, token: Bytes): string {
+export function createAndApproveToken(molochId: string, token: Bytes): string {
   let tokenId = molochId.concat("-token-").concat(token.toHex());
   let createToken = new Token(tokenId);
 
@@ -203,6 +214,7 @@ export function handleSummonComplete(event: SummonComplete): void {
     .concat(event.params.summoner.toHex());
   let newMember = new Member(memberId);
   newMember.moloch = molochId;
+  newMember.molochAddress = event.address;
   newMember.memberAddress = event.params.summoner;
   newMember.delegateKey = event.params.summoner;
   newMember.shares = BigInt.fromI32(1);
@@ -238,11 +250,12 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   let memberId = molochId
     .concat("-member-")
     .concat(event.params.memberAddress.toHex());
-  let newMember = Member.load(
-    molochId.concat("-member-").concat(event.params.applicant.toHex())
-  )
-    ? false
-    : true;
+  let newMember =
+    Member.load(
+      molochId.concat("-member-").concat(event.params.applicant.toHex())
+    ) == null
+      ? true
+      : false;
   // For trades, members deposit tribute in the token they want to sell to the dao, and request payment in the token they wish to receive.
   let trade =
     event.params.paymentToken != Address.fromI32(0) &&
@@ -254,8 +267,8 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   let proposal = new Proposal(newProposalId);
   proposal.proposalId = event.params.proposalId;
-  proposal.proposalIndex = event.params.proposalId;
   proposal.moloch = molochId;
+  proposal.molochAddress = event.address;
   proposal.timestamp = event.block.timestamp.toString();
   proposal.member = memberId;
   proposal.memberAddress = event.params.memberAddress;
@@ -317,6 +330,7 @@ export function handleSubmitVote(event: SubmitVote): void {
   vote.member = memberId;
   vote.uintVote = event.params.uintVote;
 
+  vote.save();
   let moloch = Moloch.load(molochId);
   let proposal = Proposal.load(proposalVotedId);
   let member = Member.load(memberId);
@@ -367,24 +381,27 @@ export function handleSponsorProposal(event: SponsorProposal): void {
 
   let proposal = Proposal.load(sponsorProposalId);
 
+  //TODO: Debug fails silently to add; array comprehensions probably not working
   if (proposal.newMember) {
-    moloch.proposedToJoin.push(sponsorProposalId);
+    moloch.proposedToJoin = moloch.proposedToJoin.concat([sponsorProposalId]);
     moloch.save();
   } else if (proposal.whitelist) {
-    moloch.proposedToWhitelist.push(sponsorProposalId);
+    moloch.proposedToWhitelist = moloch.proposedToWhitelist.concat([
+      sponsorProposalId
+    ]);
     moloch.save();
   } else if (proposal.guildkick) {
-    moloch.proposedToKick.push(sponsorProposalId);
+    moloch.proposedToKick = moloch.proposedToKick.concat([sponsorProposalId]);
 
     let member = Member.load(memberId);
     member.proposedToKick = true;
     member.save();
     moloch.save();
   } else if (proposal.trade) {
-    moloch.proposedToTrade.push(sponsorProposalId);
+    moloch.proposedToTrade = moloch.proposedToTrade.concat([sponsorProposalId]);
     moloch.save();
   } else {
-    moloch.proposedToFund.push(sponsorProposalId);
+    moloch.proposedToFund = moloch.proposedToFund.concat([sponsorProposalId]);
     moloch.save();
   }
 
@@ -430,6 +447,7 @@ export function handleProcessProposal(event: ProcessProposal): void {
       let newMember = new Member(applicantId);
 
       newMember.moloch = molochId;
+      newMember.molochAddress = event.address;
       newMember.memberAddress = proposal.applicant;
       newMember.delegateKey = proposal.applicant;
       newMember.shares = proposal.sharesRequested;
@@ -482,12 +500,32 @@ export function handleProcessProposal(event: ProcessProposal): void {
     );
   }
 
-  //NOTE: update ongoing proposals (that have been sponsored)
+  //NOTE: fixed array comprehensions update ongoing proposals (that have been sponsored)
   if (proposal.trade) {
     //TODO:test
-    moloch.proposedToTrade.shift();
+    moloch.proposedToTrade = moloch.proposedToTrade.filter(function(
+      value,
+      index,
+      arr
+    ) {
+      return index > 0;
+    });
+  } else if (proposal.newMember) {
+    moloch.proposedToJoin = moloch.proposedToJoin.filter(function(
+      value,
+      index,
+      arr
+    ) {
+      return index > 0;
+    });
   } else {
-    moloch.proposedToFund.shift();
+    moloch.proposedToFund = moloch.proposedToFund.filter(function(
+      value,
+      index,
+      arr
+    ) {
+      return index > 0;
+    });
   }
   proposal.processed = true;
 
@@ -549,7 +587,13 @@ export function handleProcessWhitelistProposal(
     proposal.didPass = false;
   }
   //NOTE: can only process proposals in order.
-  moloch.proposedToWhitelist.shift();
+  moloch.proposedToWhitelist = moloch.proposedToWhitelist.filter(function(
+    value,
+    index,
+    arr
+  ) {
+    return index > 0;
+  });
   proposal.processed = true;
 
   //NOTE: issue processing reward and return deposit
@@ -619,7 +663,13 @@ export function handleProcessGuildKickProposal(
   }
 
   //NOTE: can only process proposals in order, test shift array comprehension might have tp sprt first for this to work
-  moloch.proposedToKick.shift();
+  moloch.proposedToKick = moloch.proposedToKick.filter(function(
+    value,
+    index,
+    arr
+  ) {
+    return index > 0;
+  });
   proposal.processed = true;
 
   //NOTE: issue processing reward and return deposit

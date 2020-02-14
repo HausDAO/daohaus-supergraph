@@ -6,7 +6,7 @@ dataSources:
     name: Contract
     network: kovan
     source:
-      address: "0x85c5851D282C2CD76999556fb0adedCffc8C4e55"
+      address: "0xe35b2f11C1e2A647cca4AA2265DC9ee488c1f2A7"
       abi: Contract
       startBlock: 16703110
     mapping:
@@ -19,12 +19,14 @@ dataSources:
         - name: Contract
           file: ./abis/Contract.json
       eventHandlers:
-        - event: Register(address,indexed address,uint256,string,uint256,uint256)
+        - event: Register(uint256,address,indexed address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256,string,uint256)
           handler: handleRegister
+        - event: Delete(address)
+          handler: handleDelete
       file: ./src/mapping.ts
 templates:
   - kind: ethereum/contract
-    name: Moloch
+    name: MolochTemplate
     network: kovan
     source:
       abi: Moloch

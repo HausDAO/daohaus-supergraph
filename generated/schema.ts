@@ -12,7 +12,7 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class MolochV2 extends Entity {
+export class Dao extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -20,17 +20,17 @@ export class MolochV2 extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save MolochV2 entity without an ID");
+    assert(id !== null, "Cannot save Dao entity without an ID");
     assert(
       id.kind == ValueKind.STRING,
-      "Cannot save MolochV2 entity with non-string ID. " +
+      "Cannot save Dao entity with non-string ID. " +
         'Considering using .toHex() to convert the "id" to a string.'
     );
-    store.set("MolochV2", id.toString(), this);
+    store.set("Dao", id.toString(), this);
   }
 
-  static load(id: string): MolochV2 | null {
-    return store.get("MolochV2", id) as MolochV2 | null;
+  static load(id: string): Dao | null {
+    return store.get("Dao", id) as Dao | null;
   }
 
   get id(): string {
@@ -762,6 +762,15 @@ export class Member extends Entity {
     this.set("moloch", Value.fromString(value));
   }
 
+  get molochAddress(): Bytes {
+    let value = this.get("molochAddress");
+    return value.toBytes();
+  }
+
+  set molochAddress(value: Bytes) {
+    this.set("molochAddress", Value.fromBytes(value));
+  }
+
   get memberAddress(): Bytes {
     let value = this.get("memberAddress");
     return value.toBytes();
@@ -1026,17 +1035,8 @@ export class Proposal extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get proposalIndex(): BigInt {
+  get proposalIndex(): BigInt | null {
     let value = this.get("proposalIndex");
-    return value.toBigInt();
-  }
-
-  set proposalIndex(value: BigInt) {
-    this.set("proposalIndex", Value.fromBigInt(value));
-  }
-
-  get proposalId(): BigInt | null {
-    let value = this.get("proposalId");
     if (value === null) {
       return null;
     } else {
@@ -1044,12 +1044,21 @@ export class Proposal extends Entity {
     }
   }
 
-  set proposalId(value: BigInt | null) {
+  set proposalIndex(value: BigInt | null) {
     if (value === null) {
-      this.unset("proposalId");
+      this.unset("proposalIndex");
     } else {
-      this.set("proposalId", Value.fromBigInt(value as BigInt));
+      this.set("proposalIndex", Value.fromBigInt(value as BigInt));
     }
+  }
+
+  get proposalId(): BigInt {
+    let value = this.get("proposalId");
+    return value.toBigInt();
+  }
+
+  set proposalId(value: BigInt) {
+    this.set("proposalId", Value.fromBigInt(value));
   }
 
   get moloch(): string {
@@ -1059,6 +1068,15 @@ export class Proposal extends Entity {
 
   set moloch(value: string) {
     this.set("moloch", Value.fromString(value));
+  }
+
+  get molochAddress(): Bytes {
+    let value = this.get("molochAddress");
+    return value.toBytes();
+  }
+
+  set molochAddress(value: Bytes) {
+    this.set("molochAddress", Value.fromBytes(value));
   }
 
   get timestamp(): string {

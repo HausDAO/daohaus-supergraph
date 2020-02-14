@@ -6,7 +6,7 @@ dataSources:
     name: Contract
     network: kovan
     source:
-      address: "0xf63592C7BFC76308318E85c1c6A989EaA2E5c176"
+      address: "0xe35b2f11C1e2A647cca4AA2265DC9ee488c1f2A7"
       abi: Contract
       startBlock: 16703110
     mapping:
@@ -19,12 +19,15 @@ dataSources:
         - name: Contract
           file: Contract/abis/Contract.json
       eventHandlers:
-        - event: Register(address,indexed address,uint256,string,uint256,uint256)
+        - event: Register(uint256,address,indexed
+            address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256,string,uint256)
           handler: handleRegister
+        - event: Delete(address)
+          handler: handleDelete
       file: Contract/Contract.wasm
 templates:
   - kind: ethereum/contract
-    name: Moloch
+    name: MolochTemplate
     network: kovan
     source:
       abi: Moloch
@@ -32,7 +35,7 @@ templates:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
-      file: templates/Moloch/Moloch.wasm
+      file: templates/MolochTemplate/MolochTemplate.wasm
       entities:
         - Moloch
         - TokenBalance
@@ -42,7 +45,7 @@ templates:
         - Proposal
       abis:
         - name: Moloch
-          file: Moloch/abis/Moloch.json
+          file: MolochTemplate/abis/Moloch.json
       eventHandlers:
         - event: SummonComplete(indexed
             address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256)

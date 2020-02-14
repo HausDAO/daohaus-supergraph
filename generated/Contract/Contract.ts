@@ -28,28 +28,74 @@ export class Register__Params {
     this._event = event;
   }
 
-  get moloch(): Address {
-    return this._event.parameters[0].value.toAddress();
+  get daoIdx(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
   }
 
-  get summoner(): Address {
+  get moloch(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get daoIdx(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+  get summoner(): Address {
+    return this._event.parameters[2].value.toAddress();
   }
 
-  get title(): string {
-    return this._event.parameters[3].value.toString();
+  get tokens(): Array<Address> {
+    return this._event.parameters[3].value.toAddressArray();
   }
 
-  get newContract(): BigInt {
+  get _summoningTime(): BigInt {
     return this._event.parameters[4].value.toBigInt();
   }
 
-  get version(): BigInt {
+  get _periodDuration(): BigInt {
     return this._event.parameters[5].value.toBigInt();
+  }
+
+  get _votingPeriodLength(): BigInt {
+    return this._event.parameters[6].value.toBigInt();
+  }
+
+  get _gracePeriodLength(): BigInt {
+    return this._event.parameters[7].value.toBigInt();
+  }
+
+  get _proposalDeposit(): BigInt {
+    return this._event.parameters[8].value.toBigInt();
+  }
+
+  get _dilutionBound(): BigInt {
+    return this._event.parameters[9].value.toBigInt();
+  }
+
+  get _processingReward(): BigInt {
+    return this._event.parameters[10].value.toBigInt();
+  }
+
+  get title(): string {
+    return this._event.parameters[11].value.toString();
+  }
+
+  get version(): BigInt {
+    return this._event.parameters[12].value.toBigInt();
+  }
+}
+
+export class Delete extends EthereumEvent {
+  get params(): Delete__Params {
+    return new Delete__Params(this);
+  }
+}
+
+export class Delete__Params {
+  _event: Delete;
+
+  constructor(event: Delete) {
+    this._event = event;
+  }
+
+  get moloch(): Address {
+    return this._event.parameters[0].value.toAddress();
   }
 }
 
@@ -58,49 +104,17 @@ export class Contract extends SmartContract {
     return new Contract("Contract", address);
   }
 
-  newDao(
-    _approvedTokens: Array<Address>,
-    _periodDuration: BigInt,
-    _votingPeriodLength: BigInt,
-    _gracePeriodLength: BigInt,
-    _proposalDeposit: BigInt,
-    _dilutionBound: BigInt,
-    _processingReward: BigInt,
-    _daoTitle: string
-  ): boolean {
-    let result = super.call("newDao", [
-      EthereumValue.fromAddressArray(_approvedTokens),
-      EthereumValue.fromUnsignedBigInt(_periodDuration),
-      EthereumValue.fromUnsignedBigInt(_votingPeriodLength),
-      EthereumValue.fromUnsignedBigInt(_gracePeriodLength),
-      EthereumValue.fromUnsignedBigInt(_proposalDeposit),
-      EthereumValue.fromUnsignedBigInt(_dilutionBound),
-      EthereumValue.fromUnsignedBigInt(_processingReward),
-      EthereumValue.fromString(_daoTitle)
+  deleteDao(_daoAdress: Address): boolean {
+    let result = super.call("deleteDao", [
+      EthereumValue.fromAddress(_daoAdress)
     ]);
 
     return result[0].toBoolean();
   }
 
-  try_newDao(
-    _approvedTokens: Array<Address>,
-    _periodDuration: BigInt,
-    _votingPeriodLength: BigInt,
-    _gracePeriodLength: BigInt,
-    _proposalDeposit: BigInt,
-    _dilutionBound: BigInt,
-    _processingReward: BigInt,
-    _daoTitle: string
-  ): CallResult<boolean> {
-    let result = super.tryCall("newDao", [
-      EthereumValue.fromAddressArray(_approvedTokens),
-      EthereumValue.fromUnsignedBigInt(_periodDuration),
-      EthereumValue.fromUnsignedBigInt(_votingPeriodLength),
-      EthereumValue.fromUnsignedBigInt(_gracePeriodLength),
-      EthereumValue.fromUnsignedBigInt(_proposalDeposit),
-      EthereumValue.fromUnsignedBigInt(_dilutionBound),
-      EthereumValue.fromUnsignedBigInt(_processingReward),
-      EthereumValue.fromString(_daoTitle)
+  try_deleteDao(_daoAdress: Address): CallResult<boolean> {
+    let result = super.tryCall("deleteDao", [
+      EthereumValue.fromAddress(_daoAdress)
     ]);
     if (result.reverted) {
       return new CallResult();
@@ -111,13 +125,13 @@ export class Contract extends SmartContract {
 
   registerDao(
     _daoAdress: Address,
-    _summoner: Address,
-    _daoTitle: string
+    _daoTitle: string,
+    _version: BigInt
   ): boolean {
     let result = super.call("registerDao", [
       EthereumValue.fromAddress(_daoAdress),
-      EthereumValue.fromAddress(_summoner),
-      EthereumValue.fromString(_daoTitle)
+      EthereumValue.fromString(_daoTitle),
+      EthereumValue.fromUnsignedBigInt(_version)
     ]);
 
     return result[0].toBoolean();
@@ -125,14 +139,29 @@ export class Contract extends SmartContract {
 
   try_registerDao(
     _daoAdress: Address,
-    _summoner: Address,
-    _daoTitle: string
+    _daoTitle: string,
+    _version: BigInt
   ): CallResult<boolean> {
     let result = super.tryCall("registerDao", [
       EthereumValue.fromAddress(_daoAdress),
-      EthereumValue.fromAddress(_summoner),
-      EthereumValue.fromString(_daoTitle)
+      EthereumValue.fromString(_daoTitle),
+      EthereumValue.fromUnsignedBigInt(_version)
     ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBoolean());
+  }
+
+  daos(param0: Address): boolean {
+    let result = super.call("daos", [EthereumValue.fromAddress(param0)]);
+
+    return result[0].toBoolean();
+  }
+
+  try_daos(param0: Address): CallResult<boolean> {
+    let result = super.tryCall("daos", [EthereumValue.fromAddress(param0)]);
     if (result.reverted) {
       return new CallResult();
     }
@@ -141,60 +170,32 @@ export class Contract extends SmartContract {
   }
 }
 
-export class NewDaoCall extends EthereumCall {
-  get inputs(): NewDaoCall__Inputs {
-    return new NewDaoCall__Inputs(this);
+export class DeleteDaoCall extends EthereumCall {
+  get inputs(): DeleteDaoCall__Inputs {
+    return new DeleteDaoCall__Inputs(this);
   }
 
-  get outputs(): NewDaoCall__Outputs {
-    return new NewDaoCall__Outputs(this);
+  get outputs(): DeleteDaoCall__Outputs {
+    return new DeleteDaoCall__Outputs(this);
   }
 }
 
-export class NewDaoCall__Inputs {
-  _call: NewDaoCall;
+export class DeleteDaoCall__Inputs {
+  _call: DeleteDaoCall;
 
-  constructor(call: NewDaoCall) {
+  constructor(call: DeleteDaoCall) {
     this._call = call;
   }
 
-  get _approvedTokens(): Array<Address> {
-    return this._call.inputValues[0].value.toAddressArray();
-  }
-
-  get _periodDuration(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
-  get _votingPeriodLength(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get _gracePeriodLength(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
-  }
-
-  get _proposalDeposit(): BigInt {
-    return this._call.inputValues[4].value.toBigInt();
-  }
-
-  get _dilutionBound(): BigInt {
-    return this._call.inputValues[5].value.toBigInt();
-  }
-
-  get _processingReward(): BigInt {
-    return this._call.inputValues[6].value.toBigInt();
-  }
-
-  get _daoTitle(): string {
-    return this._call.inputValues[7].value.toString();
+  get _daoAdress(): Address {
+    return this._call.inputValues[0].value.toAddress();
   }
 }
 
-export class NewDaoCall__Outputs {
-  _call: NewDaoCall;
+export class DeleteDaoCall__Outputs {
+  _call: DeleteDaoCall;
 
-  constructor(call: NewDaoCall) {
+  constructor(call: DeleteDaoCall) {
     this._call = call;
   }
 
@@ -224,12 +225,12 @@ export class RegisterDaoCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _summoner(): Address {
-    return this._call.inputValues[1].value.toAddress();
+  get _daoTitle(): string {
+    return this._call.inputValues[1].value.toString();
   }
 
-  get _daoTitle(): string {
-    return this._call.inputValues[2].value.toString();
+  get _version(): BigInt {
+    return this._call.inputValues[2].value.toBigInt();
   }
 }
 
