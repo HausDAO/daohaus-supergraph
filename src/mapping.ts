@@ -20,10 +20,7 @@ export function handleRegister(event: Register): void {
 
   if (entity == null) {
     entity = new Dao(event.params.moloch.toHexString());
-    entity.count = BigInt.fromI32(0);
   }
-
-  entity.count = entity.count + BigInt.fromI32(1);
 
   entity.moloch = event.params.moloch;
   entity.summoner = event.params.summoner;

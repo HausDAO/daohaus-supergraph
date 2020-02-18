@@ -59,15 +59,6 @@ export class Dao extends Entity {
     }
   }
 
-  get count(): BigInt {
-    let value = this.get("count");
-    return value.toBigInt();
-  }
-
-  set count(value: BigInt) {
-    this.set("count", Value.fromBigInt(value));
-  }
-
   get moloch(): Bytes {
     let value = this.get("moloch");
     return value.toBytes();

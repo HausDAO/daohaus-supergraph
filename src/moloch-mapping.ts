@@ -24,7 +24,8 @@ import {
   Token,
   TokenBalance,
   Proposal,
-  Vote
+  Vote,
+  Dao
 } from "../generated/schema";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -237,6 +238,28 @@ export function handleSummonComplete(event: SummonComplete): void {
       BigInt.fromI32(0)
     );
   }
+}
+
+export function handleSummonCompleteMCV(event: SummonComplete): void {
+  let entity = Dao.load(event.address.toHex());
+
+  if (entity == null) {
+    entity = new Dao(event.address.toHex());
+  }
+
+  entity.moloch = event.address;
+  entity.summoner = event.params.summoner;
+
+  // TODO: This event doesn't have a title or index so we'll need a way to handle if we add more hard coded datasources
+  // entity.title = event.params.title;
+  // entity.index = event.params.daoIdx;
+  entity.title = "MetaCartel Ventures";
+  entity.index = "0";
+  entity.version = "2";
+
+  entity.save();
+
+  handleSummonComplete(event);
 }
 
 // TODO - event SubmitProposal(address indexed applicant, uint256 sharesRequested, uint256 lootRequested, uint256 tributeOffered, address tributeToken, uint256 paymentRequested, address paymentToken, string details, bool[6] flags, uint256 proposalId, address indexed delegateKey, address indexed memberAddress);
@@ -703,7 +726,7 @@ export function handleCancelProposal(event: CancelProposal): void {}
 
 // event UpdateDelegateKey(address indexed memberAddress, address newDelegateKey);
 // handler: handleProcessWhitelistProposal
-export function updateDelegateKey(event: CancelProposal): void {}
+export function handleUpdateDelegateKey(event: CancelProposal): void {}
 
 // event Withdraw(address indexed memberAddress, address token, uint256 amount);
 // handler: handleWithdraw
