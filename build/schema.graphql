@@ -1,7 +1,6 @@
 type Dao @entity {
   id: ID!
   index: String
-  count: BigInt!
   moloch: Bytes! # address
   summoner: Bytes! # address
   title: String
