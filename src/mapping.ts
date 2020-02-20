@@ -76,13 +76,13 @@ export function handleRegister(event: Register): void {
 
   moloch.save();
 
-  //Create member foir summoner
+  //Create member for summoner
   let memberId = molochId
     .concat("-member-")
     .concat(event.params.summoner.toHex());
   let newMember = new Member(memberId);
   newMember.moloch = molochId;
-  newMember.molochAddress = event.address;
+  newMember.molochAddress = event.params.moloch;
   newMember.memberAddress = event.params.summoner;
   newMember.delegateKey = event.params.summoner;
   newMember.shares = BigInt.fromI32(1);
