@@ -299,6 +299,28 @@ export class Ragequit__Params {
   }
 }
 
+export class TokensCollected extends EthereumEvent {
+  get params(): TokensCollected__Params {
+    return new TokensCollected__Params(this);
+  }
+}
+
+export class TokensCollected__Params {
+  _event: TokensCollected;
+
+  constructor(event: TokensCollected) {
+    this._event = event;
+  }
+
+  get token(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get amountToCollect(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
 export class CancelProposal extends EthereumEvent {
   get params(): CancelProposal__Params {
     return new CancelProposal__Params(this);
@@ -316,12 +338,8 @@ export class CancelProposal__Params {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get memberAddress(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
   get applicantAddress(): Address {
-    return this._event.parameters[2].value.toAddress();
+    return this._event.parameters[1].value.toAddress();
   }
 }
 
@@ -661,6 +679,21 @@ export class Moloch extends SmartContract {
     return CallResult.fromValue(value[0].toAddress());
   }
 
+  TOTAL(): Address {
+    let result = super.call("TOTAL", []);
+
+    return result[0].toAddress();
+  }
+
+  try_TOTAL(): CallResult<Address> {
+    let result = super.tryCall("TOTAL", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toAddress());
+  }
+
   totalShares(): BigInt {
     let result = super.call("totalShares", []);
 
@@ -875,6 +908,21 @@ export class Moloch extends SmartContract {
     return CallResult.fromValue(value[0].toBoolean());
   }
 
+  getTokenCount(): BigInt {
+    let result = super.call("getTokenCount", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_getTokenCount(): CallResult<BigInt> {
+    let result = super.tryCall("getTokenCount", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBigInt());
+  }
+
   getProposalQueueLength(): BigInt {
     let result = super.call("getProposalQueueLength", []);
 
@@ -952,6 +1000,21 @@ export class Moloch extends SmartContract {
     }
     let value = result.value;
     return CallResult.fromValue(value[0].toBoolean());
+  }
+
+  totalGuildBankTokens(): BigInt {
+    let result = super.call("totalGuildBankTokens", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_totalGuildBankTokens(): CallResult<BigInt> {
+    let result = super.tryCall("totalGuildBankTokens", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBigInt());
   }
 
   canRagequit(highestIndexYesVote: BigInt): boolean {
@@ -1389,6 +1452,36 @@ export class SubmitProposalCall__Outputs {
 
   get proposalId(): BigInt {
     return this._call.outputValues[0].value.toBigInt();
+  }
+}
+
+export class CollectTokensCall extends EthereumCall {
+  get inputs(): CollectTokensCall__Inputs {
+    return new CollectTokensCall__Inputs(this);
+  }
+
+  get outputs(): CollectTokensCall__Outputs {
+    return new CollectTokensCall__Outputs(this);
+  }
+}
+
+export class CollectTokensCall__Inputs {
+  _call: CollectTokensCall;
+
+  constructor(call: CollectTokensCall) {
+    this._call = call;
+  }
+
+  get token(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class CollectTokensCall__Outputs {
+  _call: CollectTokensCall;
+
+  constructor(call: CollectTokensCall) {
+    this._call = call;
   }
 }
 

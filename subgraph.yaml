@@ -62,6 +62,8 @@ dataSources:
           handler: handleProcessWhitelistProposal
         - event: UpdateDelegateKey(indexed address,address)
           handler: handleUpdateDelegateKey
+        - event: CancelProposal(indexed uint256,address)
+          handler: handleCancelProposal
       file: ./src/moloch-mapping.ts
 templates:
   - kind: ethereum/contract
@@ -101,3 +103,5 @@ templates:
           handler: handleProcessWhitelistProposal
         - event: UpdateDelegateKey(indexed address,address)
           handler: handleUpdateDelegateKey
+        - event: CancelProposal(indexed uint256,address)
+          handler: handleCancelProposal

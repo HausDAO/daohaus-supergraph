@@ -292,7 +292,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.proposalId = event.params.proposalId;
 
   proposal.moloch = molochId;
-  // proposal.proposalIndex = event.params.proposalId;
+  proposal.proposalIndex = event.params.proposalId;
   proposal.molochAddress = event.address;
   proposal.timestamp = event.block.timestamp.toString();
   proposal.member = memberId;
@@ -722,9 +722,26 @@ export function handleProcessGuildKickProposal(
 // handler: handleProcessWhitelistProposal
 export function handleRagequit(event: Ragequit): void {}
 
-// event CancelProposal(uint256 indexed proposalIndex, address applicantAddress);
-// handler: handleProcessWhitelistProposal
-export function handleCancelProposal(event: CancelProposal): void {}
+// event CancelProposal(uint256 indexed proposalId, address applicantAddress);
+// handler: handleCancelProposal
+export function handleCancelProposal(event: CancelProposal): void {
+  let molochId = event.address.toHexString();
+  let processProposalId = molochId
+    .concat("-proposal-")
+    .concat(event.params.proposalId.toString());
+  let proposal = Proposal.load(processProposalId);
+
+  // Transfer tribute from ESCROW back to the applicant if there was tribute offered on the proposal
+  if (proposal.tributeOffered > BigInt.fromI32(0)) {
+    let tokenId = molochId
+      .concat("-token-")
+      .concat(proposal.tributeToken.toHex());
+    subtractFromBalance(molochId, ESCROW, tokenId, proposal.tributeOffered);
+  }
+
+  proposal.cancelled = true;
+  proposal.save();
+}
 
 // event UpdateDelegateKey(address indexed memberAddress, address newDelegateKey);
 // handler: handleProcessWhitelistProposal
