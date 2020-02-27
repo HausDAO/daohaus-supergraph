@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Contract
-    network: kovan
+    network: mainnet
     source:
-      address: "0x2871a97C8bcEB53675EB63CD9e52b5f6B2b37972"
+      address: "0xBDa12B88CdeEE60fB70cC31d78c7D29B61B894A2"
       abi: Contract
-      startBlock: 16845360
+      startBlock: 9484660
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -27,11 +27,11 @@ dataSources:
       file: Contract/Contract.wasm
   - kind: ethereum/contract
     name: Moloch
-    network: kovan
+    network: mainnet
     source:
-      address: "0x57B28E30D6fE5805E895a880f36176C82df582Ee"
+      address: "0x4570b4faf71e23942b8b9f934b47ccedf7540162"
       abi: Moloch
-      startBlock: 16845360
+      startBlock: 9484660
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -72,7 +72,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: MolochTemplate
-    network: kovan
+    network: mainnet
     source:
       abi: Moloch
     mapping:

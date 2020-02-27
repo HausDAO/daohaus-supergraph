@@ -733,11 +733,20 @@ export function handleCancelProposal(event: CancelProposal): void {
 
   // Transfer tribute from ESCROW back to the applicant if there was tribute offered on the proposal
   if (proposal.tributeOffered > BigInt.fromI32(0)) {
+    // try to load member
+    // create if no member
+    // balance xfer from escrow to that member's token balance
+    // replace the subtract
+
     let tokenId = molochId
       .concat("-token-")
       .concat(proposal.tributeToken.toHex());
     subtractFromBalance(molochId, ESCROW, tokenId, proposal.tributeOffered);
   }
+
+  // try to load member
+  // create if no member
+  // balnce xfer from escrow to that member's token balance
 
   proposal.cancelled = true;
   proposal.save();
@@ -749,4 +758,9 @@ export function handleUpdateDelegateKey(event: CancelProposal): void {}
 
 // event Withdraw(address indexed memberAddress, address token, uint256 amount);
 // handler: handleWithdraw
-export function handleWithdraw(event: Withdraw): void {}
+//emit Withdraw(msg.sender, token, amount);
+export function handleWithdraw(event: Withdraw): void {
+  // try to load member
+  // create if no member
+  // balnce subtract from that member's token balance
+}
