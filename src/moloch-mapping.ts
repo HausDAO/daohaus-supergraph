@@ -469,7 +469,14 @@ export function handleProcessProposal(event: ProcessProposal): void {
 
     //CREATE MEMBER
     if (isNewMember) {
-      let newMember = new Member(applicantId);
+      // if member.exists == false the member entity already exists
+      // because it was created in cancelProposal for a cancelled new member proposal
+      let newMember = member;
+
+      if (newMember == null) {
+        newMember = new Member(applicantId);
+      }
+      // let newMember = new Member(applicantId);
 
       newMember.moloch = molochId;
       newMember.molochAddress = event.address;
@@ -733,20 +740,42 @@ export function handleCancelProposal(event: CancelProposal): void {
 
   // Transfer tribute from ESCROW back to the applicant if there was tribute offered on the proposal
   if (proposal.tributeOffered > BigInt.fromI32(0)) {
-    // try to load member
-    // create if no member
-    // balance xfer from escrow to that member's token balance
-    // replace the subtract
+    let applicantId = molochId
+      .concat("-member-")
+      .concat(proposal.applicant.toHex());
+    let member = Member.load(applicantId);
+
+    // Create a member entity to assign a balance until they widthdraw it. member.exists = false
+    if (member == null) {
+      let newMember = new Member(applicantId);
+
+      newMember.moloch = molochId;
+      newMember.molochAddress = event.address;
+      newMember.memberAddress = proposal.applicant;
+      newMember.delegateKey = proposal.applicant;
+      newMember.shares = BigInt.fromI32(0);
+      newMember.loot = proposal.lootRequested;
+      newMember.exists = false;
+      newMember.tokenTribute = BigInt.fromI32(0);
+      newMember.didRagequit = false;
+      newMember.proposedToKick = false;
+      newMember.kicked = false;
+
+      newMember.save();
+    }
 
     let tokenId = molochId
       .concat("-token-")
       .concat(proposal.tributeToken.toHex());
-    subtractFromBalance(molochId, ESCROW, tokenId, proposal.tributeOffered);
-  }
 
-  // try to load member
-  // create if no member
-  // balnce xfer from escrow to that member's token balance
+    internalTransfer(
+      molochId,
+      ESCROW,
+      proposal.applicant,
+      tokenId,
+      proposal.tributeOffered
+    );
+  }
 
   proposal.cancelled = true;
   proposal.save();
@@ -758,9 +787,13 @@ export function handleUpdateDelegateKey(event: CancelProposal): void {}
 
 // event Withdraw(address indexed memberAddress, address token, uint256 amount);
 // handler: handleWithdraw
-//emit Withdraw(msg.sender, token, amount);
 export function handleWithdraw(event: Withdraw): void {
-  // try to load member
-  // create if no member
-  // balnce subtract from that member's token balance
+  let molochId = event.address.toHexString();
+
+  subtractFromBalance(
+    molochId,
+    event.params.memberAddress,
+    event.params.token.toHexString(),
+    event.params.amount
+  );
 }
