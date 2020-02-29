@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Contract
-    network: mainnet
+    network: kovan
     source:
-      address: "0x1782a13f176e84Be200842Ade79daAA0B09F0418"
+      address: "0xB47778d3BcCBf5e39dEC075CA5F185fc20567b1e"
       abi: Contract
-      startBlock: 9484660
+      startBlock: 16845360
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -27,11 +27,11 @@ dataSources:
       file: Contract/Contract.wasm
   - kind: ethereum/contract
     name: Moloch
-    network: mainnet
+    network: kovan
     source:
-      address: "0x4570b4faf71e23942b8b9f934b47ccedf7540162"
+      address: "0x57B28E30D6fE5805E895a880f36176C82df582Ee"
       abi: Moloch
-      startBlock: 9484660
+      startBlock: 16845360
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -68,11 +68,13 @@ dataSources:
           handler: handleUpdateDelegateKey
         - event: CancelProposal(indexed uint256,address)
           handler: handleCancelProposal
+        - event: Withdraw(indexed address,address,uint256)
+          handler: handleWithdraw
       file: Moloch/Moloch.wasm
 templates:
   - kind: ethereum/contract
     name: MolochTemplate
-    network: mainnet
+    network: kovan
     source:
       abi: Moloch
     mapping:
@@ -112,3 +114,5 @@ templates:
           handler: handleUpdateDelegateKey
         - event: CancelProposal(indexed uint256,address)
           handler: handleCancelProposal
+        - event: Withdraw(indexed address,address,uint256)
+          handler: handleWithdraw

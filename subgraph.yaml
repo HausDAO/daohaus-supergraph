@@ -70,6 +70,8 @@ dataSources:
           handler: handleUpdateDelegateKey
         - event: CancelProposal(indexed uint256,address)
           handler: handleCancelProposal
+        - event: Withdraw(indexed address,address,uint256)
+          handler: handleWithdraw
       file: ./src/moloch-mapping.ts
 templates:
   - kind: ethereum/contract
@@ -112,3 +114,5 @@ templates:
           handler: handleUpdateDelegateKey
         - event: CancelProposal(indexed uint256,address)
           handler: handleCancelProposal
+        - event: Withdraw(indexed address,address,uint256)
+          handler: handleWithdraw

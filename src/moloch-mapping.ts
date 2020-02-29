@@ -273,6 +273,8 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   let memberId = molochId
     .concat("-member-")
     .concat(event.params.memberAddress.toHex());
+
+  // TODO: Need to check if sharesRequested is greater then 0
   let newMember =
     Member.load(
       molochId.concat("-member-").concat(event.params.applicant.toHex())
@@ -292,7 +294,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.proposalId = event.params.proposalId;
 
   proposal.moloch = molochId;
-  proposal.proposalIndex = event.params.proposalId;
+  // proposal.proposalIndex = event.params.proposalId;
   proposal.molochAddress = event.address;
   proposal.timestamp = event.block.timestamp.toString();
   proposal.member = memberId;
@@ -484,7 +486,13 @@ export function handleProcessProposal(event: ProcessProposal): void {
       newMember.delegateKey = proposal.applicant;
       newMember.shares = proposal.sharesRequested;
       newMember.loot = proposal.lootRequested;
-      newMember.exists = true;
+
+      if (proposal.sharesRequested > BigInt.fromI32(0)) {
+        newMember.exists = true;
+      } else {
+        newMember.exists = false;
+      }
+
       newMember.tokenTribute = BigInt.fromI32(0);
       newMember.didRagequit = false;
       newMember.proposedToKick = false;
