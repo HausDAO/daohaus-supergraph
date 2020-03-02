@@ -273,6 +273,8 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   let memberId = molochId
     .concat("-member-")
     .concat(event.params.memberAddress.toHex());
+
+  // TODO: Need to check if sharesRequested is greater then 0
   let newMember =
     Member.load(
       molochId.concat("-member-").concat(event.params.applicant.toHex())
@@ -292,7 +294,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.proposalId = event.params.proposalId;
 
   proposal.moloch = molochId;
-  proposal.proposalIndex = event.params.proposalId;
+  // proposal.proposalIndex = event.params.proposalId;
   proposal.molochAddress = event.address;
   proposal.timestamp = event.block.timestamp.toString();
   proposal.member = memberId;
@@ -469,7 +471,14 @@ export function handleProcessProposal(event: ProcessProposal): void {
 
     //CREATE MEMBER
     if (isNewMember) {
-      let newMember = new Member(applicantId);
+      // if member.exists == false the member entity already exists
+      // because it was created in cancelProposal for a cancelled new member proposal
+      let newMember = member;
+
+      if (newMember == null) {
+        newMember = new Member(applicantId);
+      }
+      // let newMember = new Member(applicantId);
 
       newMember.moloch = molochId;
       newMember.molochAddress = event.address;
@@ -477,7 +486,13 @@ export function handleProcessProposal(event: ProcessProposal): void {
       newMember.delegateKey = proposal.applicant;
       newMember.shares = proposal.sharesRequested;
       newMember.loot = proposal.lootRequested;
-      newMember.exists = true;
+
+      if (proposal.sharesRequested > BigInt.fromI32(0)) {
+        newMember.exists = true;
+      } else {
+        newMember.exists = false;
+      }
+
       newMember.tokenTribute = BigInt.fromI32(0);
       newMember.didRagequit = false;
       newMember.proposedToKick = false;
@@ -733,10 +748,41 @@ export function handleCancelProposal(event: CancelProposal): void {
 
   // Transfer tribute from ESCROW back to the applicant if there was tribute offered on the proposal
   if (proposal.tributeOffered > BigInt.fromI32(0)) {
+    let applicantId = molochId
+      .concat("-member-")
+      .concat(proposal.applicant.toHex());
+    let member = Member.load(applicantId);
+
+    // Create a member entity to assign a balance until they widthdraw it. member.exists = false
+    if (member == null) {
+      let newMember = new Member(applicantId);
+
+      newMember.moloch = molochId;
+      newMember.molochAddress = event.address;
+      newMember.memberAddress = proposal.applicant;
+      newMember.delegateKey = proposal.applicant;
+      newMember.shares = BigInt.fromI32(0);
+      newMember.loot = proposal.lootRequested;
+      newMember.exists = false;
+      newMember.tokenTribute = BigInt.fromI32(0);
+      newMember.didRagequit = false;
+      newMember.proposedToKick = false;
+      newMember.kicked = false;
+
+      newMember.save();
+    }
+
     let tokenId = molochId
       .concat("-token-")
       .concat(proposal.tributeToken.toHex());
-    subtractFromBalance(molochId, ESCROW, tokenId, proposal.tributeOffered);
+
+    internalTransfer(
+      molochId,
+      ESCROW,
+      proposal.applicant,
+      tokenId,
+      proposal.tributeOffered
+    );
   }
 
   proposal.cancelled = true;
@@ -749,4 +795,17 @@ export function handleUpdateDelegateKey(event: CancelProposal): void {}
 
 // event Withdraw(address indexed memberAddress, address token, uint256 amount);
 // handler: handleWithdraw
-export function handleWithdraw(event: Withdraw): void {}
+export function handleWithdraw(event: Withdraw): void {
+  let molochId = event.address.toHexString();
+
+  let tokenId = molochId.concat("-token-").concat(event.params.token.toHex());
+
+  if (event.params.amount > BigInt.fromI32(0)) {
+    subtractFromBalance(
+      molochId,
+      event.params.memberAddress,
+      tokenId,
+      event.params.amount
+    );
+  }
+}
