@@ -72,6 +72,10 @@ function subtractFromBalance(
   let tokenBalanceId = token.concat("-member-").concat(member.toHex());
   let balance: TokenBalance | null = TokenBalance.load(tokenBalanceId);
 
+  // TODO: log some of these to check progress
+
+  log.info("*********************** tokenBalanceId: {}", [tokenBalanceId]);
+
   balance.tokenBalance = balance.tokenBalance.minus(amount);
 
   balance.save();
@@ -99,6 +103,10 @@ export function createMemberTokenBalance(
   let memberId = molochId.concat("-member-").concat(member.toHex());
   let memberTokenBalanceId = token.concat("-member-").concat(member.toHex());
   let memberTokenBalance = new TokenBalance(memberTokenBalanceId);
+
+  log.info("++++++++++ creating member token balance: {}", [
+    memberTokenBalanceId
+  ]);
 
   memberTokenBalance.moloch = molochId;
   memberTokenBalance.token = token;
@@ -570,6 +578,12 @@ export function handleProcessProposal(event: ProcessProposal): void {
   proposal.processed = true;
 
   //NOTE: issue processing reward and return deposit
+
+  // TODO: Can this create a member (exists=false) if needed?
+
+  log.info("++++++++++  processing event.transaction.from: {}", [
+    event.transaction.from.toHexString()
+  ]);
   internalTransfer(
     molochId,
     ESCROW,
@@ -795,6 +809,8 @@ export function handleUpdateDelegateKey(event: CancelProposal): void {}
 
 // event Withdraw(address indexed memberAddress, address token, uint256 amount);
 // handler: handleWithdraw
+// NOTE: Used event.transaction.from instead of event.params.memberAddress
+// due to event on MCV where those didn't match and caused subtractFromBalance to fail
 export function handleWithdraw(event: Withdraw): void {
   let molochId = event.address.toHexString();
 
@@ -803,7 +819,7 @@ export function handleWithdraw(event: Withdraw): void {
   if (event.params.amount > BigInt.fromI32(0)) {
     subtractFromBalance(
       molochId,
-      event.params.memberAddress,
+      event.transaction.from,
       tokenId,
       event.params.amount
     );
