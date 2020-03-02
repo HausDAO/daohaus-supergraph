@@ -261,7 +261,7 @@ export function handleSummonCompleteMCV(event: SummonComplete): void {
   // TODO: This event doesn't have a title or index so we'll need a way to handle if we add more hard coded datasources
   // entity.title = event.params.title;
   // entity.index = event.params.daoIdx;
-  entity.title = "MetaCartel Ventures Kovan";
+  entity.title = "MetaCartel Ventures";
   entity.index = "0";
   entity.version = "2";
 
