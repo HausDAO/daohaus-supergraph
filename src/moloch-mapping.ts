@@ -798,10 +798,14 @@ export function handleUpdateDelegateKey(event: CancelProposal): void {}
 export function handleWithdraw(event: Withdraw): void {
   let molochId = event.address.toHexString();
 
-  subtractFromBalance(
-    molochId,
-    event.params.memberAddress,
-    event.params.token.toHexString(),
-    event.params.amount
-  );
+  let tokenId = molochId.concat("-token-").concat(event.params.token.toHex());
+
+  if (event.params.amount > BigInt.fromI32(0)) {
+    subtractFromBalance(
+      molochId,
+      event.params.memberAddress,
+      tokenId,
+      event.params.amount
+    );
+  }
 }
