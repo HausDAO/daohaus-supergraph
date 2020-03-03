@@ -9,8 +9,9 @@ import {
   ProcessGuildKickProposal,
   Ragequit,
   CancelProposal,
-  Withdraw
-} from "../generated/templates/Moloch/Moloch";
+  Withdraw,
+  TokensCollected
+} from "../generated/templates/MolochTemplate/Moloch";
 import {
   BigInt,
   log,
@@ -896,3 +897,7 @@ export function handleWithdraw(event: Withdraw): void {
     );
   }
 }
+
+// event TokensCollected(address indexed token, uint256 amountToCollect);
+// handler: handleTokensCollected
+export function handleTokensCollected(event: TokensCollected): void {}

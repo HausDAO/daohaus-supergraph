@@ -72,6 +72,8 @@ dataSources:
           handler: handleWithdraw
         - event: Ragequit(indexed address,uint256,uint256)
           handler: handleRagequit
+        - event: TokensCollected(indexed address,uint256)
+          handler: handleTokensCollected
       file: Moloch/Moloch.wasm
 templates:
   - kind: ethereum/contract
@@ -120,3 +122,5 @@ templates:
           handler: handleWithdraw
         - event: Ragequit(indexed address,uint256,uint256)
           handler: handleRagequit
+        - event: TokensCollected(indexed address,uint256)
+          handler: handleTokensCollected
