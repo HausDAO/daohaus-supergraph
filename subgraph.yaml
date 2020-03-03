@@ -74,6 +74,8 @@ dataSources:
           handler: handleWithdraw
         - event: Ragequit(indexed address,uint256,uint256)
           handler: handleRagequit
+        - event: UpdateDelegateKey(indexed address,address)
+          handler: handleUpdateDelegateKey
       file: ./src/moloch-mapping.ts
 templates:
   - kind: ethereum/contract
@@ -120,3 +122,5 @@ templates:
           handler: handleWithdraw
         - event: Ragequit(indexed address,uint256,uint256)
           handler: handleRagequit
+        - event: UpdateDelegateKey(indexed address,address)
+          handler: handleUpdateDelegateKey

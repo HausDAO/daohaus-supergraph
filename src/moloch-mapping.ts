@@ -868,7 +868,15 @@ export function handleCancelProposal(event: CancelProposal): void {
 
 // event UpdateDelegateKey(address indexed memberAddress, address newDelegateKey);
 // handler: handleProcessWhitelistProposal
-export function handleUpdateDelegateKey(event: CancelProposal): void {}
+export function handleUpdateDelegateKey(event: UpdateDelegateKey): void {
+  let molochId = event.address.toHexString();
+  let memberId = molochId
+    .concat("-member-")
+    .concat(event.params.memberAddress.toHex());
+  let member = Member.load(memberId);
+  member.delegateKey = event.params.newDelegateKey;
+  member.save();
+}
 
 // event Withdraw(address indexed memberAddress, address token, uint256 amount);
 // handler: handleWithdraw
