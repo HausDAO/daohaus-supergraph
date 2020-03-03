@@ -72,7 +72,7 @@ function subtractFromBalance(
   let tokenBalanceId = token.concat("-member-").concat(member.toHex());
   let balance: TokenBalance | null = TokenBalance.load(tokenBalanceId);
 
-  // TODO: log some of these to check progress
+  // TODO: migth want to load or create here - why not?
 
   log.info("*********************** tokenBalanceId: {}", [tokenBalanceId]);
 
@@ -282,13 +282,23 @@ export function handleSubmitProposal(event: SubmitProposal): void {
     .concat("-member-")
     .concat(event.params.memberAddress.toHex());
 
-  // TODO: Need to check if sharesRequested is greater then 0
-  let newMember =
+  // TODO: Need to check if sharesRequested is greater than 0
+  // let newMember =
+  //   Member.load(
+  //     molochId.concat("-member-").concat(event.params.applicant.toHex())
+  //   ) == null
+  //     ? true
+  //     : false;
+
+  let member =
     Member.load(
       molochId.concat("-member-").concat(event.params.applicant.toHex())
     ) == null
       ? true
       : false;
+  let newMember =
+    member == null && event.params.sharesRequested > BigInt.fromI32(0);
+
   // For trades, members deposit tribute in the token they want to sell to the dao, and request payment in the token they wish to receive.
   let trade =
     event.params.paymentToken != Address.fromI32(0) &&
@@ -748,8 +758,61 @@ export function handleProcessGuildKickProposal(
 }
 
 // event Ragequit(address indexed memberAddress, uint256 sharesToBurn, uint256 lootToBurn);
-// handler: handleProcessWhitelistProposal
-export function handleRagequit(event: Ragequit): void {}
+// handler: handleRageQuit
+export function handleRagequit(event: Ragequit): void {
+  let molochId = event.address.toHexString();
+  let moloch = Moloch.load(molochId);
+
+  let memberId = molochId
+    .concat("-member-")
+    .concat(event.params.memberAddress.toHex());
+  let member = Member.load(memberId);
+
+  let sharesAndLootToBurn = event.params.sharesToBurn.plus(
+    event.params.lootToBurn
+  );
+  let initialTotalSharesAndLoot = moloch.totalShares.plus(moloch.totalLoot);
+
+  member.shares = member.shares.minus(event.params.sharesToBurn);
+  member.loot = member.loot.minus(event.params.lootToBurn);
+  moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
+  moloch.totalLoot = moloch.totalLoot.minus(event.params.lootToBurn);
+
+  // set to doesn't exist if no shares?
+  if (member.shares.equals(new BigInt(0))) {
+    member.exists = false;
+  }
+
+  // for each approved token, calculate the fairshare value and transfer from guildbank to user
+  let tokens = moloch.approvedTokens;
+  for (let i = 0; i < tokens.length; i++) {
+    let token: string = tokens[i];
+    // contract requires initialTotalSharesAndLoot != 0
+
+    // need to test to see what token is
+    log.info("^^^ ragequit token xfer guild to user, token: {}", [token]);
+
+    let balance: TokenBalance | null = loadOrCreateTokenBalance(
+      molochId,
+      member.memberAddress,
+      token
+    );
+
+    let balanceTimesBurn = balance.tokenBalance.times(sharesAndLootToBurn);
+    let amountToRageQuit = balanceTimesBurn.div(initialTotalSharesAndLoot);
+
+    internalTransfer(
+      molochId,
+      GUILD,
+      member.memberAddress,
+      token,
+      amountToRageQuit
+    );
+  }
+
+  member.save();
+  moloch.save();
+}
 
 // event CancelProposal(uint256 indexed proposalId, address applicantAddress);
 // handler: handleCancelProposal
