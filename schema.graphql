@@ -1,6 +1,7 @@
 type Dao @entity {
   id: ID!
   index: String
+  createdAt: String!
   moloch: Bytes! # address
   summoner: Bytes! # address
   title: String
@@ -80,6 +81,7 @@ type Member @entity {
   moloch: Moloch!
   molochAddress: Bytes!
   memberAddress: Bytes!
+  createdAt: String!
   delegateKey: Bytes!
   shares: BigInt!
   loot: BigInt!
@@ -98,6 +100,7 @@ type Member @entity {
 type Vote @entity {
   id: ID!
   timestamp: String!
+  createdAt: String!
   proposal: Proposal!
   member: Member!
   uintVote: Int!
@@ -111,6 +114,7 @@ type Proposal @entity {
   moloch: Moloch!
   molochAddress: Bytes!
   timestamp: String!
+  createdAt: String!
   member: Member!
   memberAddress: Bytes!
   delegateKey: Bytes!

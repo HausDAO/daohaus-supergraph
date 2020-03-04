@@ -224,6 +224,7 @@ export function handleSummonComplete(event: SummonComplete): void {
     .concat(event.params.summoner.toHex());
   let newMember = new Member(memberId);
   newMember.moloch = molochId;
+  newMember.createdAt = event.block.timestamp.toString();
   newMember.molochAddress = event.address;
   newMember.memberAddress = event.params.summoner;
   newMember.delegateKey = event.params.summoner;
@@ -258,6 +259,7 @@ export function handleSummonCompleteMCV(event: SummonComplete): void {
 
   entity.moloch = event.address;
   entity.summoner = event.params.summoner;
+  entity.createdAt = event.block.timestamp.toString();
 
   // TODO: This event doesn't have a title or index so we'll need a way to handle if we add more hard coded datasources
   // entity.title = event.params.title;
@@ -316,6 +318,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   // proposal.proposalIndex = event.params.proposalId;
   proposal.molochAddress = event.address;
   proposal.timestamp = event.block.timestamp.toString();
+  proposal.createdAt = event.block.timestamp.toString();
   proposal.member = memberId;
   proposal.memberAddress = event.params.memberAddress;
   proposal.delegateKey = event.params.delegateKey;
@@ -372,6 +375,7 @@ export function handleSubmitVote(event: SubmitVote): void {
   let vote = new Vote(voteId);
 
   vote.timestamp = event.block.timestamp.toString();
+  vote.createdAt = event.block.timestamp.toString();
   vote.proposal = proposalVotedId;
   vote.member = memberId;
   vote.uintVote = event.params.uintVote;
@@ -500,6 +504,7 @@ export function handleProcessProposal(event: ProcessProposal): void {
       // let newMember = new Member(applicantId);
 
       newMember.moloch = molochId;
+      newMember.createdAt = event.block.timestamp.toString();
       newMember.molochAddress = event.address;
       newMember.memberAddress = proposal.applicant;
       newMember.delegateKey = proposal.applicant;
@@ -836,6 +841,7 @@ export function handleCancelProposal(event: CancelProposal): void {
       let newMember = new Member(applicantId);
 
       newMember.moloch = molochId;
+      newMember.createdAt = event.block.timestamp.toString();
       newMember.molochAddress = event.address;
       newMember.memberAddress = proposal.applicant;
       newMember.delegateKey = proposal.applicant;
