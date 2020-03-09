@@ -59,6 +59,15 @@ export class Dao extends Entity {
     }
   }
 
+  get createdAt(): string {
+    let value = this.get("createdAt");
+    return value.toString();
+  }
+
+  set createdAt(value: string) {
+    this.set("createdAt", Value.fromString(value));
+  }
+
   get moloch(): Bytes {
     let value = this.get("moloch");
     return value.toBytes();
@@ -754,6 +763,15 @@ export class Member extends Entity {
     this.set("memberAddress", Value.fromBytes(value));
   }
 
+  get createdAt(): string {
+    let value = this.get("createdAt");
+    return value.toString();
+  }
+
+  set createdAt(value: string) {
+    this.set("createdAt", Value.fromString(value));
+  }
+
   get delegateKey(): Bytes {
     let value = this.get("delegateKey");
     return value.toBytes();
@@ -951,6 +969,15 @@ export class Vote extends Entity {
     this.set("timestamp", Value.fromString(value));
   }
 
+  get createdAt(): string {
+    let value = this.get("createdAt");
+    return value.toString();
+  }
+
+  set createdAt(value: string) {
+    this.set("createdAt", Value.fromString(value));
+  }
+
   get proposal(): string {
     let value = this.get("proposal");
     return value.toString();
@@ -1060,6 +1087,15 @@ export class Proposal extends Entity {
 
   set timestamp(value: string) {
     this.set("timestamp", Value.fromString(value));
+  }
+
+  get createdAt(): string {
+    let value = this.get("createdAt");
+    return value.toString();
+  }
+
+  set createdAt(value: string) {
+    this.set("createdAt", Value.fromString(value));
   }
 
   get member(): string {

@@ -224,6 +224,7 @@ export function handleSummonComplete(event: SummonComplete): void {
     .concat(event.params.summoner.toHex());
   let newMember = new Member(memberId);
   newMember.moloch = molochId;
+  newMember.createdAt = event.block.timestamp.toString();
   newMember.molochAddress = event.address;
   newMember.memberAddress = event.params.summoner;
   newMember.delegateKey = event.params.summoner;
@@ -258,6 +259,7 @@ export function handleSummonCompleteMCV(event: SummonComplete): void {
 
   entity.moloch = event.address;
   entity.summoner = event.params.summoner;
+  entity.createdAt = event.block.timestamp.toString();
 
   // TODO: This event doesn't have a title or index so we'll need a way to handle if we add more hard coded datasources
   // entity.title = event.params.title;
@@ -313,9 +315,9 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.proposalId = event.params.proposalId;
 
   proposal.moloch = molochId;
-  // proposal.proposalIndex = event.params.proposalId;
   proposal.molochAddress = event.address;
   proposal.timestamp = event.block.timestamp.toString();
+  proposal.createdAt = event.block.timestamp.toString();
   proposal.member = memberId;
   proposal.memberAddress = event.params.memberAddress;
   proposal.delegateKey = event.params.delegateKey;
@@ -372,6 +374,7 @@ export function handleSubmitVote(event: SubmitVote): void {
   let vote = new Vote(voteId);
 
   vote.timestamp = event.block.timestamp.toString();
+  vote.createdAt = event.block.timestamp.toString();
   vote.proposal = proposalVotedId;
   vote.member = memberId;
   vote.uintVote = event.params.uintVote;
@@ -500,6 +503,7 @@ export function handleProcessProposal(event: ProcessProposal): void {
       // let newMember = new Member(applicantId);
 
       newMember.moloch = molochId;
+      newMember.createdAt = event.block.timestamp.toString();
       newMember.molochAddress = event.address;
       newMember.memberAddress = proposal.applicant;
       newMember.delegateKey = proposal.applicant;
@@ -588,8 +592,7 @@ export function handleProcessProposal(event: ProcessProposal): void {
   }
   proposal.processed = true;
 
-  //NOTE: issue processing reward and return deposit
-
+  // NOTE: issue processing reward and return deposit
   // TODO: Can this create a member (exists=false) if needed?
 
   log.info("++++++++++  processing event.transaction.from: {}", [
@@ -630,6 +633,7 @@ export function handleProcessWhitelistProposal(
   let tokenId = molochId
     .concat("-token-")
     .concat(proposal.tributeToken.toHex());
+
   let token = Token.load(tokenId);
 
   let isNotWhitelisted =
@@ -686,7 +690,7 @@ export function handleProcessWhitelistProposal(
 export function handleProcessGuildKickProposal(
   event: ProcessGuildKickProposal
 ): void {
-  let molochId = event.address.toHex();
+  let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
 
   let processProposalId = molochId
@@ -694,34 +698,33 @@ export function handleProcessGuildKickProposal(
     .concat(event.params.proposalId.toString());
   let proposal = Proposal.load(processProposalId);
 
-  let tokenId = molochId
-    .concat("-token-")
-    .concat(proposal.tributeToken.toHex());
-  let token = Token.load(tokenId);
+  // TODO: WHY WAS IT DOING THIS?
+  // let tokenId = molochId
+  //   .concat("-token-")
+  //   .concat(proposal.tributeToken.toHex());
+  // let token = Token.load(tokenId);
 
   //PROPOSAL PASSED
   //NOTE: invariant no loot no shares,
+
+  log.info("############# KICKING - MADE IT PAST PROP LOAD", []);
   if (event.params.didPass) {
     proposal.didPass = true;
     //Kick member
     if (proposal.guildkick) {
       let memberId = molochId
         .concat("-member-")
-        .concat(proposal.applicant.toString());
+        .concat(proposal.applicant.toHexString());
       let member = Member.load(memberId);
       let newLoot = member.shares;
-
       member.jailed = processProposalId;
       member.kicked = true;
       member.shares = BigInt.fromI32(0);
       member.loot = member.loot.plus(newLoot);
-
       moloch.totalLoot.plus(newLoot);
       moloch.totalShares.minus(newLoot);
-
       member.save();
     }
-
     //PROPOSAL FAILED
   } else {
     proposal.didPass = false;
@@ -791,11 +794,10 @@ export function handleRagequit(event: Ragequit): void {
     // contract requires initialTotalSharesAndLoot != 0
 
     // need to test to see what token is
-    log.info("^^^ ragequit token xfer guild to user, token: {}", [token]);
 
     let balance: TokenBalance | null = loadOrCreateTokenBalance(
       molochId,
-      member.memberAddress,
+      GUILD,
       token
     );
 
@@ -836,6 +838,7 @@ export function handleCancelProposal(event: CancelProposal): void {
       let newMember = new Member(applicantId);
 
       newMember.moloch = molochId;
+      newMember.createdAt = event.block.timestamp.toString();
       newMember.molochAddress = event.address;
       newMember.memberAddress = proposal.applicant;
       newMember.delegateKey = proposal.applicant;

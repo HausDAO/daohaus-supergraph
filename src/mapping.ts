@@ -23,6 +23,7 @@ export function handleRegister(event: Register): void {
   }
 
   entity.moloch = event.params.moloch;
+  entity.createdAt = event.block.timestamp.toString();
   entity.summoner = event.params.summoner;
   entity.title = event.params.title;
   entity.index = event.params.daoIdx.toString();
@@ -82,8 +83,10 @@ export function handleRegister(event: Register): void {
     .concat(event.params.summoner.toHex());
   let newMember = new Member(memberId);
   newMember.moloch = molochId;
+
   newMember.molochAddress = event.params.moloch;
   newMember.memberAddress = event.params.summoner;
+  newMember.createdAt = event.block.timestamp.toString();
   newMember.delegateKey = event.params.summoner;
   newMember.shares = BigInt.fromI32(1);
   newMember.loot = BigInt.fromI32(0);
