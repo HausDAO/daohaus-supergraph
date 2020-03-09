@@ -315,7 +315,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.proposalId = event.params.proposalId;
 
   proposal.moloch = molochId;
-  // proposal.proposalIndex = event.params.proposalId;
   proposal.molochAddress = event.address;
   proposal.timestamp = event.block.timestamp.toString();
   proposal.createdAt = event.block.timestamp.toString();
@@ -593,8 +592,7 @@ export function handleProcessProposal(event: ProcessProposal): void {
   }
   proposal.processed = true;
 
-  //NOTE: issue processing reward and return deposit
-
+  // NOTE: issue processing reward and return deposit
   // TODO: Can this create a member (exists=false) if needed?
 
   log.info("++++++++++  processing event.transaction.from: {}", [
@@ -635,6 +633,7 @@ export function handleProcessWhitelistProposal(
   let tokenId = molochId
     .concat("-token-")
     .concat(proposal.tributeToken.toHex());
+
   let token = Token.load(tokenId);
 
   let isNotWhitelisted =
@@ -691,7 +690,7 @@ export function handleProcessWhitelistProposal(
 export function handleProcessGuildKickProposal(
   event: ProcessGuildKickProposal
 ): void {
-  let molochId = event.address.toHex();
+  let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
 
   let processProposalId = molochId
@@ -699,34 +698,33 @@ export function handleProcessGuildKickProposal(
     .concat(event.params.proposalId.toString());
   let proposal = Proposal.load(processProposalId);
 
-  let tokenId = molochId
-    .concat("-token-")
-    .concat(proposal.tributeToken.toHex());
-  let token = Token.load(tokenId);
+  // TODO: WHY WAS IT DOING THIS?
+  // let tokenId = molochId
+  //   .concat("-token-")
+  //   .concat(proposal.tributeToken.toHex());
+  // let token = Token.load(tokenId);
 
   //PROPOSAL PASSED
   //NOTE: invariant no loot no shares,
+
+  log.info("############# KICKING - MADE IT PAST PROP LOAD", []);
   if (event.params.didPass) {
     proposal.didPass = true;
     //Kick member
     if (proposal.guildkick) {
       let memberId = molochId
         .concat("-member-")
-        .concat(proposal.applicant.toString());
+        .concat(proposal.applicant.toHexString());
       let member = Member.load(memberId);
       let newLoot = member.shares;
-
       member.jailed = processProposalId;
       member.kicked = true;
       member.shares = BigInt.fromI32(0);
       member.loot = member.loot.plus(newLoot);
-
       moloch.totalLoot.plus(newLoot);
       moloch.totalShares.minus(newLoot);
-
       member.save();
     }
-
     //PROPOSAL FAILED
   } else {
     proposal.didPass = false;
@@ -796,11 +794,10 @@ export function handleRagequit(event: Ragequit): void {
     // contract requires initialTotalSharesAndLoot != 0
 
     // need to test to see what token is
-    log.info("^^^ ragequit token xfer guild to user, token: {}", [token]);
 
     let balance: TokenBalance | null = loadOrCreateTokenBalance(
       molochId,
-      member.memberAddress,
+      GUILD,
       token
     );
 
