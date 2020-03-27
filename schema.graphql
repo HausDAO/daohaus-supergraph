@@ -1,32 +1,38 @@
 # should just create Moloch... but register vs summons issue?
 # need to check data at register/summons
 
-type Dao @entity {
-  id: ID!
-  createdAt: String!
-  index: String
-  moloch: Bytes! # address
-  summoner: Bytes! # address
-  title: String
-  version: String
-  newContract: String
-}
+# type Dao @entity {
+#   id: ID!
+#   createdAt: String!
+#   index: String
+#   moloch: Bytes! # address
+#   summoner: Bytes! # address
+#   title: String
+#   version: String
+#   newContract: String
+#   deleted: Boolean
+# }
 
 type Moloch @entity {
   id: ID!
   summoner: Bytes!
-  summoningTime: BigInt!
-  periodDuration: BigInt!
-  votingPeriodLength: BigInt!
-  gracePeriodLength: BigInt!
-  proposalDeposit: BigInt!
-  dilutionBound: BigInt!
-  processingReward: BigInt!
-  depositToken: Token!
+  title: String
+  version: String
+  newContract: String
+  deleted: String
+
+  summoningTime: BigInt
+  periodDuration: BigInt
+  votingPeriodLength: BigInt
+  gracePeriodLength: BigInt
+  proposalDeposit: BigInt
+  dilutionBound: BigInt
+  processingReward: BigInt
+  depositToken: Token
 
   "NOTE: Review how this is added to"
-  approvedTokens: [Token!]!
-  tokens: [Token!]! @derivedFrom(field: "moloch")
+  approvedTokens: [Token!]
+  tokens: [Token!] @derivedFrom(field: "moloch")
   members: [Member!] @derivedFrom(field: "moloch")
   tokenBalances: [TokenBalance!] @derivedFrom(field: "moloch")
   proposals: [Proposal!] @derivedFrom(field: "moloch")
@@ -34,11 +40,11 @@ type Moloch @entity {
   escrowTokenBalance: [TokenBalance!]
 
   "TODO: update on all event handlers -- currentPeriod = now.sub(summoningTime).div(periodDuration)"
-  currentPeriod: BigInt!
-  totalShares: BigInt!
-  totalLoot: BigInt!
-  proposalCount: BigInt!
-  proposalQueueCount: BigInt!
+  currentPeriod: BigInt
+  totalShares: BigInt
+  totalLoot: BigInt
+  proposalCount: BigInt
+  proposalQueueCount: BigInt
 
   "NOTE: No flag for new member proposal check if applicant address is already a member"
   proposedToJoin: [Proposal!]
@@ -135,7 +141,6 @@ type Proposal @entity {
   noVotes: BigInt!
 
   "NOTE: Will need to unrequire anything not on both versions"
-
   sponsored: Boolean
   processed: Boolean!
   didPass: Boolean!
@@ -152,7 +157,4 @@ type Proposal @entity {
   "NOTE: Can we get for v1 too?"
   yesShares: BigInt!
   noShares: BigInt!
-
-  "NOTE: v1 applicantAddress now applicant"
-  "NOTE: v1 tokenTribute now tributeOffered"
 }

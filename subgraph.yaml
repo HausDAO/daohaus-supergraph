@@ -3,15 +3,15 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Contract
-    # network: kovan
-    network: mainnet
+    name: V1Factory
+    network: kovan
+    # network: mainnet
     source:
-      # address: "0xB47778d3BcCBf5e39dEC075CA5F185fc20567b1e"
-      address: "0x1782a13f176e84Be200842Ade79daAA0B09F0418"
-      abi: Contract
-      # startBlock: 16845360
-      startBlock: 9484660
+      address: "0x0C60Cd59f42093c7489BA68BAA4d7A01f2468153"
+      # address: "0x2840d12d926cc686217bb42b80b662c7d72ee787"
+      abi: V1Factory
+      startBlock: 14980875
+      # startBlock: 8625240
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -19,14 +19,37 @@ dataSources:
       entities:
         - Register
       abis:
-        - name: Contract
-          file: ./abis/Contract.json
+        - name: V1Factory
+          file: ./abis/V1Factory.json
+      eventHandlers:
+        - event: Register(address,indexed address,uint256,string,uint256)
+          handler: handleRegisterV1
+      file: ./src/factory-mapping.ts
+  - kind: ethereum/contract
+    name: V2Factory
+    network: kovan
+    # network: mainnet
+    source:
+      address: "0xB47778d3BcCBf5e39dEC075CA5F185fc20567b1e"
+      # address: "0x1782a13f176e84Be200842Ade79daAA0B09F0418"
+      abi: V2Factory
+      startBlock: 16845360
+      # startBlock: 9484660
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Register
+      abis:
+        - name: V2Factory
+          file: ./abis/V2Factory.json
       eventHandlers:
         - event: Register(uint256,address,indexed address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256,string,uint256)
-          handler: handleRegister
+          handler: handleRegisterV2
         - event: Delete(address)
-          handler: handleDelete
-      file: ./src/mapping.ts
+          handler: handleDeleteV2
+      file: ./src/factory-mapping.ts
 #   - kind: ethereum/contract
 #     name: Moloch
 #     # network: kovan
