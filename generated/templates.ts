@@ -2,8 +2,8 @@
 
 import { Address, DataSourceTemplate } from "@graphprotocol/graph-ts";
 
-export class MolochTemplate extends DataSourceTemplate {
+export class MolochV1Template extends DataSourceTemplate {
   static create(address: Address): void {
-    DataSourceTemplate.create("MolochTemplate", [address.toHex()]);
+    DataSourceTemplate.create("MolochV1Template", [address.toHex()]);
   }
 }

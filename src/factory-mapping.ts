@@ -5,8 +5,7 @@ import {
   Delete
 } from "../generated/V2Factory/V2Factory";
 
-// import { Dao } from "../generated/schema";
-// import { MolochTemplate } from "../generated/templates";
+import { MolochV1Template } from "../generated/templates";
 import { Moloch, Member } from "../generated/schema";
 
 import {
@@ -17,53 +16,23 @@ import {
 } from "./moloch-mapping";
 
 export function handleRegisterV1(event: RegisterV1): void {
-  // let entity = Dao.load(event.params.moloch.toHexString());
-  // if (entity == null) {
-  //   entity = new Dao(event.params.moloch.toHexString());
-  // }
-  // entity.moloch = event.params.moloch;
-  // entity.createdAt = event.block.timestamp.toString();
-  // entity.summoner = event.params.summoner;
-  // entity.title = event.params.title;
-  // entity.index = event.params.daoIdx.toString();
-  // entity.newContract = event.params.newContract.toString();
-  // // TODO FOR TEMPLATES
-  // // Moloch.create(event.params.moloch);
-  // entity.save();
+  MolochV1Template.create(event.params.moloch);
 
   let molochId = event.params.moloch.toHex();
   let moloch = new Moloch(molochId);
   moloch.summoner = event.params.summoner;
   moloch.title = event.params.title;
   moloch.newContract = event.params.newContract.toString();
+  moloch.version = "1";
+  moloch.deleted = false;
 
   moloch.save();
 }
 
 export function handleRegisterV2(event: RegisterV2): void {
-  // let entity = Dao.load(event.params.moloch.toHexString());
-
-  // log.info("**************** event fired. contract address: {}", [
-  //   event.params.moloch.toHexString()
-  // ]);
-
-  // if (entity == null) {
-  //   entity = new Dao(event.params.moloch.toHexString());
-  // }
-
-  // entity.moloch = event.params.moloch;
-  // entity.createdAt = event.block.timestamp.toString();
-  // entity.summoner = event.params.summoner;
-  // entity.title = event.params.title;
-  // entity.index = event.params.daoIdx.toString();
-  // entity.version = event.params.version.toString();
-
   // // TODO FOR TEMPLATES
   // // MolochTemplate.create(event.params.moloch);
 
-  // entity.save();
-
-  // let molochId = event.address.toHex();
   let molochId = event.params.moloch.toHex();
   let moloch = new Moloch(molochId);
   let tokens = event.params.tokens;
@@ -79,13 +48,12 @@ export function handleRegisterV2(event: RegisterV2): void {
     guildTokenBalance.push(createGuildTokenBalance(molochId, token));
   }
 
-  // Start new Moloch instance
   moloch.summoner = event.params.summoner;
   moloch.summoningTime = event.params._summoningTime;
   moloch.title = event.params.title;
-
-  // NEED THIS?
-  // moloch.newContract = "1";
+  moloch.version = "2";
+  moloch.deleted = false;
+  moloch.newContract = "1";
   moloch.periodDuration = event.params._periodDuration;
   moloch.votingPeriodLength = event.params._votingPeriodLength;
   moloch.gracePeriodLength = event.params._gracePeriodLength;
@@ -106,8 +74,6 @@ export function handleRegisterV2(event: RegisterV2): void {
   moloch.proposedToKick = new Array<string>();
   moloch.proposedToFund = new Array<string>();
   moloch.proposedToTrade = new Array<string>();
-
-  log.info("SAVING MOLOCH {}", [molochId]);
 
   moloch.save();
 

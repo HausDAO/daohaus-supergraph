@@ -45,3 +45,39 @@ dataSources:
         - event: Delete(address)
           handler: handleDeleteV2
       file: V1Factory/V1Factory.wasm
+templates:
+  - kind: ethereum/contract
+    name: MolochV1Template
+    network: kovan
+    source:
+      abi: V1Moloch
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: templates/MolochV1Template/MolochV1Template.wasm
+      entities:
+        - Moloch
+        - Member
+        - Vote
+        - Proposal
+      abis:
+        - name: V1Moloch
+          file: MolochV1Template/abis/V1Moloch.json
+      eventHandlers:
+        - event: SummonComplete(indexed address,uint256)
+          handler: handleSummonComplete
+        - event: SubmitProposal(uint256,indexed address,indexed address,indexed
+            address,uint256,uint256)
+          handler: handleSubmitProposal
+        - event: SubmitVote(indexed uint256,indexed address,indexed address,uint8)
+          handler: handleSubmitVote
+        - event: ProcessProposal(indexed uint256,indexed address,indexed
+            address,uint256,uint256,bool)
+          handler: handleProcessProposal
+        - event: Ragequit(indexed address,uint256)
+          handler: handleRagequit
+        - event: Abort(indexed uint256,address)
+          handler: handleAbort
+        - event: UpdateDelegateKey(indexed address,address)
+          handler: handleUpdateDelegateKey

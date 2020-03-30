@@ -1,25 +1,10 @@
-# should just create Moloch... but register vs summons issue?
-# need to check data at register/summons
-
-# type Dao @entity {
-#   id: ID!
-#   createdAt: String!
-#   index: String
-#   moloch: Bytes! # address
-#   summoner: Bytes! # address
-#   title: String
-#   version: String
-#   newContract: String
-#   deleted: Boolean
-# }
-
 type Moloch @entity {
   id: ID!
   summoner: Bytes!
   title: String
   version: String
   newContract: String
-  deleted: String
+  deleted: Boolean
 
   summoningTime: BigInt
   periodDuration: BigInt
@@ -82,14 +67,13 @@ type Token @entity {
 type Member @entity {
   id: ID!
   createdAt: String!
-  "NOTE: replicate in v1"
   moloch: Moloch!
 
   molochAddress: Bytes!
   memberAddress: Bytes!
   delegateKey: Bytes!
   shares: BigInt!
-  loot: BigInt!
+  loot: BigInt
   exists: Boolean!
   highestIndexYesVote: Proposal
   tokenTribute: BigInt!
@@ -97,8 +81,8 @@ type Member @entity {
   votes: [Vote!] @derivedFrom(field: "member")
   submissions: [Proposal!] @derivedFrom(field: "member")
   tokenBalances: [TokenBalance!] @derivedFrom(field: "member")
-  proposedToKick: Boolean!
-  kicked: Boolean!
+  proposedToKick: Boolean
+  kicked: Boolean
   jailed: Proposal
 }
 
@@ -112,9 +96,9 @@ type Vote @entity {
   molochAddress: Bytes!
 
   "NOTE: legacy v1"
-  proposalIndex: BigInt!
-  delegateKey: Bytes!
-  memberAddress: Bytes!
+  proposalIndex: BigInt
+  delegateKey: Bytes
+  memberAddress: Bytes
 }
 
 type Proposal @entity {
@@ -136,7 +120,7 @@ type Proposal @entity {
   tributeToken: Bytes
   paymentRequested: BigInt
   paymentToken: Bytes
-  startingPeriod: BigInt!
+  startingPeriod: BigInt
   yesVotes: BigInt!
   noVotes: BigInt!
 
@@ -155,6 +139,6 @@ type Proposal @entity {
   votes: [Vote!] @derivedFrom(field: "proposal")
 
   "NOTE: Can we get for v1 too?"
-  yesShares: BigInt!
-  noShares: BigInt!
+  yesShares: BigInt
+  noShares: BigInt
 }

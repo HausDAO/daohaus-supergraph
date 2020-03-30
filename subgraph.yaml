@@ -100,18 +100,52 @@ dataSources:
 #         - event: TokensCollected(indexed address,uint256)
 #           handler: handleTokensCollected
 #       file: ./src/moloch-mapping.ts
-# templates:
-#   - kind: ethereum/contract
-#     name: MolochTemplate
-#     # network: kovan
-#     network: mainnet
+templates:
+  - kind: ethereum/contract
+    name: MolochV1Template
+    network: kovan
+    # network: mainnet
+    source:
+      abi: V1Moloch
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      file: ./src/v1-mapping.ts
+      entities:
+        - Moloch
+        - Member
+        - Vote
+        - Proposal
+      abis:
+        - name: V1Moloch
+          file: ./abis/V1Moloch.json
+      eventHandlers:
+        - event: SummonComplete(indexed address,uint256)
+          handler: handleSummonComplete
+        - event: SubmitProposal(uint256,indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleSubmitProposal
+        - event: SubmitVote(indexed uint256,indexed address,indexed address,uint8)
+          handler: handleSubmitVote
+        - event: ProcessProposal(indexed uint256,indexed address,indexed address,uint256,uint256,bool)
+          handler: handleProcessProposal
+        - event: Ragequit(indexed address,uint256)
+          handler: handleRagequit
+        - event: Abort(indexed uint256,address)
+          handler: handleAbort
+        - event: UpdateDelegateKey(indexed address,address)
+          handler: handleUpdateDelegateKey
+# - kind: ethereum/contract
+#     name: MolochV2Template
+#     network: kovan
+#     # network: mainnet
 #     source:
 #       abi: Moloch
 #     mapping:
 #       kind: ethereum/events
 #       apiVersion: 0.0.3
 #       language: wasm/assemblyscript
-#       file: ./src/moloch-mapping.ts
+#       file: ./src/V2-mapping.ts
 #       entities:
 #         - Moloch
 #         - TokenBalance
@@ -120,8 +154,8 @@ dataSources:
 #         - Vote
 #         - Proposal
 #       abis:
-#         - name: Moloch
-#           file: ./abis/Moloch.json
+#         - name: V2Moloch
+#           file: ./abis/V2Moloch.json
 #       eventHandlers:
 #         - event: SummonComplete(indexed address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256)
 #           handler: handleSummonComplete

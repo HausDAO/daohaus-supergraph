@@ -102,21 +102,13 @@ export class Moloch extends Entity {
     }
   }
 
-  get deleted(): string | null {
+  get deleted(): boolean {
     let value = this.get("deleted");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value.toBoolean();
   }
 
-  set deleted(value: string | null) {
-    if (value === null) {
-      this.unset("deleted");
-    } else {
-      this.set("deleted", Value.fromString(value as string));
-    }
+  set deleted(value: boolean) {
+    this.set("deleted", Value.fromBoolean(value));
   }
 
   get summoningTime(): BigInt | null {
@@ -869,13 +861,21 @@ export class Member extends Entity {
     this.set("shares", Value.fromBigInt(value));
   }
 
-  get loot(): BigInt {
+  get loot(): BigInt | null {
     let value = this.get("loot");
-    return value.toBigInt();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set loot(value: BigInt) {
-    this.set("loot", Value.fromBigInt(value));
+  set loot(value: BigInt | null) {
+    if (value === null) {
+      this.unset("loot");
+    } else {
+      this.set("loot", Value.fromBigInt(value as BigInt));
+    }
   }
 
   get exists(): boolean {
@@ -1505,21 +1505,37 @@ export class Proposal extends Entity {
     }
   }
 
-  get yesShares(): BigInt {
+  get yesShares(): BigInt | null {
     let value = this.get("yesShares");
-    return value.toBigInt();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set yesShares(value: BigInt) {
-    this.set("yesShares", Value.fromBigInt(value));
+  set yesShares(value: BigInt | null) {
+    if (value === null) {
+      this.unset("yesShares");
+    } else {
+      this.set("yesShares", Value.fromBigInt(value as BigInt));
+    }
   }
 
-  get noShares(): BigInt {
+  get noShares(): BigInt | null {
     let value = this.get("noShares");
-    return value.toBigInt();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set noShares(value: BigInt) {
-    this.set("noShares", Value.fromBigInt(value));
+  set noShares(value: BigInt | null) {
+    if (value === null) {
+      this.unset("noShares");
+    } else {
+      this.set("noShares", Value.fromBigInt(value as BigInt));
+    }
   }
 }
