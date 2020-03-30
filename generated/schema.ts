@@ -12,7 +12,7 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class Dao extends Entity {
+export class Moloch extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -20,17 +20,17 @@ export class Dao extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save Dao entity without an ID");
+    assert(id !== null, "Cannot save Moloch entity without an ID");
     assert(
       id.kind == ValueKind.STRING,
-      "Cannot save Dao entity with non-string ID. " +
+      "Cannot save Moloch entity with non-string ID. " +
         'Considering using .toHex() to convert the "id" to a string.'
     );
-    store.set("Dao", id.toString(), this);
+    store.set("Moloch", id.toString(), this);
   }
 
-  static load(id: string): Dao | null {
-    return store.get("Dao", id) as Dao | null;
+  static load(id: string): Moloch | null {
+    return store.get("Moloch", id) as Moloch | null;
   }
 
   get id(): string {
@@ -40,41 +40,6 @@ export class Dao extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
-  }
-
-  get index(): string | null {
-    let value = this.get("index");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set index(value: string | null) {
-    if (value === null) {
-      this.unset("index");
-    } else {
-      this.set("index", Value.fromString(value as string));
-    }
-  }
-
-  get createdAt(): string {
-    let value = this.get("createdAt");
-    return value.toString();
-  }
-
-  set createdAt(value: string) {
-    this.set("createdAt", Value.fromString(value));
-  }
-
-  get moloch(): Bytes {
-    let value = this.get("moloch");
-    return value.toBytes();
-  }
-
-  set moloch(value: Bytes) {
-    this.set("moloch", Value.fromBytes(value));
   }
 
   get summoner(): Bytes {
@@ -119,81 +84,99 @@ export class Dao extends Entity {
       this.set("version", Value.fromString(value as string));
     }
   }
-}
 
-export class Moloch extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
+  get newContract(): string | null {
+    let value = this.get("newContract");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  save(): void {
-    let id = this.get("id");
-    assert(id !== null, "Cannot save Moloch entity without an ID");
-    assert(
-      id.kind == ValueKind.STRING,
-      "Cannot save Moloch entity with non-string ID. " +
-        'Considering using .toHex() to convert the "id" to a string.'
-    );
-    store.set("Moloch", id.toString(), this);
+  set newContract(value: string | null) {
+    if (value === null) {
+      this.unset("newContract");
+    } else {
+      this.set("newContract", Value.fromString(value as string));
+    }
   }
 
-  static load(id: string): Moloch | null {
-    return store.get("Moloch", id) as Moloch | null;
+  get deleted(): boolean {
+    let value = this.get("deleted");
+    return value.toBoolean();
   }
 
-  get id(): string {
-    let value = this.get("id");
-    return value.toString();
+  set deleted(value: boolean) {
+    this.set("deleted", Value.fromBoolean(value));
   }
 
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get summoner(): Bytes {
-    let value = this.get("summoner");
-    return value.toBytes();
-  }
-
-  set summoner(value: Bytes) {
-    this.set("summoner", Value.fromBytes(value));
-  }
-
-  get summoningTime(): BigInt {
+  get summoningTime(): BigInt | null {
     let value = this.get("summoningTime");
-    return value.toBigInt();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set summoningTime(value: BigInt) {
-    this.set("summoningTime", Value.fromBigInt(value));
+  set summoningTime(value: BigInt | null) {
+    if (value === null) {
+      this.unset("summoningTime");
+    } else {
+      this.set("summoningTime", Value.fromBigInt(value as BigInt));
+    }
   }
 
-  get periodDuration(): BigInt {
+  get periodDuration(): BigInt | null {
     let value = this.get("periodDuration");
-    return value.toBigInt();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set periodDuration(value: BigInt) {
-    this.set("periodDuration", Value.fromBigInt(value));
+  set periodDuration(value: BigInt | null) {
+    if (value === null) {
+      this.unset("periodDuration");
+    } else {
+      this.set("periodDuration", Value.fromBigInt(value as BigInt));
+    }
   }
 
-  get votingPeriodLength(): BigInt {
+  get votingPeriodLength(): BigInt | null {
     let value = this.get("votingPeriodLength");
-    return value.toBigInt();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set votingPeriodLength(value: BigInt) {
-    this.set("votingPeriodLength", Value.fromBigInt(value));
+  set votingPeriodLength(value: BigInt | null) {
+    if (value === null) {
+      this.unset("votingPeriodLength");
+    } else {
+      this.set("votingPeriodLength", Value.fromBigInt(value as BigInt));
+    }
   }
 
-  get gracePeriodLength(): BigInt {
+  get gracePeriodLength(): BigInt | null {
     let value = this.get("gracePeriodLength");
-    return value.toBigInt();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set gracePeriodLength(value: BigInt) {
-    this.set("gracePeriodLength", Value.fromBigInt(value));
+  set gracePeriodLength(value: BigInt | null) {
+    if (value === null) {
+      this.unset("gracePeriodLength");
+    } else {
+      this.set("gracePeriodLength", Value.fromBigInt(value as BigInt));
+    }
   }
 
   get proposalDeposit(): BigInt {
@@ -223,13 +206,21 @@ export class Moloch extends Entity {
     this.set("processingReward", Value.fromBigInt(value));
   }
 
-  get depositToken(): string {
+  get depositToken(): string | null {
     let value = this.get("depositToken");
-    return value.toString();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set depositToken(value: string) {
-    this.set("depositToken", Value.fromString(value));
+  set depositToken(value: string | null) {
+    if (value === null) {
+      this.unset("depositToken");
+    } else {
+      this.set("depositToken", Value.fromString(value as string));
+    }
   }
 
   get approvedTokens(): Array<string> {
@@ -241,13 +232,21 @@ export class Moloch extends Entity {
     this.set("approvedTokens", Value.fromStringArray(value));
   }
 
-  get tokens(): Array<string> {
+  get tokens(): Array<string> | null {
     let value = this.get("tokens");
-    return value.toStringArray();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
   }
 
-  set tokens(value: Array<string>) {
-    this.set("tokens", Value.fromStringArray(value));
+  set tokens(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("tokens");
+    } else {
+      this.set("tokens", Value.fromStringArray(value as Array<string>));
+    }
   }
 
   get members(): Array<string> | null {
@@ -339,15 +338,6 @@ export class Moloch extends Entity {
         Value.fromStringArray(value as Array<string>)
       );
     }
-  }
-
-  get currentPeriod(): BigInt {
-    let value = this.get("currentPeriod");
-    return value.toBigInt();
-  }
-
-  set currentPeriod(value: BigInt) {
-    this.set("currentPeriod", Value.fromBigInt(value));
   }
 
   get totalShares(): BigInt {
@@ -637,57 +627,6 @@ export class Token extends Entity {
     this.set("whitelisted", Value.fromBoolean(value));
   }
 
-  get ticker(): string | null {
-    let value = this.get("ticker");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set ticker(value: string | null) {
-    if (value === null) {
-      this.unset("ticker");
-    } else {
-      this.set("ticker", Value.fromString(value as string));
-    }
-  }
-
-  get logo(): string | null {
-    let value = this.get("logo");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set logo(value: string | null) {
-    if (value === null) {
-      this.unset("logo");
-    } else {
-      this.set("logo", Value.fromString(value as string));
-    }
-  }
-
-  get details(): string | null {
-    let value = this.get("details");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set details(value: string | null) {
-    if (value === null) {
-      this.unset("details");
-    } else {
-      this.set("details", Value.fromString(value as string));
-    }
-  }
-
   get approved(): string | null {
     let value = this.get("approved");
     if (value === null) {
@@ -736,6 +675,15 @@ export class Member extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get createdAt(): string {
+    let value = this.get("createdAt");
+    return value.toString();
+  }
+
+  set createdAt(value: string) {
+    this.set("createdAt", Value.fromString(value));
+  }
+
   get moloch(): string {
     let value = this.get("moloch");
     return value.toString();
@@ -763,15 +711,6 @@ export class Member extends Entity {
     this.set("memberAddress", Value.fromBytes(value));
   }
 
-  get createdAt(): string {
-    let value = this.get("createdAt");
-    return value.toString();
-  }
-
-  set createdAt(value: string) {
-    this.set("createdAt", Value.fromString(value));
-  }
-
   get delegateKey(): Bytes {
     let value = this.get("delegateKey");
     return value.toBytes();
@@ -790,13 +729,21 @@ export class Member extends Entity {
     this.set("shares", Value.fromBigInt(value));
   }
 
-  get loot(): BigInt {
+  get loot(): BigInt | null {
     let value = this.get("loot");
-    return value.toBigInt();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set loot(value: BigInt) {
-    this.set("loot", Value.fromBigInt(value));
+  set loot(value: BigInt | null) {
+    if (value === null) {
+      this.unset("loot");
+    } else {
+      this.set("loot", Value.fromBigInt(value as BigInt));
+    }
   }
 
   get exists(): boolean {
@@ -960,15 +907,6 @@ export class Vote extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get timestamp(): string {
-    let value = this.get("timestamp");
-    return value.toString();
-  }
-
-  set timestamp(value: string) {
-    this.set("timestamp", Value.fromString(value));
-  }
-
   get createdAt(): string {
     let value = this.get("createdAt");
     return value.toString();
@@ -1004,6 +942,66 @@ export class Vote extends Entity {
   set uintVote(value: i32) {
     this.set("uintVote", Value.fromI32(value));
   }
+
+  get molochAddress(): Bytes {
+    let value = this.get("molochAddress");
+    return value.toBytes();
+  }
+
+  set molochAddress(value: Bytes) {
+    this.set("molochAddress", Value.fromBytes(value));
+  }
+
+  get memberAddress(): Bytes | null {
+    let value = this.get("memberAddress");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set memberAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("memberAddress");
+    } else {
+      this.set("memberAddress", Value.fromBytes(value as Bytes));
+    }
+  }
+
+  get proposalIndex(): BigInt | null {
+    let value = this.get("proposalIndex");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set proposalIndex(value: BigInt | null) {
+    if (value === null) {
+      this.unset("proposalIndex");
+    } else {
+      this.set("proposalIndex", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get delegateKey(): Bytes | null {
+    let value = this.get("delegateKey");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set delegateKey(value: Bytes | null) {
+    if (value === null) {
+      this.unset("delegateKey");
+    } else {
+      this.set("delegateKey", Value.fromBytes(value as Bytes));
+    }
+  }
 }
 
 export class Proposal extends Entity {
@@ -1034,6 +1032,15 @@ export class Proposal extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get createdAt(): string {
+    let value = this.get("createdAt");
+    return value.toString();
+  }
+
+  set createdAt(value: string) {
+    this.set("createdAt", Value.fromString(value));
   }
 
   get proposalIndex(): BigInt | null {
@@ -1080,24 +1087,6 @@ export class Proposal extends Entity {
     this.set("molochAddress", Value.fromBytes(value));
   }
 
-  get timestamp(): string {
-    let value = this.get("timestamp");
-    return value.toString();
-  }
-
-  set timestamp(value: string) {
-    this.set("timestamp", Value.fromString(value));
-  }
-
-  get createdAt(): string {
-    let value = this.get("createdAt");
-    return value.toString();
-  }
-
-  set createdAt(value: string) {
-    this.set("createdAt", Value.fromString(value));
-  }
-
   get member(): string {
     let value = this.get("member");
     return value.toString();
@@ -1134,13 +1123,21 @@ export class Proposal extends Entity {
     this.set("applicant", Value.fromBytes(value));
   }
 
-  get proposer(): Bytes {
+  get proposer(): Bytes | null {
     let value = this.get("proposer");
-    return value.toBytes();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set proposer(value: Bytes) {
-    this.set("proposer", Value.fromBytes(value));
+  set proposer(value: Bytes | null) {
+    if (value === null) {
+      this.unset("proposer");
+    } else {
+      this.set("proposer", Value.fromBytes(value as Bytes));
+    }
   }
 
   get sponsor(): Bytes {
@@ -1206,13 +1203,21 @@ export class Proposal extends Entity {
     this.set("paymentToken", Value.fromBytes(value));
   }
 
-  get startingPeriod(): BigInt {
+  get startingPeriod(): BigInt | null {
     let value = this.get("startingPeriod");
-    return value.toBigInt();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set startingPeriod(value: BigInt) {
-    this.set("startingPeriod", Value.fromBigInt(value));
+  set startingPeriod(value: BigInt | null) {
+    if (value === null) {
+      this.unset("startingPeriod");
+    } else {
+      this.set("startingPeriod", Value.fromBigInt(value as BigInt));
+    }
   }
 
   get yesVotes(): BigInt {
@@ -1269,6 +1274,15 @@ export class Proposal extends Entity {
     this.set("cancelled", Value.fromBoolean(value));
   }
 
+  get aborted(): boolean {
+    let value = this.get("aborted");
+    return value.toBoolean();
+  }
+
+  set aborted(value: boolean) {
+    this.set("aborted", Value.fromBoolean(value));
+  }
+
   get whitelist(): boolean {
     let value = this.get("whitelist");
     return value.toBoolean();
@@ -1314,13 +1328,24 @@ export class Proposal extends Entity {
     this.set("details", Value.fromString(value));
   }
 
-  get maxTotalSharesAndLootAtYesVote(): BigInt {
+  get maxTotalSharesAndLootAtYesVote(): BigInt | null {
     let value = this.get("maxTotalSharesAndLootAtYesVote");
-    return value.toBigInt();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set maxTotalSharesAndLootAtYesVote(value: BigInt) {
-    this.set("maxTotalSharesAndLootAtYesVote", Value.fromBigInt(value));
+  set maxTotalSharesAndLootAtYesVote(value: BigInt | null) {
+    if (value === null) {
+      this.unset("maxTotalSharesAndLootAtYesVote");
+    } else {
+      this.set(
+        "maxTotalSharesAndLootAtYesVote",
+        Value.fromBigInt(value as BigInt)
+      );
+    }
   }
 
   get votes(): Array<string> | null {

@@ -99,9 +99,9 @@ export class Delete__Params {
   }
 }
 
-export class Contract extends SmartContract {
-  static bind(address: Address): Contract {
-    return new Contract("Contract", address);
+export class V2Factory extends SmartContract {
+  static bind(address: Address): V2Factory {
+    return new V2Factory("V2Factory", address);
   }
 
   deleteDao(_daoAdress: Address): boolean {

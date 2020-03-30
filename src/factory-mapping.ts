@@ -1,7 +1,11 @@
 import { BigInt, log } from "@graphprotocol/graph-ts";
-import { Contract, Register, Delete } from "../generated/Contract/Contract";
-import { Dao } from "../generated/schema";
-import { MolochTemplate } from "../generated/templates";
+import { Register as RegisterV1 } from "../generated/V1Factory/V1Factory";
+import {
+  Register as RegisterV2,
+  Delete
+} from "../generated/V2Factory/V2Factory";
+
+import { MolochV1Template, MolochV2Template } from "../generated/templates";
 import { Moloch, Member } from "../generated/schema";
 
 import {
@@ -9,36 +13,43 @@ import {
   createEscrowTokenBalance,
   createGuildTokenBalance,
   createMemberTokenBalance
-} from "./moloch-mapping";
+} from "./v2-mapping";
 
-export function handleRegister(event: Register): void {
-  let entity = Dao.load(event.params.moloch.toHexString());
+export function handleRegisterV1(event: RegisterV1): void {
+  MolochV1Template.create(event.params.moloch);
 
-  log.info("**************** event fired. contract address: {}", [
-    event.params.moloch.toHexString()
-  ]);
+  let molochId = event.params.moloch.toHex();
+  let moloch = new Moloch(molochId);
+  moloch.summoner = event.params.summoner;
+  moloch.title = event.params.title;
+  moloch.newContract = event.params.newContract.toString();
+  moloch.version = "1";
+  moloch.deleted = false;
 
-  if (entity == null) {
-    entity = new Dao(event.params.moloch.toHexString());
-  }
+  // TODO: these values are for V2, but can't be null in v1 due to math issues
+  // Might be able to get some of these in the summon event
+  moloch.totalShares = BigInt.fromI32(1);
+  moloch.totalLoot = BigInt.fromI32(0);
+  moloch.proposalCount = BigInt.fromI32(0);
+  moloch.proposalQueueCount = BigInt.fromI32(0);
+  moloch.proposalDeposit = BigInt.fromI32(0);
+  moloch.dilutionBound = BigInt.fromI32(0);
+  moloch.processingReward = BigInt.fromI32(0);
 
-  entity.moloch = event.params.moloch;
-  entity.createdAt = event.block.timestamp.toString();
-  entity.summoner = event.params.summoner;
-  entity.title = event.params.title;
-  entity.index = event.params.daoIdx.toString();
-  entity.version = event.params.version.toString();
+  let approvedTokens: string[] = [];
+  moloch.approvedTokens = approvedTokens;
 
-  MolochTemplate.create(event.params.moloch);
+  moloch.save();
+}
 
-  entity.save();
+export function handleRegisterV2(event: RegisterV2): void {
+  MolochV2Template.create(event.params.moloch);
 
-  // let molochId = event.address.toHex();
   let molochId = event.params.moloch.toHex();
   let moloch = new Moloch(molochId);
   let tokens = event.params.tokens;
-
   let approvedTokens: string[] = [];
+
   let escrowTokenBalance: string[] = [];
   let guildTokenBalance: string[] = [];
 
@@ -49,9 +60,12 @@ export function handleRegister(event: Register): void {
     guildTokenBalance.push(createGuildTokenBalance(molochId, token));
   }
 
-  // Start new Moloch instance
   moloch.summoner = event.params.summoner;
   moloch.summoningTime = event.params._summoningTime;
+  moloch.title = event.params.title;
+  moloch.version = "2";
+  moloch.deleted = false;
+  moloch.newContract = "1";
   moloch.periodDuration = event.params._periodDuration;
   moloch.votingPeriodLength = event.params._votingPeriodLength;
   moloch.gracePeriodLength = event.params._gracePeriodLength;
@@ -62,7 +76,6 @@ export function handleRegister(event: Register): void {
   moloch.approvedTokens = approvedTokens;
   moloch.guildTokenBalance = guildTokenBalance;
   moloch.escrowTokenBalance = escrowTokenBalance;
-  moloch.currentPeriod = BigInt.fromI32(0);
   moloch.totalShares = BigInt.fromI32(1);
   moloch.totalLoot = BigInt.fromI32(0);
   moloch.proposalCount = BigInt.fromI32(0);
@@ -72,8 +85,6 @@ export function handleRegister(event: Register): void {
   moloch.proposedToKick = new Array<string>();
   moloch.proposedToFund = new Array<string>();
   moloch.proposedToTrade = new Array<string>();
-
-  log.info("SAVING MOLOCH {}", [molochId]);
 
   moloch.save();
 
@@ -111,5 +122,8 @@ export function handleRegister(event: Register): void {
 }
 
 export function handleDelete(event: Delete): void {
-  // TODO load by event.params.address and delete it from MolochTemplates and maybe from Moloch entity
+  let molochId = event.address.toHexString();
+  let moloch = Moloch.load(molochId);
+  moloch.deleted = true;
+  moloch.save();
 }

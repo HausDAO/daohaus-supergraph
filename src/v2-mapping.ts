@@ -1,3 +1,4 @@
+import { BigInt, log, Address, Bytes } from "@graphprotocol/graph-ts";
 import {
   SummonComplete,
   SubmitProposal,
@@ -11,22 +12,14 @@ import {
   CancelProposal,
   Withdraw,
   TokensCollected
-} from "../generated/templates/MolochTemplate/Moloch";
-import {
-  BigInt,
-  log,
-  Address,
-  ByteArray,
-  Bytes
-} from "@graphprotocol/graph-ts";
+} from "../generated/templates/MolochV2Template/V2Moloch";
 import {
   Moloch,
   Member,
   Token,
   TokenBalance,
   Proposal,
-  Vote,
-  Dao
+  Vote
 } from "../generated/schema";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -73,10 +66,6 @@ function subtractFromBalance(
   let tokenBalanceId = token.concat("-member-").concat(member.toHex());
   let balance: TokenBalance | null = TokenBalance.load(tokenBalanceId);
 
-  // TODO: migth want to load or create here - why not?
-
-  log.info("*********************** tokenBalanceId: {}", [tokenBalanceId]);
-
   balance.tokenBalance = balance.tokenBalance.minus(amount);
 
   balance.save();
@@ -90,7 +79,6 @@ function internalTransfer(
   token: string,
   amount: BigInt
 ): void {
-  log.info("Value = {internalTransfer}, other = {}", [""]);
   subtractFromBalance(molochId, from, token, amount);
   addToBalance(molochId, to, token, amount);
 }
@@ -104,10 +92,6 @@ export function createMemberTokenBalance(
   let memberId = molochId.concat("-member-").concat(member.toHex());
   let memberTokenBalanceId = token.concat("-member-").concat(member.toHex());
   let memberTokenBalance = new TokenBalance(memberTokenBalanceId);
-
-  log.info("++++++++++ creating member token balance: {}", [
-    memberTokenBalanceId
-  ]);
 
   memberTokenBalance.moloch = molochId;
   memberTokenBalance.token = token;
@@ -173,9 +157,6 @@ export function createAndApproveToken(molochId: string, token: Bytes): string {
   return tokenId;
 }
 
-// DONE - event SummonComplete(address indexed summoner, address[] tokens, uint256 summoningTime, uint256 periodDuration, uint256 votingPeriodLength, uint256 gracePeriodLength, uint256 proposalDeposit, uint256 dilutionBound, uint256 processingReward);
-
-// handler: handleSummonComplete
 export function handleSummonComplete(event: SummonComplete): void {
   let molochId = event.address.toHex();
   let moloch = new Moloch(molochId);
@@ -205,7 +186,6 @@ export function handleSummonComplete(event: SummonComplete): void {
   moloch.approvedTokens = approvedTokens;
   moloch.guildTokenBalance = guildTokenBalance;
   moloch.escrowTokenBalance = escrowTokenBalance;
-  moloch.currentPeriod = BigInt.fromI32(0);
   moloch.totalShares = BigInt.fromI32(1);
   moloch.totalLoot = BigInt.fromI32(0);
   moloch.proposalCount = BigInt.fromI32(0);
@@ -218,7 +198,7 @@ export function handleSummonComplete(event: SummonComplete): void {
 
   moloch.save();
 
-  //Create member foir summoner
+  //Create member for summoner
   let memberId = molochId
     .concat("-member-")
     .concat(event.params.summoner.toHex());
@@ -250,31 +230,29 @@ export function handleSummonComplete(event: SummonComplete): void {
   }
 }
 
-export function handleSummonCompleteMCV(event: SummonComplete): void {
-  let entity = Dao.load(event.address.toHex());
+// export function handleSummonCompleteMCV(event: SummonComplete): void {
+//   let entity = Dao.load(event.address.toHex());
 
-  if (entity == null) {
-    entity = new Dao(event.address.toHex());
-  }
+//   if (entity == null) {
+//     entity = new Dao(event.address.toHex());
+//   }
 
-  entity.moloch = event.address;
-  entity.summoner = event.params.summoner;
-  entity.createdAt = event.block.timestamp.toString();
+//   entity.moloch = event.address;
+//   entity.summoner = event.params.summoner;
+//   entity.createdAt = event.block.timestamp.toString();
 
-  // TODO: This event doesn't have a title or index so we'll need a way to handle if we add more hard coded datasources
-  // entity.title = event.params.title;
-  // entity.index = event.params.daoIdx;
-  entity.title = "MetaCartel Ventures";
-  entity.index = "0";
-  entity.version = "2";
+//   // TODO: This event doesn't have a title or index so we'll need a way to handle if we add more hard coded datasources
+//   // entity.title = event.params.title;
+//   // entity.index = event.params.daoIdx;
+//   entity.title = "MetaCartel Ventures";
+//   entity.index = "0";
+//   entity.version = "2";
 
-  entity.save();
+//   entity.save();
 
-  handleSummonComplete(event);
-}
+//   handleSummonComplete(event);
+// }
 
-// TODO - event SubmitProposal(address indexed applicant, uint256 sharesRequested, uint256 lootRequested, uint256 tributeOffered, address tributeToken, uint256 paymentRequested, address paymentToken, string details, bool[6] flags, uint256 proposalId, address indexed delegateKey, address indexed memberAddress);
-// handler: handleSubmitProposal
 export function handleSubmitProposal(event: SubmitProposal): void {
   let molochId = event.address.toHexString();
 
@@ -284,14 +262,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   let memberId = molochId
     .concat("-member-")
     .concat(event.params.memberAddress.toHex());
-
-  // TODO: Need to check if sharesRequested is greater than 0
-  // let newMember =
-  //   Member.load(
-  //     molochId.concat("-member-").concat(event.params.applicant.toHex())
-  //   ) == null
-  //     ? true
-  //     : false;
 
   let member =
     Member.load(
@@ -316,7 +286,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   proposal.moloch = molochId;
   proposal.molochAddress = event.address;
-  proposal.timestamp = event.block.timestamp.toString();
   proposal.createdAt = event.block.timestamp.toString();
   proposal.member = memberId;
   proposal.memberAddress = event.params.memberAddress;
@@ -357,8 +326,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   }
 }
 
-// TODO - event SubmitVote(uint256 proposalId, uint256 indexed proposalIndex, address indexed delegateKey, address indexed memberAddress, uint8 uintVote);
-// handler: handleSubmitVote
 export function handleSubmitVote(event: SubmitVote): void {
   let molochId = event.address.toHexString();
   let memberId = molochId
@@ -373,13 +340,15 @@ export function handleSubmitVote(event: SubmitVote): void {
 
   let vote = new Vote(voteId);
 
-  vote.timestamp = event.block.timestamp.toString();
   vote.createdAt = event.block.timestamp.toString();
   vote.proposal = proposalVotedId;
   vote.member = memberId;
+  vote.memberAddress = event.params.memberAddress;
+  vote.molochAddress = event.address;
   vote.uintVote = event.params.uintVote;
 
   vote.save();
+
   let moloch = Moloch.load(molochId);
   let proposal = Proposal.load(proposalVotedId);
   let member = Member.load(memberId);
@@ -390,6 +359,7 @@ export function handleSubmitVote(event: SubmitVote): void {
       proposal.yesShares = proposal.yesShares.plus(member.shares);
       proposal.yesVotes = proposal.yesVotes.plus(BigInt.fromI32(1));
       //NOTE: Set maximum of total shares encountered at a yes vote - used to bound dilution for yes voters
+
       proposal.maxTotalSharesAndLootAtYesVote = moloch.totalLoot.plus(
         moloch.totalShares
       );
@@ -412,8 +382,6 @@ export function handleSubmitVote(event: SubmitVote): void {
   }
 }
 
-// TODO - event SponsorProposal(address indexed delegateKey, address indexed memberAddress, uint256 proposalId, uint256 proposalIndex, uint256 startingPeriod);
-// handler: handleSponsorProposal
 export function handleSponsorProposal(event: SponsorProposal): void {
   let molochId = event.address.toHexString();
   let memberId = molochId
@@ -430,7 +398,6 @@ export function handleSponsorProposal(event: SponsorProposal): void {
 
   let proposal = Proposal.load(sponsorProposalId);
 
-  //TODO: Debug fails silently to add; array comprehensions probably not working
   if (proposal.newMember) {
     moloch.proposedToJoin = moloch.proposedToJoin.concat([sponsorProposalId]);
     moloch.save();
@@ -462,8 +429,6 @@ export function handleSponsorProposal(event: SponsorProposal): void {
   proposal.save();
 }
 
-// TODO - event ProcessProposal(uint256 indexed proposalIndex, uint256 indexed proposalId, bool didPass);
-// handler: handleProcessProposal
 export function handleProcessProposal(event: ProcessProposal): void {
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
@@ -500,7 +465,6 @@ export function handleProcessProposal(event: ProcessProposal): void {
       if (newMember == null) {
         newMember = new Member(applicantId);
       }
-      // let newMember = new Member(applicantId);
 
       newMember.moloch = molochId;
       newMember.createdAt = event.block.timestamp.toString();
@@ -565,7 +529,6 @@ export function handleProcessProposal(event: ProcessProposal): void {
 
   //NOTE: fixed array comprehensions update ongoing proposals (that have been sponsored)
   if (proposal.trade) {
-    //TODO:test
     moloch.proposedToTrade = moloch.proposedToTrade.filter(function(
       value,
       index,
@@ -592,12 +555,6 @@ export function handleProcessProposal(event: ProcessProposal): void {
   }
   proposal.processed = true;
 
-  // NOTE: issue processing reward and return deposit
-  // TODO: Can this create a member (exists=false) if needed?
-
-  log.info("++++++++++  processing event.transaction.from: {}", [
-    event.transaction.from.toHexString()
-  ]);
   internalTransfer(
     molochId,
     ESCROW,
@@ -617,8 +574,6 @@ export function handleProcessProposal(event: ProcessProposal): void {
   proposal.save();
 }
 
-// event ProcessWhitelistProposal(uint256 indexed proposalIndex, uint256 indexed proposalId, bool didPass);
-// handler: handleProcessGuildKickProposal
 export function handleProcessWhitelistProposal(
   event: ProcessWhitelistProposal
 ): void {
@@ -685,8 +640,6 @@ export function handleProcessWhitelistProposal(
   proposal.save();
 }
 
-// event ProcessGuildKickProposal(uint256 indexed proposalIndex, uint256 indexed proposalId, bool didPass);
-// handler: handleProcessWhitelistProposal
 export function handleProcessGuildKickProposal(
   event: ProcessGuildKickProposal
 ): void {
@@ -698,16 +651,8 @@ export function handleProcessGuildKickProposal(
     .concat(event.params.proposalId.toString());
   let proposal = Proposal.load(processProposalId);
 
-  // TODO: WHY WAS IT DOING THIS?
-  // let tokenId = molochId
-  //   .concat("-token-")
-  //   .concat(proposal.tributeToken.toHex());
-  // let token = Token.load(tokenId);
-
   //PROPOSAL PASSED
   //NOTE: invariant no loot no shares,
-
-  log.info("############# KICKING - MADE IT PAST PROP LOAD", []);
   if (event.params.didPass) {
     proposal.didPass = true;
     //Kick member
@@ -721,8 +666,9 @@ export function handleProcessGuildKickProposal(
       member.kicked = true;
       member.shares = BigInt.fromI32(0);
       member.loot = member.loot.plus(newLoot);
-      moloch.totalLoot.plus(newLoot);
-      moloch.totalShares.minus(newLoot);
+      moloch.totalLoot = moloch.totalLoot.plus(newLoot);
+      moloch.totalShares = moloch.totalShares.minus(newLoot);
+
       member.save();
     }
     //PROPOSAL FAILED
@@ -761,8 +707,6 @@ export function handleProcessGuildKickProposal(
   proposal.save();
 }
 
-// event Ragequit(address indexed memberAddress, uint256 sharesToBurn, uint256 lootToBurn);
-// handler: handleRageQuit
 export function handleRagequit(event: Ragequit): void {
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
@@ -791,9 +735,6 @@ export function handleRagequit(event: Ragequit): void {
   let tokens = moloch.approvedTokens;
   for (let i = 0; i < tokens.length; i++) {
     let token: string = tokens[i];
-    // contract requires initialTotalSharesAndLoot != 0
-
-    // need to test to see what token is
 
     let balance: TokenBalance | null = loadOrCreateTokenBalance(
       molochId,
@@ -817,8 +758,6 @@ export function handleRagequit(event: Ragequit): void {
   moloch.save();
 }
 
-// event CancelProposal(uint256 indexed proposalId, address applicantAddress);
-// handler: handleCancelProposal
 export function handleCancelProposal(event: CancelProposal): void {
   let molochId = event.address.toHexString();
   let processProposalId = molochId
@@ -870,8 +809,6 @@ export function handleCancelProposal(event: CancelProposal): void {
   proposal.save();
 }
 
-// event UpdateDelegateKey(address indexed memberAddress, address newDelegateKey);
-// handler: handleProcessWhitelistProposal
 export function handleUpdateDelegateKey(event: UpdateDelegateKey): void {
   let molochId = event.address.toHexString();
   let memberId = molochId
@@ -882,11 +819,9 @@ export function handleUpdateDelegateKey(event: UpdateDelegateKey): void {
   member.save();
 }
 
-// event Withdraw(address indexed memberAddress, address token, uint256 amount);
-// handler: handleWithdraw
-// NOTE: Used event.transaction.from instead of event.params.memberAddress
-// due to event on MCV where those didn't match and caused subtractFromBalance to fail
 export function handleWithdraw(event: Withdraw): void {
+  // NOTE: Used event.transaction.from instead of event.params.memberAddress
+  // due to event on MCV where those didn't match and caused subtractFromBalance to fail
   let molochId = event.address.toHexString();
 
   let tokenId = molochId.concat("-token-").concat(event.params.token.toHex());
@@ -901,6 +836,9 @@ export function handleWithdraw(event: Withdraw): void {
   }
 }
 
-// event TokensCollected(address indexed token, uint256 amountToCollect);
-// handler: handleTokensCollected
-export function handleTokensCollected(event: TokensCollected): void {}
+export function handleTokensCollected(event: TokensCollected): void {
+  let molochId = event.address.toHexString();
+  let tokenId = molochId.concat("-token-").concat(event.params.token.toHex());
+
+  addToBalance(molochId, GUILD, tokenId, event.params.amountToCollect);
+}

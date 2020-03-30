@@ -4,14 +4,15 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy-prod": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-moloch-v2-factory",
-    "deploy-kovan": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-moloch-v2-factory-kovan",
-    "create-local": "graph create --node http://localhost:8020/ odyssy-automaton/daohaus-moloch-v2-factory",
-    "remove-local": "graph remove --node http://localhost:8020/ odyssy-automaton/daohaus-moloch-v2-factory",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 odyssy-automaton/daohaus-moloch-v2-factory"
+    "deploy-prod": "node scripts/deploy-prep.js mainnet && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus",
+    "deploy-kovan": "node scripts/deploy-prep.js kovan && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-kovan",
+    "create-local": "graph create --node http://localhost:8020/ odyssy-automaton/daohaus",
+    "remove-local": "graph remove --node http://localhost:8020/ odyssy-automaton/daohaus",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 odyssy-automaton/daohaus"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.17.1",
-    "@graphprotocol/graph-ts": "0.17.0"
+    "@graphprotocol/graph-ts": "0.17.0",
+    "js-yaml": "^3.13.1"
   }
 }
