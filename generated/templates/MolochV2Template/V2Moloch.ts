@@ -391,7 +391,7 @@ export class Withdraw__Params {
   }
 }
 
-export class Moloch__proposalsResult {
+export class V2Moloch__proposalsResult {
   value0: Address;
   value1: Address;
   value2: Address;
@@ -459,7 +459,7 @@ export class Moloch__proposalsResult {
   }
 }
 
-export class Moloch__membersResult {
+export class V2Moloch__membersResult {
   value0: Address;
   value1: BigInt;
   value2: BigInt;
@@ -495,17 +495,17 @@ export class Moloch__membersResult {
   }
 }
 
-export class Moloch extends SmartContract {
-  static bind(address: Address): Moloch {
-    return new Moloch("Moloch", address);
+export class V2Moloch extends SmartContract {
+  static bind(address: Address): V2Moloch {
+    return new V2Moloch("V2Moloch", address);
   }
 
-  proposals(param0: BigInt): Moloch__proposalsResult {
+  proposals(param0: BigInt): V2Moloch__proposalsResult {
     let result = super.call("proposals", [
       EthereumValue.fromUnsignedBigInt(param0)
     ]);
 
-    return new Moloch__proposalsResult(
+    return new V2Moloch__proposalsResult(
       result[0].toAddress(),
       result[1].toAddress(),
       result[2].toAddress(),
@@ -523,7 +523,7 @@ export class Moloch extends SmartContract {
     );
   }
 
-  try_proposals(param0: BigInt): CallResult<Moloch__proposalsResult> {
+  try_proposals(param0: BigInt): CallResult<V2Moloch__proposalsResult> {
     let result = super.tryCall("proposals", [
       EthereumValue.fromUnsignedBigInt(param0)
     ]);
@@ -532,7 +532,7 @@ export class Moloch extends SmartContract {
     }
     let value = result.value;
     return CallResult.fromValue(
-      new Moloch__proposalsResult(
+      new V2Moloch__proposalsResult(
         value[0].toAddress(),
         value[1].toAddress(),
         value[2].toAddress(),
@@ -605,10 +605,10 @@ export class Moloch extends SmartContract {
     return CallResult.fromValue(value[0].toBigInt());
   }
 
-  members(param0: Address): Moloch__membersResult {
+  members(param0: Address): V2Moloch__membersResult {
     let result = super.call("members", [EthereumValue.fromAddress(param0)]);
 
-    return new Moloch__membersResult(
+    return new V2Moloch__membersResult(
       result[0].toAddress(),
       result[1].toBigInt(),
       result[2].toBigInt(),
@@ -618,14 +618,14 @@ export class Moloch extends SmartContract {
     );
   }
 
-  try_members(param0: Address): CallResult<Moloch__membersResult> {
+  try_members(param0: Address): CallResult<V2Moloch__membersResult> {
     let result = super.tryCall("members", [EthereumValue.fromAddress(param0)]);
     if (result.reverted) {
       return new CallResult();
     }
     let value = result.value;
     return CallResult.fromValue(
-      new Moloch__membersResult(
+      new V2Moloch__membersResult(
         value[0].toAddress(),
         value[1].toBigInt(),
         value[2].toBigInt(),

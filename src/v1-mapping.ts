@@ -1,3 +1,4 @@
+import { BigInt, log, Address } from "@graphprotocol/graph-ts";
 import {
   V1Moloch as Contract,
   SummonComplete,
@@ -8,8 +9,9 @@ import {
   Ragequit,
   Abort
 } from "../generated/templates/MolochV1Template/V1Moloch";
-import { BigInt, log } from "@graphprotocol/graph-ts";
 import { Member, Proposal, Vote, Moloch } from "../generated/schema";
+
+const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 export function handleSummonComplete(event: SummonComplete): void {
   let molochId = event.address.toHexString();
@@ -69,10 +71,33 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.sharesRequested = event.params.sharesRequested;
   proposal.yesVotes = BigInt.fromI32(0);
   proposal.noVotes = BigInt.fromI32(0);
+  proposal.yesShares = BigInt.fromI32(0);
+  proposal.noShares = BigInt.fromI32(0);
   proposal.processed = false;
   proposal.didPass = false;
   proposal.aborted = false;
   proposal.details = details;
+
+  // TODO: these values are for V2, but can't be null in v1 due to math issues
+  // Might be able to get some of these in other ways - but many don't apply
+  proposal.sponsor = Address.fromString(ZERO_ADDRESS);
+  proposal.lootRequested = BigInt.fromI32(0);
+  proposal.tributeToken = Address.fromString(ZERO_ADDRESS);
+  proposal.paymentRequested = BigInt.fromI32(0);
+  proposal.paymentToken = Address.fromString(ZERO_ADDRESS);
+  // proposal.sponsored = flags[0];
+  // proposal.processed = flags[1];
+  // proposal.didPass = flags[2];
+  // proposal.cancelled = flags[3];
+  // proposal.whitelist = flags[4];
+  // proposal.guildkick = flags[5];
+  // proposal.newMember = newMember;
+  // proposal.trade = trade;
+  // proposal.details = event.params.details;
+  // proposal.yesShares = BigInt.fromI32(0);
+  // proposal.noShares = BigInt.fromI32(0);
+  // proposal.maxTotalSharesAndLootAtYesVote = BigInt.fromI32(0);
+
   proposal.save();
 }
 

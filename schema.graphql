@@ -5,33 +5,25 @@ type Moloch @entity {
   version: String
   newContract: String
   deleted: Boolean
-
   summoningTime: BigInt
   periodDuration: BigInt
   votingPeriodLength: BigInt
   gracePeriodLength: BigInt
-  proposalDeposit: BigInt
-  dilutionBound: BigInt
-  processingReward: BigInt
+  proposalDeposit: BigInt!
+  dilutionBound: BigInt!
+  processingReward: BigInt!
   depositToken: Token
-
-  "NOTE: Review how this is added to"
-  approvedTokens: [Token!]
+  approvedTokens: [Token!]!
   tokens: [Token!] @derivedFrom(field: "moloch")
   members: [Member!] @derivedFrom(field: "moloch")
   tokenBalances: [TokenBalance!] @derivedFrom(field: "moloch")
   proposals: [Proposal!] @derivedFrom(field: "moloch")
   guildTokenBalance: [TokenBalance!]
   escrowTokenBalance: [TokenBalance!]
-
-  "TODO: update on all event handlers -- currentPeriod = now.sub(summoningTime).div(periodDuration)"
-  currentPeriod: BigInt
-  totalShares: BigInt
-  totalLoot: BigInt
-  proposalCount: BigInt
-  proposalQueueCount: BigInt
-
-  "NOTE: No flag for new member proposal check if applicant address is already a member"
+  totalShares: BigInt!
+  totalLoot: BigInt!
+  proposalCount: BigInt!
+  proposalQueueCount: BigInt!
   proposedToJoin: [Proposal!]
   proposedToWhitelist: [Proposal!]
   proposedToKick: [Proposal!]
@@ -53,14 +45,8 @@ type TokenBalance @entity {
 type Token @entity {
   id: ID!
   moloch: Moloch!
-
   tokenAddress: Bytes!
   whitelisted: Boolean!
-
-  "TODO: REMOVE THESE? pull in from etherscan"
-  ticker: String
-  logo: String
-  details: String
   approved: Proposal
 }
 
@@ -68,7 +54,6 @@ type Member @entity {
   id: ID!
   createdAt: String!
   moloch: Moloch!
-
   molochAddress: Bytes!
   memberAddress: Bytes!
   delegateKey: Bytes!
@@ -89,16 +74,15 @@ type Member @entity {
 type Vote @entity {
   id: ID!
   createdAt: String!
-
   proposal: Proposal!
   member: Member!
   uintVote: Int!
   molochAddress: Bytes!
+  memberAddress: Bytes
 
-  "NOTE: legacy v1"
+  "NOTE: Do we need these legacy v1 things"
   proposalIndex: BigInt
   delegateKey: Bytes
-  memberAddress: Bytes
 }
 
 type Proposal @entity {
@@ -113,18 +97,16 @@ type Proposal @entity {
   delegateKey: Bytes!
   applicant: Bytes!
   proposer: Bytes
-  sponsor: Bytes
+  sponsor: Bytes!
   sharesRequested: BigInt!
-  lootRequested: BigInt
+  lootRequested: BigInt!
   tributeOffered: BigInt!
-  tributeToken: Bytes
-  paymentRequested: BigInt
-  paymentToken: Bytes
+  tributeToken: Bytes!
+  paymentRequested: BigInt!
+  paymentToken: Bytes!
   startingPeriod: BigInt
   yesVotes: BigInt!
   noVotes: BigInt!
-
-  "NOTE: Will need to unrequire anything not on both versions"
   sponsored: Boolean
   processed: Boolean!
   didPass: Boolean!
@@ -139,6 +121,6 @@ type Proposal @entity {
   votes: [Vote!] @derivedFrom(field: "proposal")
 
   "NOTE: Can we get for v1 too?"
-  yesShares: BigInt
-  noShares: BigInt
+  yesShares: BigInt!
+  noShares: BigInt!
 }

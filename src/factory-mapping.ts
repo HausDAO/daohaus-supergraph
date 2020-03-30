@@ -5,7 +5,7 @@ import {
   Delete
 } from "../generated/V2Factory/V2Factory";
 
-import { MolochV1Template } from "../generated/templates";
+import { MolochV1Template, MolochV2Template } from "../generated/templates";
 import { Moloch, Member } from "../generated/schema";
 
 import {
@@ -13,7 +13,7 @@ import {
   createEscrowTokenBalance,
   createGuildTokenBalance,
   createMemberTokenBalance
-} from "./moloch-mapping";
+} from "./v2-mapping";
 
 export function handleRegisterV1(event: RegisterV1): void {
   MolochV1Template.create(event.params.moloch);
@@ -26,18 +26,30 @@ export function handleRegisterV1(event: RegisterV1): void {
   moloch.version = "1";
   moloch.deleted = false;
 
+  // TODO: these values are for V2, but can't be null in v1 due to math issues
+  // Might be able to get some of these in the summon event
+  moloch.totalShares = BigInt.fromI32(1);
+  moloch.totalLoot = BigInt.fromI32(0);
+  moloch.proposalCount = BigInt.fromI32(0);
+  moloch.proposalQueueCount = BigInt.fromI32(0);
+  moloch.proposalDeposit = BigInt.fromI32(0);
+  moloch.dilutionBound = BigInt.fromI32(0);
+  moloch.processingReward = BigInt.fromI32(0);
+
+  let approvedTokens: string[] = [];
+  moloch.approvedTokens = approvedTokens;
+
   moloch.save();
 }
 
 export function handleRegisterV2(event: RegisterV2): void {
-  // // TODO FOR TEMPLATES
-  // // MolochTemplate.create(event.params.moloch);
+  MolochV2Template.create(event.params.moloch);
 
   let molochId = event.params.moloch.toHex();
   let moloch = new Moloch(molochId);
   let tokens = event.params.tokens;
-
   let approvedTokens: string[] = [];
+
   let escrowTokenBalance: string[] = [];
   let guildTokenBalance: string[] = [];
 
@@ -64,7 +76,6 @@ export function handleRegisterV2(event: RegisterV2): void {
   moloch.approvedTokens = approvedTokens;
   moloch.guildTokenBalance = guildTokenBalance;
   moloch.escrowTokenBalance = escrowTokenBalance;
-  moloch.currentPeriod = BigInt.fromI32(0);
   moloch.totalShares = BigInt.fromI32(1);
   moloch.totalLoot = BigInt.fromI32(0);
   moloch.proposalCount = BigInt.fromI32(0);
@@ -111,5 +122,8 @@ export function handleRegisterV2(event: RegisterV2): void {
 }
 
 export function handleDelete(event: Delete): void {
-  // TODO cant delete a MolochTemplate - maybe need to track this on the moloch entity
+  let molochId = event.address.toHexString();
+  let moloch = Moloch.load(molochId);
+  moloch.deleted = true;
+  moloch.save();
 }
