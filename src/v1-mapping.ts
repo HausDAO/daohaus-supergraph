@@ -35,7 +35,6 @@ export function handleSummonComplete(event: SummonComplete): void {
   member.save();
 
   let contract = Moloch.bind(event.address);
-  moloch.currentPeriod = contract.getCurrentPeriod();
   moloch.periodDuration = contract.periodDuration();
   moloch.votingPeriodLength = contract.votingPeriodLength();
   moloch.gracePeriodLength = contract.gracePeriodLength();
@@ -87,8 +86,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.aborted = false;
   proposal.details = details;
 
-  // TODO: these values are for V2, but can't be null in v1 due to math issues
-  // Might be able to get some of these in other ways - but many don't apply
+  // TODO: these values are for V2, but can't be null in v1 due to math issues - not used in v1
   proposal.sponsor = Address.fromString(ZERO_ADDRESS);
   proposal.lootRequested = BigInt.fromI32(0);
   proposal.tributeToken = Address.fromString(ZERO_ADDRESS);
@@ -203,6 +201,9 @@ export function handleProcessProposal(event: ProcessProposal): void {
       member.tokenTribute = member.tokenTribute.plus(event.params.tokenTribute);
       member.save();
     }
+
+    moloch.totalShares = moloch.totalShares.plus(proposal.sharesRequested);
+    moloch.save();
   }
 }
 
@@ -223,6 +224,9 @@ export function handleRagequit(event: Ragequit): void {
     member.exists = false;
   }
   member.save();
+
+  moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
+  moloch.save();
 }
 
 export function handleAbort(event: Abort): void {

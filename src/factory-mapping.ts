@@ -26,8 +26,6 @@ export function handleRegisterV1(event: RegisterV1): void {
   moloch.version = "1";
   moloch.deleted = false;
 
-  // TODO: these values are for V2, but can't be null in v1 due to math issues
-  // Might be able to get some of these in the summon event
   moloch.totalShares = BigInt.fromI32(1);
   moloch.totalLoot = BigInt.fromI32(0);
   moloch.proposalCount = BigInt.fromI32(0);
