@@ -1414,15 +1414,6 @@ export class Badge extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get createdAt(): string {
-    let value = this.get("createdAt");
-    return value.toString();
-  }
-
-  set createdAt(value: string) {
-    this.set("createdAt", Value.fromString(value));
-  }
-
   get memberAddress(): Bytes {
     let value = this.get("memberAddress");
     return value.toBytes();

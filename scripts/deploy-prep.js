@@ -37,6 +37,11 @@ try {
 
   //TODO: Will delete the extra data sources for legacies if network === kovan
 
+  if (network === "kovan") {
+    console.log("poopin", data.dataSources[2]);
+    data.dataSources.splice(2);
+  }
+
   let yamlStr = yaml.safeDump(data);
   fs.writeFileSync("subgraph.yaml", yamlStr, "utf8");
 
