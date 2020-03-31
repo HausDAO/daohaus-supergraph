@@ -17,10 +17,10 @@ const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 export function handleSummonComplete(event: SummonComplete): void {
   let molochId = event.address.toHex();
-
-  // Moloch entity created in the register event
   let moloch = Moloch.load(molochId);
-  // let moloch = new Moloch(molochId);
+  if (moloch.newContract == "0") {
+    return;
+  }
 
   let memberId = molochId
     .concat("-member-")
@@ -150,14 +150,14 @@ export function handleSubmitVote(event: SubmitVote): void {
     .concat(event.params.proposalIndex.toString());
 
   let proposal = Proposal.load(proposalId);
-  let member = Member.load(memberId);
+  // let member = Member.load(memberId);
   if (event.params.uintVote == 1) {
     proposal.yesVotes = proposal.yesVotes.plus(BigInt.fromI32(1));
-    proposal.yesShares = proposal.yesShares.plus(member.shares);
+    // proposal.yesShares = proposal.yesShares.plus(member.shares);
   }
   if (event.params.uintVote == 2) {
     proposal.noVotes = proposal.noVotes.plus(BigInt.fromI32(1));
-    proposal.noShares = proposal.noShares.plus(member.shares);
+    // proposal.noShares = proposal.noShares.plus(member.shares);
   }
 
   proposal.save();
@@ -208,8 +208,8 @@ export function handleProcessProposal(event: ProcessProposal): void {
       member.save();
     }
 
-    moloch.totalShares = moloch.totalShares.plus(proposal.sharesRequested);
-    moloch.save();
+    // moloch.totalShares = moloch.totalShares.plus(proposal.sharesRequested);
+    // moloch.save();
   }
 }
 
@@ -231,8 +231,8 @@ export function handleRagequit(event: Ragequit): void {
   }
   member.save();
 
-  moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
-  moloch.save();
+  // moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
+  // moloch.save();
 }
 
 export function handleAbort(event: Abort): void {
@@ -271,7 +271,7 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
   MolochV1Template.create(event.address);
 
   let molochId = event.address.toHex();
-  let moloch = Moloch.load(molochId);
+  let moloch = new Moloch(molochId);
 
   // let titles = {
   //   "0x1fd169a4f5c59acf79d0fd5d91d1201ef1bce9f1": "Moloch DAO",

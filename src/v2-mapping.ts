@@ -446,7 +446,7 @@ export function handleProcessProposal(event: ProcessProposal): void {
     .concat("-token-")
     .concat(proposal.paymentToken.toHex());
 
-  let isNewMember = member != null && !member.exists;
+  let isNewMember = member != null && member.exists == true ? false : true;
 
   //NOTE: PROPOSAL PASSED
   if (event.params.didPass) {

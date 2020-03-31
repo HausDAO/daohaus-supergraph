@@ -22,8 +22,6 @@ try {
   let fileContents = fs.readFileSync("./subgraph-template.yaml", "utf8");
   let data = yaml.safeLoad(fileContents);
 
-  console.log(data);
-
   data.dataSources[0].network = network;
   data.dataSources[0].source.address = config[network].v1FactoryAddress;
   data.dataSources[0].source.startBlock = config[network].v1FactoryStartBlock;
@@ -37,6 +35,7 @@ try {
 
   if (network === "kovan") {
     data.dataSources.splice(2, 4);
+    // data.dataSources.splice(3);
   }
 
   let yamlStr = yaml.safeDump(data);
