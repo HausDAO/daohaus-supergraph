@@ -13,14 +13,14 @@ import {
   Withdraw,
   TokensCollected
 } from "../generated/templates/MolochV2Template/V2Moloch";
+import { MolochV2Template } from "../generated/templates";
 import {
   Moloch,
   Member,
   Token,
   TokenBalance,
   Proposal,
-  Vote,
-  Badge
+  Vote
 } from "../generated/schema";
 import { createOrUpdateVotedBadge } from "./badges";
 
@@ -161,7 +161,11 @@ export function createAndApproveToken(molochId: string, token: Bytes): string {
 
 export function handleSummonComplete(event: SummonComplete): void {
   let molochId = event.address.toHex();
-  let moloch = new Moloch(molochId);
+  let moloch = Moloch.load(molochId);
+  if (moloch === null) {
+    moloch = new Moloch(molochId);
+  }
+
   let tokens = event.params.tokens;
 
   let approvedTokens: string[] = [];
@@ -231,29 +235,6 @@ export function handleSummonComplete(event: SummonComplete): void {
     );
   }
 }
-
-// export function handleSummonCompleteMCV(event: SummonComplete): void {
-//   let entity = Dao.load(event.address.toHex());
-
-//   if (entity == null) {
-//     entity = new Dao(event.address.toHex());
-//   }
-
-//   entity.moloch = event.address;
-//   entity.summoner = event.params.summoner;
-//   entity.createdAt = event.block.timestamp.toString();
-
-//   // TODO: This event doesn't have a title or index so we'll need a way to handle if we add more hard coded datasources
-//   // entity.title = event.params.title;
-//   // entity.index = event.params.daoIdx;
-//   entity.title = "MetaCartel Ventures";
-//   entity.index = "0";
-//   entity.version = "2";
-
-//   entity.save();
-
-//   handleSummonComplete(event);
-// }
 
 export function handleSubmitProposal(event: SubmitProposal): void {
   let molochId = event.address.toHexString();
@@ -856,4 +837,85 @@ export function handleTokensCollected(event: TokensCollected): void {
   let tokenId = molochId.concat("-token-").concat(event.params.token.toHex());
 
   addToBalance(molochId, GUILD, tokenId, event.params.amountToCollect);
+}
+
+export function handleSummonCompleteLegacy(event: SummonComplete): void {
+  MolochV2Template.create(event.address);
+
+  let molochId = event.address.toHex();
+  let moloch = new Moloch(molochId);
+
+  moloch.title = "MetaCartel Ventures";
+  moloch.version = "2";
+  moloch.deleted = false;
+  moloch.newContract = "1";
+
+  let tokens = event.params.tokens;
+
+  let approvedTokens: string[] = [];
+  let escrowTokenBalance: string[] = [];
+  let guildTokenBalance: string[] = [];
+
+  for (let i = 0; i < tokens.length; i++) {
+    let token = tokens[i];
+    approvedTokens.push(createAndApproveToken(molochId, token));
+    escrowTokenBalance.push(createEscrowTokenBalance(molochId, token));
+    guildTokenBalance.push(createGuildTokenBalance(molochId, token));
+  }
+
+  // Start new Moloch instance
+  moloch.summoner = event.params.summoner;
+  moloch.summoningTime = event.params.summoningTime;
+  moloch.periodDuration = event.params.periodDuration;
+  moloch.votingPeriodLength = event.params.votingPeriodLength;
+  moloch.gracePeriodLength = event.params.gracePeriodLength;
+  moloch.proposalDeposit = event.params.proposalDeposit;
+  moloch.dilutionBound = event.params.dilutionBound;
+  moloch.processingReward = event.params.processingReward;
+  moloch.depositToken = approvedTokens[0];
+  moloch.approvedTokens = approvedTokens;
+  moloch.guildTokenBalance = guildTokenBalance;
+  moloch.escrowTokenBalance = escrowTokenBalance;
+  moloch.totalShares = BigInt.fromI32(1);
+  moloch.totalLoot = BigInt.fromI32(0);
+  moloch.proposalCount = BigInt.fromI32(0);
+  moloch.proposalQueueCount = BigInt.fromI32(0);
+  moloch.proposedToJoin = new Array<string>();
+  moloch.proposedToWhitelist = new Array<string>();
+  moloch.proposedToKick = new Array<string>();
+  moloch.proposedToFund = new Array<string>();
+  moloch.proposedToTrade = new Array<string>();
+
+  moloch.save();
+
+  //Create member for summoner
+  let memberId = molochId
+    .concat("-member-")
+    .concat(event.params.summoner.toHex());
+  let newMember = new Member(memberId);
+  newMember.moloch = molochId;
+  newMember.createdAt = event.block.timestamp.toString();
+  newMember.molochAddress = event.address;
+  newMember.memberAddress = event.params.summoner;
+  newMember.delegateKey = event.params.summoner;
+  newMember.shares = BigInt.fromI32(1);
+  newMember.loot = BigInt.fromI32(0);
+  newMember.exists = true;
+  newMember.tokenTribute = BigInt.fromI32(0);
+  newMember.didRagequit = false;
+  newMember.proposedToKick = false;
+  newMember.kicked = false;
+
+  newMember.save();
+  //Set summoner summoner balances for approved tokens to zero
+  for (let i = 0; i < tokens.length; i++) {
+    let token = tokens[i];
+    let tokenId = molochId.concat("-token-").concat(token.toHex());
+    createMemberTokenBalance(
+      molochId,
+      event.params.summoner,
+      tokenId,
+      BigInt.fromI32(0)
+    );
+  }
 }
