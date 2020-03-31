@@ -9,7 +9,8 @@ import {
   Ragequit,
   Abort
 } from "../generated/templates/MolochV1Template/V1Moloch";
-import { Member, Proposal, Vote, Moloch } from "../generated/schema";
+import { Member, Proposal, Vote, Moloch, Badge } from "../generated/schema";
+import { createOrUpdateVotedBadge } from "./badges";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
@@ -85,18 +86,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.tributeToken = Address.fromString(ZERO_ADDRESS);
   proposal.paymentRequested = BigInt.fromI32(0);
   proposal.paymentToken = Address.fromString(ZERO_ADDRESS);
-  // proposal.sponsored = flags[0];
-  // proposal.processed = flags[1];
-  // proposal.didPass = flags[2];
-  // proposal.cancelled = flags[3];
-  // proposal.whitelist = flags[4];
-  // proposal.guildkick = flags[5];
-  // proposal.newMember = newMember;
-  // proposal.trade = trade;
-  // proposal.details = event.params.details;
-  // proposal.yesShares = BigInt.fromI32(0);
-  // proposal.noShares = BigInt.fromI32(0);
-  // proposal.maxTotalSharesAndLootAtYesVote = BigInt.fromI32(0);
 
   proposal.save();
 }
@@ -130,6 +119,19 @@ export function handleSubmitVote(event: SubmitVote): void {
   vote.proposal = proposalVotedId;
   vote.member = memberId;
   vote.save();
+
+  createOrUpdateVotedBadge(event.params.memberAddress);
+
+  // let badge = Badge.load(event.params.memberAddress.toHex());
+  // if (badge == null) {
+  //   badge = new Badge(event.params.memberAddress.toHex());
+  //   badge.memberAddress = event.params.memberAddress;
+  //   badge.createdAt = event.block.timestamp.toString();
+  //   badge.voteCount = BigInt.fromI32(1);
+  // } else {
+  //   badge.voteCount = badge.voteCount.plus(BigInt.fromI32(1));
+  // }
+  // badge.save();
 
   let proposalId = molochId
     .concat("-proposal-")

@@ -19,8 +19,10 @@ import {
   Token,
   TokenBalance,
   Proposal,
-  Vote
+  Vote,
+  Badge
 } from "../generated/schema";
+import { createOrUpdateVotedBadge } from "./badges";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 let ESCROW = Address.fromString("0x000000000000000000000000000000000000dead");
@@ -348,6 +350,19 @@ export function handleSubmitVote(event: SubmitVote): void {
   vote.uintVote = event.params.uintVote;
 
   vote.save();
+
+  createOrUpdateVotedBadge(event.params.memberAddress);
+
+  // let badge = Badge.load(event.params.memberAddress.toHex());
+  // if (badge == null) {
+  //   badge = new Badge(event.params.memberAddress.toHex());
+  //   badge.memberAddress = event.params.memberAddress;
+  //   badge.createdAt = event.block.timestamp.toString();
+  //   badge.voteCount = BigInt.fromI32(1);
+  // } else {
+  //   badge.voteCount = badge.voteCount.plus(BigInt.fromI32(1));
+  // }
+  // badge.save();
 
   let moloch = Moloch.load(molochId);
   let proposal = Proposal.load(proposalVotedId);
