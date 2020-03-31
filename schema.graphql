@@ -124,3 +124,9 @@ type Proposal @entity {
   yesShares: BigInt!
   noShares: BigInt!
 }
+
+type Badge @entity {
+  id: ID!
+  memberAddress: Bytes!
+  voteCount: BigInt!
+}

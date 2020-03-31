@@ -1383,3 +1383,61 @@ export class Proposal extends Entity {
     this.set("noShares", Value.fromBigInt(value));
   }
 }
+
+export class Badge extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Badge entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Badge entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Badge", id.toString(), this);
+  }
+
+  static load(id: string): Badge | null {
+    return store.get("Badge", id) as Badge | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get createdAt(): string {
+    let value = this.get("createdAt");
+    return value.toString();
+  }
+
+  set createdAt(value: string) {
+    this.set("createdAt", Value.fromString(value));
+  }
+
+  get memberAddress(): Bytes {
+    let value = this.get("memberAddress");
+    return value.toBytes();
+  }
+
+  set memberAddress(value: Bytes) {
+    this.set("memberAddress", Value.fromBytes(value));
+  }
+
+  get voteCount(): BigInt {
+    let value = this.get("voteCount");
+    return value.toBigInt();
+  }
+
+  set voteCount(value: BigInt) {
+    this.set("voteCount", Value.fromBigInt(value));
+  }
+}

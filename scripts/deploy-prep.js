@@ -35,6 +35,8 @@ try {
   data.templates[0].network = network;
   data.templates[1].network = network;
 
+  //TODO: Will delete the extra data sources for legacies if network === kovan
+
   let yamlStr = yaml.safeDump(data);
   fs.writeFileSync("subgraph.yaml", yamlStr, "utf8");
 
