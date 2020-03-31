@@ -127,7 +127,6 @@ type Proposal @entity {
 
 type Badge @entity {
   id: ID!
-  createdAt: String!
   memberAddress: Bytes!
   voteCount: BigInt!
 }
