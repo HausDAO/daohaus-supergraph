@@ -15,11 +15,8 @@ import { createOrUpdateVotedBadge } from "./badges";
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 export function handleSummonComplete(event: SummonComplete): void {
-  let molochId = event.address.toHexString();
-  let moloch = Moloch.load(molochId);
-  if (moloch.newContract == "0") {
-    return;
-  }
+  let molochId = event.address.toHex();
+  let moloch = new Moloch(molochId);
 
   let memberId = molochId
     .concat("-member-")
@@ -36,6 +33,17 @@ export function handleSummonComplete(event: SummonComplete): void {
   member.tokenTribute = BigInt.fromI32(0);
   member.didRagequit = false;
   member.save();
+
+  let contract = Moloch.bind(event.address);
+  moloch.currentPeriod = contract.getCurrentPeriod();
+  moloch.periodDuration = contract.periodDuration();
+  moloch.votingPeriodLength = contract.votingPeriodLength();
+  moloch.gracePeriodLength = contract.gracePeriodLength();
+  moloch.proposalDeposit = contract.proposalDeposit();
+  moloch.dilutionBound = contract.dilutionBound();
+  moloch.processingReward = contract.processingReward();
+  moloch.summoningTime = contract.summoningTime();
+  moloch.save();
 }
 
 export function handleSubmitProposal(event: SubmitProposal): void {
@@ -138,11 +146,14 @@ export function handleSubmitVote(event: SubmitVote): void {
     .concat(event.params.proposalIndex.toString());
 
   let proposal = Proposal.load(proposalId);
+  let member = Member.load(memberId);
   if (event.params.uintVote == 1) {
     proposal.yesVotes = proposal.yesVotes.plus(BigInt.fromI32(1));
+    proposal.yesShares = proposal.yesShares.plus(member.shares);
   }
   if (event.params.uintVote == 2) {
     proposal.noVotes = proposal.noVotes.plus(BigInt.fromI32(1));
+    proposal.noShares = proposal.noShares.plus(member.shares);
   }
 
   proposal.save();
