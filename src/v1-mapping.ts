@@ -11,7 +11,12 @@ import {
 } from "../generated/templates/MolochV1Template/V1Moloch";
 import { MolochV1Template } from "../generated/templates";
 import { Member, Proposal, Vote, Moloch } from "../generated/schema";
-import { createOrUpdateVotedBadge } from "./badges";
+import {
+  addVotedBadge,
+  addSummonBadge,
+  addRageQuitBadge,
+  addProposalSubmissionBadge
+} from "./badges";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
@@ -49,6 +54,8 @@ export function handleSummonComplete(event: SummonComplete): void {
 
   moloch.summoningTime = event.block.timestamp;
   moloch.save();
+
+  addSummonBadge(event.params.summoner);
 }
 
 export function handleSubmitProposal(event: SubmitProposal): void {
@@ -100,6 +107,8 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.paymentToken = Address.fromString(ZERO_ADDRESS);
 
   proposal.save();
+
+  addProposalSubmissionBadge(event.params.memberAddress);
 }
 
 export function handleSubmitVote(event: SubmitVote): void {
@@ -132,32 +141,21 @@ export function handleSubmitVote(event: SubmitVote): void {
   vote.member = memberId;
   vote.save();
 
-  createOrUpdateVotedBadge(event.params.memberAddress);
-
-  // let badge = Badge.load(event.params.memberAddress.toHex());
-  // if (badge == null) {
-  //   badge = new Badge(event.params.memberAddress.toHex());
-  //   badge.memberAddress = event.params.memberAddress;
-  //   badge.createdAt = event.block.timestamp.toString();
-  //   badge.voteCount = BigInt.fromI32(1);
-  // } else {
-  //   badge.voteCount = badge.voteCount.plus(BigInt.fromI32(1));
-  // }
-  // badge.save();
+  addVotedBadge(event.params.memberAddress);
 
   let proposalId = molochId
     .concat("-proposal-")
     .concat(event.params.proposalIndex.toString());
 
   let proposal = Proposal.load(proposalId);
-  // let member = Member.load(memberId);
+  let member = Member.load(memberId);
   if (event.params.uintVote == 1) {
     proposal.yesVotes = proposal.yesVotes.plus(BigInt.fromI32(1));
-    // proposal.yesShares = proposal.yesShares.plus(member.shares);
+    proposal.yesShares = proposal.yesShares.plus(member.shares);
   }
   if (event.params.uintVote == 2) {
     proposal.noVotes = proposal.noVotes.plus(BigInt.fromI32(1));
-    // proposal.noShares = proposal.noShares.plus(member.shares);
+    proposal.noShares = proposal.noShares.plus(member.shares);
   }
 
   proposal.save();
@@ -208,8 +206,8 @@ export function handleProcessProposal(event: ProcessProposal): void {
       member.save();
     }
 
-    // moloch.totalShares = moloch.totalShares.plus(proposal.sharesRequested);
-    // moloch.save();
+    moloch.totalShares = moloch.totalShares.plus(proposal.sharesRequested);
+    moloch.save();
   }
 }
 
@@ -231,8 +229,10 @@ export function handleRagequit(event: Ragequit): void {
   }
   member.save();
 
-  // moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
-  // moloch.save();
+  addRageQuitBadge(event.params.memberAddress);
+
+  moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
+  moloch.save();
 }
 
 export function handleAbort(event: Abort): void {
@@ -328,4 +328,6 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
 
   moloch.summoningTime = event.block.timestamp;
   moloch.save();
+
+  addSummonBadge(event.params.summoner);
 }

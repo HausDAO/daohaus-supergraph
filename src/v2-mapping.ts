@@ -22,7 +22,14 @@ import {
   Proposal,
   Vote
 } from "../generated/schema";
-import { createOrUpdateVotedBadge } from "./badges";
+import {
+  addVotedBadge,
+  addSummonBadge,
+  addRageQuitBadge,
+  addJailedCountBadge,
+  addProposalSubmissionBadge,
+  addProposalSponsorBadge
+} from "./badges";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 let ESCROW = Address.fromString("0x000000000000000000000000000000000000dead");
@@ -204,6 +211,8 @@ export function handleSummonComplete(event: SummonComplete): void {
 
   moloch.save();
 
+  addSummonBadge(event.params.summoner);
+
   //Create member for summoner
   let memberId = molochId
     .concat("-member-")
@@ -300,6 +309,8 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   proposal.save();
 
+  addProposalSubmissionBadge(event.params.memberAddress);
+
   // collect tribute from proposer and store it in Moloch ESCROW until the proposal is processed
   if (event.params.tributeOffered > BigInt.fromI32(0)) {
     let tokenId = molochId
@@ -332,18 +343,7 @@ export function handleSubmitVote(event: SubmitVote): void {
 
   vote.save();
 
-  createOrUpdateVotedBadge(event.params.memberAddress);
-
-  // let badge = Badge.load(event.params.memberAddress.toHex());
-  // if (badge == null) {
-  //   badge = new Badge(event.params.memberAddress.toHex());
-  //   badge.memberAddress = event.params.memberAddress;
-  //   badge.createdAt = event.block.timestamp.toString();
-  //   badge.voteCount = BigInt.fromI32(1);
-  // } else {
-  //   badge.voteCount = badge.voteCount.plus(BigInt.fromI32(1));
-  // }
-  // badge.save();
+  addVotedBadge(event.params.memberAddress);
 
   let moloch = Moloch.load(molochId);
   let proposal = Proposal.load(proposalVotedId);
@@ -423,6 +423,8 @@ export function handleSponsorProposal(event: SponsorProposal): void {
   proposal.sponsored = true;
 
   proposal.save();
+
+  addProposalSponsorBadge(event.params.memberAddress);
 }
 
 export function handleProcessProposal(event: ProcessProposal): void {
@@ -666,6 +668,8 @@ export function handleProcessGuildKickProposal(
       moloch.totalShares = moloch.totalShares.minus(newLoot);
 
       member.save();
+
+      addJailedCountBadge(proposal.applicant);
     }
     //PROPOSAL FAILED
   } else {
@@ -749,6 +753,8 @@ export function handleRagequit(event: Ragequit): void {
       amountToRageQuit
     );
   }
+
+  addRageQuitBadge(event.params.memberAddress);
 
   member.save();
   moloch.save();
@@ -887,6 +893,8 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
   moloch.proposedToTrade = new Array<string>();
 
   moloch.save();
+
+  addSummonBadge(event.params.summoner);
 
   //Create member for summoner
   let memberId = molochId

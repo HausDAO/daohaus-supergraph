@@ -14,6 +14,7 @@ import {
   createGuildTokenBalance,
   createMemberTokenBalance
 } from "./v2-mapping";
+import { addSummonBadge } from "./badges";
 
 export function handleRegisterV1(event: RegisterV1): void {
   MolochV1Template.create(event.params.moloch);
@@ -85,6 +86,8 @@ export function handleRegisterV2(event: RegisterV2): void {
   moloch.proposedToTrade = new Array<string>();
 
   moloch.save();
+
+  addSummonBadge(event.params.summoner);
 
   //Create member for summoner
   let memberId = molochId
