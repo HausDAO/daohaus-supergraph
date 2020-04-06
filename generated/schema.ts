@@ -1476,4 +1476,31 @@ export class Badge extends Entity {
   set jailedCount(value: BigInt) {
     this.set("jailedCount", Value.fromBigInt(value));
   }
+
+  get memberships(): BigInt {
+    let value = this.get("memberships");
+    return value.toBigInt();
+  }
+
+  set memberships(value: BigInt) {
+    this.set("memberships", Value.fromBigInt(value));
+  }
+
+  get dissents(): BigInt {
+    let value = this.get("dissents");
+    return value.toBigInt();
+  }
+
+  set dissents(value: BigInt) {
+    this.set("dissents", Value.fromBigInt(value));
+  }
+
+  get assents(): BigInt {
+    let value = this.get("assents");
+    return value.toBigInt();
+  }
+
+  set assents(value: BigInt) {
+    this.set("assents", Value.fromBigInt(value));
+  }
 }

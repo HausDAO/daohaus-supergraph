@@ -11,12 +11,11 @@ function loadOrCreateBadge(memberAddress: Bytes): Badge | null {
     badge.summonCount = BigInt.fromI32(0);
     badge.proposalSponsorCount = BigInt.fromI32(0);
     badge.proposalSubmissionCount = BigInt.fromI32(0);
-    // badge.proposalSubmissionNewMemberCount = BigInt.fromI32(0);
-    // badge.proposalSubmissionTradeCount = BigInt.fromI32(0);
-    // badge.proposalSubmissionWhitelistCount = BigInt.fromI32(0);
-    // badge.proposalSubmissionGuildkicktCount = BigInt.fromI32(0);
     badge.rageQuitCount = BigInt.fromI32(0);
     badge.jailedCount = BigInt.fromI32(0);
+    badge.memberships = BigInt.fromI32(0);
+    badge.dissents = BigInt.fromI32(0);
+    badge.assents = BigInt.fromI32(0);
 
     badge.save();
   }
@@ -24,9 +23,15 @@ function loadOrCreateBadge(memberAddress: Bytes): Badge | null {
   return badge;
 }
 
-export function addVotedBadge(memberAddress: Bytes): void {
+export function addVotedBadge(memberAddress: Bytes, uintVote: number): void {
   let badge = loadOrCreateBadge(memberAddress);
   badge.voteCount = badge.voteCount.plus(BigInt.fromI32(1));
+
+  if (uintVote == 1) {
+    badge.assents = badge.assents.plus(BigInt.fromI32(1));
+  } else {
+    badge.dissents = badge.dissents.plus(BigInt.fromI32(1));
+  }
 
   badge.save();
 }
@@ -34,6 +39,13 @@ export function addVotedBadge(memberAddress: Bytes): void {
 export function addSummonBadge(memberAddress: Bytes): void {
   let badge = loadOrCreateBadge(memberAddress);
   badge.summonCount = badge.summonCount.plus(BigInt.fromI32(1));
+
+  badge.save();
+}
+
+export function addMembershipBadge(memberAddress: Bytes): void {
+  let badge = loadOrCreateBadge(memberAddress);
+  badge.memberships = badge.memberships.plus(BigInt.fromI32(1));
 
   badge.save();
 }

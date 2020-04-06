@@ -2,7 +2,7 @@ import { BigInt, log } from "@graphprotocol/graph-ts";
 import { Register as RegisterV1 } from "../generated/V1Factory/V1Factory";
 import {
   Register as RegisterV2,
-  Delete
+  Delete,
 } from "../generated/V2Factory/V2Factory";
 
 import { MolochV1Template, MolochV2Template } from "../generated/templates";
@@ -12,9 +12,9 @@ import {
   createAndApproveToken,
   createEscrowTokenBalance,
   createGuildTokenBalance,
-  createMemberTokenBalance
+  createMemberTokenBalance,
 } from "./v2-mapping";
-import { addSummonBadge } from "./badges";
+import { addSummonBadge, addMembershipBadge } from "./badges";
 
 export function handleRegisterV1(event: RegisterV1): void {
   MolochV1Template.create(event.params.moloch);
@@ -109,6 +109,9 @@ export function handleRegisterV2(event: RegisterV2): void {
   newMember.kicked = false;
 
   newMember.save();
+
+  addMembershipBadge(event.params.summoner);
+
   //Set summoner summoner balances for approved tokens to zero
   for (let i = 0; i < tokens.length; i++) {
     let token = tokens[i];

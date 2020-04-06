@@ -7,7 +7,7 @@ import {
   ProcessProposal,
   UpdateDelegateKey,
   Ragequit,
-  Abort
+  Abort,
 } from "../generated/templates/MolochV1Template/V1Moloch";
 import { MolochV1Template } from "../generated/templates";
 import { Member, Proposal, Vote, Moloch } from "../generated/schema";
@@ -15,7 +15,8 @@ import {
   addVotedBadge,
   addSummonBadge,
   addRageQuitBadge,
-  addProposalSubmissionBadge
+  addProposalSubmissionBadge,
+  addMembershipBadge,
 } from "./badges";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -56,6 +57,7 @@ export function handleSummonComplete(event: SummonComplete): void {
   moloch.save();
 
   addSummonBadge(event.params.summoner);
+  addMembershipBadge(event.params.summoner);
 }
 
 export function handleSubmitProposal(event: SubmitProposal): void {
@@ -141,7 +143,7 @@ export function handleSubmitVote(event: SubmitVote): void {
   vote.member = memberId;
   vote.save();
 
-  addVotedBadge(event.params.memberAddress);
+  addVotedBadge(event.params.memberAddress, event.params.uintVote);
 
   let proposalId = molochId
     .concat("-proposal-")
@@ -200,6 +202,8 @@ export function handleProcessProposal(event: ProcessProposal): void {
       newMember.tokenTribute = event.params.tokenTribute;
       newMember.didRagequit = false;
       newMember.save();
+
+      addMembershipBadge(event.params.applicant);
     } else {
       member.shares = member.shares.plus(event.params.sharesRequested);
       member.tokenTribute = member.tokenTribute.plus(event.params.tokenTribute);
@@ -316,6 +320,8 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
   member.tokenTribute = BigInt.fromI32(0);
   member.didRagequit = false;
   member.save();
+
+  addMembershipBadge(event.params.summoner);
 
   // let contract = Contract.bind(event.address);
   // moloch.periodDuration = contract.periodDuration();

@@ -11,7 +11,7 @@ import {
   Ragequit,
   CancelProposal,
   Withdraw,
-  TokensCollected
+  TokensCollected,
 } from "../generated/templates/MolochV2Template/V2Moloch";
 import { MolochV2Template } from "../generated/templates";
 import {
@@ -20,7 +20,7 @@ import {
   Token,
   TokenBalance,
   Proposal,
-  Vote
+  Vote,
 } from "../generated/schema";
 import {
   addVotedBadge,
@@ -28,7 +28,8 @@ import {
   addRageQuitBadge,
   addJailedCountBadge,
   addProposalSubmissionBadge,
-  addProposalSponsorBadge
+  addProposalSponsorBadge,
+  addMembershipBadge,
 } from "./badges";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -232,6 +233,8 @@ export function handleSummonComplete(event: SummonComplete): void {
   newMember.kicked = false;
 
   newMember.save();
+
+  addMembershipBadge(event.params.summoner);
   //Set summoner summoner balances for approved tokens to zero
   for (let i = 0; i < tokens.length; i++) {
     let token = tokens[i];
@@ -343,7 +346,7 @@ export function handleSubmitVote(event: SubmitVote): void {
 
   vote.save();
 
-  addVotedBadge(event.params.memberAddress);
+  addVotedBadge(event.params.memberAddress, event.params.uintVote);
 
   let moloch = Moloch.load(molochId);
   let proposal = Proposal.load(proposalVotedId);
@@ -399,7 +402,7 @@ export function handleSponsorProposal(event: SponsorProposal): void {
     moloch.save();
   } else if (proposal.whitelist) {
     moloch.proposedToWhitelist = moloch.proposedToWhitelist.concat([
-      sponsorProposalId
+      sponsorProposalId,
     ]);
     moloch.save();
   } else if (proposal.guildkick) {
@@ -484,6 +487,8 @@ export function handleProcessProposal(event: ProcessProposal): void {
       newMember.kicked = false;
 
       newMember.save();
+
+      addMembershipBadge(proposal.applicant);
 
       //FUND PROPOSAL
     } else {
@@ -915,6 +920,8 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
   newMember.kicked = false;
 
   newMember.save();
+
+  addMembershipBadge(event.params.summoner);
   //Set summoner summoner balances for approved tokens to zero
   for (let i = 0; i < tokens.length; i++) {
     let token = tokens[i];
