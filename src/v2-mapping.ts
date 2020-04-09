@@ -11,7 +11,7 @@ import {
   Ragequit,
   CancelProposal,
   Withdraw,
-  TokensCollected,
+  TokensCollected
 } from "../generated/templates/MolochV2Template/V2Moloch";
 import { MolochV2Template } from "../generated/templates";
 import {
@@ -20,7 +20,7 @@ import {
   Token,
   TokenBalance,
   Proposal,
-  Vote,
+  Vote
 } from "../generated/schema";
 import {
   addVotedBadge,
@@ -29,7 +29,7 @@ import {
   addJailedCountBadge,
   addProposalSubmissionBadge,
   addProposalSponsorBadge,
-  addMembershipBadge,
+  addMembershipBadge
 } from "./badges";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -258,12 +258,9 @@ export function handleSubmitProposal(event: SubmitProposal): void {
     .concat("-member-")
     .concat(event.params.memberAddress.toHex());
 
-  let member =
-    Member.load(
-      molochId.concat("-member-").concat(event.params.applicant.toHex())
-    ) == null
-      ? true
-      : false;
+  let member = Member.load(
+    molochId.concat("-member-").concat(event.params.applicant.toHex())
+  );
   let newMember =
     member == null && event.params.sharesRequested > BigInt.fromI32(0);
 
@@ -305,10 +302,15 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.guildkick = flags[5];
   proposal.newMember = newMember;
   proposal.trade = trade;
-  proposal.details = event.params.details;
   proposal.yesShares = BigInt.fromI32(0);
   proposal.noShares = BigInt.fromI32(0);
   proposal.maxTotalSharesAndLootAtYesVote = BigInt.fromI32(0);
+
+  if (event.params.details.toString().startsWith("{")) {
+    proposal.details = event.params.details;
+  } else {
+    proposal.details = "Details Error";
+  }
 
   proposal.save();
 
@@ -402,7 +404,7 @@ export function handleSponsorProposal(event: SponsorProposal): void {
     moloch.save();
   } else if (proposal.whitelist) {
     moloch.proposedToWhitelist = moloch.proposedToWhitelist.concat([
-      sponsorProposalId,
+      sponsorProposalId
     ]);
     moloch.save();
   } else if (proposal.guildkick) {
