@@ -5,10 +5,10 @@ type Moloch @entity {
   version: String
   newContract: String
   deleted: Boolean
-  summoningTime: BigInt
-  periodDuration: BigInt
-  votingPeriodLength: BigInt
-  gracePeriodLength: BigInt
+  summoningTime: BigInt!
+  periodDuration: BigInt!
+  votingPeriodLength: BigInt!
+  gracePeriodLength: BigInt!
   proposalDeposit: BigInt!
   dilutionBound: BigInt!
   processingReward: BigInt!
@@ -119,10 +119,12 @@ type Proposal @entity {
   details: String!
   maxTotalSharesAndLootAtYesVote: BigInt
   votes: [Vote!] @derivedFrom(field: "proposal")
-
-  "NOTE: Can we get for v1 too?"
   yesShares: BigInt!
   noShares: BigInt!
+
+  votingPeriodStarts: BigInt!
+  votingPeriodEnds: BigInt!
+  gracePeriodEnds: BigInt!
 }
 
 type Badge @entity {

@@ -312,6 +312,22 @@ export function handleSubmitProposal(event: SubmitProposal): void {
     proposal.details = "Details Error";
   }
 
+  // calculate times
+  let moloch = Moloch.load(molochId);
+  let votingPeriodStarts = moloch.summoningTime.plus(
+    proposal.startingPeriod.times(moloch.periodDuration)
+  );
+  let votingPeriodEnds = votingPeriodStarts.plus(
+    moloch.votingPeriodLength.times(moloch.periodDuration)
+  );
+  let gracePeriodEnds = votingPeriodEnds.plus(
+    moloch.gracePeriodLength.times(moloch.periodDuration)
+  );
+
+  proposal.votingPeriodStarts = votingPeriodStarts;
+  proposal.votingPeriodEnds = votingPeriodEnds;
+  proposal.gracePeriodEnds = gracePeriodEnds;
+
   proposal.save();
 
   addProposalSubmissionBadge(event.params.memberAddress);
