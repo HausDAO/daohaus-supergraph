@@ -111,72 +111,40 @@ export class Moloch extends Entity {
     this.set("deleted", Value.fromBoolean(value));
   }
 
-  get summoningTime(): BigInt | null {
+  get summoningTime(): BigInt {
     let value = this.get("summoningTime");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value.toBigInt();
   }
 
-  set summoningTime(value: BigInt | null) {
-    if (value === null) {
-      this.unset("summoningTime");
-    } else {
-      this.set("summoningTime", Value.fromBigInt(value as BigInt));
-    }
+  set summoningTime(value: BigInt) {
+    this.set("summoningTime", Value.fromBigInt(value));
   }
 
-  get periodDuration(): BigInt | null {
+  get periodDuration(): BigInt {
     let value = this.get("periodDuration");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value.toBigInt();
   }
 
-  set periodDuration(value: BigInt | null) {
-    if (value === null) {
-      this.unset("periodDuration");
-    } else {
-      this.set("periodDuration", Value.fromBigInt(value as BigInt));
-    }
+  set periodDuration(value: BigInt) {
+    this.set("periodDuration", Value.fromBigInt(value));
   }
 
-  get votingPeriodLength(): BigInt | null {
+  get votingPeriodLength(): BigInt {
     let value = this.get("votingPeriodLength");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value.toBigInt();
   }
 
-  set votingPeriodLength(value: BigInt | null) {
-    if (value === null) {
-      this.unset("votingPeriodLength");
-    } else {
-      this.set("votingPeriodLength", Value.fromBigInt(value as BigInt));
-    }
+  set votingPeriodLength(value: BigInt) {
+    this.set("votingPeriodLength", Value.fromBigInt(value));
   }
 
-  get gracePeriodLength(): BigInt | null {
+  get gracePeriodLength(): BigInt {
     let value = this.get("gracePeriodLength");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value.toBigInt();
   }
 
-  set gracePeriodLength(value: BigInt | null) {
-    if (value === null) {
-      this.unset("gracePeriodLength");
-    } else {
-      this.set("gracePeriodLength", Value.fromBigInt(value as BigInt));
-    }
+  set gracePeriodLength(value: BigInt) {
+    this.set("gracePeriodLength", Value.fromBigInt(value));
   }
 
   get proposalDeposit(): BigInt {
@@ -1382,6 +1350,33 @@ export class Proposal extends Entity {
   set noShares(value: BigInt) {
     this.set("noShares", Value.fromBigInt(value));
   }
+
+  get votingPeriodStarts(): BigInt {
+    let value = this.get("votingPeriodStarts");
+    return value.toBigInt();
+  }
+
+  set votingPeriodStarts(value: BigInt) {
+    this.set("votingPeriodStarts", Value.fromBigInt(value));
+  }
+
+  get votingPeriodEnds(): BigInt {
+    let value = this.get("votingPeriodEnds");
+    return value.toBigInt();
+  }
+
+  set votingPeriodEnds(value: BigInt) {
+    this.set("votingPeriodEnds", Value.fromBigInt(value));
+  }
+
+  get gracePeriodEnds(): BigInt {
+    let value = this.get("gracePeriodEnds");
+    return value.toBigInt();
+  }
+
+  set gracePeriodEnds(value: BigInt) {
+    this.set("gracePeriodEnds", Value.fromBigInt(value));
+  }
 }
 
 export class Badge extends Entity {
@@ -1412,15 +1407,6 @@ export class Badge extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
-  }
-
-  get createdAt(): string {
-    let value = this.get("createdAt");
-    return value.toString();
-  }
-
-  set createdAt(value: string) {
-    this.set("createdAt", Value.fromString(value));
   }
 
   get memberAddress(): Bytes {

@@ -34,8 +34,7 @@ export function handleSummonComplete(event: SummonComplete): void {
   member.didRagequit = false;
   member.save();
 
-  let contract = Moloch.bind(event.address);
-  moloch.currentPeriod = contract.getCurrentPeriod();
+  let contract = Contract.bind(event.address);
   moloch.periodDuration = contract.periodDuration();
   moloch.votingPeriodLength = contract.votingPeriodLength();
   moloch.gracePeriodLength = contract.gracePeriodLength();
@@ -94,6 +93,21 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.tributeToken = Address.fromString(ZERO_ADDRESS);
   proposal.paymentRequested = BigInt.fromI32(0);
   proposal.paymentToken = Address.fromString(ZERO_ADDRESS);
+
+  // calculate times
+  let votingPeriodStarts = moloch.summoningTime.plus(
+    proposal.startingPeriod.times(moloch.periodDuration)
+  );
+  let votingPeriodEnds = votingPeriodStarts.plus(
+    moloch.votingPeriodLength.times(moloch.periodDuration)
+  );
+  let gracePeriodEnds = votingPeriodEnds.plus(
+    moloch.gracePeriodLength.times(moloch.periodDuration)
+  );
+
+  proposal.votingPeriodStarts = votingPeriodStarts;
+  proposal.votingPeriodEnds = votingPeriodEnds;
+  proposal.gracePeriodEnds = gracePeriodEnds;
 
   proposal.save();
 }
