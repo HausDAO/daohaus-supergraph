@@ -131,4 +131,17 @@ type Badge @entity {
   id: ID!
   memberAddress: Bytes!
   voteCount: BigInt!
+  summonCount: BigInt!
+  proposalSponsorCount: BigInt!
+  proposalSubmissionCount: BigInt!
+  rageQuitCount: BigInt!
+  jailedCount: BigInt!
+  memberships: BigInt!
+  dissents: BigInt!
+  assents: BigInt!
+
+  # proposalSubmissionNewMemberCount: BigInt!
+  # proposalSubmissionTradeCount: BigInt!
+  # proposalSubmissionWhitelistCount: BigInt!
+  # proposalSubmissionGuildkicktCount: BigInt!
 }

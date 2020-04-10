@@ -61,6 +61,7 @@ templates:
         - Member
         - Vote
         - Proposal
+        - Badge
       abis:
         - name: V1Moloch
           file: MolochV1Template/abis/V1Moloch.json
@@ -98,6 +99,7 @@ templates:
         - Member
         - Vote
         - Proposal
+        - Badge
       abis:
         - name: V2Moloch
           file: MolochV2Template/abis/V2Moloch.json

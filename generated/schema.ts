@@ -1426,4 +1426,76 @@ export class Badge extends Entity {
   set voteCount(value: BigInt) {
     this.set("voteCount", Value.fromBigInt(value));
   }
+
+  get summonCount(): BigInt {
+    let value = this.get("summonCount");
+    return value.toBigInt();
+  }
+
+  set summonCount(value: BigInt) {
+    this.set("summonCount", Value.fromBigInt(value));
+  }
+
+  get proposalSponsorCount(): BigInt {
+    let value = this.get("proposalSponsorCount");
+    return value.toBigInt();
+  }
+
+  set proposalSponsorCount(value: BigInt) {
+    this.set("proposalSponsorCount", Value.fromBigInt(value));
+  }
+
+  get proposalSubmissionCount(): BigInt {
+    let value = this.get("proposalSubmissionCount");
+    return value.toBigInt();
+  }
+
+  set proposalSubmissionCount(value: BigInt) {
+    this.set("proposalSubmissionCount", Value.fromBigInt(value));
+  }
+
+  get rageQuitCount(): BigInt {
+    let value = this.get("rageQuitCount");
+    return value.toBigInt();
+  }
+
+  set rageQuitCount(value: BigInt) {
+    this.set("rageQuitCount", Value.fromBigInt(value));
+  }
+
+  get jailedCount(): BigInt {
+    let value = this.get("jailedCount");
+    return value.toBigInt();
+  }
+
+  set jailedCount(value: BigInt) {
+    this.set("jailedCount", Value.fromBigInt(value));
+  }
+
+  get memberships(): BigInt {
+    let value = this.get("memberships");
+    return value.toBigInt();
+  }
+
+  set memberships(value: BigInt) {
+    this.set("memberships", Value.fromBigInt(value));
+  }
+
+  get dissents(): BigInt {
+    let value = this.get("dissents");
+    return value.toBigInt();
+  }
+
+  set dissents(value: BigInt) {
+    this.set("dissents", Value.fromBigInt(value));
+  }
+
+  get assents(): BigInt {
+    let value = this.get("assents");
+    return value.toBigInt();
+  }
+
+  set assents(value: BigInt) {
+    this.set("assents", Value.fromBigInt(value));
+  }
 }
