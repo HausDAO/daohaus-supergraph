@@ -21,6 +21,8 @@ dataSources:
       abis:
         - name: V1Factory
           file: ./abis/V1Factory.json
+        - name: V1Moloch
+          file: ./abis/V1Moloch.json
       eventHandlers:
         - event: "Register(address,indexed address,uint256,string,uint256)"
           handler: handleRegisterV1

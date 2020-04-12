@@ -7,7 +7,7 @@ import {
   ProcessProposal,
   UpdateDelegateKey,
   Ragequit,
-  Abort,
+  Abort
 } from "../generated/templates/MolochV1Template/V1Moloch";
 import { MolochV1Template } from "../generated/templates";
 import { Member, Proposal, Vote, Moloch } from "../generated/schema";
@@ -16,7 +16,7 @@ import {
   addSummonBadge,
   addRageQuitBadge,
   addProposalSubmissionBadge,
-  addMembershipBadge,
+  addMembershipBadge
 } from "./badges";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -316,8 +316,6 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
   let approvedTokens: string[] = [];
   moloch.approvedTokens = approvedTokens;
 
-  moloch.save();
-
   let memberId = molochId
     .concat("-member-")
     .concat(event.params.summoner.toHex());
@@ -336,16 +334,18 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
 
   addMembershipBadge(event.params.summoner);
 
-  // let contract = Contract.bind(event.address);
-  // moloch.periodDuration = contract.periodDuration();
-  // moloch.votingPeriodLength = contract.votingPeriodLength();
-  // moloch.gracePeriodLength = contract.gracePeriodLength();
-  // moloch.proposalDeposit = contract.proposalDeposit();
-  // moloch.dilutionBound = contract.dilutionBound();
-  // moloch.processingReward = contract.processingReward();
-  // moloch.summoningTime = contract.summoningTime();
+  log.info("$$$$$ legacy summoning, addr: {}", [event.address.toHex()]);
+  let contract = Contract.bind(event.address);
+  moloch.periodDuration = contract.periodDuration();
+  moloch.votingPeriodLength = contract.votingPeriodLength();
+  moloch.gracePeriodLength = contract.gracePeriodLength();
+  moloch.proposalDeposit = contract.proposalDeposit();
+  moloch.dilutionBound = contract.dilutionBound();
+  moloch.processingReward = contract.processingReward();
+  moloch.summoningTime = contract.summoningTime();
 
-  moloch.summoningTime = event.block.timestamp;
+  log.info("$$$$$ moloch.summoningTime: {}", [moloch.summoningTime.toString()]);
+
   moloch.save();
 
   addSummonBadge(event.params.summoner);

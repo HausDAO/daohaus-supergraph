@@ -1498,4 +1498,21 @@ export class Badge extends Entity {
   set assents(value: BigInt) {
     this.set("assents", Value.fromBigInt(value));
   }
+
+  get totalGas(): BigInt | null {
+    let value = this.get("totalGas");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set totalGas(value: BigInt | null) {
+    if (value === null) {
+      this.unset("totalGas");
+    } else {
+      this.set("totalGas", Value.fromBigInt(value as BigInt));
+    }
+  }
 }

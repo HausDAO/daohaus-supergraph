@@ -2,8 +2,9 @@ import { BigInt, log } from "@graphprotocol/graph-ts";
 import { Register as RegisterV1 } from "../generated/V1Factory/V1Factory";
 import {
   Register as RegisterV2,
-  Delete,
+  Delete
 } from "../generated/V2Factory/V2Factory";
+import { V1Moloch } from "../generated/templates/MolochV1Template/V1Moloch";
 
 import { MolochV1Template, MolochV2Template } from "../generated/templates";
 import { Moloch, Member } from "../generated/schema";
@@ -12,7 +13,7 @@ import {
   createAndApproveToken,
   createEscrowTokenBalance,
   createGuildTokenBalance,
-  createMemberTokenBalance,
+  createMemberTokenBalance
 } from "./v2-mapping";
 import { addSummonBadge, addMembershipBadge } from "./badges";
 
@@ -37,6 +38,15 @@ export function handleRegisterV1(event: RegisterV1): void {
 
   let approvedTokens: string[] = [];
   moloch.approvedTokens = approvedTokens;
+
+  let contract = V1Moloch.bind(event.params.moloch);
+  moloch.periodDuration = contract.periodDuration();
+  moloch.votingPeriodLength = contract.votingPeriodLength();
+  moloch.gracePeriodLength = contract.gracePeriodLength();
+  moloch.proposalDeposit = contract.proposalDeposit();
+  moloch.dilutionBound = contract.dilutionBound();
+  moloch.processingReward = contract.processingReward();
+  moloch.summoningTime = contract.summoningTime();
 
   moloch.save();
 }

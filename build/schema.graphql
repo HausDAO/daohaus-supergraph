@@ -139,6 +139,7 @@ type Badge @entity {
   memberships: BigInt!
   dissents: BigInt!
   assents: BigInt!
+  totalGas: BigInt
 
   # proposalSubmissionNewMemberCount: BigInt!
   # proposalSubmissionTradeCount: BigInt!
