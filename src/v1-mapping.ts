@@ -55,7 +55,7 @@ export function handleSummonComplete(event: SummonComplete): void {
   moloch.summoningTime = contract.summoningTime();
   moloch.save();
 
-  addSummonBadge(event.params.summoner, event.transaction.gasPrice);
+  addSummonBadge(event.params.summoner, event.transaction);
   addMembershipBadge(event.params.summoner);
 }
 
@@ -124,10 +124,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   proposal.save();
 
-  addProposalSubmissionBadge(
-    event.params.memberAddress,
-    event.transaction.gasPrice
-  );
+  addProposalSubmissionBadge(event.params.memberAddress, event.transaction);
 }
 
 export function handleSubmitVote(event: SubmitVote): void {
@@ -163,7 +160,7 @@ export function handleSubmitVote(event: SubmitVote): void {
   addVotedBadge(
     event.params.memberAddress,
     event.params.uintVote,
-    event.transaction.gasPrice
+    event.transaction
   );
 
   let proposalId = molochId
@@ -204,7 +201,7 @@ export function handleProcessProposal(event: ProcessProposal): void {
   proposal.processed = true;
   proposal.save();
 
-  addProposalProcessorBadge(event.transaction.from, event.transaction.gasPrice);
+  addProposalProcessorBadge(event.transaction.from, event.transaction);
 
   if (event.params.didPass) {
     let memberId = molochId
@@ -256,7 +253,7 @@ export function handleRagequit(event: Ragequit): void {
   }
   member.save();
 
-  addRageQuitBadge(event.params.memberAddress, event.transaction.gasPrice);
+  addRageQuitBadge(event.params.memberAddress, event.transaction);
 
   moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
   moloch.save();
@@ -358,5 +355,5 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
 
   moloch.save();
 
-  addSummonBadge(event.params.summoner, event.transaction.gasPrice);
+  addSummonBadge(event.params.summoner, event.transaction);
 }

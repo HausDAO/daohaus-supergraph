@@ -213,7 +213,7 @@ export function handleSummonComplete(event: SummonComplete): void {
 
   moloch.save();
 
-  addSummonBadge(event.params.summoner, event.transaction.gasPrice);
+  addSummonBadge(event.params.summoner, event.transaction);
 
   //Create member for summoner
   let memberId = molochId
@@ -331,10 +331,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   proposal.save();
 
-  addProposalSubmissionBadge(
-    event.params.memberAddress,
-    event.transaction.gasPrice
-  );
+  addProposalSubmissionBadge(event.params.memberAddress, event.transaction);
 
   // collect tribute from proposer and store it in Moloch ESCROW until the proposal is processed
   if (event.params.tributeOffered > BigInt.fromI32(0)) {
@@ -371,7 +368,7 @@ export function handleSubmitVote(event: SubmitVote): void {
   addVotedBadge(
     event.params.memberAddress,
     event.params.uintVote,
-    event.transaction.gasPrice
+    event.transaction
   );
 
   let moloch = Moloch.load(molochId);
@@ -453,10 +450,7 @@ export function handleSponsorProposal(event: SponsorProposal): void {
 
   proposal.save();
 
-  addProposalSponsorBadge(
-    event.params.memberAddress,
-    event.transaction.gasPrice
-  );
+  addProposalSponsorBadge(event.params.memberAddress, event.transaction);
 }
 
 export function handleProcessProposal(event: ProcessProposal): void {
@@ -482,7 +476,7 @@ export function handleProcessProposal(event: ProcessProposal): void {
 
   let isNewMember = member != null && member.exists == true ? false : true;
 
-  addProposalProcessorBadge(event.transaction.from, event.transaction.gasPrice);
+  addProposalProcessorBadge(event.transaction.from, event.transaction);
 
   //NOTE: PROPOSAL PASSED
   if (event.params.didPass) {
@@ -628,7 +622,7 @@ export function handleProcessWhitelistProposal(
   let isNotWhitelisted =
     token != null && token.whitelisted == true ? false : true;
 
-  addProposalProcessorBadge(event.transaction.from, event.transaction.gasPrice);
+  addProposalProcessorBadge(event.transaction.from, event.transaction);
 
   //NOTE: PROPOSAL PASSED
   if (event.params.didPass) {
@@ -687,7 +681,7 @@ export function handleProcessGuildKickProposal(
     .concat(event.params.proposalId.toString());
   let proposal = Proposal.load(processProposalId);
 
-  addProposalProcessorBadge(event.transaction.from, event.transaction.gasPrice);
+  addProposalProcessorBadge(event.transaction.from, event.transaction);
 
   //PROPOSAL PASSED
   //NOTE: invariant no loot no shares,
@@ -709,7 +703,7 @@ export function handleProcessGuildKickProposal(
 
       member.save();
 
-      addJailedCountBadge(proposal.applicant, event.transaction.gasPrice);
+      addJailedCountBadge(proposal.applicant, event.transaction);
     }
     //PROPOSAL FAILED
   } else {
@@ -794,7 +788,7 @@ export function handleRagequit(event: Ragequit): void {
     );
   }
 
-  addRageQuitBadge(event.params.memberAddress, event.transaction.gasPrice);
+  addRageQuitBadge(event.params.memberAddress, event.transaction);
 
   member.save();
   moloch.save();
@@ -934,7 +928,7 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
 
   moloch.save();
 
-  addSummonBadge(event.params.summoner, event.transaction.gasPrice);
+  addSummonBadge(event.params.summoner, event.transaction);
 
   //Create member for summoner
   let memberId = molochId

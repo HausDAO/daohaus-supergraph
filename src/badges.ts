@@ -1,4 +1,4 @@
-import { BigInt, Bytes } from "@graphprotocol/graph-ts";
+import { BigInt, Bytes, EthereumTransaction } from "@graphprotocol/graph-ts";
 import { Badge } from "../generated/schema";
 
 function loadOrCreateBadge(memberAddress: Bytes): Badge | null {
@@ -25,14 +25,21 @@ function loadOrCreateBadge(memberAddress: Bytes): Badge | null {
   return badge;
 }
 
+//TODO - pass the whole transaction object and do gasPrice * gasUsed to get the txFee
+
+function addGas(currentGas: BigInt, tx: EthereumTransaction): BigInt {
+  let txCost = tx.gasPrice.times(tx.gasUsed);
+  return currentGas.times(txCost);
+}
+
 export function addVotedBadge(
   memberAddress: Bytes,
   uintVote: number,
-  gasPrice: BigInt
+  tx: EthereumTransaction
 ): void {
   let badge = loadOrCreateBadge(memberAddress);
   badge.voteCount = badge.voteCount.plus(BigInt.fromI32(1));
-  badge.totalGas = badge.totalGas.plus(gasPrice);
+  badge.totalGas = addGas(badge.totalGas, tx);
 
   if (uintVote == 1) {
     badge.assents = badge.assents.plus(BigInt.fromI32(1));
@@ -43,10 +50,13 @@ export function addVotedBadge(
   badge.save();
 }
 
-export function addSummonBadge(memberAddress: Bytes, gasPrice: BigInt): void {
+export function addSummonBadge(
+  memberAddress: Bytes,
+  tx: EthereumTransaction
+): void {
   let badge = loadOrCreateBadge(memberAddress);
   badge.summonCount = badge.summonCount.plus(BigInt.fromI32(1));
-  badge.totalGas = badge.totalGas.plus(gasPrice);
+  badge.totalGas = addGas(badge.totalGas, tx);
 
   badge.save();
 }
@@ -58,60 +68,63 @@ export function addMembershipBadge(memberAddress: Bytes): void {
   badge.save();
 }
 
-export function addRageQuitBadge(memberAddress: Bytes, gasPrice: BigInt): void {
+export function addRageQuitBadge(
+  memberAddress: Bytes,
+  tx: EthereumTransaction
+): void {
   let badge = loadOrCreateBadge(memberAddress);
   badge.rageQuitCount = badge.rageQuitCount.plus(BigInt.fromI32(1));
-  badge.totalGas = badge.totalGas.plus(gasPrice);
+  badge.totalGas = addGas(badge.totalGas, tx);
 
   badge.save();
 }
 
 export function addJailedCountBadge(
   memberAddress: Bytes,
-  gasPrice: BigInt
+  tx: EthereumTransaction
 ): void {
   let badge = loadOrCreateBadge(memberAddress);
   badge.jailedCount = badge.jailedCount.plus(BigInt.fromI32(1));
-  badge.totalGas = badge.totalGas.plus(gasPrice);
+  badge.totalGas = addGas(badge.totalGas, tx);
 
   badge.save();
 }
 
 export function addProposalSubmissionBadge(
   memberAddress: Bytes,
-  gasPrice: BigInt
+  tx: EthereumTransaction
 ): void {
   let badge = loadOrCreateBadge(memberAddress);
   badge.proposalSubmissionCount = badge.proposalSubmissionCount.plus(
     BigInt.fromI32(1)
   );
-  badge.totalGas = badge.totalGas.plus(gasPrice);
+  badge.totalGas = addGas(badge.totalGas, tx);
 
   badge.save();
 }
 
 export function addProposalSponsorBadge(
   memberAddress: Bytes,
-  gasPrice: BigInt
+  tx: EthereumTransaction
 ): void {
   let badge = loadOrCreateBadge(memberAddress);
   badge.proposalSponsorCount = badge.proposalSponsorCount.plus(
     BigInt.fromI32(1)
   );
-  badge.totalGas = badge.totalGas.plus(gasPrice);
+  badge.totalGas = addGas(badge.totalGas, tx);
 
   badge.save();
 }
 
 export function addProposalProcessorBadge(
   memberAddress: Bytes,
-  gasPrice: BigInt
+  tx: EthereumTransaction
 ): void {
   let badge = loadOrCreateBadge(memberAddress);
   badge.proposalProcessorCount = badge.proposalProcessorCount.plus(
     BigInt.fromI32(1)
   );
-  badge.totalGas = badge.totalGas.plus(gasPrice);
+  badge.totalGas = addGas(badge.totalGas, tx);
 
   badge.save();
 }
