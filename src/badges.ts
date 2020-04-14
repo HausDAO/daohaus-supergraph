@@ -25,11 +25,9 @@ function loadOrCreateBadge(memberAddress: Bytes): Badge | null {
   return badge;
 }
 
-//TODO - pass the whole transaction object and do gasPrice * gasUsed to get the txFee
-
 function addGas(currentGas: BigInt, tx: EthereumTransaction): BigInt {
   let txCost = tx.gasPrice.times(tx.gasUsed);
-  return currentGas.times(txCost);
+  return currentGas.plus(txCost);
 }
 
 export function addVotedBadge(
