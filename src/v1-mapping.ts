@@ -7,9 +7,8 @@ import {
   ProcessProposal,
   UpdateDelegateKey,
   Ragequit,
-  Abort
+  Abort,
 } from "../generated/templates/MolochV1Template/V1Moloch";
-import { MolochV1Template } from "../generated/templates";
 import { Member, Proposal, Vote, Moloch } from "../generated/schema";
 import {
   addVotedBadge,
@@ -17,7 +16,7 @@ import {
   addRageQuitBadge,
   addProposalSubmissionBadge,
   addMembershipBadge,
-  addProposalProcessorBadge
+  addProposalProcessorBadge,
 } from "./badges";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -292,17 +291,11 @@ export function handleUpdateDelegateKey(event: UpdateDelegateKey): void {
 }
 
 export function handleSummonCompleteLegacy(event: SummonComplete): void {
-  MolochV1Template.create(event.address);
-
   let molochId = event.address.toHex();
   let moloch = new Moloch(molochId);
 
-  // let titles = {
-  //   "0x1fd169a4f5c59acf79d0fd5d91d1201ef1bce9f1": "Moloch DAO",
-  //   "0x0372f3696fa7dc99801f435fd6737e57818239f2": "MetaCartel DAO"
-  // };
   let title =
-    event.address.toHex() === "0x1fd169a4f5c59acf79d0fd5d91d1201ef1bce9f1"
+    event.address.toHex() == "0x1fd169a4f5c59acf79d0fd5d91d1201ef1bce9f1"
       ? "Moloch DAO"
       : "MetaCartel DAO";
   moloch.title = title;
@@ -341,7 +334,6 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
 
   addMembershipBadge(event.params.summoner);
 
-  log.info("$$$$$ legacy summoning, addr: {}", [event.address.toHex()]);
   let contract = Contract.bind(event.address);
   moloch.periodDuration = contract.periodDuration();
   moloch.votingPeriodLength = contract.votingPeriodLength();
@@ -350,8 +342,6 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
   moloch.dilutionBound = contract.dilutionBound();
   moloch.processingReward = contract.processingReward();
   moloch.summoningTime = contract.summoningTime();
-
-  log.info("$$$$$ moloch.summoningTime: {}", [moloch.summoningTime.toString()]);
 
   moloch.save();
 

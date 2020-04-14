@@ -2,7 +2,7 @@ import { BigInt, log } from "@graphprotocol/graph-ts";
 import { Register as RegisterV1 } from "../generated/V1Factory/V1Factory";
 import {
   Register as RegisterV2,
-  Delete
+  Delete,
 } from "../generated/V2Factory/V2Factory";
 import { V1Moloch } from "../generated/templates/MolochV1Template/V1Moloch";
 
@@ -13,11 +13,14 @@ import {
   createAndApproveToken,
   createEscrowTokenBalance,
   createGuildTokenBalance,
-  createMemberTokenBalance
+  createMemberTokenBalance,
 } from "./v2-mapping";
 import { addSummonBadge, addMembershipBadge } from "./badges";
 
 export function handleRegisterV1(event: RegisterV1): void {
+  if (event.params.newContract.toString() == "0") {
+    return;
+  }
   MolochV1Template.create(event.params.moloch);
 
   let molochId = event.params.moloch.toHex();
