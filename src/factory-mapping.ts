@@ -97,7 +97,7 @@ export function handleRegisterV2(event: RegisterV2): void {
 
   moloch.save();
 
-  addSummonBadge(event.params.summoner);
+  addSummonBadge(event.params.summoner, event.transaction.gasPrice);
 
   //Create member for summoner
   let memberId = molochId

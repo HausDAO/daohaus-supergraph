@@ -16,7 +16,8 @@ import {
   addSummonBadge,
   addRageQuitBadge,
   addProposalSubmissionBadge,
-  addMembershipBadge
+  addMembershipBadge,
+  addProposalProcessorBadge
 } from "./badges";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -54,7 +55,7 @@ export function handleSummonComplete(event: SummonComplete): void {
   moloch.summoningTime = contract.summoningTime();
   moloch.save();
 
-  addSummonBadge(event.params.summoner);
+  addSummonBadge(event.params.summoner, event.transaction.gasPrice);
   addMembershipBadge(event.params.summoner);
 }
 
@@ -123,7 +124,10 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   proposal.save();
 
-  addProposalSubmissionBadge(event.params.memberAddress);
+  addProposalSubmissionBadge(
+    event.params.memberAddress,
+    event.transaction.gasPrice
+  );
 }
 
 export function handleSubmitVote(event: SubmitVote): void {
@@ -156,7 +160,11 @@ export function handleSubmitVote(event: SubmitVote): void {
   vote.member = memberId;
   vote.save();
 
-  addVotedBadge(event.params.memberAddress, event.params.uintVote);
+  addVotedBadge(
+    event.params.memberAddress,
+    event.params.uintVote,
+    event.transaction.gasPrice
+  );
 
   let proposalId = molochId
     .concat("-proposal-")
@@ -195,6 +203,8 @@ export function handleProcessProposal(event: ProcessProposal): void {
   proposal.didPass = event.params.didPass;
   proposal.processed = true;
   proposal.save();
+
+  addProposalProcessorBadge(event.transaction.from, event.transaction.gasPrice);
 
   if (event.params.didPass) {
     let memberId = molochId
@@ -246,7 +256,7 @@ export function handleRagequit(event: Ragequit): void {
   }
   member.save();
 
-  addRageQuitBadge(event.params.memberAddress);
+  addRageQuitBadge(event.params.memberAddress, event.transaction.gasPrice);
 
   moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
   moloch.save();
@@ -348,5 +358,5 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
 
   moloch.save();
 
-  addSummonBadge(event.params.summoner);
+  addSummonBadge(event.params.summoner, event.transaction.gasPrice);
 }
