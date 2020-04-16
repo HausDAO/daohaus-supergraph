@@ -134,12 +134,13 @@ type Badge @entity {
   summonCount: BigInt!
   proposalSponsorCount: BigInt!
   proposalSubmissionCount: BigInt!
+  proposalProcessorCount: BigInt!
   rageQuitCount: BigInt!
   jailedCount: BigInt!
   memberships: BigInt!
   dissents: BigInt!
   assents: BigInt!
-  totalGas: BigInt
+  totalGas: BigInt!
 
   # proposalSubmissionNewMemberCount: BigInt!
   # proposalSubmissionTradeCount: BigInt!

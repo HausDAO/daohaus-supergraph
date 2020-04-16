@@ -1454,6 +1454,15 @@ export class Badge extends Entity {
     this.set("proposalSubmissionCount", Value.fromBigInt(value));
   }
 
+  get proposalProcessorCount(): BigInt {
+    let value = this.get("proposalProcessorCount");
+    return value.toBigInt();
+  }
+
+  set proposalProcessorCount(value: BigInt) {
+    this.set("proposalProcessorCount", Value.fromBigInt(value));
+  }
+
   get rageQuitCount(): BigInt {
     let value = this.get("rageQuitCount");
     return value.toBigInt();
@@ -1499,20 +1508,12 @@ export class Badge extends Entity {
     this.set("assents", Value.fromBigInt(value));
   }
 
-  get totalGas(): BigInt | null {
+  get totalGas(): BigInt {
     let value = this.get("totalGas");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value.toBigInt();
   }
 
-  set totalGas(value: BigInt | null) {
-    if (value === null) {
-      this.unset("totalGas");
-    } else {
-      this.set("totalGas", Value.fromBigInt(value as BigInt));
-    }
+  set totalGas(value: BigInt) {
+    this.set("totalGas", Value.fromBigInt(value));
   }
 }
