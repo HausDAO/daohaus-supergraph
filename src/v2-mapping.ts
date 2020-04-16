@@ -230,10 +230,15 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.noShares = BigInt.fromI32(0);
   proposal.maxTotalSharesAndLootAtYesVote = BigInt.fromI32(0);
 
-  if (event.params.details.toString().startsWith("{")) {
-    proposal.details = event.params.details;
+  // catch a bad kovan proposal with non-utf8 in the details field
+  // if (event.params.details.toString().startsWith("{")) {
+  if (
+    molochId == "0x501f352e32ec0c981268dc5b5ba1d3661b1acbc6" &&
+    event.params.proposalId.toString() == "30"
+  ) {
+    proposal.details = "Minion Details Error";
   } else {
-    proposal.details = "Details Error";
+    proposal.details = event.params.details;
   }
 
   // calculate times
