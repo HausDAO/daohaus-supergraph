@@ -52,6 +52,7 @@ export function handleSummonComplete(event: SummonComplete): void {
   moloch.dilutionBound = contract.dilutionBound();
   moloch.processingReward = contract.processingReward();
   moloch.summoningTime = contract.summoningTime();
+  moloch.guildBankAddress = contract.guildBank();
   moloch.save();
 
   addSummonBadge(event.params.summoner, event.transaction);
@@ -342,6 +343,7 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
   moloch.dilutionBound = contract.dilutionBound();
   moloch.processingReward = contract.processingReward();
   moloch.summoningTime = contract.summoningTime();
+  moloch.guildBankAddress = contract.guildBank();
 
   moloch.save();
 
