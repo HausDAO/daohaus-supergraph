@@ -70,6 +70,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   let proposalFromContract = contract.proposalQueue(event.params.proposalIndex);
   let startingPeriod = proposalFromContract.value3;
   let details = proposalFromContract.value10;
+  let approvedToken = contract.approvedToken();
 
   let proposalId = molochId
     .concat("-proposal-")
@@ -90,6 +91,8 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.memberAddress = event.params.memberAddress;
   proposal.applicant = event.params.applicant;
   proposal.tributeOffered = event.params.tokenTribute;
+  proposal.tributeToken = approvedToken;
+
   proposal.sharesRequested = event.params.sharesRequested;
   proposal.yesVotes = BigInt.fromI32(0);
   proposal.noVotes = BigInt.fromI32(0);
@@ -103,7 +106,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   // TODO: these values are for V2, but can't be null in v1 due to math issues - not used in v1
   proposal.sponsor = Address.fromString(ZERO_ADDRESS);
   proposal.lootRequested = BigInt.fromI32(0);
-  proposal.tributeToken = Address.fromString(ZERO_ADDRESS);
   proposal.paymentRequested = BigInt.fromI32(0);
   proposal.paymentToken = Address.fromString(ZERO_ADDRESS);
 
