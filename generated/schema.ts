@@ -200,13 +200,21 @@ export class Moloch extends Entity {
     this.set("approvedTokens", Value.fromStringArray(value));
   }
 
-  get guildBankAddress(): Bytes {
+  get guildBankAddress(): Bytes | null {
     let value = this.get("guildBankAddress");
-    return value.toBytes();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set guildBankAddress(value: Bytes) {
-    this.set("guildBankAddress", Value.fromBytes(value));
+  set guildBankAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("guildBankAddress");
+    } else {
+      this.set("guildBankAddress", Value.fromBytes(value as Bytes));
+    }
   }
 
   get tokens(): Array<string> | null {

@@ -259,7 +259,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   proposal.save();
 
-  addProposalSubmissionBadge(event.params.memberAddress, event.transaction);
+  addProposalSubmissionBadge(event.transaction.from, event.transaction);
 
   // collect tribute from proposer and store it in Moloch ESCROW until the proposal is processed
   if (event.params.tributeOffered > BigInt.fromI32(0)) {

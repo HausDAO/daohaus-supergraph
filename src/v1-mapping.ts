@@ -92,7 +92,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.applicant = event.params.applicant;
   proposal.tributeOffered = event.params.tokenTribute;
   proposal.tributeToken = approvedToken;
-
+  proposal.proposer = event.transaction.from;
   proposal.sharesRequested = event.params.sharesRequested;
   proposal.yesVotes = BigInt.fromI32(0);
   proposal.noVotes = BigInt.fromI32(0);
@@ -126,7 +126,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   proposal.save();
 
-  addProposalSubmissionBadge(event.params.memberAddress, event.transaction);
+  addProposalSubmissionBadge(event.transaction.from, event.transaction);
 }
 
 export function handleSubmitVote(event: SubmitVote): void {
