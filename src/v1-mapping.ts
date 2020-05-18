@@ -105,6 +105,8 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   // TODO: these values are for V2, but can't be null in v1 due to math issues - not used in v1
   proposal.sponsor = Address.fromString(ZERO_ADDRESS);
+  proposal.sponsored = true;
+  proposal.sponsoredAt = event.block.timestamp.toString();
   proposal.lootRequested = BigInt.fromI32(0);
   proposal.paymentRequested = BigInt.fromI32(0);
   proposal.paymentToken = Address.fromString(ZERO_ADDRESS);

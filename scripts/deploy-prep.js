@@ -6,14 +6,20 @@ const config = {
     v1FactoryAddress: "0x0C60Cd59f42093c7489BA68BAA4d7A01f2468153",
     v1FactoryStartBlock: 14980875,
     v2FactoryAddress: "0xB47778d3BcCBf5e39dEC075CA5F185fc20567b1e",
-    v2FactoryStartBlock: 16845360
+    v2FactoryStartBlock: 16845360,
+  },
+  rinkeby: {
+    v1FactoryAddress: "0x610247467d0dfA8B477ad7Dd1644e86CB2a79F8F",
+    v1FactoryStartBlock: 6494343,
+    v2FactoryAddress: "0x763b61A62EF076ad960E1d513713B2aeD7C1b88e",
+    v2FactoryStartBlock: 6494329,
   },
   mainnet: {
     v1FactoryAddress: "0x2840d12d926cc686217bb42b80b662c7d72ee787",
     v1FactoryStartBlock: 8625240,
     v2FactoryAddress: "0x1782a13f176e84Be200842Ade79daAA0B09F0418",
-    v2FactoryStartBlock: 9484660
-  }
+    v2FactoryStartBlock: 9484660,
+  },
 };
 
 const network = process.argv.slice(2)[0];
@@ -33,7 +39,7 @@ try {
   data.templates[0].network = network;
   data.templates[1].network = network;
 
-  if (network === "kovan") {
+  if (network !== "mainnet") {
     data.dataSources.splice(2, 4);
     // data.dataSources.splice(3);
   }

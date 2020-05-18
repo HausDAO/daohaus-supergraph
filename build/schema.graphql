@@ -108,7 +108,8 @@ type Proposal @entity {
   startingPeriod: BigInt
   yesVotes: BigInt!
   noVotes: BigInt!
-  sponsored: Boolean
+  sponsored: Boolean!
+  sponsoredAt: String
   processed: Boolean!
   didPass: Boolean!
   cancelled: Boolean

@@ -1232,6 +1232,15 @@ export class Proposal extends Entity {
     this.set("sponsored", Value.fromBoolean(value));
   }
 
+  get sponsoredAt(): string {
+    let value = this.get("sponsoredAt");
+    return value.toString();
+  }
+
+  set sponsoredAt(value: string) {
+    this.set("sponsoredAt", Value.fromString(value));
+  }
+
   get processed(): boolean {
     let value = this.get("processed");
     return value.toBoolean();

@@ -74,9 +74,20 @@ function subtractFromBalance(
   amount: BigInt
 ): string {
   let tokenBalanceId = token.concat("-member-").concat(member.toHex());
-  let balance: TokenBalance | null = TokenBalance.load(tokenBalanceId);
+
+  log.info("***** subtractFromBalance tokenBalanceId, {}", [tokenBalanceId]);
+
+  // trying this do to failures on mcv processing issues
+  // let balance: TokenBalance | null = TokenBalance.load(tokenBalanceId);
+  let balance: TokenBalance | null = loadOrCreateTokenBalance(
+    molochId,
+    member,
+    token
+  );
 
   balance.tokenBalance = balance.tokenBalance.minus(amount);
+
+  log.info("***** balance.tokenBalance, {}", [balance.tokenBalance.toString()]);
 
   balance.save();
   return tokenBalanceId;
@@ -185,8 +196,8 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   let member = Member.load(
     molochId.concat("-member-").concat(event.params.applicant.toHex())
   );
-  let newMember =
-    member == null && event.params.sharesRequested > BigInt.fromI32(0);
+  let noMember = member == null || member.exists == false;
+  let newMember = noMember && event.params.sharesRequested > BigInt.fromI32(0);
 
   // For trades, members deposit tribute in the token they want to sell to the dao, and request payment in the token they wish to receive.
   let trade =
@@ -373,6 +384,7 @@ export function handleSponsorProposal(event: SponsorProposal): void {
 
   proposal.proposalIndex = event.params.proposalIndex;
   proposal.sponsor = event.params.memberAddress;
+  proposal.sponsoredAt = event.block.timestamp.toString();
   proposal.startingPeriod = event.params.startingPeriod;
   proposal.sponsored = true;
 
@@ -804,8 +816,28 @@ export function handleUpdateDelegateKey(event: UpdateDelegateKey): void {
 }
 
 export function handleWithdraw(event: Withdraw): void {
-  // NOTE: Used event.transaction.from instead of event.params.memberAddress
-  // due to event on MCV where those didn't match and caused subtractFromBalance to fail
+  // let memberAddress = event.params.memberAddress;
+
+  log.info(
+    "***********handleWithdraw tx {}, ammount, {}, from {}, memberAddress {}",
+    [
+      event.transaction.hash.toHex(),
+      event.params.amount.toString(),
+      event.transaction.from.toHex(),
+      event.params.memberAddress.toHex(),
+    ]
+  );
+
+  // if (
+  //   event.transaction.hash.toHexString() ==
+  //   "0x66372e97bcbcfae9810165f6a49479cacc04fd6a0f8054a9873cd90f766385e7"
+  // ) {
+  //   // NOTE: Used event.transaction.from instead of event.params.memberAddress
+  //   // due to event on MCV where those didn't match and caused subtractFromBalance to fail
+  //   log.info("FIND ME MCV bad tx", []);
+  //   memberAddress = event.transaction.from;
+  // }
+
   let molochId = event.address.toHexString();
 
   let tokenId = molochId.concat("-token-").concat(event.params.token.toHex());
@@ -813,7 +845,7 @@ export function handleWithdraw(event: Withdraw): void {
   if (event.params.amount > BigInt.fromI32(0)) {
     subtractFromBalance(
       molochId,
-      event.transaction.from,
+      event.params.memberAddress,
       tokenId,
       event.params.amount
     );
