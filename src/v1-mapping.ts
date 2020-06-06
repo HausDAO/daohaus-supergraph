@@ -10,7 +10,7 @@ import {
   Abort,
 } from "../generated/templates/MolochV1Template/V1Moloch";
 import { Guildbank } from "../generated/templates/MolochV1Template/Guildbank";
-import { Member, Proposal, Vote, Moloch } from "../generated/schema";
+import { Member, Proposal, Vote, Moloch, RageQuit } from "../generated/schema";
 import {
   addVotedBadge,
   addSummonBadge,
@@ -271,6 +271,21 @@ export function handleRagequit(event: Ragequit): void {
 
   moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
   moloch.save();
+
+  let rageQuitId = memberId
+    .concat("-")
+    .concat("rage-")
+    .concat(event.block.number.toString());
+  let rageQuit = new RageQuit(rageQuitId);
+  rageQuit.createdAt = event.block.timestamp.toString();
+  rageQuit.moloch = molochId;
+  rageQuit.molochAddress = event.address;
+  rageQuit.member = memberId;
+  rageQuit.memberAddress = event.params.memberAddress;
+  rageQuit.shares = event.params.sharesToBurn;
+  rageQuit.loot = BigInt.fromI32(0);
+
+  rageQuit.save();
 }
 
 export function handleAbort(event: Abort): void {

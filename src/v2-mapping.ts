@@ -23,6 +23,7 @@ import {
   TokenBalance,
   Proposal,
   Vote,
+  RageQuit,
 } from "../generated/schema";
 import {
   addVotedBadge,
@@ -778,6 +779,21 @@ export function handleRagequit(event: Ragequit): void {
 
   member.save();
   moloch.save();
+
+  let rageQuitId = memberId
+    .concat("-")
+    .concat("rage-")
+    .concat(event.block.number.toString());
+  let rageQuit = new RageQuit(rageQuitId);
+  rageQuit.createdAt = event.block.timestamp.toString();
+  rageQuit.moloch = molochId;
+  rageQuit.molochAddress = event.address;
+  rageQuit.member = memberId;
+  rageQuit.memberAddress = event.params.memberAddress;
+  rageQuit.shares = event.params.sharesToBurn;
+  rageQuit.loot = event.params.lootToBurn;
+
+  rageQuit.save();
 }
 
 export function handleCancelProposal(event: CancelProposal): void {

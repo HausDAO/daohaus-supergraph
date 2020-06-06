@@ -285,6 +285,23 @@ export class Moloch extends Entity {
     }
   }
 
+  get rageQuits(): Array<string> | null {
+    let value = this.get("rageQuits");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set rageQuits(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("rageQuits");
+    } else {
+      this.set("rageQuits", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
   get guildTokenBalance(): Array<string> | null {
     let value = this.get("guildTokenBalance");
     if (value === null) {
@@ -857,6 +874,23 @@ export class Member extends Entity {
       this.unset("tokenBalances");
     } else {
       this.set("tokenBalances", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
+  get rageQuits(): Array<string> | null {
+    let value = this.get("rageQuits");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set rageQuits(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("rageQuits");
+    } else {
+      this.set("rageQuits", Value.fromStringArray(value as Array<string>));
     }
   }
 
@@ -1583,5 +1617,99 @@ export class Badge extends Entity {
 
   set totalGas(value: BigInt) {
     this.set("totalGas", Value.fromBigInt(value));
+  }
+}
+
+export class RageQuit extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save RageQuit entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save RageQuit entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("RageQuit", id.toString(), this);
+  }
+
+  static load(id: string): RageQuit | null {
+    return store.get("RageQuit", id) as RageQuit | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get createdAt(): string {
+    let value = this.get("createdAt");
+    return value.toString();
+  }
+
+  set createdAt(value: string) {
+    this.set("createdAt", Value.fromString(value));
+  }
+
+  get moloch(): string {
+    let value = this.get("moloch");
+    return value.toString();
+  }
+
+  set moloch(value: string) {
+    this.set("moloch", Value.fromString(value));
+  }
+
+  get molochAddress(): Bytes {
+    let value = this.get("molochAddress");
+    return value.toBytes();
+  }
+
+  set molochAddress(value: Bytes) {
+    this.set("molochAddress", Value.fromBytes(value));
+  }
+
+  get member(): string {
+    let value = this.get("member");
+    return value.toString();
+  }
+
+  set member(value: string) {
+    this.set("member", Value.fromString(value));
+  }
+
+  get memberAddress(): Bytes {
+    let value = this.get("memberAddress");
+    return value.toBytes();
+  }
+
+  set memberAddress(value: Bytes) {
+    this.set("memberAddress", Value.fromBytes(value));
+  }
+
+  get shares(): BigInt {
+    let value = this.get("shares");
+    return value.toBigInt();
+  }
+
+  set shares(value: BigInt) {
+    this.set("shares", Value.fromBigInt(value));
+  }
+
+  get loot(): BigInt {
+    let value = this.get("loot");
+    return value.toBigInt();
+  }
+
+  set loot(value: BigInt) {
+    this.set("loot", Value.fromBigInt(value));
   }
 }

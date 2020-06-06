@@ -19,6 +19,7 @@ type Moloch @entity {
   members: [Member!] @derivedFrom(field: "moloch")
   tokenBalances: [TokenBalance!] @derivedFrom(field: "moloch")
   proposals: [Proposal!] @derivedFrom(field: "moloch")
+  rageQuits: [RageQuit!] @derivedFrom(field: "moloch")
   guildTokenBalance: [TokenBalance!]
   escrowTokenBalance: [TokenBalance!]
   totalShares: BigInt!
@@ -69,6 +70,7 @@ type Member @entity {
   votes: [Vote!] @derivedFrom(field: "member")
   submissions: [Proposal!] @derivedFrom(field: "member")
   tokenBalances: [TokenBalance!] @derivedFrom(field: "member")
+  rageQuits: [RageQuit!] @derivedFrom(field: "member")
   proposedToKick: Boolean
   kicked: Boolean
   jailed: Proposal
@@ -150,4 +152,15 @@ type Badge @entity {
   # proposalSubmissionTradeCount: BigInt!
   # proposalSubmissionWhitelistCount: BigInt!
   # proposalSubmissionGuildkicktCount: BigInt!
+}
+
+type RageQuit @entity {
+  id: ID!
+  createdAt: String!
+  moloch: Moloch!
+  molochAddress: Bytes!
+  member: Member!
+  memberAddress: Bytes!
+  shares: BigInt!
+  loot: BigInt!
 }
