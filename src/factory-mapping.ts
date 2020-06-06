@@ -1,10 +1,11 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { BigInt, log, Bytes, Address } from "@graphprotocol/graph-ts";
 import { Register as RegisterV1 } from "../generated/V1Factory/V1Factory";
 import {
   Register as RegisterV2,
   Delete,
 } from "../generated/V2Factory/V2Factory";
 import { V1Moloch } from "../generated/templates/MolochV1Template/V1Moloch";
+import { Guildbank } from "../generated/templates/MolochV1Template/Guildbank";
 
 import { MolochV1Template, MolochV2Template } from "../generated/templates";
 import { Moloch, Member } from "../generated/schema";
@@ -51,6 +52,11 @@ export function handleRegisterV1(event: RegisterV1): void {
   moloch.processingReward = contract.processingReward();
   moloch.summoningTime = contract.summoningTime();
   moloch.guildBankAddress = contract.guildBank();
+
+  let gbContract = Guildbank.bind(moloch.guildBankAddress as Address);
+  let depositTokenAddress = gbContract.approvedToken();
+  approvedTokens.push(createAndApproveToken(molochId, depositTokenAddress));
+  moloch.depositToken = approvedTokens[0];
 
   moloch.save();
 }

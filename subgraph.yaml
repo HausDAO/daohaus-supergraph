@@ -20,6 +20,12 @@ dataSources:
           file: ./abis/V1Factory.json
         - name: V1Moloch
           file: ./abis/V1Moloch.json
+        - name: Guildbank
+          file: ./abis/Guildbank.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20Bytes32
+          file: ./abis/Erc20Bytes32.json
       eventHandlers:
         - event: 'Register(address,indexed address,uint256,string,uint256)'
           handler: handleRegisterV1
@@ -40,6 +46,10 @@ dataSources:
       abis:
         - name: V2Factory
           file: ./abis/V2Factory.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20Bytes32
+          file: ./abis/Erc20Bytes32.json
       eventHandlers:
         - event: >-
             Register(uint256,address,indexed
@@ -70,6 +80,10 @@ dataSources:
       abis:
         - name: V2Moloch
           file: ./abis/V2Moloch.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20Bytes32
+          file: ./abis/Erc20Bytes32.json
       eventHandlers:
         - event: >-
             SummonComplete(indexed
@@ -125,6 +139,12 @@ dataSources:
       abis:
         - name: V1Moloch
           file: ./abis/V1Moloch.json
+        - name: Guildbank
+          file: ./abis/Guildbank.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20Bytes32
+          file: ./abis/Erc20Bytes32.json
       eventHandlers:
         - event: 'SummonComplete(indexed address,uint256)'
           handler: handleSummonCompleteLegacy
@@ -165,6 +185,12 @@ dataSources:
       abis:
         - name: V1Moloch
           file: ./abis/V1Moloch.json
+        - name: Guildbank
+          file: ./abis/Guildbank.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20Bytes32
+          file: ./abis/Erc20Bytes32.json
       eventHandlers:
         - event: 'SummonComplete(indexed address,uint256)'
           handler: handleSummonCompleteLegacy
@@ -205,6 +231,12 @@ templates:
       abis:
         - name: V1Moloch
           file: ./abis/V1Moloch.json
+        - name: Guildbank
+          file: ./abis/Guildbank.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20Bytes32
+          file: ./abis/Erc20Bytes32.json
       eventHandlers:
         - event: 'SummonComplete(indexed address,uint256)'
           handler: handleSummonComplete
@@ -245,6 +277,10 @@ templates:
       abis:
         - name: V2Moloch
           file: ./abis/V2Moloch.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20Bytes32
+          file: ./abis/Erc20Bytes32.json
       eventHandlers:
         - event: >-
             SubmitProposal(indexed

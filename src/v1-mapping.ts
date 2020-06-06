@@ -9,6 +9,7 @@ import {
   Ragequit,
   Abort,
 } from "../generated/templates/MolochV1Template/V1Moloch";
+import { Guildbank } from "../generated/templates/MolochV1Template/Guildbank";
 import { Member, Proposal, Vote, Moloch } from "../generated/schema";
 import {
   addVotedBadge,
@@ -18,6 +19,7 @@ import {
   addMembershipBadge,
   addProposalProcessorBadge,
 } from "./badges";
+import { createAndApproveToken } from "./v2-mapping";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
@@ -53,6 +55,14 @@ export function handleSummonComplete(event: SummonComplete): void {
   moloch.processingReward = contract.processingReward();
   moloch.summoningTime = contract.summoningTime();
   moloch.guildBankAddress = contract.guildBank();
+
+  let gbContract = Guildbank.bind(moloch.guildBankAddress as Address);
+  let depositTokenAddress = gbContract.approvedToken();
+  let approvedTokens: string[] = [];
+  moloch.approvedTokens = approvedTokens;
+  approvedTokens.push(createAndApproveToken(molochId, depositTokenAddress));
+  moloch.depositToken = approvedTokens[0];
+
   moloch.save();
 
   addSummonBadge(event.params.summoner, event.transaction);
@@ -318,9 +328,6 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
   moloch.dilutionBound = BigInt.fromI32(0);
   moloch.processingReward = BigInt.fromI32(0);
 
-  let approvedTokens: string[] = [];
-  moloch.approvedTokens = approvedTokens;
-
   let memberId = molochId
     .concat("-member-")
     .concat(event.params.summoner.toHex());
@@ -348,6 +355,13 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
   moloch.processingReward = contract.processingReward();
   moloch.summoningTime = contract.summoningTime();
   moloch.guildBankAddress = contract.guildBank();
+
+  let gbContract = Guildbank.bind(moloch.guildBankAddress as Address);
+  let depositTokenAddress = gbContract.approvedToken();
+  let approvedTokens: string[] = [];
+  moloch.approvedTokens = approvedTokens;
+  approvedTokens.push(createAndApproveToken(molochId, depositTokenAddress));
+  moloch.depositToken = approvedTokens[0];
 
   moloch.save();
 

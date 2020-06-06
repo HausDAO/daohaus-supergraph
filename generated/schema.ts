@@ -628,6 +628,40 @@ export class Token extends Entity {
       this.set("approved", Value.fromString(value as string));
     }
   }
+
+  get symbol(): string | null {
+    let value = this.get("symbol");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set symbol(value: string | null) {
+    if (value === null) {
+      this.unset("symbol");
+    } else {
+      this.set("symbol", Value.fromString(value as string));
+    }
+  }
+
+  get decimals(): BigInt | null {
+    let value = this.get("decimals");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set decimals(value: BigInt | null) {
+    if (value === null) {
+      this.unset("decimals");
+    } else {
+      this.set("decimals", Value.fromBigInt(value as BigInt));
+    }
+  }
 }
 
 export class Member extends Entity {
@@ -1232,13 +1266,21 @@ export class Proposal extends Entity {
     this.set("sponsored", Value.fromBoolean(value));
   }
 
-  get sponsoredAt(): string {
+  get sponsoredAt(): string | null {
     let value = this.get("sponsoredAt");
-    return value.toString();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set sponsoredAt(value: string) {
-    this.set("sponsoredAt", Value.fromString(value));
+  set sponsoredAt(value: string | null) {
+    if (value === null) {
+      this.unset("sponsoredAt");
+    } else {
+      this.set("sponsoredAt", Value.fromString(value as string));
+    }
   }
 
   get processed(): boolean {

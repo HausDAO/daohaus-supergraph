@@ -13,6 +13,9 @@ import {
   Withdraw,
   TokensCollected,
 } from "../generated/templates/MolochV2Template/V2Moloch";
+import { Erc20 } from "../generated/templates/MolochV2Template/Erc20";
+import { Erc20Bytes32 } from "../generated/templates/MolochV2Template/Erc20Bytes32";
+
 import {
   Moloch,
   Member,
@@ -74,21 +77,12 @@ function subtractFromBalance(
   amount: BigInt
 ): string {
   let tokenBalanceId = token.concat("-member-").concat(member.toHex());
-
-  log.info("***** subtractFromBalance tokenBalanceId, {}", [tokenBalanceId]);
-
-  // trying this do to failures on mcv processing issues
-  // let balance: TokenBalance | null = TokenBalance.load(tokenBalanceId);
   let balance: TokenBalance | null = loadOrCreateTokenBalance(
     molochId,
     member,
     token
   );
-
   balance.tokenBalance = balance.tokenBalance.minus(amount);
-
-  log.info("***** balance.tokenBalance, {}", [balance.tokenBalance.toString()]);
-
   balance.save();
   return tokenBalanceId;
 }
@@ -173,6 +167,38 @@ export function createAndApproveToken(molochId: string, token: Bytes): string {
   createToken.moloch = molochId;
   createToken.tokenAddress = token;
   createToken.whitelisted = true;
+
+  let erc20 = Erc20.bind(token as Address);
+  let symbol = erc20.try_symbol();
+  if (symbol.reverted) {
+    log.info("symbol reverted molochId {}, token, {}", [
+      molochId,
+      token.toHexString(),
+    ]);
+
+    let erc20Bytes32 = Erc20Bytes32.bind(token as Address);
+    let otherSymbol = erc20Bytes32.try_symbol();
+    if (otherSymbol.reverted) {
+      log.info("other symbol reverted molochId {}, token, {}", [
+        molochId,
+        token.toHexString(),
+      ]);
+    } else {
+      createToken.symbol = otherSymbol.value.toString();
+    }
+  } else {
+    createToken.symbol = symbol.value;
+  }
+
+  let decimals = erc20.try_decimals();
+  if (decimals.reverted) {
+    log.info("decimals reverted molochId {}, token, {}", [
+      molochId,
+      token.toHexString(),
+    ]);
+  } else {
+    createToken.decimals = BigInt.fromI32(decimals.value);
+  }
 
   createToken.save();
   return tokenId;

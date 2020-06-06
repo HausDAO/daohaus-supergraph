@@ -20,6 +20,12 @@ dataSources:
           file: V1Factory/abis/V1Factory.json
         - name: V1Moloch
           file: V1Factory/abis/V1Moloch.json
+        - name: Guildbank
+          file: V1Factory/abis/Guildbank.json
+        - name: Erc20
+          file: V1Factory/abis/Erc20.json
+        - name: Erc20Bytes32
+          file: V1Factory/abis/Erc20Bytes32.json
       eventHandlers:
         - event: Register(address,indexed address,uint256,string,uint256)
           handler: handleRegisterV1
@@ -40,6 +46,10 @@ dataSources:
       abis:
         - name: V2Factory
           file: V2Factory/abis/V2Factory.json
+        - name: Erc20
+          file: V2Factory/abis/Erc20.json
+        - name: Erc20Bytes32
+          file: V2Factory/abis/Erc20Bytes32.json
       eventHandlers:
         - event: Register(uint256,address,indexed
             address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256,string,uint256)
@@ -69,6 +79,10 @@ dataSources:
       abis:
         - name: V2Moloch
           file: MCV/abis/V2Moloch.json
+        - name: Erc20
+          file: MCV/abis/Erc20.json
+        - name: Erc20Bytes32
+          file: MCV/abis/Erc20Bytes32.json
       eventHandlers:
         - event: SummonComplete(indexed
             address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256)
@@ -118,6 +132,12 @@ dataSources:
       abis:
         - name: V1Moloch
           file: MolochDAO/abis/V1Moloch.json
+        - name: Guildbank
+          file: MolochDAO/abis/Guildbank.json
+        - name: Erc20
+          file: MolochDAO/abis/Erc20.json
+        - name: Erc20Bytes32
+          file: MolochDAO/abis/Erc20Bytes32.json
       eventHandlers:
         - event: SummonComplete(indexed address,uint256)
           handler: handleSummonCompleteLegacy
@@ -156,6 +176,12 @@ dataSources:
       abis:
         - name: V1Moloch
           file: MCDAO/abis/V1Moloch.json
+        - name: Guildbank
+          file: MCDAO/abis/Guildbank.json
+        - name: Erc20
+          file: MCDAO/abis/Erc20.json
+        - name: Erc20Bytes32
+          file: MCDAO/abis/Erc20Bytes32.json
       eventHandlers:
         - event: SummonComplete(indexed address,uint256)
           handler: handleSummonCompleteLegacy
@@ -194,6 +220,12 @@ templates:
       abis:
         - name: V1Moloch
           file: MolochV1Template/abis/V1Moloch.json
+        - name: Guildbank
+          file: MolochV1Template/abis/Guildbank.json
+        - name: Erc20
+          file: MolochV1Template/abis/Erc20.json
+        - name: Erc20Bytes32
+          file: MolochV1Template/abis/Erc20Bytes32.json
       eventHandlers:
         - event: SummonComplete(indexed address,uint256)
           handler: handleSummonComplete
@@ -232,6 +264,10 @@ templates:
       abis:
         - name: V2Moloch
           file: MolochV2Template/abis/V2Moloch.json
+        - name: Erc20
+          file: MolochV2Template/abis/Erc20.json
+        - name: Erc20Bytes32
+          file: MolochV2Template/abis/Erc20Bytes32.json
       eventHandlers:
         - event: SubmitProposal(indexed
             address,uint256,uint256,uint256,address,uint256,address,string,bool[6],uint256,indexed

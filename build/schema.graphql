@@ -49,6 +49,8 @@ type Token @entity {
   tokenAddress: Bytes!
   whitelisted: Boolean!
   approved: Proposal
+  symbol: String
+  decimals: BigInt
 }
 
 type Member @entity {
