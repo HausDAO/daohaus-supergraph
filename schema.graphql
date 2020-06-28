@@ -135,6 +135,7 @@ type Proposal @entity {
   votingPeriodStarts: BigInt!
   votingPeriodEnds: BigInt!
   gracePeriodEnds: BigInt!
+  molochVersion: String!
 }
 
 type Badge @entity {

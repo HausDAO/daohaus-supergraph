@@ -127,6 +127,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.lootRequested = BigInt.fromI32(0);
   proposal.paymentRequested = BigInt.fromI32(0);
   proposal.paymentToken = Address.fromString(ZERO_ADDRESS);
+  proposal.molochVersion = "1";
 
   // calculate times
   let votingPeriodStarts = moloch.summoningTime.plus(

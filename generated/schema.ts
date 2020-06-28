@@ -1547,6 +1547,15 @@ export class Proposal extends Entity {
   set gracePeriodEnds(value: BigInt) {
     this.set("gracePeriodEnds", Value.fromBigInt(value));
   }
+
+  get molochVersion(): string {
+    let value = this.get("molochVersion");
+    return value.toString();
+  }
+
+  set molochVersion(value: string) {
+    this.set("molochVersion", Value.fromString(value));
+  }
 }
 
 export class Badge extends Entity {
