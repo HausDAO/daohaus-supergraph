@@ -10,7 +10,14 @@ import {
   Abort,
 } from "../generated/templates/MolochV1Template/V1Moloch";
 import { Guildbank } from "../generated/templates/MolochV1Template/Guildbank";
-import { Member, Proposal, Vote, Moloch, RageQuit } from "../generated/schema";
+import {
+  Member,
+  Proposal,
+  Vote,
+  Moloch,
+  RageQuit,
+  Token,
+} from "../generated/schema";
 import {
   addVotedBadge,
   addSummonBadge,
@@ -135,6 +142,13 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.votingPeriodStarts = votingPeriodStarts;
   proposal.votingPeriodEnds = votingPeriodEnds;
   proposal.gracePeriodEnds = gracePeriodEnds;
+
+  if (event.params.tokenTribute > BigInt.fromI32(0)) {
+    let tokenId = molochId.concat("-token-").concat(approvedToken.toHex());
+    let token = Token.load(tokenId);
+    proposal.tributeTokenSymbol = token.symbol;
+    proposal.tributeTokenDecimals = token.decimals;
+  }
 
   proposal.save();
 

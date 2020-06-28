@@ -107,8 +107,12 @@ type Proposal @entity {
   lootRequested: BigInt!
   tributeOffered: BigInt!
   tributeToken: Bytes!
+  tributeTokenSymbol: String
+  tributeTokenDecimals: BigInt
   paymentRequested: BigInt!
   paymentToken: Bytes!
+  paymentTokenSymbol: String
+  paymentTokenDecimals: BigInt
   startingPeriod: BigInt
   yesVotes: BigInt!
   noVotes: BigInt!

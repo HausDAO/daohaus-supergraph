@@ -279,21 +279,23 @@ export function handleSubmitProposal(event: SubmitProposal): void {
     proposal.details = event.params.details;
   }
 
-  // calculate times
-  let moloch = Moloch.load(molochId);
-  let votingPeriodStarts = moloch.summoningTime.plus(
-    proposal.startingPeriod.times(moloch.periodDuration)
-  );
-  let votingPeriodEnds = votingPeriodStarts.plus(
-    moloch.votingPeriodLength.times(moloch.periodDuration)
-  );
-  let gracePeriodEnds = votingPeriodEnds.plus(
-    moloch.gracePeriodLength.times(moloch.periodDuration)
-  );
+  if (event.params.tributeOffered > BigInt.fromI32(0)) {
+    let tokenId = molochId
+      .concat("-token-")
+      .concat(event.params.tributeToken.toHex());
+    let token = Token.load(tokenId);
+    proposal.tributeTokenSymbol = token.symbol;
+    proposal.tributeTokenDecimals = token.decimals;
+  }
 
-  proposal.votingPeriodStarts = votingPeriodStarts;
-  proposal.votingPeriodEnds = votingPeriodEnds;
-  proposal.gracePeriodEnds = gracePeriodEnds;
+  if (event.params.paymentRequested > BigInt.fromI32(0)) {
+    let tokenId = molochId
+      .concat("-token-")
+      .concat(event.params.paymentToken.toHex());
+    let token = Token.load(tokenId);
+    proposal.paymentTokenSymbol = token.symbol;
+    proposal.paymentTokenDecimals = token.decimals;
+  }
 
   proposal.save();
 
@@ -414,6 +416,21 @@ export function handleSponsorProposal(event: SponsorProposal): void {
   proposal.sponsoredAt = event.block.timestamp.toString();
   proposal.startingPeriod = event.params.startingPeriod;
   proposal.sponsored = true;
+
+  // calculate times
+  let votingPeriodStarts = moloch.summoningTime.plus(
+    proposal.startingPeriod.times(moloch.periodDuration)
+  );
+  let votingPeriodEnds = votingPeriodStarts.plus(
+    moloch.votingPeriodLength.times(moloch.periodDuration)
+  );
+  let gracePeriodEnds = votingPeriodEnds.plus(
+    moloch.gracePeriodLength.times(moloch.periodDuration)
+  );
+
+  proposal.votingPeriodStarts = votingPeriodStarts;
+  proposal.votingPeriodEnds = votingPeriodEnds;
+  proposal.gracePeriodEnds = gracePeriodEnds;
 
   proposal.save();
 

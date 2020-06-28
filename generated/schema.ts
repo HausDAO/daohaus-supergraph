@@ -1238,6 +1238,40 @@ export class Proposal extends Entity {
     this.set("tributeToken", Value.fromBytes(value));
   }
 
+  get tributeTokenSymbol(): string | null {
+    let value = this.get("tributeTokenSymbol");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set tributeTokenSymbol(value: string | null) {
+    if (value === null) {
+      this.unset("tributeTokenSymbol");
+    } else {
+      this.set("tributeTokenSymbol", Value.fromString(value as string));
+    }
+  }
+
+  get tributeTokenDecimals(): BigInt | null {
+    let value = this.get("tributeTokenDecimals");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set tributeTokenDecimals(value: BigInt | null) {
+    if (value === null) {
+      this.unset("tributeTokenDecimals");
+    } else {
+      this.set("tributeTokenDecimals", Value.fromBigInt(value as BigInt));
+    }
+  }
+
   get paymentRequested(): BigInt {
     let value = this.get("paymentRequested");
     return value.toBigInt();
@@ -1254,6 +1288,40 @@ export class Proposal extends Entity {
 
   set paymentToken(value: Bytes) {
     this.set("paymentToken", Value.fromBytes(value));
+  }
+
+  get paymentTokenSymbol(): string | null {
+    let value = this.get("paymentTokenSymbol");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set paymentTokenSymbol(value: string | null) {
+    if (value === null) {
+      this.unset("paymentTokenSymbol");
+    } else {
+      this.set("paymentTokenSymbol", Value.fromString(value as string));
+    }
+  }
+
+  get paymentTokenDecimals(): BigInt | null {
+    let value = this.get("paymentTokenDecimals");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set paymentTokenDecimals(value: BigInt | null) {
+    if (value === null) {
+      this.unset("paymentTokenDecimals");
+    } else {
+      this.set("paymentTokenDecimals", Value.fromBigInt(value as BigInt));
+    }
   }
 
   get startingPeriod(): BigInt | null {
