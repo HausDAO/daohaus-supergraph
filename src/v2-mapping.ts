@@ -268,6 +268,9 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.noShares = BigInt.fromI32(0);
   proposal.maxTotalSharesAndLootAtYesVote = BigInt.fromI32(0);
   proposal.molochVersion = "2";
+  proposal.votingPeriodStarts = BigInt.fromI32(0);
+  proposal.votingPeriodEnds = BigInt.fromI32(0);
+  proposal.gracePeriodEnds = BigInt.fromI32(0);
 
   // catch a bad kovan proposal with non-utf8 in the details field
   // if (event.params.details.toString().startsWith("{")) {
