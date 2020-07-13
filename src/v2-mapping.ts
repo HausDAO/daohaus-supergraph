@@ -220,6 +220,8 @@ export function handleSubmitProposal(event: SubmitProposal): void {
     .concat("-member-")
     .concat(event.params.memberAddress.toHex());
 
+  log.info("***** submitProposal {}", [newProposalId]);
+
   let member = Member.load(
     molochId.concat("-member-").concat(event.params.applicant.toHex())
   );
@@ -272,16 +274,8 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.votingPeriodEnds = BigInt.fromI32(0);
   proposal.gracePeriodEnds = BigInt.fromI32(0);
 
-  // catch a bad kovan proposal with non-utf8 in the details field
-  // if (event.params.details.toString().startsWith("{")) {
-  if (
-    molochId == "0x501f352e32ec0c981268dc5b5ba1d3661b1acbc6" &&
-    event.params.proposalId.toString() == "30"
-  ) {
-    proposal.details = "Minion Details Error";
-  } else {
-    proposal.details = event.params.details;
-  }
+  proposal.details = event.params.details.toString();
+  log.info("***** assigning  {}", [proposal.details]);
 
   if (event.params.tributeOffered > BigInt.fromI32(0)) {
     let tokenId = molochId
@@ -300,6 +294,8 @@ export function handleSubmitProposal(event: SubmitProposal): void {
     proposal.paymentTokenSymbol = token.symbol;
     proposal.paymentTokenDecimals = token.decimals;
   }
+
+  log.info("***** saving proposal {}", [newProposalId]);
 
   proposal.save();
 
@@ -384,6 +380,8 @@ export function handleSponsorProposal(event: SponsorProposal): void {
   let sponsorProposalId = molochId
     .concat("-proposal-")
     .concat(event.params.proposalId.toString());
+
+  log.info("***** sponsorProposal {}", [sponsorProposalId]);
 
   let moloch = Moloch.load(molochId);
 

@@ -1,4 +1,4 @@
-import { BigInt, log, Address } from "@graphprotocol/graph-ts";
+import { BigInt, log, Address, EthereumBlock } from "@graphprotocol/graph-ts";
 import {
   V1Moloch as Contract,
   SummonComplete,
@@ -10,6 +10,7 @@ import {
   Abort,
 } from "../generated/templates/MolochV1Template/V1Moloch";
 import { Guildbank } from "../generated/templates/MolochV1Template/Guildbank";
+import { Erc20 } from "../generated/templates/MolochV1Template/Erc20";
 import {
   Member,
   Proposal,
@@ -29,6 +30,16 @@ import {
 import { createAndApproveToken } from "./v2-mapping";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+
+function getBalance(guildBankAddress: Address): BigInt {
+  let guildBank = Guildbank.bind(guildBankAddress);
+  let tokenAddress = guildBank.approvedToken();
+  let token = Erc20.bind(tokenAddress);
+
+  let balance = token.balanceOf(guildBankAddress);
+
+  return balance;
+}
 
 export function handleSummonComplete(event: SummonComplete): void {
   let molochId = event.address.toHex();
@@ -62,6 +73,7 @@ export function handleSummonComplete(event: SummonComplete): void {
   moloch.processingReward = contract.processingReward();
   moloch.summoningTime = contract.summoningTime();
   moloch.guildBankAddress = contract.guildBank();
+  moloch.guildBankBalanceV1 = BigInt.fromI32(0);
 
   let gbContract = Guildbank.bind(moloch.guildBankAddress as Address);
   let depositTokenAddress = gbContract.approvedToken();
@@ -260,6 +272,7 @@ export function handleProcessProposal(event: ProcessProposal): void {
     }
 
     moloch.totalShares = moloch.totalShares.plus(proposal.sharesRequested);
+    moloch.guildBankBalanceV1 = getBalance(moloch.guildBankAddress as Address);
     moloch.save();
   }
 }
@@ -285,6 +298,7 @@ export function handleRagequit(event: Ragequit): void {
   addRageQuitBadge(event.params.memberAddress, event.transaction);
 
   moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
+  moloch.guildBankBalanceV1 = getBalance(moloch.guildBankAddress as Address);
   moloch.save();
 
   let rageQuitId = memberId

@@ -52,6 +52,7 @@ export function handleRegisterV1(event: RegisterV1): void {
   moloch.processingReward = contract.processingReward();
   moloch.summoningTime = contract.summoningTime();
   moloch.guildBankAddress = contract.guildBank();
+  moloch.guildBankBalanceV1 = BigInt.fromI32(0);
 
   let gbContract = Guildbank.bind(moloch.guildBankAddress as Address);
   let depositTokenAddress = gbContract.approvedToken();
