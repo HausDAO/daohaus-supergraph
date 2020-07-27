@@ -877,28 +877,6 @@ export function handleUpdateDelegateKey(event: UpdateDelegateKey): void {
 }
 
 export function handleWithdraw(event: Withdraw): void {
-  // let memberAddress = event.params.memberAddress;
-
-  log.info(
-    "***********handleWithdraw tx {}, ammount, {}, from {}, memberAddress {}",
-    [
-      event.transaction.hash.toHex(),
-      event.params.amount.toString(),
-      event.transaction.from.toHex(),
-      event.params.memberAddress.toHex(),
-    ]
-  );
-
-  // if (
-  //   event.transaction.hash.toHexString() ==
-  //   "0x66372e97bcbcfae9810165f6a49479cacc04fd6a0f8054a9873cd90f766385e7"
-  // ) {
-  //   // NOTE: Used event.transaction.from instead of event.params.memberAddress
-  //   // due to event on MCV where those didn't match and caused subtractFromBalance to fail
-  //   log.info("FIND ME MCV bad tx", []);
-  //   memberAddress = event.transaction.from;
-  // }
-
   let molochId = event.address.toHexString();
 
   let tokenId = molochId.concat("-token-").concat(event.params.token.toHex());
