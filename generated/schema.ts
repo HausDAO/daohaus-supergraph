@@ -217,6 +217,23 @@ export class Moloch extends Entity {
     }
   }
 
+  get guildBankBalanceV1(): BigInt | null {
+    let value = this.get("guildBankBalanceV1");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set guildBankBalanceV1(value: BigInt | null) {
+    if (value === null) {
+      this.unset("guildBankBalanceV1");
+    } else {
+      this.set("guildBankBalanceV1", Value.fromBigInt(value as BigInt));
+    }
+  }
+
   get tokens(): Array<string> | null {
     let value = this.get("tokens");
     if (value === null) {
@@ -1457,13 +1474,21 @@ export class Proposal extends Entity {
     this.set("trade", Value.fromBoolean(value));
   }
 
-  get details(): string {
+  get details(): string | null {
     let value = this.get("details");
-    return value.toString();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set details(value: string) {
-    this.set("details", Value.fromString(value));
+  set details(value: string | null) {
+    if (value === null) {
+      this.unset("details");
+    } else {
+      this.set("details", Value.fromString(value as string));
+    }
   }
 
   get maxTotalSharesAndLootAtYesVote(): BigInt | null {

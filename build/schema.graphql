@@ -15,6 +15,7 @@ type Moloch @entity {
   depositToken: Token
   approvedTokens: [Token!]!
   guildBankAddress: Bytes
+  guildBankBalanceV1: BigInt
   tokens: [Token!] @derivedFrom(field: "moloch")
   members: [Member!] @derivedFrom(field: "moloch")
   tokenBalances: [TokenBalance!] @derivedFrom(field: "moloch")
@@ -126,7 +127,7 @@ type Proposal @entity {
   guildkick: Boolean
   newMember: Boolean
   trade: Boolean
-  details: String!
+  details: String
   maxTotalSharesAndLootAtYesVote: BigInt
   votes: [Vote!] @derivedFrom(field: "proposal")
   yesShares: BigInt!
