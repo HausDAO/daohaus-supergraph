@@ -14,6 +14,12 @@ const config = {
     v2FactoryAddress: "0x763b61A62EF076ad960E1d513713B2aeD7C1b88e",
     v2FactoryStartBlock: 6494329,
   },
+  xdai: {
+    v1FactoryAddress: "0x9232DeA84E91b49feF6b604EEA0455692FC27Ba8",
+    v1FactoryStartBlock: 10733005,
+    v2FactoryAddress: "0x124F707B3675b5fdd6208F4483C5B6a0B9bAf316",
+    v2FactoryStartBlock: 10733005,
+  },
   mainnet: {
     v1FactoryAddress: "0x2840d12d926cc686217bb42b80b662c7d72ee787",
     v1FactoryStartBlock: 8625240,
