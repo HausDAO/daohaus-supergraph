@@ -773,8 +773,9 @@ export function handleRagequit(event: Ragequit): void {
   moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
   moloch.totalLoot = moloch.totalLoot.minus(event.params.lootToBurn);
 
-  // set to doesn't exist if no shares?
-  if (member.shares.equals(new BigInt(0))) {
+  let noSharesOrLoot =
+    member.shares.equals(new BigInt(0)) && member.loot.equals(new BigInt(0));
+  if (noSharesOrLoot) {
     member.exists = false;
   }
 
