@@ -226,7 +226,10 @@ export function handleSubmitProposal(event: SubmitProposal): void {
     molochId.concat("-member-").concat(event.params.applicant.toHex())
   );
   let noMember = member == null || member.exists == false;
-  let newMember = noMember && event.params.sharesRequested > BigInt.fromI32(0);
+  let requestingSharesOrLoot =
+    event.params.sharesRequested > BigInt.fromI32(0) ||
+    event.params.lootRequested > BigInt.fromI32(0);
+  let newMember = noMember && requestingSharesOrLoot;
 
   // For trades, members deposit tribute in the token they want to sell to the dao, and request payment in the token they wish to receive.
   let trade =
@@ -486,7 +489,11 @@ export function handleProcessProposal(event: ProcessProposal): void {
       newMember.shares = proposal.sharesRequested;
       newMember.loot = proposal.lootRequested;
 
-      if (proposal.sharesRequested > BigInt.fromI32(0)) {
+      let sharesOrLootRequested =
+        proposal.sharesRequested > BigInt.fromI32(0) ||
+        proposal.lootRequested > BigInt.fromI32(0);
+
+      if (sharesOrLootRequested) {
         newMember.exists = true;
       } else {
         newMember.exists = false;

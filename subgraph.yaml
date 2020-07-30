@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: V1Factory
-    network: xdai
+    network: kovan
     source:
-      address: '0x9232DeA84E91b49feF6b604EEA0455692FC27Ba8'
+      address: '0x0C60Cd59f42093c7489BA68BAA4d7A01f2468153'
       abi: V1Factory
-      startBlock: 10733005
+      startBlock: 14980875
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -32,11 +32,11 @@ dataSources:
       file: ./src/factory-mapping.ts
   - kind: ethereum/contract
     name: V2Factory
-    network: xdai
+    network: kovan
     source:
-      address: '0x124F707B3675b5fdd6208F4483C5B6a0B9bAf316'
+      address: '0xB47778d3BcCBf5e39dEC075CA5F185fc20567b1e'
       abi: V2Factory
-      startBlock: 10733005
+      startBlock: 16845360
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -61,7 +61,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: MolochV1Template
-    network: xdai
+    network: kovan
     source:
       abi: V1Moloch
     mapping:
@@ -105,7 +105,7 @@ templates:
           handler: handleUpdateDelegateKey
   - kind: ethereum/contract
     name: MolochV2Template
-    network: xdai
+    network: kovan
     source:
       abi: V2Moloch
     mapping:
