@@ -37,8 +37,10 @@ import {
 } from "./badges";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
-let ESCROW = Address.fromString("0x000000000000000000000000000000000000dead");
-let GUILD = Address.fromString("0x000000000000000000000000000000000000beef");
+// let ESCROW = Address.fromString("0x000000000000000000000000000000000000dead");
+// let GUILD = Address.fromString("0x000000000000000000000000000000000000beef");
+let ESCROW = Address.fromString("0x000000000000000000000000000000000000beef");
+let GUILD = Address.fromString("0x000000000000000000000000000000000000dead");
 
 function loadOrCreateTokenBalance(
   molochId: string,
@@ -220,8 +222,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
     .concat("-member-")
     .concat(event.params.memberAddress.toHex());
 
-  log.info("***** submitProposal {}", [newProposalId]);
-
   let member = Member.load(
     molochId.concat("-member-").concat(event.params.applicant.toHex())
   );
@@ -276,9 +276,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.votingPeriodStarts = BigInt.fromI32(0);
   proposal.votingPeriodEnds = BigInt.fromI32(0);
   proposal.gracePeriodEnds = BigInt.fromI32(0);
-
   proposal.details = event.params.details.toString();
-  log.info("***** assigning  {}", [proposal.details]);
 
   if (event.params.tributeOffered > BigInt.fromI32(0)) {
     let tokenId = molochId
@@ -297,8 +295,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
     proposal.paymentTokenSymbol = token.symbol;
     proposal.paymentTokenDecimals = token.decimals;
   }
-
-  log.info("***** saving proposal {}", [newProposalId]);
 
   proposal.save();
 
@@ -644,9 +640,23 @@ export function handleProcessWhitelistProposal(
     //CREATE Token
     //NOTE: invariant no loot no shares,
     if (isNotWhitelisted) {
-      createAndApproveToken(molochId, proposal.tributeToken);
-      createEscrowTokenBalance(molochId, proposal.tributeToken);
-      createGuildTokenBalance(molochId, proposal.tributeToken);
+      let approvedTokens = moloch.approvedTokens;
+      approvedTokens.push(
+        createAndApproveToken(molochId, proposal.tributeToken)
+      );
+      moloch.approvedTokens = approvedTokens;
+
+      let escrowTokens = moloch.escrowTokenBalance;
+      escrowTokens.push(
+        createEscrowTokenBalance(molochId, proposal.tributeToken)
+      );
+      moloch.escrowTokenBalance = escrowTokens;
+
+      let guildTokens = moloch.guildTokenBalance;
+      guildTokens.push(
+        createGuildTokenBalance(molochId, proposal.tributeToken)
+      );
+      moloch.guildTokenBalance = guildTokens;
     }
 
     //NOTE: PROPOSAL FAILED

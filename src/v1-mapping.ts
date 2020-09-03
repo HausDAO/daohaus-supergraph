@@ -78,8 +78,8 @@ export function handleSummonComplete(event: SummonComplete): void {
   let gbContract = Guildbank.bind(moloch.guildBankAddress as Address);
   let depositTokenAddress = gbContract.approvedToken();
   let approvedTokens: string[] = [];
-  moloch.approvedTokens = approvedTokens;
   approvedTokens.push(createAndApproveToken(molochId, depositTokenAddress));
+  moloch.approvedTokens = approvedTokens;
   moloch.depositToken = approvedTokens[0];
 
   moloch.save();
@@ -403,8 +403,8 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
   let gbContract = Guildbank.bind(moloch.guildBankAddress as Address);
   let depositTokenAddress = gbContract.approvedToken();
   let approvedTokens: string[] = [];
-  moloch.approvedTokens = approvedTokens;
   approvedTokens.push(createAndApproveToken(molochId, depositTokenAddress));
+  moloch.approvedTokens = approvedTokens;
   moloch.depositToken = approvedTokens[0];
 
   moloch.save();
