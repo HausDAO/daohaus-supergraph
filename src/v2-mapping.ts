@@ -380,8 +380,6 @@ export function handleSponsorProposal(event: SponsorProposal): void {
     .concat("-proposal-")
     .concat(event.params.proposalId.toString());
 
-  log.info("***** sponsorProposal {}", [sponsorProposalId]);
-
   let moloch = Moloch.load(molochId);
 
   // collect proposal deposit from sponsor and store it in the Moloch until the proposal is processed
