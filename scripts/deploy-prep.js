@@ -26,6 +26,12 @@ const config = {
     v2FactoryAddress: "0x1782a13f176e84Be200842Ade79daAA0B09F0418",
     v2FactoryStartBlock: 9484660,
   },
+  idchain: {
+    v1FactoryAddress: "0xb29f7eEc3d6d3B614fd458094f7e2Ebb3488E12D",
+    v1FactoryStartBlock: 2199947,
+    v2FactoryAddress: "0xF42aFC058B7b6f80729e43021404549F69875652",
+    v2FactoryStartBlock: 2200328,
+  },
 };
 
 const network = process.argv.slice(2)[0];
