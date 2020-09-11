@@ -1,4 +1,4 @@
-import { BigInt, log, Bytes, Address } from "@graphprotocol/graph-ts";
+import { BigInt, Address } from "@graphprotocol/graph-ts";
 import { Register as RegisterV1 } from "../generated/V1Factory/V1Factory";
 import {
   Register as RegisterV2,
@@ -16,7 +16,6 @@ import {
   createGuildTokenBalance,
   createMemberTokenBalance,
 } from "./v2-mapping";
-import { addSummonBadge, addMembershipBadge } from "./badges";
 
 export function handleRegisterV1(event: RegisterV1): void {
   if (event.params.newContract.toString() == "0") {
@@ -69,7 +68,6 @@ export function handleRegisterV2(event: RegisterV2): void {
   let moloch = new Moloch(molochId);
   let tokens = event.params.tokens;
   let approvedTokens: string[] = [];
-
   let escrowTokenBalance: string[] = [];
   let guildTokenBalance: string[] = [];
 
@@ -108,15 +106,11 @@ export function handleRegisterV2(event: RegisterV2): void {
 
   moloch.save();
 
-  addSummonBadge(event.params.summoner, event.transaction);
-
-  //Create member for summoner
   let memberId = molochId
     .concat("-member-")
     .concat(event.params.summoner.toHex());
   let newMember = new Member(memberId);
   newMember.moloch = molochId;
-
   newMember.molochAddress = event.params.moloch;
   newMember.memberAddress = event.params.summoner;
   newMember.createdAt = event.block.timestamp.toString();
@@ -131,9 +125,6 @@ export function handleRegisterV2(event: RegisterV2): void {
 
   newMember.save();
 
-  addMembershipBadge(event.params.summoner);
-
-  //Set summoner summoner balances for approved tokens to zero
   for (let i = 0; i < tokens.length; i++) {
     let token = tokens[i];
     let tokenId = molochId.concat("-token-").concat(token.toHex());

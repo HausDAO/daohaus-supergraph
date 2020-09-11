@@ -85,8 +85,6 @@ type Vote @entity {
   uintVote: Int!
   molochAddress: Bytes!
   memberAddress: Bytes
-
-  "NOTE: Do we need these legacy v1 things"
   proposalIndex: BigInt
   delegateKey: Bytes
 }
@@ -132,32 +130,10 @@ type Proposal @entity {
   votes: [Vote!] @derivedFrom(field: "proposal")
   yesShares: BigInt!
   noShares: BigInt!
-
   votingPeriodStarts: BigInt!
   votingPeriodEnds: BigInt!
   gracePeriodEnds: BigInt!
   molochVersion: String!
-}
-
-type Badge @entity {
-  id: ID!
-  memberAddress: Bytes!
-  voteCount: BigInt!
-  summonCount: BigInt!
-  proposalSponsorCount: BigInt!
-  proposalSubmissionCount: BigInt!
-  proposalProcessorCount: BigInt!
-  rageQuitCount: BigInt!
-  jailedCount: BigInt!
-  memberships: BigInt!
-  dissents: BigInt!
-  assents: BigInt!
-  totalGas: BigInt!
-
-  # proposalSubmissionNewMemberCount: BigInt!
-  # proposalSubmissionTradeCount: BigInt!
-  # proposalSubmissionWhitelistCount: BigInt!
-  # proposalSubmissionGuildkicktCount: BigInt!
 }
 
 type RageQuit @entity {

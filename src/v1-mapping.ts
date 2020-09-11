@@ -19,14 +19,6 @@ import {
   RageQuit,
   Token,
 } from "../generated/schema";
-import {
-  addVotedBadge,
-  addSummonBadge,
-  addRageQuitBadge,
-  addProposalSubmissionBadge,
-  addMembershipBadge,
-  addProposalProcessorBadge,
-} from "./badges";
 import { createAndApproveToken } from "./v2-mapping";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -83,9 +75,6 @@ export function handleSummonComplete(event: SummonComplete): void {
   moloch.depositToken = approvedTokens[0];
 
   moloch.save();
-
-  addSummonBadge(event.params.summoner, event.transaction);
-  addMembershipBadge(event.params.summoner);
 }
 
 export function handleSubmitProposal(event: SubmitProposal): void {
@@ -131,8 +120,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.didPass = false;
   proposal.aborted = false;
   proposal.details = details;
-
-  // TODO: these values are for V2, but can't be null in v1 due to math issues - not used in v1
   proposal.sponsor = Address.fromString(ZERO_ADDRESS);
   proposal.sponsored = true;
   proposal.sponsoredAt = event.block.timestamp.toString();
@@ -141,7 +128,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.paymentToken = Address.fromString(ZERO_ADDRESS);
   proposal.molochVersion = "1";
 
-  // calculate times
   let votingPeriodStarts = moloch.summoningTime.plus(
     proposal.startingPeriod.times(moloch.periodDuration)
   );
@@ -164,8 +150,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   }
 
   proposal.save();
-
-  addProposalSubmissionBadge(event.params.memberAddress, event.transaction);
 }
 
 export function handleSubmitVote(event: SubmitVote): void {
@@ -197,12 +181,6 @@ export function handleSubmitVote(event: SubmitVote): void {
   vote.proposal = proposalVotedId;
   vote.member = memberId;
   vote.save();
-
-  addVotedBadge(
-    event.params.memberAddress,
-    event.params.uintVote,
-    event.transaction
-  );
 
   let proposalId = molochId
     .concat("-proposal-")
@@ -242,8 +220,6 @@ export function handleProcessProposal(event: ProcessProposal): void {
   proposal.processed = true;
   proposal.save();
 
-  addProposalProcessorBadge(event.transaction.from, event.transaction);
-
   if (event.params.didPass) {
     let memberId = molochId
       .concat("-member-")
@@ -263,8 +239,6 @@ export function handleProcessProposal(event: ProcessProposal): void {
       newMember.tokenTribute = event.params.tokenTribute;
       newMember.didRagequit = false;
       newMember.save();
-
-      addMembershipBadge(event.params.applicant);
     } else {
       member.shares = member.shares.plus(event.params.sharesRequested);
       member.tokenTribute = member.tokenTribute.plus(event.params.tokenTribute);
@@ -294,8 +268,6 @@ export function handleRagequit(event: Ragequit): void {
     member.exists = false;
   }
   member.save();
-
-  addRageQuitBadge(event.params.memberAddress, event.transaction);
 
   moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
   moloch.guildBankBalanceV1 = getBalance(moloch.guildBankAddress as Address);
@@ -388,8 +360,6 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
   member.didRagequit = false;
   member.save();
 
-  addMembershipBadge(event.params.summoner);
-
   let contract = Contract.bind(event.address);
   moloch.periodDuration = contract.periodDuration();
   moloch.votingPeriodLength = contract.votingPeriodLength();
@@ -408,6 +378,4 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
   moloch.depositToken = approvedTokens[0];
 
   moloch.save();
-
-  addSummonBadge(event.params.summoner, event.transaction);
 }

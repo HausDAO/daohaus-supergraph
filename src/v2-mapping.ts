@@ -25,20 +25,8 @@ import {
   Vote,
   RageQuit,
 } from "../generated/schema";
-import {
-  addVotedBadge,
-  addSummonBadge,
-  addRageQuitBadge,
-  addJailedCountBadge,
-  addProposalSubmissionBadge,
-  addProposalSponsorBadge,
-  addMembershipBadge,
-  addProposalProcessorBadge,
-} from "./badges";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
-// let ESCROW = Address.fromString("0x000000000000000000000000000000000000dead");
-// let GUILD = Address.fromString("0x000000000000000000000000000000000000beef");
 let ESCROW = Address.fromString("0x000000000000000000000000000000000000beef");
 let GUILD = Address.fromString("0x000000000000000000000000000000000000dead");
 
@@ -298,8 +286,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   proposal.save();
 
-  addProposalSubmissionBadge(event.transaction.from, event.transaction);
-
   // collect tribute from proposer and store it in Moloch ESCROW until the proposal is processed
   if (event.params.tributeOffered > BigInt.fromI32(0)) {
     let tokenId = molochId
@@ -331,12 +317,6 @@ export function handleSubmitVote(event: SubmitVote): void {
   vote.uintVote = event.params.uintVote;
 
   vote.save();
-
-  addVotedBadge(
-    event.params.memberAddress,
-    event.params.uintVote,
-    event.transaction
-  );
 
   let moloch = Moloch.load(molochId);
   let proposal = Proposal.load(proposalVotedId);
@@ -432,8 +412,6 @@ export function handleSponsorProposal(event: SponsorProposal): void {
   proposal.gracePeriodEnds = gracePeriodEnds;
 
   proposal.save();
-
-  addProposalSponsorBadge(event.params.memberAddress, event.transaction);
 }
 
 export function handleProcessProposal(event: ProcessProposal): void {
@@ -458,8 +436,6 @@ export function handleProcessProposal(event: ProcessProposal): void {
     .concat(proposal.paymentToken.toHex());
 
   let isNewMember = member != null && member.exists == true ? false : true;
-
-  addProposalProcessorBadge(event.transaction.from, event.transaction);
 
   //NOTE: PROPOSAL PASSED
   if (event.params.didPass) {
@@ -499,8 +475,6 @@ export function handleProcessProposal(event: ProcessProposal): void {
       newMember.kicked = false;
 
       newMember.save();
-
-      addMembershipBadge(proposal.applicant);
 
       //FUND PROPOSAL
     } else {
@@ -629,8 +603,6 @@ export function handleProcessWhitelistProposal(
   let isNotWhitelisted =
     token != null && token.whitelisted == true ? false : true;
 
-  addProposalProcessorBadge(event.transaction.from, event.transaction);
-
   //NOTE: PROPOSAL PASSED
   if (event.params.didPass) {
     proposal.didPass = true;
@@ -702,8 +674,6 @@ export function handleProcessGuildKickProposal(
     .concat(event.params.proposalId.toString());
   let proposal = Proposal.load(processProposalId);
 
-  addProposalProcessorBadge(event.transaction.from, event.transaction);
-
   //PROPOSAL PASSED
   //NOTE: invariant no loot no shares,
   if (event.params.didPass) {
@@ -723,15 +693,12 @@ export function handleProcessGuildKickProposal(
       moloch.totalShares = moloch.totalShares.minus(newLoot);
 
       member.save();
-
-      addJailedCountBadge(proposal.applicant, event.transaction);
     }
     //PROPOSAL FAILED
   } else {
     proposal.didPass = false;
   }
 
-  //NOTE: can only process proposals in order, test shift array comprehension might have tp sprt first for this to work
   moloch.proposedToKick = moloch.proposedToKick.filter(function(
     value,
     index,
@@ -741,8 +708,6 @@ export function handleProcessGuildKickProposal(
   });
   proposal.processed = true;
 
-  //NOTE: issue processing reward and return deposit
-  //TODO: fix to not use from address, could be a delegate emit member kwy from event
   internalTransfer(
     molochId,
     ESCROW,
@@ -809,8 +774,6 @@ export function handleRagequit(event: Ragequit): void {
       amountToRageQuit
     );
   }
-
-  addRageQuitBadge(event.params.memberAddress, event.transaction);
 
   member.save();
   moloch.save();
@@ -936,7 +899,6 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
     guildTokenBalance.push(createGuildTokenBalance(molochId, token));
   }
 
-  // Start new Moloch instance
   moloch.summoner = event.params.summoner;
   moloch.summoningTime = event.params.summoningTime;
   moloch.periodDuration = event.params.periodDuration;
@@ -961,9 +923,6 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
 
   moloch.save();
 
-  addSummonBadge(event.params.summoner, event.transaction);
-
-  //Create member for summoner
   let memberId = molochId
     .concat("-member-")
     .concat(event.params.summoner.toHex());
@@ -983,8 +942,6 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
 
   newMember.save();
 
-  addMembershipBadge(event.params.summoner);
-  //Set summoner summoner balances for approved tokens to zero
   for (let i = 0; i < tokens.length; i++) {
     let token = tokens[i];
     let tokenId = molochId.concat("-token-").concat(token.toHex());
