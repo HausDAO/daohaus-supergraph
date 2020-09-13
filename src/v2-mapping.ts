@@ -367,28 +367,34 @@ export function handleSponsorProposal(event: SponsorProposal): void {
 
   let proposal = Proposal.load(sponsorProposalId);
 
-  if (proposal.newMember) {
-    moloch.proposedToJoin = moloch.proposedToJoin.concat([sponsorProposalId]);
-    moloch.save();
-  } else if (proposal.whitelist) {
-    moloch.proposedToWhitelist = moloch.proposedToWhitelist.concat([
-      sponsorProposalId,
-    ]);
-    moloch.save();
-  } else if (proposal.guildkick) {
-    moloch.proposedToKick = moloch.proposedToKick.concat([sponsorProposalId]);
-
+  if (proposal.guildkick) {
     let member = Member.load(memberId);
     member.proposedToKick = true;
     member.save();
-    moloch.save();
-  } else if (proposal.trade) {
-    moloch.proposedToTrade = moloch.proposedToTrade.concat([sponsorProposalId]);
-    moloch.save();
-  } else {
-    moloch.proposedToFund = moloch.proposedToFund.concat([sponsorProposalId]);
-    moloch.save();
   }
+
+  // if (proposal.newMember) {
+  //   // moloch.proposedToJoin = moloch.proposedToJoin.concat([sponsorProposalId]);
+  //   moloch.save();
+  // } else if (proposal.whitelist) {
+  //   // moloch.proposedToWhitelist = moloch.proposedToWhitelist.concat([
+  //   //   sponsorProposalId,
+  //   // ]);
+  //   moloch.save();
+  // } else if (proposal.guildkick) {
+  //   // moloch.proposedToKick = moloch.proposedToKick.concat([sponsorProposalId]);
+
+  //   let member = Member.load(memberId);
+  //   member.proposedToKick = true;
+  //   member.save();
+  //   moloch.save();
+  // } else if (proposal.trade) {
+  //   // moloch.proposedToTrade = moloch.proposedToTrade.concat([sponsorProposalId]);
+  //   moloch.save();
+  // } else {
+  //   // moloch.proposedToFund = moloch.proposedToFund.concat([sponsorProposalId]);
+  //   moloch.save();
+  // }
 
   proposal.proposalIndex = event.params.proposalIndex;
   proposal.sponsor = event.params.memberAddress;
@@ -537,31 +543,55 @@ export function handleProcessProposal(event: ProcessProposal): void {
   }
 
   //NOTE: fixed array comprehensions update ongoing proposals (that have been sponsored)
-  if (proposal.trade) {
-    moloch.proposedToTrade = moloch.proposedToTrade.filter(function(
-      value,
-      index,
-      arr
-    ) {
-      return index > 0;
-    });
-  } else if (proposal.newMember) {
-    moloch.proposedToJoin = moloch.proposedToJoin.filter(function(
-      value,
-      index,
-      arr
-    ) {
-      return index > 0;
-    });
-  } else {
-    moloch.proposedToFund = moloch.proposedToFund.filter(function(
-      value,
-      index,
-      arr
-    ) {
-      return index > 0;
-    });
-  }
+  // if (proposal.trade) {
+  //   moloch.proposedToTrade = moloch.proposedToTrade.filter(function(
+  //     value,
+  //     index,
+  //     arr
+  //   ) {
+  //     return index > 0;
+  //   });
+  // } else if (proposal.newMember) {
+  //   moloch.proposedToJoin = moloch.proposedToJoin.filter(function(
+  //     value,
+  //     index,
+  //     arr
+  //   ) {
+  //     return index > 0;
+  //   });
+  // } else {
+  //   moloch.proposedToFund = moloch.proposedToFund.filter(function(
+  //     value,
+  //     index,
+  //     arr  // if (proposal.trade) {
+  //   moloch.proposedToTrade = moloch.proposedToTrade.filter(function(
+  //     value,
+  //     index,
+  //     arr
+  //   ) {
+  //     return index > 0;
+  //   });
+  // } else if (proposal.newMember) {
+  //   moloch.proposedToJoin = moloch.proposedToJoin.filter(function(
+  //     value,
+  //     index,
+  //     arr
+  //   ) {
+  //     return index > 0;
+  //   });
+  // } else {
+  //   moloch.proposedToFund = moloch.proposedToFund.filter(function(
+  //     value,
+  //     index,
+  //     arr
+  //   ) {
+  //     return index > 0;
+  //   });
+  // }
+  //   ) {
+  //     return index > 0;
+  //   });
+  // }
   proposal.processed = true;
 
   internalTransfer(
@@ -616,17 +646,20 @@ export function handleProcessWhitelistProposal(
       );
       moloch.approvedTokens = approvedTokens;
 
-      let escrowTokens = moloch.escrowTokenBalance;
-      escrowTokens.push(
-        createEscrowTokenBalance(molochId, proposal.tributeToken)
-      );
-      moloch.escrowTokenBalance = escrowTokens;
+      createGuildTokenBalance(molochId, proposal.tributeToken);
+      createEscrowTokenBalance(molochId, proposal.tributeToken);
 
-      let guildTokens = moloch.guildTokenBalance;
-      guildTokens.push(
-        createGuildTokenBalance(molochId, proposal.tributeToken)
-      );
-      moloch.guildTokenBalance = guildTokens;
+      // let escrowTokens = moloch.escrowTokenBalance;
+      // escrowTokens.push(
+      //   createEscrowTokenBalance(molochId, proposal.tributeToken)
+      // );
+      // moloch.escrowTokenBalance = escrowTokens;
+
+      // let guildTokens = moloch.guildTokenBalance;
+      // guildTokens.push(
+      //   createGuildTokenBalance(molochId, proposal.tributeToken)
+      // );
+      // moloch.guildTokenBalance = guildTokens;
     }
 
     //NOTE: PROPOSAL FAILED
@@ -634,13 +667,13 @@ export function handleProcessWhitelistProposal(
     proposal.didPass = false;
   }
   //NOTE: can only process proposals in order.
-  moloch.proposedToWhitelist = moloch.proposedToWhitelist.filter(function(
-    value,
-    index,
-    arr
-  ) {
-    return index > 0;
-  });
+  // moloch.proposedToWhitelist = moloch.proposedToWhitelist.filter(function(
+  //   value,
+  //   index,
+  //   arr
+  // ) {
+  //   return index > 0;
+  // });
   proposal.processed = true;
 
   //NOTE: issue processing reward and return deposit
@@ -699,13 +732,13 @@ export function handleProcessGuildKickProposal(
     proposal.didPass = false;
   }
 
-  moloch.proposedToKick = moloch.proposedToKick.filter(function(
-    value,
-    index,
-    arr
-  ) {
-    return index > 0;
-  });
+  // moloch.proposedToKick = moloch.proposedToKick.filter(function(
+  //   value,
+  //   index,
+  //   arr
+  // ) {
+  //   return index > 0;
+  // });
   proposal.processed = true;
 
   internalTransfer(
@@ -889,14 +922,17 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
   let tokens = event.params.tokens;
 
   let approvedTokens: string[] = [];
-  let escrowTokenBalance: string[] = [];
-  let guildTokenBalance: string[] = [];
+  // let escrowTokenBalance: string[] = [];
+  // let guildTokenBalance: string[] = [];
 
   for (let i = 0; i < tokens.length; i++) {
     let token = tokens[i];
     approvedTokens.push(createAndApproveToken(molochId, token));
-    escrowTokenBalance.push(createEscrowTokenBalance(molochId, token));
-    guildTokenBalance.push(createGuildTokenBalance(molochId, token));
+    createGuildTokenBalance(molochId, token);
+    createEscrowTokenBalance(molochId, token);
+
+    // escrowTokenBalance.push(createEscrowTokenBalance(molochId, token));
+    // guildTokenBalance.push(createGuildTokenBalance(molochId, token));
   }
 
   moloch.summoner = event.params.summoner;
@@ -909,17 +945,17 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
   moloch.processingReward = event.params.processingReward;
   moloch.depositToken = approvedTokens[0];
   moloch.approvedTokens = approvedTokens;
-  moloch.guildTokenBalance = guildTokenBalance;
-  moloch.escrowTokenBalance = escrowTokenBalance;
+  // moloch.guildTokenBalance = guildTokenBalance;
+  // moloch.escrowTokenBalance = escrowTokenBalance;
   moloch.totalShares = BigInt.fromI32(1);
   moloch.totalLoot = BigInt.fromI32(0);
-  moloch.proposalCount = BigInt.fromI32(0);
-  moloch.proposalQueueCount = BigInt.fromI32(0);
-  moloch.proposedToJoin = new Array<string>();
-  moloch.proposedToWhitelist = new Array<string>();
-  moloch.proposedToKick = new Array<string>();
-  moloch.proposedToFund = new Array<string>();
-  moloch.proposedToTrade = new Array<string>();
+  // moloch.proposalCount = BigInt.fromI32(0);
+  // moloch.proposalQueueCount = BigInt.fromI32(0);
+  // moloch.proposedToJoin = new Array<string>();
+  // moloch.proposedToWhitelist = new Array<string>();
+  // moloch.proposedToKick = new Array<string>();
+  // moloch.proposedToFund = new Array<string>();
+  // moloch.proposedToTrade = new Array<string>();
 
   moloch.save();
 

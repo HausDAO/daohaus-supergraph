@@ -319,46 +319,6 @@ export class Moloch extends Entity {
     }
   }
 
-  get guildTokenBalance(): Array<string> | null {
-    let value = this.get("guildTokenBalance");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set guildTokenBalance(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("guildTokenBalance");
-    } else {
-      this.set(
-        "guildTokenBalance",
-        Value.fromStringArray(value as Array<string>)
-      );
-    }
-  }
-
-  get escrowTokenBalance(): Array<string> | null {
-    let value = this.get("escrowTokenBalance");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set escrowTokenBalance(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("escrowTokenBalance");
-    } else {
-      this.set(
-        "escrowTokenBalance",
-        Value.fromStringArray(value as Array<string>)
-      );
-    }
-  }
-
   get totalShares(): BigInt {
     let value = this.get("totalShares");
     return value.toBigInt();
@@ -375,115 +335,6 @@ export class Moloch extends Entity {
 
   set totalLoot(value: BigInt) {
     this.set("totalLoot", Value.fromBigInt(value));
-  }
-
-  get proposalCount(): BigInt {
-    let value = this.get("proposalCount");
-    return value.toBigInt();
-  }
-
-  set proposalCount(value: BigInt) {
-    this.set("proposalCount", Value.fromBigInt(value));
-  }
-
-  get proposalQueueCount(): BigInt {
-    let value = this.get("proposalQueueCount");
-    return value.toBigInt();
-  }
-
-  set proposalQueueCount(value: BigInt) {
-    this.set("proposalQueueCount", Value.fromBigInt(value));
-  }
-
-  get proposedToJoin(): Array<string> | null {
-    let value = this.get("proposedToJoin");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set proposedToJoin(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("proposedToJoin");
-    } else {
-      this.set("proposedToJoin", Value.fromStringArray(value as Array<string>));
-    }
-  }
-
-  get proposedToWhitelist(): Array<string> | null {
-    let value = this.get("proposedToWhitelist");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set proposedToWhitelist(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("proposedToWhitelist");
-    } else {
-      this.set(
-        "proposedToWhitelist",
-        Value.fromStringArray(value as Array<string>)
-      );
-    }
-  }
-
-  get proposedToKick(): Array<string> | null {
-    let value = this.get("proposedToKick");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set proposedToKick(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("proposedToKick");
-    } else {
-      this.set("proposedToKick", Value.fromStringArray(value as Array<string>));
-    }
-  }
-
-  get proposedToFund(): Array<string> | null {
-    let value = this.get("proposedToFund");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set proposedToFund(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("proposedToFund");
-    } else {
-      this.set("proposedToFund", Value.fromStringArray(value as Array<string>));
-    }
-  }
-
-  get proposedToTrade(): Array<string> | null {
-    let value = this.get("proposedToTrade");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set proposedToTrade(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("proposedToTrade");
-    } else {
-      this.set(
-        "proposedToTrade",
-        Value.fromStringArray(value as Array<string>)
-      );
-    }
   }
 }
 
@@ -644,23 +495,6 @@ export class Token extends Entity {
 
   set whitelisted(value: boolean) {
     this.set("whitelisted", Value.fromBoolean(value));
-  }
-
-  get approved(): string | null {
-    let value = this.get("approved");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set approved(value: string | null) {
-    if (value === null) {
-      this.unset("approved");
-    } else {
-      this.set("approved", Value.fromString(value as string));
-    }
   }
 
   get symbol(): string | null {

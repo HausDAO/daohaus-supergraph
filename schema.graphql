@@ -21,17 +21,8 @@ type Moloch @entity {
   tokenBalances: [TokenBalance!] @derivedFrom(field: "moloch")
   proposals: [Proposal!] @derivedFrom(field: "moloch")
   rageQuits: [RageQuit!] @derivedFrom(field: "moloch")
-  guildTokenBalance: [TokenBalance!]
-  escrowTokenBalance: [TokenBalance!]
   totalShares: BigInt!
   totalLoot: BigInt!
-  proposalCount: BigInt!
-  proposalQueueCount: BigInt!
-  proposedToJoin: [Proposal!]
-  proposedToWhitelist: [Proposal!]
-  proposedToKick: [Proposal!]
-  proposedToFund: [Proposal!]
-  proposedToTrade: [Proposal!]
 }
 
 type TokenBalance @entity {
@@ -50,7 +41,6 @@ type Token @entity {
   moloch: Moloch!
   tokenAddress: Bytes!
   whitelisted: Boolean!
-  approved: Proposal
   symbol: String
   decimals: BigInt
 }
