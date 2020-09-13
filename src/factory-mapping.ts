@@ -6,10 +6,8 @@ import {
 } from "../generated/V2Factory/V2Factory";
 import { V1Moloch } from "../generated/templates/MolochV1Template/V1Moloch";
 import { Guildbank } from "../generated/templates/MolochV1Template/Guildbank";
-
 import { MolochV1Template, MolochV2Template } from "../generated/templates";
 import { Moloch, Member } from "../generated/schema";
-
 import {
   createAndApproveToken,
   createEscrowTokenBalance,
@@ -30,11 +28,8 @@ export function handleRegisterV1(event: RegisterV1): void {
   moloch.newContract = event.params.newContract.toString();
   moloch.version = "1";
   moloch.deleted = false;
-
   moloch.totalShares = BigInt.fromI32(1);
   moloch.totalLoot = BigInt.fromI32(0);
-  // moloch.proposalCount = BigInt.fromI32(0);
-  // moloch.proposalQueueCount = BigInt.fromI32(0);
   moloch.proposalDeposit = BigInt.fromI32(0);
   moloch.dilutionBound = BigInt.fromI32(0);
   moloch.processingReward = BigInt.fromI32(0);
@@ -68,17 +63,12 @@ export function handleRegisterV2(event: RegisterV2): void {
   let moloch = new Moloch(molochId);
   let tokens = event.params.tokens;
   let approvedTokens: string[] = [];
-  // let escrowTokenBalance: string[] = [];
-  // let guildTokenBalance: string[] = [];
 
   for (let i = 0; i < tokens.length; i++) {
     let token = tokens[i];
     approvedTokens.push(createAndApproveToken(molochId, token));
     createEscrowTokenBalance(molochId, token);
     createGuildTokenBalance(molochId, token);
-
-    // escrowTokenBalance.push(createEscrowTokenBalance(molochId, token));
-    // guildTokenBalance.push(createGuildTokenBalance(molochId, token));
   }
 
   moloch.summoner = event.params.summoner;
@@ -95,17 +85,8 @@ export function handleRegisterV2(event: RegisterV2): void {
   moloch.processingReward = event.params._processingReward;
   moloch.depositToken = approvedTokens[0];
   moloch.approvedTokens = approvedTokens;
-  // moloch.guildTokenBalance = guildTokenBalance;
-  // moloch.escrowTokenBalance = escrowTokenBalance;
   moloch.totalShares = BigInt.fromI32(1);
   moloch.totalLoot = BigInt.fromI32(0);
-  // moloch.proposalCount = BigInt.fromI32(0);
-  // moloch.proposalQueueCount = BigInt.fromI32(0);
-  // moloch.proposedToJoin = new Array<string>();
-  // moloch.proposedToWhitelist = new Array<string>();
-  // moloch.proposedToKick = new Array<string>();
-  // moloch.proposedToFund = new Array<string>();
-  // moloch.proposedToTrade = new Array<string>();
 
   moloch.save();
 

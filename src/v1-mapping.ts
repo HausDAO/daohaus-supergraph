@@ -1,4 +1,4 @@
-import { BigInt, log, Address, EthereumBlock } from "@graphprotocol/graph-ts";
+import { BigInt, Address } from "@graphprotocol/graph-ts";
 import {
   V1Moloch as Contract,
   SummonComplete,
@@ -338,8 +338,6 @@ export function handleSummonCompleteLegacy(event: SummonComplete): void {
 
   moloch.totalShares = BigInt.fromI32(1);
   moloch.totalLoot = BigInt.fromI32(0);
-  // moloch.proposalCount = BigInt.fromI32(0);
-  // moloch.proposalQueueCount = BigInt.fromI32(0);
   moloch.proposalDeposit = BigInt.fromI32(0);
   moloch.dilutionBound = BigInt.fromI32(0);
   moloch.processingReward = BigInt.fromI32(0);
