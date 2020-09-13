@@ -15,6 +15,9 @@ import {
   createMemberTokenBalance,
 } from "./v2-mapping";
 
+//TODO: When to do the summon stuff here?
+// shoud be on v1, then legacy will still hit the normal template mapping
+
 export function handleRegisterV1(event: RegisterV1): void {
   if (event.params.newContract.toString() == "0") {
     return;
