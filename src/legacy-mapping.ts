@@ -7,15 +7,13 @@ import { legacyV1, legacyV2 } from "./legacy-data";
 
 export function handleSummonCompleteMoloch(event: SummonComplete): void {
   let v1Data = legacyV1();
-  v1Data.forEach((dao) => {
-    let daoAddress = Address.fromString(dao.getAddress());
-    MolochV1Template.create(daoAddress);
+  v1Data.forEach((daoAddress) => {
+    MolochV1Template.create(Address.fromString(daoAddress));
   });
 
   let v2Data = legacyV2();
-  v2Data.forEach((dao) => {
-    let daoAddress = Address.fromString(dao.getAddress());
-    MolochV2Template.create(daoAddress);
+  v2Data.forEach((daoAddress) => {
+    MolochV2Template.create(Address.fromString(daoAddress));
   });
 
   handleSummonComplete(event);
