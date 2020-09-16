@@ -136,3 +136,10 @@ type RageQuit @entity {
   shares: BigInt!
   loot: BigInt!
 }
+
+type DaoMeta @entity {
+  id: ID!
+  title: String
+  version: String
+  newContract: String
+}

@@ -4,10 +4,12 @@ import {
   Register as RegisterV2,
   Delete,
 } from "../generated/V2Factory/V2Factory";
+import { SummonComplete } from "../generated/templates/MolochV2Template/V2Moloch";
 import { V1Moloch } from "../generated/templates/MolochV1Template/V1Moloch";
+
 import { Guildbank } from "../generated/templates/MolochV1Template/Guildbank";
 import { MolochV1Template, MolochV2Template } from "../generated/templates";
-import { Moloch, Member } from "../generated/schema";
+import { Moloch, Member, DaoMeta } from "../generated/schema";
 import {
   createAndApproveToken,
   createEscrowTokenBalance,
@@ -15,48 +17,19 @@ import {
   createMemberTokenBalance,
 } from "./v2-mapping";
 
-//TODO: When to do the summon stuff here?
-// shoud be on v1, then legacy will still hit the normal template mapping
-
 export function handleRegisterV1(event: RegisterV1): void {
   if (event.params.newContract.toString() == "0") {
     return;
   }
   MolochV1Template.create(event.params.moloch);
 
-  let molochId = event.params.moloch.toHex();
-  let moloch = new Moloch(molochId);
-  moloch.summoner = event.params.summoner;
-  moloch.title = event.params.title;
-  moloch.newContract = event.params.newContract.toString();
-  moloch.version = "1";
-  moloch.deleted = false;
-  moloch.totalShares = BigInt.fromI32(1);
-  moloch.totalLoot = BigInt.fromI32(0);
-  moloch.proposalDeposit = BigInt.fromI32(0);
-  moloch.dilutionBound = BigInt.fromI32(0);
-  moloch.processingReward = BigInt.fromI32(0);
+  let daoMeta = new DaoMeta(event.params.moloch.toHex());
+  daoMeta.title = event.params.title;
+  daoMeta.version = "1";
+  daoMeta.newContract = event.params.newContract.toString();
+  daoMeta.save();
 
-  let approvedTokens: string[] = [];
-  moloch.approvedTokens = approvedTokens;
-
-  let contract = V1Moloch.bind(event.params.moloch);
-  moloch.periodDuration = contract.periodDuration();
-  moloch.votingPeriodLength = contract.votingPeriodLength();
-  moloch.gracePeriodLength = contract.gracePeriodLength();
-  moloch.proposalDeposit = contract.proposalDeposit();
-  moloch.dilutionBound = contract.dilutionBound();
-  moloch.processingReward = contract.processingReward();
-  moloch.summoningTime = contract.summoningTime();
-  moloch.guildBankAddress = contract.guildBank();
-  moloch.guildBankBalanceV1 = BigInt.fromI32(0);
-
-  let gbContract = Guildbank.bind(moloch.guildBankAddress as Address);
-  let depositTokenAddress = gbContract.approvedToken();
-  approvedTokens.push(createAndApproveToken(molochId, depositTokenAddress));
-  moloch.depositToken = approvedTokens[0];
-
-  moloch.save();
+  //can we wait for the summon event now?
 }
 
 export function handleRegisterV2(event: RegisterV2): void {
@@ -64,6 +37,12 @@ export function handleRegisterV2(event: RegisterV2): void {
 
   let molochId = event.params.moloch.toHex();
   let moloch = new Moloch(molochId);
+  let daoMeta = new DaoMeta(event.params.moloch.toHex());
+  daoMeta.title = event.params.title;
+  daoMeta.version = "2";
+  daoMeta.newContract = "1";
+  daoMeta.save();
+
   let tokens = event.params.tokens;
   let approvedTokens: string[] = [];
 
