@@ -87,7 +87,7 @@ dataSources:
           file: ./abis/Erc20Bytes32.json
       eventHandlers:
         - event: "SummonComplete(indexed address,uint256)"
-          handler: handleLegacyRegistration
+          handler: handleSummonCompleteMoloch
       file: ./src/legacy-mapping.ts
 templates:
   - kind: ethereum/contract
@@ -158,6 +158,8 @@ templates:
         - name: Erc20Bytes32
           file: ./abis/Erc20Bytes32.json
       eventHandlers:
+        - event: SummonComplete(indexed address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleSummonComplete
         - event: SubmitProposal(indexed address,uint256,uint256,uint256,address,uint256,address,string,bool[6],uint256,indexed address,indexed address)
           handler: handleSubmitProposal
         - event: SubmitVote(uint256,indexed uint256,indexed address,indexed address,uint8)

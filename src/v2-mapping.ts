@@ -191,7 +191,7 @@ export function createAndApproveToken(molochId: string, token: Bytes): string {
   return tokenId;
 }
 
-//legacy daos will trigger this, factory doas get created in factory-mapping.ts
+//legacy daos will trigger this, factory daos get created in factory-mapping.ts
 export function handleSummonComplete(event: SummonComplete): void {
   let molochId = event.address.toHex();
   let moloch = new Moloch(molochId);

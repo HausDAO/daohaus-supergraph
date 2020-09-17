@@ -5,7 +5,7 @@ export class LegacyDaoData {
 export function legacyV1(): LegacyDaoData[] {
   return [
     new LegacyDaoData(
-      "0x0372f3696fa7dc99801f435fd6737e57818239f2",
+      "0x1fd169a4f5c59acf79d0fd5d91d1201ef1bce9f1",
       "Moloch DAO"
     ),
     new LegacyDaoData(
