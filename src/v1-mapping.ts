@@ -1,4 +1,4 @@
-import { BigInt, log, Address, EthereumBlock } from "@graphprotocol/graph-ts";
+import { BigInt, Address, log } from "@graphprotocol/graph-ts";
 import {
   V1Moloch as Contract,
   SummonComplete,
@@ -18,6 +18,7 @@ import {
   Moloch,
   RageQuit,
   Token,
+  DaoMeta,
 } from "../generated/schema";
 import { createAndApproveToken } from "./v2-mapping";
 
@@ -35,26 +36,22 @@ function getBalance(guildBankAddress: Address): BigInt {
 
 export function handleSummonComplete(event: SummonComplete): void {
   let molochId = event.address.toHex();
-  let moloch = Moloch.load(molochId);
-  if (moloch.newContract == "0") {
+  let moloch = new Moloch(molochId);
+  let daoMeta = DaoMeta.load(molochId);
+  if (daoMeta.newContract == "0") {
     return;
   }
 
-  let memberId = molochId
-    .concat("-member-")
-    .concat(event.params.summoner.toHex());
-
-  let member = new Member(memberId);
-  member.molochAddress = event.address;
-  member.moloch = moloch.id;
-  member.memberAddress = event.params.summoner;
-  member.createdAt = event.block.timestamp.toString();
-  member.delegateKey = event.params.summoner;
-  member.shares = event.params.shares;
-  member.exists = true;
-  member.tokenTribute = BigInt.fromI32(0);
-  member.didRagequit = false;
-  member.save();
+  moloch.summoner = event.params.summoner;
+  moloch.title = daoMeta.title;
+  moloch.newContract = daoMeta.newContract;
+  moloch.version = daoMeta.version;
+  moloch.deleted = false;
+  moloch.totalShares = BigInt.fromI32(1);
+  moloch.totalLoot = BigInt.fromI32(0);
+  moloch.proposalDeposit = BigInt.fromI32(0);
+  moloch.dilutionBound = BigInt.fromI32(0);
+  moloch.processingReward = BigInt.fromI32(0);
 
   let contract = Contract.bind(event.address);
   moloch.periodDuration = contract.periodDuration();
@@ -74,6 +71,22 @@ export function handleSummonComplete(event: SummonComplete): void {
   moloch.approvedTokens = approvedTokens;
   moloch.depositToken = approvedTokens[0];
 
+  let memberId = molochId
+    .concat("-member-")
+    .concat(event.params.summoner.toHex());
+
+  let member = new Member(memberId);
+  member.molochAddress = event.address;
+  member.moloch = moloch.id;
+  member.memberAddress = event.params.summoner;
+  member.createdAt = event.block.timestamp.toString();
+  member.delegateKey = event.params.summoner;
+  member.shares = event.params.shares;
+  member.exists = true;
+  member.tokenTribute = BigInt.fromI32(0);
+  member.didRagequit = false;
+
+  member.save();
   moloch.save();
 }
 
@@ -319,63 +332,4 @@ export function handleUpdateDelegateKey(event: UpdateDelegateKey): void {
   let member = Member.load(memberId);
   member.delegateKey = event.params.newDelegateKey;
   member.save();
-}
-
-export function handleSummonCompleteLegacy(event: SummonComplete): void {
-  let molochId = event.address.toHex();
-  let moloch = new Moloch(molochId);
-
-  let title =
-    event.address.toHex() == "0x1fd169a4f5c59acf79d0fd5d91d1201ef1bce9f1"
-      ? "Moloch DAO"
-      : "MetaCartel DAO";
-  moloch.title = title;
-
-  moloch.newContract = "1";
-  moloch.version = "1";
-  moloch.deleted = false;
-  moloch.summoner = event.params.summoner;
-
-  moloch.totalShares = BigInt.fromI32(1);
-  moloch.totalLoot = BigInt.fromI32(0);
-  moloch.proposalCount = BigInt.fromI32(0);
-  moloch.proposalQueueCount = BigInt.fromI32(0);
-  moloch.proposalDeposit = BigInt.fromI32(0);
-  moloch.dilutionBound = BigInt.fromI32(0);
-  moloch.processingReward = BigInt.fromI32(0);
-
-  let memberId = molochId
-    .concat("-member-")
-    .concat(event.params.summoner.toHex());
-
-  let member = new Member(memberId);
-  member.molochAddress = event.address;
-  member.moloch = moloch.id;
-  member.memberAddress = event.params.summoner;
-  member.createdAt = event.block.timestamp.toString();
-  member.delegateKey = event.params.summoner;
-  member.shares = event.params.shares;
-  member.exists = true;
-  member.tokenTribute = BigInt.fromI32(0);
-  member.didRagequit = false;
-  member.save();
-
-  let contract = Contract.bind(event.address);
-  moloch.periodDuration = contract.periodDuration();
-  moloch.votingPeriodLength = contract.votingPeriodLength();
-  moloch.gracePeriodLength = contract.gracePeriodLength();
-  moloch.proposalDeposit = contract.proposalDeposit();
-  moloch.dilutionBound = contract.dilutionBound();
-  moloch.processingReward = contract.processingReward();
-  moloch.summoningTime = contract.summoningTime();
-  moloch.guildBankAddress = contract.guildBank();
-
-  let gbContract = Guildbank.bind(moloch.guildBankAddress as Address);
-  let depositTokenAddress = gbContract.approvedToken();
-  let approvedTokens: string[] = [];
-  approvedTokens.push(createAndApproveToken(molochId, depositTokenAddress));
-  moloch.approvedTokens = approvedTokens;
-  moloch.depositToken = approvedTokens[0];
-
-  moloch.save();
 }

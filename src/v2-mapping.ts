@@ -24,6 +24,7 @@ import {
   Proposal,
   Vote,
   RageQuit,
+  DaoMeta,
 } from "../generated/schema";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -162,11 +163,6 @@ export function createAndApproveToken(molochId: string, token: Bytes): string {
   let erc20 = Erc20.bind(token as Address);
   let symbol = erc20.try_symbol();
   if (symbol.reverted) {
-    log.info("symbol reverted molochId {}, token, {}", [
-      molochId,
-      token.toHexString(),
-    ]);
-
     let erc20Bytes32 = Erc20Bytes32.bind(token as Address);
     let otherSymbol = erc20Bytes32.try_symbol();
     if (otherSymbol.reverted) {
@@ -195,10 +191,71 @@ export function createAndApproveToken(molochId: string, token: Bytes): string {
   return tokenId;
 }
 
-// export function handleSummonComplete(event: SummonComplete): void {
-// The factory contract registers the new moloch after the summon event, so this event will not be triggered in the graph
-// all of the entities are created in factory-mapping.ts that would normally be created here.
-// }
+//legacy daos will trigger this, factory daos get created in factory-mapping.ts
+export function handleSummonComplete(event: SummonComplete): void {
+  let molochId = event.address.toHex();
+  let moloch = new Moloch(molochId);
+  let daoMeta = DaoMeta.load(molochId);
+
+  let tokens = event.params.tokens;
+  let approvedTokens: string[] = [];
+
+  for (let i = 0; i < tokens.length; i++) {
+    let token = tokens[i];
+    approvedTokens.push(createAndApproveToken(molochId, token));
+    createEscrowTokenBalance(molochId, token);
+    createGuildTokenBalance(molochId, token);
+  }
+
+  moloch.summoner = event.params.summoner;
+  moloch.summoningTime = event.params.summoningTime;
+  moloch.title = daoMeta.title;
+  moloch.version = daoMeta.version;
+  moloch.newContract = daoMeta.newContract;
+  moloch.deleted = false;
+  moloch.periodDuration = event.params.periodDuration;
+  moloch.votingPeriodLength = event.params.votingPeriodLength;
+  moloch.gracePeriodLength = event.params.gracePeriodLength;
+  moloch.proposalDeposit = event.params.proposalDeposit;
+  moloch.dilutionBound = event.params.dilutionBound;
+  moloch.processingReward = event.params.processingReward;
+  moloch.depositToken = approvedTokens[0];
+  moloch.approvedTokens = approvedTokens;
+  moloch.totalShares = BigInt.fromI32(1);
+  moloch.totalLoot = BigInt.fromI32(0);
+
+  moloch.save();
+
+  let memberId = molochId
+    .concat("-member-")
+    .concat(event.params.summoner.toHex());
+  let newMember = new Member(memberId);
+  newMember.moloch = molochId;
+  newMember.molochAddress = event.address;
+  newMember.memberAddress = event.params.summoner;
+  newMember.createdAt = event.block.timestamp.toString();
+  newMember.delegateKey = event.params.summoner;
+  newMember.shares = BigInt.fromI32(1);
+  newMember.loot = BigInt.fromI32(0);
+  newMember.exists = true;
+  newMember.tokenTribute = BigInt.fromI32(0);
+  newMember.didRagequit = false;
+  newMember.proposedToKick = false;
+  newMember.kicked = false;
+
+  newMember.save();
+
+  for (let i = 0; i < tokens.length; i++) {
+    let token = tokens[i];
+    let tokenId = molochId.concat("-token-").concat(token.toHex());
+    createMemberTokenBalance(
+      molochId,
+      event.params.summoner,
+      tokenId,
+      BigInt.fromI32(0)
+    );
+  }
+}
 
 export function handleSubmitProposal(event: SubmitProposal): void {
   let molochId = event.address.toHexString();
@@ -219,7 +276,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
     event.params.lootRequested > BigInt.fromI32(0);
   let newMember = noMember && requestingSharesOrLoot;
 
-  // For trades, members deposit tribute in the token they want to sell to the dao, and request payment in the token they wish to receive.
   let trade =
     event.params.paymentToken != Address.fromI32(0) &&
     event.params.tributeToken != Address.fromI32(0) &&
@@ -230,7 +286,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   let proposal = new Proposal(newProposalId);
   proposal.proposalId = event.params.proposalId;
-
   proposal.moloch = molochId;
   proposal.molochAddress = event.address;
   proposal.createdAt = event.block.timestamp.toString();
@@ -286,7 +341,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   proposal.save();
 
-  // collect tribute from proposer and store it in Moloch ESCROW until the proposal is processed
   if (event.params.tributeOffered > BigInt.fromI32(0)) {
     let tokenId = molochId
       .concat("-token-")
@@ -324,15 +378,11 @@ export function handleSubmitVote(event: SubmitVote): void {
 
   switch (event.params.uintVote) {
     case 1: {
-      //NOTE: Vote.yes
       proposal.yesShares = proposal.yesShares.plus(member.shares);
       proposal.yesVotes = proposal.yesVotes.plus(BigInt.fromI32(1));
-      //NOTE: Set maximum of total shares encountered at a yes vote - used to bound dilution for yes voters
-
       proposal.maxTotalSharesAndLootAtYesVote = moloch.totalLoot.plus(
         moloch.totalShares
       );
-      //NOTE: Set highest index (latest) yes vote - must be processed for member to ragequit
       member.highestIndexYesVote = proposalVotedId;
       proposal.save();
       member.save();
@@ -345,7 +395,10 @@ export function handleSubmitVote(event: SubmitVote): void {
       break;
     }
     default: {
-      //TODO: LOG AN ERROR, SHOULD BE A DEAD END CHECK uintVote INVARIANT IN CONTRACT
+      log.info(
+        "handleSubmitVote: ERROR, SHOULD BE A DEAD END CHECK uintVote INVARIANT IN CONTRACT",
+        []
+      );
       break;
     }
   }
@@ -362,32 +415,14 @@ export function handleSponsorProposal(event: SponsorProposal): void {
 
   let moloch = Moloch.load(molochId);
 
-  // collect proposal deposit from sponsor and store it in the Moloch until the proposal is processed
   addToBalance(molochId, ESCROW, moloch.depositToken, moloch.proposalDeposit);
 
   let proposal = Proposal.load(sponsorProposalId);
 
-  if (proposal.newMember) {
-    moloch.proposedToJoin = moloch.proposedToJoin.concat([sponsorProposalId]);
-    moloch.save();
-  } else if (proposal.whitelist) {
-    moloch.proposedToWhitelist = moloch.proposedToWhitelist.concat([
-      sponsorProposalId,
-    ]);
-    moloch.save();
-  } else if (proposal.guildkick) {
-    moloch.proposedToKick = moloch.proposedToKick.concat([sponsorProposalId]);
-
+  if (proposal.guildkick) {
     let member = Member.load(memberId);
     member.proposedToKick = true;
     member.save();
-    moloch.save();
-  } else if (proposal.trade) {
-    moloch.proposedToTrade = moloch.proposedToTrade.concat([sponsorProposalId]);
-    moloch.save();
-  } else {
-    moloch.proposedToFund = moloch.proposedToFund.concat([sponsorProposalId]);
-    moloch.save();
   }
 
   proposal.proposalIndex = event.params.proposalIndex;
@@ -396,7 +431,6 @@ export function handleSponsorProposal(event: SponsorProposal): void {
   proposal.startingPeriod = event.params.startingPeriod;
   proposal.sponsored = true;
 
-  // calculate times
   let votingPeriodStarts = moloch.summoningTime.plus(
     proposal.startingPeriod.times(moloch.periodDuration)
   );
@@ -437,14 +471,10 @@ export function handleProcessProposal(event: ProcessProposal): void {
 
   let isNewMember = member != null && member.exists == true ? false : true;
 
-  //NOTE: PROPOSAL PASSED
   if (event.params.didPass) {
     proposal.didPass = true;
 
-    //CREATE MEMBER
     if (isNewMember) {
-      // if member.exists == false the member entity already exists
-      // because it was created in cancelProposal for a cancelled new member proposal
       let newMember = member;
 
       if (newMember == null) {
@@ -475,15 +505,12 @@ export function handleProcessProposal(event: ProcessProposal): void {
       newMember.kicked = false;
 
       newMember.save();
-
-      //FUND PROPOSAL
     } else {
       member.shares = member.shares.plus(proposal.sharesRequested);
       member.loot = member.loot.plus(proposal.lootRequested);
       member.save();
     }
 
-    //NOTE: Add shares/loot do intake tribute from escrow, payout from guild bank
     moloch.totalShares = moloch.totalShares.plus(proposal.sharesRequested);
     moloch.totalLoot = moloch.totalLoot.plus(proposal.lootRequested);
     internalTransfer(
@@ -493,7 +520,6 @@ export function handleProcessProposal(event: ProcessProposal): void {
       tributeTokenId,
       proposal.tributeOffered
     );
-    //NOTE: check if user has a tokenBalance for that token if not then create one before sending
     internalTransfer(
       molochId,
       GUILD,
@@ -501,13 +527,8 @@ export function handleProcessProposal(event: ProcessProposal): void {
       paymentTokenId,
       proposal.paymentRequested
     );
-
-    //NOTE: PROPOSAL FAILED
   } else {
     proposal.didPass = false;
-    // return all tokens to the applicant
-
-    // create a member entity if needed for withdraw
     if (isNewMember) {
       let newMember = new Member(applicantId);
 
@@ -536,32 +557,6 @@ export function handleProcessProposal(event: ProcessProposal): void {
     );
   }
 
-  //NOTE: fixed array comprehensions update ongoing proposals (that have been sponsored)
-  if (proposal.trade) {
-    moloch.proposedToTrade = moloch.proposedToTrade.filter(function(
-      value,
-      index,
-      arr
-    ) {
-      return index > 0;
-    });
-  } else if (proposal.newMember) {
-    moloch.proposedToJoin = moloch.proposedToJoin.filter(function(
-      value,
-      index,
-      arr
-    ) {
-      return index > 0;
-    });
-  } else {
-    moloch.proposedToFund = moloch.proposedToFund.filter(function(
-      value,
-      index,
-      arr
-    ) {
-      return index > 0;
-    });
-  }
   proposal.processed = true;
 
   internalTransfer(
@@ -603,12 +598,9 @@ export function handleProcessWhitelistProposal(
   let isNotWhitelisted =
     token != null && token.whitelisted == true ? false : true;
 
-  //NOTE: PROPOSAL PASSED
   if (event.params.didPass) {
     proposal.didPass = true;
 
-    //CREATE Token
-    //NOTE: invariant no loot no shares,
     if (isNotWhitelisted) {
       let approvedTokens = moloch.approvedTokens;
       approvedTokens.push(
@@ -616,34 +608,14 @@ export function handleProcessWhitelistProposal(
       );
       moloch.approvedTokens = approvedTokens;
 
-      let escrowTokens = moloch.escrowTokenBalance;
-      escrowTokens.push(
-        createEscrowTokenBalance(molochId, proposal.tributeToken)
-      );
-      moloch.escrowTokenBalance = escrowTokens;
-
-      let guildTokens = moloch.guildTokenBalance;
-      guildTokens.push(
-        createGuildTokenBalance(molochId, proposal.tributeToken)
-      );
-      moloch.guildTokenBalance = guildTokens;
+      createGuildTokenBalance(molochId, proposal.tributeToken);
+      createEscrowTokenBalance(molochId, proposal.tributeToken);
     }
-
-    //NOTE: PROPOSAL FAILED
   } else {
     proposal.didPass = false;
   }
-  //NOTE: can only process proposals in order.
-  moloch.proposedToWhitelist = moloch.proposedToWhitelist.filter(function(
-    value,
-    index,
-    arr
-  ) {
-    return index > 0;
-  });
   proposal.processed = true;
 
-  //NOTE: issue processing reward and return deposit
   internalTransfer(
     molochId,
     ESCROW,
@@ -674,11 +646,8 @@ export function handleProcessGuildKickProposal(
     .concat(event.params.proposalId.toString());
   let proposal = Proposal.load(processProposalId);
 
-  //PROPOSAL PASSED
-  //NOTE: invariant no loot no shares,
   if (event.params.didPass) {
     proposal.didPass = true;
-    //Kick member
     if (proposal.guildkick) {
       let memberId = molochId
         .concat("-member-")
@@ -694,18 +663,9 @@ export function handleProcessGuildKickProposal(
 
       member.save();
     }
-    //PROPOSAL FAILED
   } else {
     proposal.didPass = false;
   }
-
-  moloch.proposedToKick = moloch.proposedToKick.filter(function(
-    value,
-    index,
-    arr
-  ) {
-    return index > 0;
-  });
   proposal.processed = true;
 
   internalTransfer(
@@ -752,7 +712,6 @@ export function handleRagequit(event: Ragequit): void {
     member.exists = false;
   }
 
-  // for each approved token, calculate the fairshare value and transfer from guildbank to user
   let tokens = moloch.approvedTokens;
   for (let i = 0; i < tokens.length; i++) {
     let token: string = tokens[i];
@@ -801,14 +760,12 @@ export function handleCancelProposal(event: CancelProposal): void {
     .concat(event.params.proposalId.toString());
   let proposal = Proposal.load(processProposalId);
 
-  // Transfer tribute from ESCROW back to the applicant if there was tribute offered on the proposal
   if (proposal.tributeOffered > BigInt.fromI32(0)) {
     let applicantId = molochId
       .concat("-member-")
       .concat(proposal.applicant.toHex());
     let member = Member.load(applicantId);
 
-    // Create a member entity to assign a balance until they widthdraw it. member.exists = false
     if (member == null) {
       let newMember = new Member(applicantId);
 
@@ -875,81 +832,4 @@ export function handleTokensCollected(event: TokensCollected): void {
   let tokenId = molochId.concat("-token-").concat(event.params.token.toHex());
 
   addToBalance(molochId, GUILD, tokenId, event.params.amountToCollect);
-}
-
-export function handleSummonCompleteLegacy(event: SummonComplete): void {
-  let molochId = event.address.toHex();
-  let moloch = new Moloch(molochId);
-
-  moloch.title = "MetaCartel Ventures";
-  moloch.version = "2";
-  moloch.deleted = false;
-  moloch.newContract = "1";
-
-  let tokens = event.params.tokens;
-
-  let approvedTokens: string[] = [];
-  let escrowTokenBalance: string[] = [];
-  let guildTokenBalance: string[] = [];
-
-  for (let i = 0; i < tokens.length; i++) {
-    let token = tokens[i];
-    approvedTokens.push(createAndApproveToken(molochId, token));
-    escrowTokenBalance.push(createEscrowTokenBalance(molochId, token));
-    guildTokenBalance.push(createGuildTokenBalance(molochId, token));
-  }
-
-  moloch.summoner = event.params.summoner;
-  moloch.summoningTime = event.params.summoningTime;
-  moloch.periodDuration = event.params.periodDuration;
-  moloch.votingPeriodLength = event.params.votingPeriodLength;
-  moloch.gracePeriodLength = event.params.gracePeriodLength;
-  moloch.proposalDeposit = event.params.proposalDeposit;
-  moloch.dilutionBound = event.params.dilutionBound;
-  moloch.processingReward = event.params.processingReward;
-  moloch.depositToken = approvedTokens[0];
-  moloch.approvedTokens = approvedTokens;
-  moloch.guildTokenBalance = guildTokenBalance;
-  moloch.escrowTokenBalance = escrowTokenBalance;
-  moloch.totalShares = BigInt.fromI32(1);
-  moloch.totalLoot = BigInt.fromI32(0);
-  moloch.proposalCount = BigInt.fromI32(0);
-  moloch.proposalQueueCount = BigInt.fromI32(0);
-  moloch.proposedToJoin = new Array<string>();
-  moloch.proposedToWhitelist = new Array<string>();
-  moloch.proposedToKick = new Array<string>();
-  moloch.proposedToFund = new Array<string>();
-  moloch.proposedToTrade = new Array<string>();
-
-  moloch.save();
-
-  let memberId = molochId
-    .concat("-member-")
-    .concat(event.params.summoner.toHex());
-  let newMember = new Member(memberId);
-  newMember.moloch = molochId;
-  newMember.createdAt = event.block.timestamp.toString();
-  newMember.molochAddress = event.address;
-  newMember.memberAddress = event.params.summoner;
-  newMember.delegateKey = event.params.summoner;
-  newMember.shares = BigInt.fromI32(1);
-  newMember.loot = BigInt.fromI32(0);
-  newMember.exists = true;
-  newMember.tokenTribute = BigInt.fromI32(0);
-  newMember.didRagequit = false;
-  newMember.proposedToKick = false;
-  newMember.kicked = false;
-
-  newMember.save();
-
-  for (let i = 0; i < tokens.length; i++) {
-    let token = tokens[i];
-    let tokenId = molochId.concat("-token-").concat(token.toHex());
-    createMemberTokenBalance(
-      molochId,
-      event.params.summoner,
-      tokenId,
-      BigInt.fromI32(0)
-    );
-  }
 }
