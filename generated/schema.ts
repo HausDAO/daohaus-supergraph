@@ -319,46 +319,6 @@ export class Moloch extends Entity {
     }
   }
 
-  get guildTokenBalance(): Array<string> | null {
-    let value = this.get("guildTokenBalance");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set guildTokenBalance(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("guildTokenBalance");
-    } else {
-      this.set(
-        "guildTokenBalance",
-        Value.fromStringArray(value as Array<string>)
-      );
-    }
-  }
-
-  get escrowTokenBalance(): Array<string> | null {
-    let value = this.get("escrowTokenBalance");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set escrowTokenBalance(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("escrowTokenBalance");
-    } else {
-      this.set(
-        "escrowTokenBalance",
-        Value.fromStringArray(value as Array<string>)
-      );
-    }
-  }
-
   get totalShares(): BigInt {
     let value = this.get("totalShares");
     return value.toBigInt();
@@ -375,115 +335,6 @@ export class Moloch extends Entity {
 
   set totalLoot(value: BigInt) {
     this.set("totalLoot", Value.fromBigInt(value));
-  }
-
-  get proposalCount(): BigInt {
-    let value = this.get("proposalCount");
-    return value.toBigInt();
-  }
-
-  set proposalCount(value: BigInt) {
-    this.set("proposalCount", Value.fromBigInt(value));
-  }
-
-  get proposalQueueCount(): BigInt {
-    let value = this.get("proposalQueueCount");
-    return value.toBigInt();
-  }
-
-  set proposalQueueCount(value: BigInt) {
-    this.set("proposalQueueCount", Value.fromBigInt(value));
-  }
-
-  get proposedToJoin(): Array<string> | null {
-    let value = this.get("proposedToJoin");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set proposedToJoin(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("proposedToJoin");
-    } else {
-      this.set("proposedToJoin", Value.fromStringArray(value as Array<string>));
-    }
-  }
-
-  get proposedToWhitelist(): Array<string> | null {
-    let value = this.get("proposedToWhitelist");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set proposedToWhitelist(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("proposedToWhitelist");
-    } else {
-      this.set(
-        "proposedToWhitelist",
-        Value.fromStringArray(value as Array<string>)
-      );
-    }
-  }
-
-  get proposedToKick(): Array<string> | null {
-    let value = this.get("proposedToKick");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set proposedToKick(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("proposedToKick");
-    } else {
-      this.set("proposedToKick", Value.fromStringArray(value as Array<string>));
-    }
-  }
-
-  get proposedToFund(): Array<string> | null {
-    let value = this.get("proposedToFund");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set proposedToFund(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("proposedToFund");
-    } else {
-      this.set("proposedToFund", Value.fromStringArray(value as Array<string>));
-    }
-  }
-
-  get proposedToTrade(): Array<string> | null {
-    let value = this.get("proposedToTrade");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
-  }
-
-  set proposedToTrade(value: Array<string> | null) {
-    if (value === null) {
-      this.unset("proposedToTrade");
-    } else {
-      this.set(
-        "proposedToTrade",
-        Value.fromStringArray(value as Array<string>)
-      );
-    }
   }
 }
 
@@ -644,23 +495,6 @@ export class Token extends Entity {
 
   set whitelisted(value: boolean) {
     this.set("whitelisted", Value.fromBoolean(value));
-  }
-
-  get approved(): string | null {
-    let value = this.get("approved");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set approved(value: string | null) {
-    if (value === null) {
-      this.unset("approved");
-    } else {
-      this.set("approved", Value.fromString(value as string));
-    }
   }
 
   get symbol(): string | null {
@@ -1583,145 +1417,6 @@ export class Proposal extends Entity {
   }
 }
 
-export class Badge extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id !== null, "Cannot save Badge entity without an ID");
-    assert(
-      id.kind == ValueKind.STRING,
-      "Cannot save Badge entity with non-string ID. " +
-        'Considering using .toHex() to convert the "id" to a string.'
-    );
-    store.set("Badge", id.toString(), this);
-  }
-
-  static load(id: string): Badge | null {
-    return store.get("Badge", id) as Badge | null;
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get memberAddress(): Bytes {
-    let value = this.get("memberAddress");
-    return value.toBytes();
-  }
-
-  set memberAddress(value: Bytes) {
-    this.set("memberAddress", Value.fromBytes(value));
-  }
-
-  get voteCount(): BigInt {
-    let value = this.get("voteCount");
-    return value.toBigInt();
-  }
-
-  set voteCount(value: BigInt) {
-    this.set("voteCount", Value.fromBigInt(value));
-  }
-
-  get summonCount(): BigInt {
-    let value = this.get("summonCount");
-    return value.toBigInt();
-  }
-
-  set summonCount(value: BigInt) {
-    this.set("summonCount", Value.fromBigInt(value));
-  }
-
-  get proposalSponsorCount(): BigInt {
-    let value = this.get("proposalSponsorCount");
-    return value.toBigInt();
-  }
-
-  set proposalSponsorCount(value: BigInt) {
-    this.set("proposalSponsorCount", Value.fromBigInt(value));
-  }
-
-  get proposalSubmissionCount(): BigInt {
-    let value = this.get("proposalSubmissionCount");
-    return value.toBigInt();
-  }
-
-  set proposalSubmissionCount(value: BigInt) {
-    this.set("proposalSubmissionCount", Value.fromBigInt(value));
-  }
-
-  get proposalProcessorCount(): BigInt {
-    let value = this.get("proposalProcessorCount");
-    return value.toBigInt();
-  }
-
-  set proposalProcessorCount(value: BigInt) {
-    this.set("proposalProcessorCount", Value.fromBigInt(value));
-  }
-
-  get rageQuitCount(): BigInt {
-    let value = this.get("rageQuitCount");
-    return value.toBigInt();
-  }
-
-  set rageQuitCount(value: BigInt) {
-    this.set("rageQuitCount", Value.fromBigInt(value));
-  }
-
-  get jailedCount(): BigInt {
-    let value = this.get("jailedCount");
-    return value.toBigInt();
-  }
-
-  set jailedCount(value: BigInt) {
-    this.set("jailedCount", Value.fromBigInt(value));
-  }
-
-  get memberships(): BigInt {
-    let value = this.get("memberships");
-    return value.toBigInt();
-  }
-
-  set memberships(value: BigInt) {
-    this.set("memberships", Value.fromBigInt(value));
-  }
-
-  get dissents(): BigInt {
-    let value = this.get("dissents");
-    return value.toBigInt();
-  }
-
-  set dissents(value: BigInt) {
-    this.set("dissents", Value.fromBigInt(value));
-  }
-
-  get assents(): BigInt {
-    let value = this.get("assents");
-    return value.toBigInt();
-  }
-
-  set assents(value: BigInt) {
-    this.set("assents", Value.fromBigInt(value));
-  }
-
-  get totalGas(): BigInt {
-    let value = this.get("totalGas");
-    return value.toBigInt();
-  }
-
-  set totalGas(value: BigInt) {
-    this.set("totalGas", Value.fromBigInt(value));
-  }
-}
-
 export class RageQuit extends Entity {
   constructor(id: string) {
     super();
@@ -1813,5 +1508,87 @@ export class RageQuit extends Entity {
 
   set loot(value: BigInt) {
     this.set("loot", Value.fromBigInt(value));
+  }
+}
+
+export class DaoMeta extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save DaoMeta entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save DaoMeta entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("DaoMeta", id.toString(), this);
+  }
+
+  static load(id: string): DaoMeta | null {
+    return store.get("DaoMeta", id) as DaoMeta | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get title(): string | null {
+    let value = this.get("title");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set title(value: string | null) {
+    if (value === null) {
+      this.unset("title");
+    } else {
+      this.set("title", Value.fromString(value as string));
+    }
+  }
+
+  get version(): string | null {
+    let value = this.get("version");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set version(value: string | null) {
+    if (value === null) {
+      this.unset("version");
+    } else {
+      this.set("version", Value.fromString(value as string));
+    }
+  }
+
+  get newContract(): string | null {
+    let value = this.get("newContract");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set newContract(value: string | null) {
+    if (value === null) {
+      this.unset("newContract");
+    } else {
+      this.set("newContract", Value.fromString(value as string));
+    }
   }
 }

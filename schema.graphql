@@ -21,17 +21,8 @@ type Moloch @entity {
   tokenBalances: [TokenBalance!] @derivedFrom(field: "moloch")
   proposals: [Proposal!] @derivedFrom(field: "moloch")
   rageQuits: [RageQuit!] @derivedFrom(field: "moloch")
-  guildTokenBalance: [TokenBalance!]
-  escrowTokenBalance: [TokenBalance!]
   totalShares: BigInt!
   totalLoot: BigInt!
-  proposalCount: BigInt!
-  proposalQueueCount: BigInt!
-  proposedToJoin: [Proposal!]
-  proposedToWhitelist: [Proposal!]
-  proposedToKick: [Proposal!]
-  proposedToFund: [Proposal!]
-  proposedToTrade: [Proposal!]
 }
 
 type TokenBalance @entity {
@@ -50,7 +41,6 @@ type Token @entity {
   moloch: Moloch!
   tokenAddress: Bytes!
   whitelisted: Boolean!
-  approved: Proposal
   symbol: String
   decimals: BigInt
 }
@@ -85,8 +75,6 @@ type Vote @entity {
   uintVote: Int!
   molochAddress: Bytes!
   memberAddress: Bytes
-
-  "NOTE: Do we need these legacy v1 things"
   proposalIndex: BigInt
   delegateKey: Bytes
 }
@@ -132,32 +120,10 @@ type Proposal @entity {
   votes: [Vote!] @derivedFrom(field: "proposal")
   yesShares: BigInt!
   noShares: BigInt!
-
   votingPeriodStarts: BigInt!
   votingPeriodEnds: BigInt!
   gracePeriodEnds: BigInt!
   molochVersion: String!
-}
-
-type Badge @entity {
-  id: ID!
-  memberAddress: Bytes!
-  voteCount: BigInt!
-  summonCount: BigInt!
-  proposalSponsorCount: BigInt!
-  proposalSubmissionCount: BigInt!
-  proposalProcessorCount: BigInt!
-  rageQuitCount: BigInt!
-  jailedCount: BigInt!
-  memberships: BigInt!
-  dissents: BigInt!
-  assents: BigInt!
-  totalGas: BigInt!
-
-  # proposalSubmissionNewMemberCount: BigInt!
-  # proposalSubmissionTradeCount: BigInt!
-  # proposalSubmissionWhitelistCount: BigInt!
-  # proposalSubmissionGuildkicktCount: BigInt!
 }
 
 type RageQuit @entity {
@@ -169,4 +135,11 @@ type RageQuit @entity {
   memberAddress: Bytes!
   shares: BigInt!
   loot: BigInt!
+}
+
+type DaoMeta @entity {
+  id: ID!
+  title: String
+  version: String
+  newContract: String
 }
