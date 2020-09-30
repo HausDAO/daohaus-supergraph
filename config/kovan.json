@@ -1,0 +1,7 @@
+{
+  "network": "kovan",
+  "v1FactoryAddress": "0x0C60Cd59f42093c7489BA68BAA4d7A01f2468153",
+  "v1FactoryStartBlock": 14980875,
+  "v2FactoryAddress": "0xB47778d3BcCBf5e39dEC075CA5F185fc20567b1e",
+  "v2FactoryStartBlock": 16845360
+}

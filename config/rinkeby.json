@@ -1,0 +1,7 @@
+{
+  "network": "rinkeby",
+  "v1FactoryAddress": "0x610247467d0dfA8B477ad7Dd1644e86CB2a79F8F",
+  "v1FactoryStartBlock": 6494343,
+  "v2FactoryAddress": "0x763b61A62EF076ad960E1d513713B2aeD7C1b88e",
+  "v2FactoryStartBlock": 6494329
+}

@@ -1,0 +1,7 @@
+{
+  "network": "mainnet",
+  "v1FactoryAddress": "0x2840d12d926cc686217bb42b80b662c7d72ee787",
+  "v1FactoryStartBlock": 8625240,
+  "v2FactoryAddress": "0x1782a13f176e84Be200842Ade79daAA0B09F0418",
+  "v2FactoryStartBlock": 9484660
+}

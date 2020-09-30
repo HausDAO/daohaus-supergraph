@@ -1,0 +1,7 @@
+{
+  "network": "xdai",
+  "v1FactoryAddress": "0x9232DeA84E91b49feF6b604EEA0455692FC27Ba8",
+  "v1FactoryStartBlock": 10733005,
+  "v2FactoryAddress": "0x124F707B3675b5fdd6208F4483C5B6a0B9bAf316",
+  "v2FactoryStartBlock": 10733005
+}

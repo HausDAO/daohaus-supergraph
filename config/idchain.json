@@ -1,0 +1,7 @@
+{
+  "network": "idchain",
+  "v1FactoryAddress": "0xb29f7eEc3d6d3B614fd458094f7e2Ebb3488E12D",
+  "v1FactoryStartBlock": 2199947,
+  "v2FactoryAddress": "0xF42aFC058B7b6f80729e43021404549F69875652",
+  "v2FactoryStartBlock": 2200328
+}
