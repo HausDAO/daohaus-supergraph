@@ -4,10 +4,7 @@ import {
   Register as RegisterV2,
   Delete,
 } from "../generated/V2Factory/V2Factory";
-import { SummonComplete } from "../generated/templates/MolochV2Template/V2Moloch";
-import { V1Moloch } from "../generated/templates/MolochV1Template/V1Moloch";
 
-import { Guildbank } from "../generated/templates/MolochV1Template/Guildbank";
 import { MolochV1Template, MolochV2Template } from "../generated/templates";
 import { Moloch, Member, DaoMeta } from "../generated/schema";
 import {
@@ -28,8 +25,6 @@ export function handleRegisterV1(event: RegisterV1): void {
   daoMeta.version = "1";
   daoMeta.newContract = event.params.newContract.toString();
   daoMeta.save();
-
-  //can we wait for the summon event now?
 }
 
 export function handleRegisterV2(event: RegisterV2): void {

@@ -12,6 +12,10 @@ export function legacyV1(): LegacyDaoData[] {
       "0x0372f3696fa7dc99801f435fd6737e57818239f2",
       "MetaCartel DAO"
     ),
+    new LegacyDaoData(
+      "0xcc7dcdb700eed457c8180406d7d699877f4eee24",
+      "TrojanDAO"
+    ),
   ];
 }
 
