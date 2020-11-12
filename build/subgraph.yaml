@@ -58,6 +58,33 @@ dataSources:
           handler: handleDeleteV2
       file: V1Factory/V1Factory.wasm
   - kind: ethereum/contract
+    name: V21Factory
+    network: kovan
+    source:
+      address: "0x2e08D4813bd59fE4A37B742A4D132E5b4Fd04200"
+      abi: V21Factory
+      startBlock: 16845360
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Moloch
+      abis:
+        - name: V21Factory
+          file: V21Factory/abis/V21Factory.json
+        - name: Erc20
+          file: V21Factory/abis/Erc20.json
+        - name: Erc20Bytes32
+          file: V21Factory/abis/Erc20Bytes32.json
+      eventHandlers:
+        - event: SummonComplete(indexed
+            address,address[],address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256[])
+          handler: handleSummonv21
+        - event: Register(uint256,address,string,string,uint256)
+          handler: handleRegisterv21
+      file: V1Factory/V1Factory.wasm
+  - kind: ethereum/contract
     name: MolochDAO
     network: kovan
     source:
