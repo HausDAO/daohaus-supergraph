@@ -295,6 +295,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.applicant = event.params.applicant;
   proposal.proposer = event.transaction.from;
   proposal.sponsor = Address.fromString(ZERO_ADDRESS);
+  proposal.processor = Address.fromString(ZERO_ADDRESS);
   proposal.sharesRequested = event.params.sharesRequested;
   proposal.lootRequested = event.params.lootRequested;
   proposal.tributeOffered = event.params.tributeOffered;
@@ -482,12 +483,12 @@ export function handleProcessProposal(event: ProcessProposal): void {
       }
 
       newMember.moloch = molochId;
-      newMember.createdAt = event.block.timestamp.toString();
       newMember.molochAddress = event.address;
       newMember.memberAddress = proposal.applicant;
       newMember.delegateKey = proposal.applicant;
       newMember.shares = proposal.sharesRequested;
       newMember.loot = proposal.lootRequested;
+      newMember.createdAt = event.block.timestamp.toString();
 
       let sharesOrLootRequested =
         proposal.sharesRequested > BigInt.fromI32(0) ||
@@ -558,6 +559,8 @@ export function handleProcessProposal(event: ProcessProposal): void {
   }
 
   proposal.processed = true;
+  proposal.processedAt = event.block.timestamp.toString();
+  proposal.processor = event.transaction.from; 
 
   internalTransfer(
     molochId,

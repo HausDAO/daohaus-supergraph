@@ -9,6 +9,7 @@
     "deploy-minion": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-minion-kovan",
     "deploy-rinkeby": "node scripts/deploy-prep.js rinkeby && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-rinkeby",
     "deploy-xdai": "node scripts/deploy-prep.js xdai && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-xdai",
+    "deploy-bill-dev": "node scripts/deploy-prep.js kovan && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ wswarren12/daohaus-ubergraph-bill --kovan",
     "create-local": "graph create --node http://localhost:8020/ odyssy-automaton/daohaus",
     "remove-local": "graph remove --node http://localhost:8020/ odyssy-automaton/daohaus",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 odyssy-automaton/daohaus"

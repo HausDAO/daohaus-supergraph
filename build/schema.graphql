@@ -1,8 +1,8 @@
 type Moloch @entity {
   id: ID!
-  summoner: Bytes!
   title: String
   version: String
+  summoner: Bytes!
   newContract: String
   deleted: Boolean
   summoningTime: BigInt!
@@ -92,6 +92,7 @@ type Proposal @entity {
   applicant: Bytes!
   proposer: Bytes
   sponsor: Bytes!
+  processor: Bytes
   sharesRequested: BigInt!
   lootRequested: BigInt!
   tributeOffered: BigInt!
@@ -108,6 +109,7 @@ type Proposal @entity {
   sponsored: Boolean!
   sponsoredAt: String
   processed: Boolean!
+  processedAt: String
   didPass: Boolean!
   cancelled: Boolean
   aborted: Boolean
@@ -142,4 +144,5 @@ type DaoMeta @entity {
   title: String
   version: String
   newContract: String
+  http: String
 }

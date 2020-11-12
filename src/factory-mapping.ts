@@ -1,12 +1,10 @@
 import { BigInt, Address } from "@graphprotocol/graph-ts";
 import { Register as RegisterV1 } from "../generated/V1Factory/V1Factory";
-import {
-  Register as RegisterV2,
-  Delete,
-} from "../generated/V2Factory/V2Factory";
-
+import {Register as RegisterV2, Delete} from "../generated/V2Factory/V2Factory";
+import {SummonComplete as SummonV21, Register as RegisterV21} from "../generated/V21Factory/V21Factory";
 import { MolochV1Template, MolochV2Template } from "../generated/templates";
 import { Moloch, Member, DaoMeta } from "../generated/schema";
+
 import {
   createAndApproveToken,
   createEscrowTokenBalance,
@@ -98,9 +96,120 @@ export function handleRegisterV2(event: RegisterV2): void {
   }
 }
 
+export function handleSummonv21 (event: SummonV21): void {
+  MolochV2Template.create(event.params.moloch);
+
+  let molochId = event.params.moloch.toHex();
+  let moloch = new Moloch(molochId);
+
+  let tokens = event.params.tokens;
+  let approvedTokens: string[] = [];
+  moloch.depositToken = approvedTokens[0];
+  let depositToken = moloch.depositToken;
+
+
+  for (let i = 0; i < tokens.length; i++) {
+    let token = tokens[i];
+    approvedTokens.push(createAndApproveToken(molochId, token));
+    createEscrowTokenBalance(molochId, token);
+    createGuildTokenBalance(molochId, token);
+  }
+
+  let eventSummoners = event.params.summoner;
+  let summoners: string[] = [];
+  let creator = eventSummoners[0];
+
+  let eventSummonerShares = event.params.summonerShares;
+  moloch.totalShares = BigInt.fromI32(0);
+  let mTotalShares = moloch.totalShares;
+
+  for (let i = 0; i < eventSummoners.length; i++) {
+    let summoner = eventSummoners[i];
+    
+    for (let i = 0; i< eventSummonerShares.length; i++){
+      let shares = eventSummonerShares[i];
+      mTotalShares = mTotalShares.plus(shares)
+
+      summoners.push(
+        createAndAddSummoner(molochId, summoner, shares, depositToken, event)
+      );
+    }
+  }
+
+  moloch.summoner = creator;
+  moloch.summoningTime = event.params.summoningTime;
+  moloch.deleted = false;
+  moloch.newContract = "1";
+  moloch.periodDuration = event.params.periodDuration;
+  moloch.votingPeriodLength = event.params.votingPeriodLength;
+  moloch.gracePeriodLength = event.params.gracePeriodLength;
+  moloch.proposalDeposit = event.params.proposalDeposit;
+  moloch.dilutionBound = event.params.dilutionBound;
+  moloch.processingReward = event.params.processingReward;
+  moloch.approvedTokens = approvedTokens;
+  moloch.totalLoot = BigInt.fromI32(0);
+
+  moloch.save();
+}
+
+export function handleRegisterV21(event: RegisterV21): void {
+  let molochId = event.address.toHexString();
+  let moloch = Moloch.load(molochId);
+
+  moloch.title = event.params.title;
+  moloch.version = event.params.version.toString();
+  moloch.save();
+
+  let daoMeta = new DaoMeta(event.params.moloch.toHex());
+  daoMeta.title = event.params.title;
+  daoMeta.version = event.params.version.toString();
+  daoMeta.newContract = event.params.daoIdx.toString();
+  daoMeta.save();
+}
+
 export function handleDelete(event: Delete): void {
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
   moloch.deleted = true;
   moloch.save();
+}
+
+// used to create multiple summoners at time of summoning
+export function createAndAddSummoner(
+  molochId: string,
+  summoner: Address,
+  shares: BigInt,
+  depositToken: string,
+  event: SummonV21
+): string {
+
+  let memberId = molochId.concat("-member-").concat(summoner.toHex());
+  let moloch = Moloch.load(molochId);
+  let member = new Member(memberId);
+  
+
+  member.moloch = molochId;
+  member.createdAt = event.block.timestamp.toString();
+  member.molochAddress = event.params.moloch;
+  member.memberAddress = summoner;
+  member.delegateKey = summoner;
+  member.shares = shares;
+  member.loot = BigInt.fromI32(0);
+  member.tokenTribute = BigInt.fromI32(0);
+  member.didRagequit = false;
+  member.exists = true;
+  member.proposedToKick = false;
+  member.kicked = false;
+
+  //Set summoner summoner balances for approved tokens to zero
+    let tokenId = molochId.concat("-token-").concat(depositToken);
+    let amount = BigInt.fromI32(0);
+    createMemberTokenBalance(molochId, summoner, tokenId, amount);
+  
+  member.save();
+
+  moloch.totalShares = moloch.totalShares.plus(shares);
+  moloch.save()
+
+  return memberId;
 }

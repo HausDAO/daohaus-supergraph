@@ -42,15 +42,6 @@ export class Moloch extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get summoner(): Bytes {
-    let value = this.get("summoner");
-    return value.toBytes();
-  }
-
-  set summoner(value: Bytes) {
-    this.set("summoner", Value.fromBytes(value));
-  }
-
   get title(): string | null {
     let value = this.get("title");
     if (value === null) {
@@ -83,6 +74,15 @@ export class Moloch extends Entity {
     } else {
       this.set("version", Value.fromString(value as string));
     }
+  }
+
+  get summoner(): Bytes {
+    let value = this.get("summoner");
+    return value.toBytes();
+  }
+
+  set summoner(value: Bytes) {
+    this.set("summoner", Value.fromBytes(value));
   }
 
   get newContract(): string | null {
@@ -1053,6 +1053,23 @@ export class Proposal extends Entity {
     this.set("sponsor", Value.fromBytes(value));
   }
 
+  get processor(): Bytes | null {
+    let value = this.get("processor");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set processor(value: Bytes | null) {
+    if (value === null) {
+      this.unset("processor");
+    } else {
+      this.set("processor", Value.fromBytes(value as Bytes));
+    }
+  }
+
   get sharesRequested(): BigInt {
     let value = this.get("sharesRequested");
     return value.toBigInt();
@@ -1243,6 +1260,23 @@ export class Proposal extends Entity {
 
   set processed(value: boolean) {
     this.set("processed", Value.fromBoolean(value));
+  }
+
+  get processedAt(): string | null {
+    let value = this.get("processedAt");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set processedAt(value: string | null) {
+    if (value === null) {
+      this.unset("processedAt");
+    } else {
+      this.set("processedAt", Value.fromString(value as string));
+    }
   }
 
   get didPass(): boolean {
@@ -1589,6 +1623,23 @@ export class DaoMeta extends Entity {
       this.unset("newContract");
     } else {
       this.set("newContract", Value.fromString(value as string));
+    }
+  }
+
+  get http(): string | null {
+    let value = this.get("http");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set http(value: string | null) {
+    if (value === null) {
+      this.unset("http");
+    } else {
+      this.set("http", Value.fromString(value as string));
     }
   }
 }
