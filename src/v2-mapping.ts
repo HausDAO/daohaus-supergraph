@@ -618,6 +618,8 @@ export function handleProcessWhitelistProposal(
     proposal.didPass = false;
   }
   proposal.processed = true;
+  proposal.processedAt = event.block.timestamp.toString();
+  proposal.processor = event.transaction.from; 
 
   internalTransfer(
     molochId,
@@ -670,6 +672,8 @@ export function handleProcessGuildKickProposal(
     proposal.didPass = false;
   }
   proposal.processed = true;
+  proposal.processedAt = event.block.timestamp.toString();
+  proposal.processor = event.transaction.from; 
 
   internalTransfer(
     molochId,
