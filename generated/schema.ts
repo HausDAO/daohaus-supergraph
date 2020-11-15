@@ -319,6 +319,23 @@ export class Moloch extends Entity {
     }
   }
 
+  get minions(): Array<string> | null {
+    let value = this.get("minions");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set minions(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("minions");
+    } else {
+      this.set("minions", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
   get totalShares(): BigInt {
     let value = this.get("totalShares");
     return value.toBigInt();
@@ -1415,6 +1432,49 @@ export class Proposal extends Entity {
   set molochVersion(value: string) {
     this.set("molochVersion", Value.fromString(value));
   }
+
+  get isMinion(): boolean {
+    let value = this.get("isMinion");
+    return value.toBoolean();
+  }
+
+  set isMinion(value: boolean) {
+    this.set("isMinion", Value.fromBoolean(value));
+  }
+
+  get minionAddress(): Bytes | null {
+    let value = this.get("minionAddress");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set minionAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("minionAddress");
+    } else {
+      this.set("minionAddress", Value.fromBytes(value as Bytes));
+    }
+  }
+
+  get minion(): string | null {
+    let value = this.get("minion");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set minion(value: string | null) {
+    if (value === null) {
+      this.unset("minion");
+    } else {
+      this.set("minion", Value.fromString(value as string));
+    }
+  }
 }
 
 export class RageQuit extends Entity {
@@ -1589,6 +1649,90 @@ export class DaoMeta extends Entity {
       this.unset("newContract");
     } else {
       this.set("newContract", Value.fromString(value as string));
+    }
+  }
+}
+
+export class Minion extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Minion entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Minion entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Minion", id.toString(), this);
+  }
+
+  static load(id: string): Minion | null {
+    return store.get("Minion", id) as Minion | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get minionAddress(): Bytes {
+    let value = this.get("minionAddress");
+    return value.toBytes();
+  }
+
+  set minionAddress(value: Bytes) {
+    this.set("minionAddress", Value.fromBytes(value));
+  }
+
+  get molochAddress(): Bytes {
+    let value = this.get("molochAddress");
+    return value.toBytes();
+  }
+
+  set molochAddress(value: Bytes) {
+    this.set("molochAddress", Value.fromBytes(value));
+  }
+
+  get moloch(): string {
+    let value = this.get("moloch");
+    return value.toString();
+  }
+
+  set moloch(value: string) {
+    this.set("moloch", Value.fromString(value));
+  }
+
+  get details(): string {
+    let value = this.get("details");
+    return value.toString();
+  }
+
+  set details(value: string) {
+    this.set("details", Value.fromString(value));
+  }
+
+  get proposals(): Array<string> | null {
+    let value = this.get("proposals");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set proposals(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("proposals");
+    } else {
+      this.set("proposals", Value.fromStringArray(value as Array<string>));
     }
   }
 }

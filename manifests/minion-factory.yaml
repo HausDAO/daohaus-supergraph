@@ -1,0 +1,29 @@
+kind: ethereum/contract
+  name: V2Factory
+  network: kovan
+  # network: mainnet
+  source:
+    address: "0xB47778d3BcCBf5e39dEC075CA5F185fc20567b1e"
+    # address: "0x1782a13f176e84Be200842Ade79daAA0B09F0418"
+    abi: V2Factory
+    startBlock: 16845360
+    # startBlock: 9484660
+  mapping:
+    kind: ethereum/events
+    apiVersion: 0.0.3
+    language: wasm/assemblyscript
+    entities:
+      - Register
+    abis:
+      - name: V2Factory
+        file: ./abis/V2Factory.json
+      - name: Erc20
+        file: ./abis/Erc20.json
+      - name: Erc20Bytes32
+        file: ./abis/Erc20Bytes32.json
+    eventHandlers:
+      - event: Register(uint256,address,indexed address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256,string,uint256)
+        handler: handleRegisterV2
+      - event: Delete(address)
+        handler: handleDeleteV2
+    file: ./src/factory-mapping.ts

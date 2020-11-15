@@ -63,6 +63,31 @@ dataSources:
           handler: handleDeleteV2
       file: ./src/factory-mapping.ts
   - kind: ethereum/contract
+    name: MinionFactory
+    network: kovan
+    source:
+      address: "0xf46D5825e451f30540eaeDe3Dba31236a9e84a0f"
+      abi: MinionFactory
+      startBlock: 22087320
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Moloch
+        - Minion
+      abis:
+        - name: V1Moloch
+          file: ./abis/V1Moloch.json
+        - name: MinionFactory
+          file: ./abis/MinionFactory.json
+        - name: Minion
+          file: ./abis/Minion.json
+      eventHandlers:
+        - event: "Summoned(indexed address,indexed address,address,string)"
+          handler: handleSummonedMinion
+      file: ./src/minion-factory-mapping.ts
+  - kind: ethereum/contract
     name: MolochDAO
     network: mainnet
     source:

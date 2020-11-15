@@ -25,6 +25,7 @@ import {
   Vote,
   RageQuit,
   DaoMeta,
+  Minion,
 } from "../generated/schema";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -320,6 +321,20 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.votingPeriodEnds = BigInt.fromI32(0);
   proposal.gracePeriodEnds = BigInt.fromI32(0);
   proposal.details = event.params.details.toString();
+
+  let potentialMinionId = molochId
+    .concat("-minion-")
+    // .concat(event.transaction.from.toHex());
+    .concat(event.params.applicant.toHex());
+
+  let minion = Minion.load(potentialMinionId);
+  if (minion !== null) {
+    proposal.isMinion = true;
+    proposal.minionAddress = event.transaction.from;
+    proposal.minion = minion.id;
+  } else {
+    proposal.isMinion = false;
+  }
 
   if (event.params.tributeOffered > BigInt.fromI32(0)) {
     let tokenId = molochId
