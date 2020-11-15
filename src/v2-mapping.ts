@@ -330,7 +330,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   let minion = Minion.load(potentialMinionId);
   if (minion !== null) {
     proposal.isMinion = true;
-    proposal.minionAddress = event.transaction.from;
+    proposal.minionAddress = event.params.applicant;
     proposal.minion = minion.id;
   } else {
     proposal.isMinion = false;
