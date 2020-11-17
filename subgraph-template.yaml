@@ -67,16 +67,17 @@ dataSources:
     network: kovan
     #network: mainnet
     source:
-      address: "0x2e08D4813bd59fE4A37B742A4D132E5b4Fd04200"
+      address: "0x16E59629275939f6eF260FE1c1AD4233E8fa32e0"
       #address: "0xaa3c19F5330D1dd618bB8D960ec9F36c94Cf9815"
       abi: V21Factory
-      startBlock: 16845360
+      startBlock: 22153522 
       #startBlock: 11088227 
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
+        - Register
         - Moloch
       abis:
         - name: V21Factory
@@ -87,9 +88,9 @@ dataSources:
           file: ./abis/Erc20Bytes32.json
       eventHandlers:
         - event: SummonComplete(indexed address,address[],address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256[])
-          handler: handleSummonv21
+          handler: handleSummonV21
         - event: Register(uint256,address,string,string,uint256)
-          handler: handleRegisterv21
+          handler: handleRegisterV21
       file: ./src/factory-mapping.ts    
   - kind: ethereum/contract
     name: MolochDAO

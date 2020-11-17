@@ -53,7 +53,7 @@ try {
   data.templates[2].network = network;
 
   if (network !== "mainnet") {
-    data.dataSources.splice(2, 1);
+    data.dataSources.splice(3, 1);
   }
 
   let yamlStr = yaml.safeDump(data);
