@@ -329,9 +329,13 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   let minion = Minion.load(potentialMinionId);
   if (minion !== null) {
-    proposal.isMinion = true;
-    proposal.minionAddress = event.params.applicant;
-    proposal.minion = minion.id;
+    if (proposal.paymentRequested > BigInt.fromI32(0)) {
+      proposal.isMinionApplicant = true;
+    } else {
+      proposal.isMinion = true;
+      proposal.minionAddress = event.params.applicant;
+      proposal.minion = minion.id;
+    }
   } else {
     proposal.isMinion = false;
   }

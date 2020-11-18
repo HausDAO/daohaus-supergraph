@@ -1442,6 +1442,15 @@ export class Proposal extends Entity {
     this.set("isMinion", Value.fromBoolean(value));
   }
 
+  get isMinionApplicant(): boolean {
+    let value = this.get("isMinionApplicant");
+    return value.toBoolean();
+  }
+
+  set isMinionApplicant(value: boolean) {
+    this.set("isMinionApplicant", Value.fromBoolean(value));
+  }
+
   get minionAddress(): Bytes | null {
     let value = this.get("minionAddress");
     if (value === null) {
