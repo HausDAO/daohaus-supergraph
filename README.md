@@ -2,6 +2,15 @@
 
 Caching dao data for all moloch daos summoned on daohaus.club.
 
+## Attribution
+
+This repo is heavily indebted to the work done by https://github.com/daodesigner here:
+https://github.com/daodesigner/moloch-subgraph
+
+built by:
+Welcome to FlatLand:
+http://manifesto.designerdao.eth.link/
+
 ## Endpoints
 
 https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus
