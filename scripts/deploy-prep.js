@@ -7,8 +7,8 @@ const config = {
     v1FactoryStartBlock: 14980875,
     v2FactoryAddress: "0xB47778d3BcCBf5e39dEC075CA5F185fc20567b1e",
     v2FactoryStartBlock: 16845360,
-    v21FactoryAddress: "0x2e08D4813bd59fE4A37B742A4D132E5b4Fd04200",
-    v21FactoryStartBlock: 16845360,
+    v21FactoryAddress: "0xEf9C21d353B4182Bc088CB857eB7a32aF915e0Fd",
+    v21FactoryStartBlock: 22153522,
   },
   rinkeby: {
     v1FactoryAddress: "0x610247467d0dfA8B477ad7Dd1644e86CB2a79F8F",

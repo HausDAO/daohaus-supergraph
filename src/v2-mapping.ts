@@ -362,6 +362,7 @@ export function handleSubmitVote(event: SubmitVote): void {
     .concat("-vote-")
     .concat(event.params.proposalId.toString());
 
+
   let vote = new Vote(voteId);
 
   vote.createdAt = event.block.timestamp.toString();
@@ -370,12 +371,16 @@ export function handleSubmitVote(event: SubmitVote): void {
   vote.memberAddress = event.params.memberAddress;
   vote.molochAddress = event.address;
   vote.uintVote = event.params.uintVote;
+  
+  let member = Member.load(memberId);
+  let memberVoteWeight = member.shares; 
+  vote.memberPower = memberVoteWeight;
 
   vote.save();
 
   let moloch = Moloch.load(molochId);
   let proposal = Proposal.load(proposalVotedId);
-  let member = Member.load(memberId);
+
 
   switch (event.params.uintVote) {
     case 1: {
@@ -806,6 +811,7 @@ export function handleCancelProposal(event: CancelProposal): void {
   }
 
   proposal.cancelled = true;
+  proposal.cancelledAt = event.block.timestamp.toString();
   proposal.save();
 }
 

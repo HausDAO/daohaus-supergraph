@@ -873,6 +873,23 @@ export class Vote extends Entity {
     }
   }
 
+  get memberPower(): BigInt | null {
+    let value = this.get("memberPower");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set memberPower(value: BigInt | null) {
+    if (value === null) {
+      this.unset("memberPower");
+    } else {
+      this.set("memberPower", Value.fromBigInt(value as BigInt));
+    }
+  }
+
   get proposalIndex(): BigInt | null {
     let value = this.get("proposalIndex");
     if (value === null) {
@@ -1295,6 +1312,23 @@ export class Proposal extends Entity {
 
   set cancelled(value: boolean) {
     this.set("cancelled", Value.fromBoolean(value));
+  }
+
+  get cancelledAt(): string | null {
+    let value = this.get("cancelledAt");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set cancelledAt(value: string | null) {
+    if (value === null) {
+      this.unset("cancelledAt");
+    } else {
+      this.set("cancelledAt", Value.fromString(value as string));
+    }
   }
 
   get aborted(): boolean {

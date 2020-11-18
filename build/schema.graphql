@@ -75,6 +75,7 @@ type Vote @entity {
   uintVote: Int!
   molochAddress: Bytes!
   memberAddress: Bytes
+  memberPower: BigInt
   proposalIndex: BigInt
   delegateKey: Bytes
 }
@@ -112,6 +113,7 @@ type Proposal @entity {
   processedAt: String
   didPass: Boolean!
   cancelled: Boolean
+  cancelledAt: String
   aborted: Boolean
   whitelist: Boolean
   guildkick: Boolean

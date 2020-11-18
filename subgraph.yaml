@@ -62,16 +62,15 @@ dataSources:
     name: V21Factory
     network: kovan
     source:
-      address: '0x2e08D4813bd59fE4A37B742A4D132E5b4Fd04200'
+      address: '0xEf9C21d353B4182Bc088CB857eB7a32aF915e0Fd'
       abi: V21Factory
-      startBlock: 16845360
+      startBlock: 22153522
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Register
-        - Moloch
       abis:
         - name: V21Factory
           file: ./abis/V21Factory.json

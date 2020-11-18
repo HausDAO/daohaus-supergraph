@@ -100,23 +100,17 @@ export function handleSummonV21 (event: SummonComplete): void {
   MolochV21Template.create(event.params.moloch);
 
   let molochId = event.params.moloch.toHex();
-  log.info("*** New Moloch V21 {}***", [molochId.toString()]);
+  log.info("*** New MolochId {}***", [molochId]);
   let moloch = new Moloch(molochId);
-  log.info("*** Moloch Created {}***", [molochId.toString()]);
 
-  log.info("*** Token One {}, Token Two {}***", [event.params.tokens.toString()]);
-  let tokens = event.params.tokens;
-  let approvedTokens: string[] = [];
-
-  for (let i = 0; i < tokens.length; i++) {
-    let token = tokens[i];
-    approvedTokens.push(createAndApproveToken(molochId, token));
-    createEscrowTokenBalance(molochId, token);
-    createGuildTokenBalance(molochId, token);
-  }
+  let daoMeta = new DaoMeta(event.params.moloch.toHex());
+  daoMeta.version = "21";
+  log.info("*** DAO Version {}***", [daoMeta.version.toString()]);
+  daoMeta.newContract = "1";
+  daoMeta.save();
 
   let eventSummoners = event.params.summoner;
-  log.info("*** Summoner 1 {}, Summoner 2 {}, Summoner 3 {}***", [eventSummoners.toString()]);
+  log.info("*** Summoner 1 {}, Summoner 2 {}***", [eventSummoners.toString()]);
 
   let summoners: string[] = [];
   let creator = eventSummoners[0];
@@ -124,7 +118,7 @@ export function handleSummonV21 (event: SummonComplete): void {
   log.info("*** Moloch Summoner {}***", [moloch.summoner.toString()]);
 
   let eventSummonerShares = event.params.summonerShares;
-  log.info("*** Summoner 1 Shares {}, Summoner 2 Shares {}, Summoner 3 Shares {}***", [eventSummonerShares.toString()]);
+  log.info("*** Summoner 1 Shares {}, Summoner 2 Shares {}***", [eventSummonerShares.toString()]);
 
   moloch.totalShares = BigInt.fromI32(0);
   let mTotalShares = moloch.totalShares;
@@ -142,6 +136,17 @@ export function handleSummonV21 (event: SummonComplete): void {
         createAndAddSummoner(molochId, summoner, shares, event)
       );
     }
+  }
+
+  let tokens = event.params.tokens;
+  log.info("*** Token One {}, Token Two {}***", [event.params.tokens.toString()]);
+  let approvedTokens: string[] = [];
+
+  for (let i = 0; i < tokens.length; i++) {
+    let token = tokens[i];
+    approvedTokens.push(createAndApproveToken(molochId, token));
+    createEscrowTokenBalance(molochId, token);
+    createGuildTokenBalance(molochId, token);
   }
 
 
