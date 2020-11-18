@@ -7,6 +7,8 @@ const config = {
     v1FactoryStartBlock: 14980875,
     v2FactoryAddress: "0xB47778d3BcCBf5e39dEC075CA5F185fc20567b1e",
     v2FactoryStartBlock: 16845360,
+    v21FactoryAddress: "0xEf9C21d353B4182Bc088CB857eB7a32aF915e0Fd",
+    v21FactoryStartBlock: 22153522,
   },
   rinkeby: {
     v1FactoryAddress: "0x610247467d0dfA8B477ad7Dd1644e86CB2a79F8F",
@@ -42,11 +44,16 @@ try {
   data.dataSources[1].source.address = config[network].v2FactoryAddress;
   data.dataSources[1].source.startBlock = config[network].v2FactoryStartBlock;
 
+  data.dataSources[2].network = network; 
+  data.dataSources[2].source.address = config[network].v21FactoryAddress;
+  data.dataSources[2].source.startBlock = config[network].v21FactoryStartBlock;
+
   data.templates[0].network = network;
   data.templates[1].network = network;
+  data.templates[2].network = network;
 
   if (network !== "mainnet") {
-    data.dataSources.splice(2, 1);
+    data.dataSources.splice(3, 1);
   }
 
   let yamlStr = yaml.safeDump(data);

@@ -13,3 +13,9 @@ export class MolochV2Template extends DataSourceTemplate {
     DataSourceTemplate.create("MolochV2Template", [address.toHex()]);
   }
 }
+
+export class MolochV21Template extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("MolochV21Template", [address.toHex()]);
+  }
+}

@@ -295,6 +295,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.applicant = event.params.applicant;
   proposal.proposer = event.transaction.from;
   proposal.sponsor = Address.fromString(ZERO_ADDRESS);
+  proposal.processor = Address.fromString(ZERO_ADDRESS);
   proposal.sharesRequested = event.params.sharesRequested;
   proposal.lootRequested = event.params.lootRequested;
   proposal.tributeOffered = event.params.tributeOffered;
@@ -361,6 +362,7 @@ export function handleSubmitVote(event: SubmitVote): void {
     .concat("-vote-")
     .concat(event.params.proposalId.toString());
 
+
   let vote = new Vote(voteId);
 
   vote.createdAt = event.block.timestamp.toString();
@@ -369,12 +371,16 @@ export function handleSubmitVote(event: SubmitVote): void {
   vote.memberAddress = event.params.memberAddress;
   vote.molochAddress = event.address;
   vote.uintVote = event.params.uintVote;
+  
+  let member = Member.load(memberId);
+  let memberVoteWeight = member.shares; 
+  vote.memberPower = memberVoteWeight;
 
   vote.save();
 
   let moloch = Moloch.load(molochId);
   let proposal = Proposal.load(proposalVotedId);
-  let member = Member.load(memberId);
+
 
   switch (event.params.uintVote) {
     case 1: {
@@ -482,12 +488,12 @@ export function handleProcessProposal(event: ProcessProposal): void {
       }
 
       newMember.moloch = molochId;
-      newMember.createdAt = event.block.timestamp.toString();
       newMember.molochAddress = event.address;
       newMember.memberAddress = proposal.applicant;
       newMember.delegateKey = proposal.applicant;
       newMember.shares = proposal.sharesRequested;
       newMember.loot = proposal.lootRequested;
+      newMember.createdAt = event.block.timestamp.toString();
 
       let sharesOrLootRequested =
         proposal.sharesRequested > BigInt.fromI32(0) ||
@@ -558,6 +564,8 @@ export function handleProcessProposal(event: ProcessProposal): void {
   }
 
   proposal.processed = true;
+  proposal.processedAt = event.block.timestamp.toString();
+  proposal.processor = event.transaction.from; 
 
   internalTransfer(
     molochId,
@@ -615,6 +623,8 @@ export function handleProcessWhitelistProposal(
     proposal.didPass = false;
   }
   proposal.processed = true;
+  proposal.processedAt = event.block.timestamp.toString();
+  proposal.processor = event.transaction.from; 
 
   internalTransfer(
     molochId,
@@ -667,6 +677,8 @@ export function handleProcessGuildKickProposal(
     proposal.didPass = false;
   }
   proposal.processed = true;
+  proposal.processedAt = event.block.timestamp.toString();
+  proposal.processor = event.transaction.from; 
 
   internalTransfer(
     molochId,
@@ -799,6 +811,7 @@ export function handleCancelProposal(event: CancelProposal): void {
   }
 
   proposal.cancelled = true;
+  proposal.cancelledAt = event.block.timestamp.toString();
   proposal.save();
 }
 
