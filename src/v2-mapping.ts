@@ -333,11 +333,13 @@ export function handleSubmitProposal(event: SubmitProposal): void {
       proposal.isMinionApplicant = true;
     } else {
       proposal.isMinion = true;
+      proposal.isMinionApplicant = false;
       proposal.minionAddress = event.params.applicant;
       proposal.minion = minion.id;
     }
   } else {
     proposal.isMinion = false;
+    proposal.isMinionApplicant = false;
   }
 
   if (event.params.tributeOffered > BigInt.fromI32(0)) {

@@ -126,7 +126,7 @@ type Proposal @entity {
   gracePeriodEnds: BigInt!
   molochVersion: String!
   isMinion: Boolean!
-  isMinionApplicant: Boolean!
+  isMinionApplicant: Boolean
   minionAddress: Bytes
   minion: Minion
 }
