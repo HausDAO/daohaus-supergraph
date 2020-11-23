@@ -42,15 +42,6 @@ export class Moloch extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get summoner(): Bytes {
-    let value = this.get("summoner");
-    return value.toBytes();
-  }
-
-  set summoner(value: Bytes) {
-    this.set("summoner", Value.fromBytes(value));
-  }
-
   get title(): string | null {
     let value = this.get("title");
     if (value === null) {
@@ -83,6 +74,15 @@ export class Moloch extends Entity {
     } else {
       this.set("version", Value.fromString(value as string));
     }
+  }
+
+  get summoner(): Bytes {
+    let value = this.get("summoner");
+    return value.toBytes();
+  }
+
+  set summoner(value: Bytes) {
+    this.set("summoner", Value.fromBytes(value));
   }
 
   get newContract(): string | null {
@@ -890,6 +890,23 @@ export class Vote extends Entity {
     }
   }
 
+  get memberPower(): BigInt | null {
+    let value = this.get("memberPower");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set memberPower(value: BigInt | null) {
+    if (value === null) {
+      this.unset("memberPower");
+    } else {
+      this.set("memberPower", Value.fromBigInt(value as BigInt));
+    }
+  }
+
   get proposalIndex(): BigInt | null {
     let value = this.get("proposalIndex");
     if (value === null) {
@@ -1068,6 +1085,23 @@ export class Proposal extends Entity {
 
   set sponsor(value: Bytes) {
     this.set("sponsor", Value.fromBytes(value));
+  }
+
+  get processor(): Bytes | null {
+    let value = this.get("processor");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set processor(value: Bytes | null) {
+    if (value === null) {
+      this.unset("processor");
+    } else {
+      this.set("processor", Value.fromBytes(value as Bytes));
+    }
   }
 
   get sharesRequested(): BigInt {
@@ -1262,6 +1296,23 @@ export class Proposal extends Entity {
     this.set("processed", Value.fromBoolean(value));
   }
 
+  get processedAt(): string | null {
+    let value = this.get("processedAt");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set processedAt(value: string | null) {
+    if (value === null) {
+      this.unset("processedAt");
+    } else {
+      this.set("processedAt", Value.fromString(value as string));
+    }
+  }
+
   get didPass(): boolean {
     let value = this.get("didPass");
     return value.toBoolean();
@@ -1278,6 +1329,23 @@ export class Proposal extends Entity {
 
   set cancelled(value: boolean) {
     this.set("cancelled", Value.fromBoolean(value));
+  }
+
+  get cancelledAt(): string | null {
+    let value = this.get("cancelledAt");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set cancelledAt(value: string | null) {
+    if (value === null) {
+      this.unset("cancelledAt");
+    } else {
+      this.set("cancelledAt", Value.fromString(value as string));
+    }
   }
 
   get aborted(): boolean {
@@ -1658,6 +1726,23 @@ export class DaoMeta extends Entity {
       this.unset("newContract");
     } else {
       this.set("newContract", Value.fromString(value as string));
+    }
+  }
+
+  get http(): string | null {
+    let value = this.get("http");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set http(value: string | null) {
+    if (value === null) {
+      this.unset("http");
+    } else {
+      this.set("http", Value.fromString(value as string));
     }
   }
 }
