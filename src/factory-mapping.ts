@@ -109,36 +109,23 @@ export function handleRegisterV2(event: RegisterV2): void {
 
 export function handleSummonV21(event: SummonComplete): void {
   MolochV21Template.create(event.params.moloch);
-
   let molochId = event.params.moloch.toHexString();
-  // toHexString
-  log.info("*** New MolochId {}***", [molochId]);
   let moloch = new Moloch(molochId);
 
   let daoMeta = new DaoMeta(event.params.moloch.toHex());
   daoMeta.version = "21";
-  log.info("*** DAO Version {}***", [daoMeta.version.toString()]);
   daoMeta.newContract = "1";
   daoMeta.save();
 
-  // typed some of these and removed the logs that were logging arrays
   let eventSummoners: Address[] = event.params.summoner;
-  // log.info("*** Summoner 1 {}, Summoner 2 {}***", [eventSummoners.toString()]);
-
   let summoners: string[] = [];
   let creator: Address = eventSummoners[0];
   moloch.summoner = creator;
-  log.info("*** Moloch Summoner {}***", [moloch.summoner.toHexString()]);
 
   let eventSummonerShares = event.params.summonerShares;
-  // log.info("*** Summoner 1 Shares {}, Summoner 2 Shares {}***", [
-  //   eventSummonerShares.toString(),
-  // ]);
-
   moloch.totalShares = BigInt.fromI32(0);
-  let mTotalShares = moloch.totalShares;
-  log.info("*** Total Shares {}***", [mTotalShares.toString()]);
 
+  let mTotalShares = moloch.totalShares;
   for (let i = 0; i < eventSummoners.length; i++) {
     let summoner = eventSummoners[i];
 
@@ -151,11 +138,7 @@ export function handleSummonV21(event: SummonComplete): void {
   }
 
   let tokens = event.params.tokens;
-  // log.info("*** Token One {}, Token Two {}***", [
-  //   event.params.tokens.toString(),
-  // ]);
   let approvedTokens: string[] = [];
-
   for (let i = 0; i < tokens.length; i++) {
     let token = tokens[i];
     approvedTokens.push(createAndApproveToken(molochId, token));
@@ -170,37 +153,29 @@ export function handleSummonV21(event: SummonComplete): void {
   moloch.votingPeriodLength = event.params.votingPeriodLength;
   moloch.gracePeriodLength = event.params.gracePeriodLength;
   moloch.proposalDeposit = event.params.proposalDeposit;
-  log.info("*** Moloch proposalDeposit {}***", [
-    moloch.proposalDeposit.toString(),
-  ]);
   moloch.dilutionBound = event.params.dilutionBound;
   moloch.processingReward = event.params.processingReward;
   moloch.approvedTokens = approvedTokens;
   moloch.depositToken = approvedTokens[0];
   moloch.totalLoot = BigInt.fromI32(0);
-  log.info("*** Moloch Loot {}***", [moloch.totalLoot.toString()]);
 
   moloch.save();
 }
 
 export function handleRegisterV21(event: RegisterV21): void {
-  //changed this - it was using event.params.address
   let molochId = event.params.moloch.toHexString();
   let moloch = Moloch.load(molochId);
-
-  log.info("*** handleRegisterV21 MolochId {}***", [molochId]);
-
   moloch.title = event.params.title;
   moloch.version = event.params.version.toString();
-  log.info("*** Moloch Version {}***", [moloch.version.toString()]);
+
   moloch.save();
 
   let daoMeta = DaoMeta.load(event.params.moloch.toHex());
   daoMeta.title = event.params.title;
-  log.info("*** datMeta {}***", [daoMeta.title.toString()]);
   daoMeta.version = event.params.version.toString();
   daoMeta.newContract = event.params.daoIdx.toString();
   daoMeta.http = event.params.http.toString();
+
   daoMeta.save();
 }
 
