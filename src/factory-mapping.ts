@@ -110,7 +110,8 @@ export function handleRegisterV2(event: RegisterV2): void {
 export function handleSummonV21(event: SummonComplete): void {
   MolochV21Template.create(event.params.moloch);
 
-  let molochId = event.params.moloch.toHex();
+  let molochId = event.params.moloch.toHexString();
+  // toHexString
   log.info("*** New MolochId {}***", [molochId]);
   let moloch = new Moloch(molochId);
 
@@ -120,18 +121,19 @@ export function handleSummonV21(event: SummonComplete): void {
   daoMeta.newContract = "1";
   daoMeta.save();
 
-  let eventSummoners = event.params.summoner;
-  log.info("*** Summoner 1 {}, Summoner 2 {}***", [eventSummoners.toString()]);
+  // typed some of these and removed the logs that were logging arrays
+  let eventSummoners: Address[] = event.params.summoner;
+  // log.info("*** Summoner 1 {}, Summoner 2 {}***", [eventSummoners.toString()]);
 
   let summoners: string[] = [];
-  let creator = eventSummoners[0];
+  let creator: Address = eventSummoners[0];
   moloch.summoner = creator;
-  log.info("*** Moloch Summoner {}***", [moloch.summoner.toString()]);
+  log.info("*** Moloch Summoner {}***", [moloch.summoner.toHexString()]);
 
   let eventSummonerShares = event.params.summonerShares;
-  log.info("*** Summoner 1 Shares {}, Summoner 2 Shares {}***", [
-    eventSummonerShares.toString(),
-  ]);
+  // log.info("*** Summoner 1 Shares {}, Summoner 2 Shares {}***", [
+  //   eventSummonerShares.toString(),
+  // ]);
 
   moloch.totalShares = BigInt.fromI32(0);
   let mTotalShares = moloch.totalShares;
@@ -149,9 +151,9 @@ export function handleSummonV21(event: SummonComplete): void {
   }
 
   let tokens = event.params.tokens;
-  log.info("*** Token One {}, Token Two {}***", [
-    event.params.tokens.toString(),
-  ]);
+  // log.info("*** Token One {}, Token Two {}***", [
+  //   event.params.tokens.toString(),
+  // ]);
   let approvedTokens: string[] = [];
 
   for (let i = 0; i < tokens.length; i++) {
@@ -182,15 +184,18 @@ export function handleSummonV21(event: SummonComplete): void {
 }
 
 export function handleRegisterV21(event: RegisterV21): void {
-  let molochId = event.address.toHexString();
+  //changed this - it was using event.params.address
+  let molochId = event.params.moloch.toHexString();
   let moloch = Moloch.load(molochId);
+
+  log.info("*** handleRegisterV21 MolochId {}***", [molochId]);
 
   moloch.title = event.params.title;
   moloch.version = event.params.version.toString();
   log.info("*** Moloch Version {}***", [moloch.version.toString()]);
   moloch.save();
 
-  let daoMeta = new DaoMeta(event.params.moloch.toHex());
+  let daoMeta = DaoMeta.load(event.params.moloch.toHex());
   daoMeta.title = event.params.title;
   log.info("*** datMeta {}***", [daoMeta.title.toString()]);
   daoMeta.version = event.params.version.toString();

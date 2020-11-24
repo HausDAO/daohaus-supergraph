@@ -65,8 +65,8 @@ try {
   }
 
   // temp remove v2.1
-  data.dataSources.splice(2, 1);
-  data.templates.splice(2, 1);
+  // data.dataSources.splice(2, 1);
+  // data.templates.splice(2, 1);
 
   let yamlStr = yaml.safeDump(data);
   fs.writeFileSync("subgraph.yaml", yamlStr, "utf8");
