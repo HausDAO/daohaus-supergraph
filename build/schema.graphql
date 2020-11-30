@@ -21,6 +21,7 @@ type Moloch @entity {
   tokenBalances: [TokenBalance!] @derivedFrom(field: "moloch")
   proposals: [Proposal!] @derivedFrom(field: "moloch")
   rageQuits: [RageQuit!] @derivedFrom(field: "moloch")
+  minions: [Minion!] @derivedFrom(field: "moloch")
   totalShares: BigInt!
   totalLoot: BigInt!
 }
@@ -128,6 +129,10 @@ type Proposal @entity {
   votingPeriodEnds: BigInt!
   gracePeriodEnds: BigInt!
   molochVersion: String!
+  isMinion: Boolean!
+  isMinionApplicant: Boolean
+  minionAddress: Bytes
+  minion: Minion
 }
 
 type RageQuit @entity {
@@ -147,4 +152,13 @@ type DaoMeta @entity {
   version: String
   newContract: String
   http: String
+}
+
+type Minion @entity {
+  id: ID!
+  minionAddress: Bytes!
+  molochAddress: Bytes!
+  moloch: Moloch!
+  details: String!
+  proposals: [Proposal!] @derivedFrom(field: "minion")
 }

@@ -1,0 +1,27 @@
+kind: ethereum/contract
+  name: MolochDAO
+  network: mainnet
+  source:
+    address: "0x1fd169a4f5c59acf79d0fd5d91d1201ef1bce9f1"
+    abi: V1Moloch
+    startBlock: 7218560
+  mapping:
+    kind: ethereum/events
+    apiVersion: 0.0.3
+    language: wasm/assemblyscript
+    entities:
+      - Moloch
+      - Member
+    abis:
+      - name: V1Moloch
+        file: ./abis/V1Moloch.json
+      - name: Guildbank
+        file: ./abis/Guildbank.json
+      - name: Erc20
+        file: ./abis/Erc20.json
+      - name: Erc20Bytes32
+        file: ./abis/Erc20Bytes32.json
+    eventHandlers:
+      - event: "SummonComplete(indexed address,uint256)"
+        handler: handleSummonCompleteMoloch
+    file: ./src/legacy-mapping.ts
