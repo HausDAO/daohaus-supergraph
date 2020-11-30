@@ -118,8 +118,7 @@ dataSources:
       file: ./src/minion-factory-mapping.ts
   - kind: ethereum/contract
     name: MolochDAO
-    network: kovan
-    #network: mainnet
+    network: mainnet
     source:
       address: "0x1fd169a4f5c59acf79d0fd5d91d1201ef1bce9f1"
       abi: V1Moloch
