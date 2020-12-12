@@ -95,7 +95,7 @@ dataSources:
     name: MinionFactory
     network: kovan
     source:
-      address: "0xf46D5825e451f30540eaeDe3Dba31236a9e84a0f"
+      address: "0xE4C94435aD7b398ADf27E55E0C23d45E68C62f62"
       abi: MinionFactory
       startBlock: 22087320
     mapping:
@@ -113,7 +113,7 @@ dataSources:
         - name: Minion
           file: ./abis/Minion.json
       eventHandlers:
-        - event: "Summoned(indexed address,indexed address,address,string)"
+        - event: "SummonMinion(indexed address,indexed address,string)"
           handler: handleSummonedMinion
       file: ./src/minion-factory-mapping.ts
   - kind: ethereum/contract
