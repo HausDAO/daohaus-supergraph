@@ -7,8 +7,8 @@ const config = {
     v1FactoryStartBlock: 14980875,
     v2FactoryAddress: "0xB47778d3BcCBf5e39dEC075CA5F185fc20567b1e",
     v2FactoryStartBlock: 16845360,
-    minionFactoryAddress: "0xf46D5825e451f30540eaeDe3Dba31236a9e84a0f",
-    minionFactoryStartBlock: 22087323,
+    minionFactoryAddress: "0xE4C94435aD7b398ADf27E55E0C23d45E68C62f62",
+    minionFactoryStartBlock: 22540528,
     v21FactoryAddress: "0xEf9C21d353B4182Bc088CB857eB7a32aF915e0Fd",
     v21FactoryStartBlock: 22153522,
   },
@@ -17,9 +17,9 @@ const config = {
     v1FactoryStartBlock: 6494343,
     v2FactoryAddress: "0x763b61A62EF076ad960E1d513713B2aeD7C1b88e",
     v2FactoryStartBlock: 6494329,
+    minionFactoryAddress: "0x24722249F5512db23d319B582616Cb25167F69a2",
+    minionFactoryStartBlock: 7702526,
 
-    minionFactoryAddress: "0xf46D5825e451f30540eaeDe3Dba31236a9e84a0f",
-    minionFactoryStartBlock: 22087323,
     v21FactoryAddress: "0xEf9C21d353B4182Bc088CB857eB7a32aF915e0Fd",
     v21FactoryStartBlock: 22153522,
   },
@@ -28,9 +28,9 @@ const config = {
     v1FactoryStartBlock: 10733005,
     v2FactoryAddress: "0x124F707B3675b5fdd6208F4483C5B6a0B9bAf316",
     v2FactoryStartBlock: 10733005,
+    minionFactoryAddress: "0x62760c3583fbFEbDA2D50070727c0A9e271A1C09",
+    minionFactoryStartBlock: 13468817,
 
-    minionFactoryAddress: "0xf46D5825e451f30540eaeDe3Dba31236a9e84a0f",
-    minionFactoryStartBlock: 22087323,
     v21FactoryAddress: "0xEf9C21d353B4182Bc088CB857eB7a32aF915e0Fd",
     v21FactoryStartBlock: 22153522,
   },
@@ -39,9 +39,9 @@ const config = {
     v1FactoryStartBlock: 8625240,
     v2FactoryAddress: "0x1782a13f176e84Be200842Ade79daAA0B09F0418",
     v2FactoryStartBlock: 9484660,
+    minionFactoryAddress: "0x45125Abad5F245F2320f8262a0A491e40A9eD380",
+    minionFactoryStartBlock: 11433318,
 
-    minionFactoryAddress: "0xf46D5825e451f30540eaeDe3Dba31236a9e84a0f",
-    minionFactoryStartBlock: 22087323,
     v21FactoryAddress: "0xEf9C21d353B4182Bc088CB857eB7a32aF915e0Fd",
     v21FactoryStartBlock: 22153522,
   },
@@ -85,14 +85,15 @@ try {
   }
 
   if (network === "xdai" || network === "rinkeby") {
-    // remove molochDao and v21 and minion mapping for non mainnet
-    data.dataSources.splice(2, 3);
+    // remove molochDao and v21 mapping for non mainnet
+    data.dataSources.splice(2, 1);
+    data.dataSources.splice(3, 1);
     data.templates.splice(2, 1);
   }
 
   if (network === "mainnet") {
-    // remove minion and v21 mapping for non mainnet
-    data.dataSources.splice(2, 2);
+    // remove v21 mapping for mainnet
+    data.dataSources.splice(2, 1);
     data.templates.splice(2, 1);
   }
 

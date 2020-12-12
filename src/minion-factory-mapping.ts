@@ -1,10 +1,10 @@
 import { log } from "@graphprotocol/graph-ts";
-import { Summoned } from "../generated/MinionFactory/MinionFactory";
+import { SummonMinion } from "../generated/MinionFactory/MinionFactory";
 import { Moloch, Minion } from "../generated/schema";
 
-// Summoned (index_topic_1 address minion, index_topic_2 address dao, address summoner, string details)
-export function handleSummonedMinion(event: Summoned): void {
-  let molochId = event.params.dao.toHexString();
+// Summoned (index_topic_1 address minion, index_topic_2 address dao, string details)
+export function handleSummonedMinion(event: SummonMinion): void {
+  let molochId = event.params.moloch.toHexString();
   let moloch = Moloch.load(molochId);
   if (moloch == null) {
     return;
@@ -18,8 +18,8 @@ export function handleSummonedMinion(event: Summoned): void {
   log.info("**** summoned minion: {}, moloch: {}", [minionId, molochId]);
 
   minion.minionAddress = event.params.minion;
-  minion.molochAddress = event.params.dao;
-  minion.details = event.params.details;
+  minion.molochAddress = event.params.moloch;
+  minion.name = event.params.name;
   minion.moloch = moloch.id;
 
   minion.save();

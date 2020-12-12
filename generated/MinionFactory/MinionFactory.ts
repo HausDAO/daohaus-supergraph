@@ -15,16 +15,16 @@ import {
   CallResult
 } from "@graphprotocol/graph-ts";
 
-export class Summoned extends EthereumEvent {
-  get params(): Summoned__Params {
-    return new Summoned__Params(this);
+export class SummonMinion extends EthereumEvent {
+  get params(): SummonMinion__Params {
+    return new SummonMinion__Params(this);
   }
 }
 
-export class Summoned__Params {
-  _event: Summoned;
+export class SummonMinion__Params {
+  _event: SummonMinion;
 
-  constructor(event: Summoned) {
+  constructor(event: SummonMinion) {
     this._event = event;
   }
 
@@ -32,16 +32,12 @@ export class Summoned__Params {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get dao(): Address {
+  get moloch(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get summoner(): Address {
-    return this._event.parameters[2].value.toAddress();
-  }
-
-  get details(): string {
-    return this._event.parameters[3].value.toString();
+  get name(): string {
+    return this._event.parameters[2].value.toString();
   }
 }
 
@@ -50,17 +46,17 @@ export class MinionFactory extends SmartContract {
     return new MinionFactory("MinionFactory", address);
   }
 
-  Minions(param0: BigInt): Address {
-    let result = super.call("Minions", [
-      EthereumValue.fromUnsignedBigInt(param0)
+  summonMinion(moloch: Address): Address {
+    let result = super.call("summonMinion", [
+      EthereumValue.fromAddress(moloch)
     ]);
 
     return result[0].toAddress();
   }
 
-  try_Minions(param0: BigInt): CallResult<Address> {
-    let result = super.tryCall("Minions", [
-      EthereumValue.fromUnsignedBigInt(param0)
+  try_summonMinion(moloch: Address): CallResult<Address> {
+    let result = super.tryCall("summonMinion", [
+      EthereumValue.fromAddress(moloch)
     ]);
     if (result.reverted) {
       return new CallResult();
@@ -69,19 +65,49 @@ export class MinionFactory extends SmartContract {
     return CallResult.fromValue(value[0].toAddress());
   }
 
-  getMinionCount(): BigInt {
-    let result = super.call("getMinionCount", []);
+  template(): Address {
+    let result = super.call("template", []);
 
-    return result[0].toBigInt();
+    return result[0].toAddress();
   }
 
-  try_getMinionCount(): CallResult<BigInt> {
-    let result = super.tryCall("getMinionCount", []);
+  try_template(): CallResult<Address> {
+    let result = super.tryCall("template", []);
     if (result.reverted) {
       return new CallResult();
     }
     let value = result.value;
-    return CallResult.fromValue(value[0].toBigInt());
+    return CallResult.fromValue(value[0].toAddress());
+  }
+}
+
+export class ConstructorCall extends EthereumCall {
+  get inputs(): ConstructorCall__Inputs {
+    return new ConstructorCall__Inputs(this);
+  }
+
+  get outputs(): ConstructorCall__Outputs {
+    return new ConstructorCall__Outputs(this);
+  }
+}
+
+export class ConstructorCall__Inputs {
+  _call: ConstructorCall;
+
+  constructor(call: ConstructorCall) {
+    this._call = call;
+  }
+
+  get _template(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class ConstructorCall__Outputs {
+  _call: ConstructorCall;
+
+  constructor(call: ConstructorCall) {
+    this._call = call;
   }
 }
 
@@ -102,12 +128,8 @@ export class SummonMinionCall__Inputs {
     this._call = call;
   }
 
-  get _dao(): Address {
+  get moloch(): Address {
     return this._call.inputValues[0].value.toAddress();
-  }
-
-  get _details(): string {
-    return this._call.inputValues[1].value.toString();
   }
 }
 
@@ -116,5 +138,9 @@ export class SummonMinionCall__Outputs {
 
   constructor(call: SummonMinionCall) {
     this._call = call;
+  }
+
+  get value0(): Address {
+    return this._call.outputValues[0].value.toAddress();
   }
 }

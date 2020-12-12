@@ -1804,13 +1804,13 @@ export class Minion extends Entity {
     this.set("moloch", Value.fromString(value));
   }
 
-  get details(): string {
-    let value = this.get("details");
+  get name(): string {
+    let value = this.get("name");
     return value.toString();
   }
 
-  set details(value: string) {
-    this.set("details", Value.fromString(value));
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
   }
 
   get proposals(): Array<string> | null {
