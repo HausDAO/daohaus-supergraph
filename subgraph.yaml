@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: V1Factory
-    network: kovan
+    network: rinkeby
     source:
-      address: '0x0C60Cd59f42093c7489BA68BAA4d7A01f2468153'
+      address: '0x610247467d0dfA8B477ad7Dd1644e86CB2a79F8F'
       abi: V1Factory
-      startBlock: 14980875
+      startBlock: 6494343
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -32,11 +32,11 @@ dataSources:
       file: ./src/factory-mapping.ts
   - kind: ethereum/contract
     name: V2Factory
-    network: kovan
+    network: rinkeby
     source:
-      address: '0xB47778d3BcCBf5e39dEC075CA5F185fc20567b1e'
+      address: '0x763b61A62EF076ad960E1d513713B2aeD7C1b88e'
       abi: V2Factory
-      startBlock: 16845360
+      startBlock: 6494329
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -59,40 +59,12 @@ dataSources:
           handler: handleDeleteV2
       file: ./src/factory-mapping.ts
   - kind: ethereum/contract
-    name: V21Factory
-    network: kovan
-    source:
-      address: '0xEf9C21d353B4182Bc088CB857eB7a32aF915e0Fd'
-      abi: V21Factory
-      startBlock: 22153522
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      language: wasm/assemblyscript
-      entities:
-        - Register
-      abis:
-        - name: V21Factory
-          file: ./abis/V21Factory.json
-        - name: Erc20
-          file: ./abis/Erc20.json
-        - name: Erc20Bytes32
-          file: ./abis/Erc20Bytes32.json
-      eventHandlers:
-        - event: >-
-            SummonComplete(indexed
-            address,address[],address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256[])
-          handler: handleSummonV21
-        - event: 'Register(uint256,address,string,string,uint256)'
-          handler: handleRegisterV21
-      file: ./src/factory-mapping.ts
-  - kind: ethereum/contract
     name: MinionFactory
-    network: kovan
+    network: rinkeby
     source:
-      address: '0x80ec2dB292E7a6D1D5bECB80e6479b2bE048AC98'
+      address: '0x316eFCd421b0654B7aE8E806880D4AE88ecaE206'
       abi: MinionFactory
-      startBlock: 22640617
+      startBlock: 7737496
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -114,7 +86,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: MolochV1Template
-    network: kovan
+    network: rinkeby
     source:
       abi: V1Moloch
     mapping:
@@ -158,7 +130,7 @@ templates:
           handler: handleUpdateDelegateKey
   - kind: ethereum/contract
     name: MolochV2Template
-    network: kovan
+    network: rinkeby
     source:
       abi: V2Moloch
     mapping:
@@ -186,61 +158,6 @@ templates:
             SummonComplete(indexed
             address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleSummonComplete
-        - event: >-
-            SubmitProposal(indexed
-            address,uint256,uint256,uint256,address,uint256,address,string,bool[6],uint256,indexed
-            address,indexed address)
-          handler: handleSubmitProposal
-        - event: >-
-            SubmitVote(uint256,indexed uint256,indexed address,indexed
-            address,uint8)
-          handler: handleSubmitVote
-        - event: >-
-            SponsorProposal(indexed address,indexed
-            address,uint256,uint256,uint256)
-          handler: handleSponsorProposal
-        - event: 'ProcessProposal(indexed uint256,indexed uint256,bool)'
-          handler: handleProcessProposal
-        - event: 'ProcessGuildKickProposal(indexed uint256,indexed uint256,bool)'
-          handler: handleProcessGuildKickProposal
-        - event: 'ProcessWhitelistProposal(indexed uint256,indexed uint256,bool)'
-          handler: handleProcessWhitelistProposal
-        - event: 'UpdateDelegateKey(indexed address,address)'
-          handler: handleUpdateDelegateKey
-        - event: 'CancelProposal(indexed uint256,address)'
-          handler: handleCancelProposal
-        - event: 'Withdraw(indexed address,address,uint256)'
-          handler: handleWithdraw
-        - event: 'Ragequit(indexed address,uint256,uint256)'
-          handler: handleRagequit
-        - event: 'TokensCollected(indexed address,uint256)'
-          handler: handleTokensCollected
-  - kind: ethereum/contract
-    name: MolochV21Template
-    network: kovan
-    source:
-      abi: V21Moloch
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      language: wasm/assemblyscript
-      file: ./src/v2-mapping.ts
-      entities:
-        - Moloch
-        - TokenBalance
-        - Token
-        - Member
-        - Vote
-        - Proposal
-        - Badge
-      abis:
-        - name: V21Moloch
-          file: ./abis/V21Moloch.json
-        - name: Erc20
-          file: ./abis/Erc20.json
-        - name: Erc20Bytes32
-          file: ./abis/Erc20Bytes32.json
-      eventHandlers:
         - event: >-
             SubmitProposal(indexed
             address,uint256,uint256,uint256,address,uint256,address,string,bool[6],uint256,indexed
