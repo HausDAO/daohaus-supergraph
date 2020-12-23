@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: V1Factory
-    network: xdai
+    network: rinkeby
     source:
-      address: '0x9232DeA84E91b49feF6b604EEA0455692FC27Ba8'
+      address: '0x610247467d0dfA8B477ad7Dd1644e86CB2a79F8F'
       abi: V1Factory
-      startBlock: 10733005
+      startBlock: 6494343
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -32,11 +32,11 @@ dataSources:
       file: ./src/factory-mapping.ts
   - kind: ethereum/contract
     name: V2Factory
-    network: xdai
+    network: rinkeby
     source:
-      address: '0x124F707B3675b5fdd6208F4483C5B6a0B9bAf316'
+      address: '0x763b61A62EF076ad960E1d513713B2aeD7C1b88e'
       abi: V2Factory
-      startBlock: 10733005
+      startBlock: 6494329
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -60,11 +60,11 @@ dataSources:
       file: ./src/factory-mapping.ts
   - kind: ethereum/contract
     name: MinionFactory
-    network: xdai
+    network: rinkeby
     source:
-      address: '0x62760c3583fbFEbDA2D50070727c0A9e271A1C09'
+      address: '0x316eFCd421b0654B7aE8E806880D4AE88ecaE206'
       abi: MinionFactory
-      startBlock: 13468817
+      startBlock: 7737496
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -80,13 +80,13 @@ dataSources:
         - name: Minion
           file: ./abis/Minion.json
       eventHandlers:
-        - event: 'SummonMinion(indexed address,indexed address,string)'
+        - event: 'SummonMinion(indexed address,indexed address,string,string)'
           handler: handleSummonedMinion
       file: ./src/minion-factory-mapping.ts
 templates:
   - kind: ethereum/contract
     name: MolochV1Template
-    network: xdai
+    network: rinkeby
     source:
       abi: V1Moloch
     mapping:
@@ -130,7 +130,7 @@ templates:
           handler: handleUpdateDelegateKey
   - kind: ethereum/contract
     name: MolochV2Template
-    network: xdai
+    network: rinkeby
     source:
       abi: V2Moloch
     mapping:

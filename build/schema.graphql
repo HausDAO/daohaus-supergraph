@@ -159,6 +159,7 @@ type Minion @entity {
   minionAddress: Bytes!
   molochAddress: Bytes!
   moloch: Moloch!
-  name: String!
+  details: String!
+  minionType: String!
   proposals: [Proposal!] @derivedFrom(field: "minion")
 }
