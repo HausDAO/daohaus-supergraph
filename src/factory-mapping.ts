@@ -113,7 +113,7 @@ export function handleSummonV21(event: SummonComplete): void {
   let moloch = new Moloch(molochId);
 
   let daoMeta = new DaoMeta(event.params.moloch.toHex());
-  daoMeta.version = "21";
+  daoMeta.version = "2.1";
   daoMeta.newContract = "1";
   daoMeta.save();
 
@@ -149,6 +149,7 @@ export function handleSummonV21(event: SummonComplete): void {
   moloch.summoningTime = event.params.summoningTime;
   moloch.deleted = false;
   moloch.newContract = "1";
+  moloch.version = "2.1";
   moloch.periodDuration = event.params.periodDuration;
   moloch.votingPeriodLength = event.params.votingPeriodLength;
   moloch.gracePeriodLength = event.params.gracePeriodLength;

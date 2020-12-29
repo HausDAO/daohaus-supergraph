@@ -254,7 +254,6 @@ templates:
         - Member
         - Vote
         - Proposal
-        - Badge
       abis:
         - name: V21Moloch
           file: ./abis/V21Moloch.json
