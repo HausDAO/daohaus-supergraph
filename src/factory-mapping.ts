@@ -124,17 +124,13 @@ export function handleSummonV21(event: SummonComplete): void {
 
   let eventSummonerShares = event.params.summonerShares;
   moloch.totalShares = BigInt.fromI32(0);
-
   let mTotalShares = moloch.totalShares;
   for (let i = 0; i < eventSummoners.length; i++) {
     let summoner = eventSummoners[i];
+    let shares = eventSummonerShares[i];
+    mTotalShares = mTotalShares.plus(shares);
 
-    for (let i = 0; i < eventSummonerShares.length; i++) {
-      let shares = eventSummonerShares[i];
-      mTotalShares = mTotalShares.plus(shares);
-
-      summoners.push(createAndAddSummoner(molochId, summoner, shares, event));
-    }
+    summoners.push(createAndAddSummoner(molochId, summoner, shares, event));
   }
 
   let tokens = event.params.tokens;
@@ -159,6 +155,7 @@ export function handleSummonV21(event: SummonComplete): void {
   moloch.approvedTokens = approvedTokens;
   moloch.depositToken = approvedTokens[0];
   moloch.totalLoot = BigInt.fromI32(0);
+  moloch.totalShares = mTotalShares;
 
   moloch.save();
 }
