@@ -383,7 +383,6 @@ export function handleSubmitVote(event: SubmitVote): void {
     .concat("-vote-")
     .concat(event.params.proposalId.toString());
 
-
   let vote = new Vote(voteId);
 
   vote.createdAt = event.block.timestamp.toString();
@@ -392,16 +391,15 @@ export function handleSubmitVote(event: SubmitVote): void {
   vote.memberAddress = event.params.memberAddress;
   vote.molochAddress = event.address;
   vote.uintVote = event.params.uintVote;
-  
+
   let member = Member.load(memberId);
-  let memberVoteWeight = member.shares; 
+  let memberVoteWeight = member.shares;
   vote.memberPower = memberVoteWeight;
 
   vote.save();
 
   let moloch = Moloch.load(molochId);
   let proposal = Proposal.load(proposalVotedId);
-
 
   switch (event.params.uintVote) {
     case 1: {
@@ -586,7 +584,7 @@ export function handleProcessProposal(event: ProcessProposal): void {
 
   proposal.processed = true;
   proposal.processedAt = event.block.timestamp.toString();
-  proposal.processor = event.transaction.from; 
+  proposal.processor = event.transaction.from;
 
   internalTransfer(
     molochId,
@@ -645,7 +643,7 @@ export function handleProcessWhitelistProposal(
   }
   proposal.processed = true;
   proposal.processedAt = event.block.timestamp.toString();
-  proposal.processor = event.transaction.from; 
+  proposal.processor = event.transaction.from;
 
   internalTransfer(
     molochId,
@@ -699,7 +697,7 @@ export function handleProcessGuildKickProposal(
   }
   proposal.processed = true;
   proposal.processedAt = event.block.timestamp.toString();
-  proposal.processor = event.transaction.from; 
+  proposal.processor = event.transaction.from;
 
   internalTransfer(
     molochId,
@@ -738,12 +736,6 @@ export function handleRagequit(event: Ragequit): void {
   member.loot = member.loot.minus(event.params.lootToBurn);
   moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
   moloch.totalLoot = moloch.totalLoot.minus(event.params.lootToBurn);
-
-  let noSharesOrLoot =
-    member.shares.equals(new BigInt(0)) && member.loot.equals(new BigInt(0));
-  if (noSharesOrLoot) {
-    member.exists = false;
-  }
 
   let tokens = moloch.approvedTokens;
   for (let i = 0; i < tokens.length; i++) {

@@ -278,9 +278,6 @@ export function handleRagequit(event: Ragequit): void {
 
   let member = Member.load(memberId);
   member.shares = member.shares.minus(event.params.sharesToBurn);
-  if (member.shares.equals(new BigInt(0))) {
-    member.exists = false;
-  }
   member.save();
 
   moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
