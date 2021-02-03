@@ -59,6 +59,7 @@ export function handleRegisterV2(event: RegisterV2): void {
 
   moloch.summoner = event.params.summoner;
   moloch.summoningTime = event.params._summoningTime;
+  moloch.createdAt = event.params._summoningTime.toString();
   moloch.title = event.params.title;
   moloch.version = "2";
   moloch.deleted = false;
@@ -143,6 +144,7 @@ export function handleSummonV21(event: SummonComplete): void {
   }
 
   moloch.summoningTime = event.params.summoningTime;
+  moloch.createdAt = event.params.summoningTime.toString();
   moloch.deleted = false;
   moloch.newContract = "1";
   moloch.version = "2.1";

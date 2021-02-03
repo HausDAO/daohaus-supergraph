@@ -120,6 +120,15 @@ export class Moloch extends Entity {
     this.set("summoningTime", Value.fromBigInt(value));
   }
 
+  get createdAt(): string {
+    let value = this.get("createdAt");
+    return value.toString();
+  }
+
+  set createdAt(value: string) {
+    this.set("createdAt", Value.fromString(value));
+  }
+
   get periodDuration(): BigInt {
     let value = this.get("periodDuration");
     return value.toBigInt();

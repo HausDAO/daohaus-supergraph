@@ -210,6 +210,7 @@ export function handleSummonComplete(event: SummonComplete): void {
 
   moloch.summoner = event.params.summoner;
   moloch.summoningTime = event.params.summoningTime;
+  moloch.createdAt = event.params.summoningTime.toString();
   moloch.title = daoMeta.title;
   moloch.version = daoMeta.version;
   moloch.newContract = daoMeta.newContract;
