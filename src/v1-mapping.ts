@@ -58,6 +58,7 @@ export function handleSummonComplete(event: SummonComplete): void {
   moloch.votingPeriodLength = contract.votingPeriodLength();
   moloch.gracePeriodLength = contract.gracePeriodLength();
   moloch.proposalDeposit = contract.proposalDeposit();
+  moloch.createdAt = contract.summoningTime().toString();
   moloch.dilutionBound = contract.dilutionBound();
   moloch.processingReward = contract.processingReward();
   moloch.summoningTime = contract.summoningTime();
