@@ -157,6 +157,7 @@ type DaoMeta @entity {
 
 type Minion @entity {
   id: ID!
+  createdAt: String!
   minionAddress: Bytes!
   molochAddress: Bytes!
   moloch: Moloch!

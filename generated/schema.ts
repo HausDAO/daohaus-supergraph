@@ -1786,6 +1786,15 @@ export class Minion extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get createdAt(): string {
+    let value = this.get("createdAt");
+    return value.toString();
+  }
+
+  set createdAt(value: string) {
+    this.set("createdAt", Value.fromString(value));
+  }
+
   get minionAddress(): Bytes {
     let value = this.get("minionAddress");
     return value.toBytes();

@@ -333,6 +333,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   if (minion !== null) {
     if (proposal.paymentRequested > BigInt.fromI32(0)) {
       proposal.isMinionApplicant = true;
+      proposal.isMinion = false;
     } else {
       proposal.isMinion = true;
       proposal.isMinionApplicant = false;

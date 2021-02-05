@@ -22,6 +22,7 @@ export function handleSummonedMinion(event: SummonMinion): void {
   minion.details = event.params.details;
   minion.minionType = event.params.minionType;
   minion.moloch = moloch.id;
+  minion.createdAt = event.block.timestamp.toString();
 
   minion.save();
 }
