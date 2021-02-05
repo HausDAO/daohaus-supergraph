@@ -62,6 +62,7 @@ export function handleSummonComplete(event: SummonComplete): void {
   moloch.dilutionBound = contract.dilutionBound();
   moloch.processingReward = contract.processingReward();
   moloch.summoningTime = contract.summoningTime();
+  moloch.createdAt = contract.summoningTime().toString();
   moloch.guildBankAddress = contract.guildBank();
   moloch.guildBankBalanceV1 = BigInt.fromI32(0);
 
