@@ -8,7 +8,7 @@ dataSources:
     source:
       address: '0x6690C139564144b27ebABA71F9126611a23A31C9'
       abi: V21Factory
-      startBlock: 13569775
+      startBlock: 10478270
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -36,7 +36,7 @@ dataSources:
     source:
       address: '0x91Eb3d16Cb09dC884bB3146e04C1A1cF80EEa548'
       abi: MinionFactory
-      startBlock: 13569739
+      startBlock: 10478162
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
