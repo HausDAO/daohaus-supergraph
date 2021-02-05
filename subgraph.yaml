@@ -3,66 +3,10 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: V1Factory
-    network: xdai
-    source:
-      address: '0x9232DeA84E91b49feF6b604EEA0455692FC27Ba8'
-      abi: V1Factory
-      startBlock: 10733005
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      language: wasm/assemblyscript
-      entities:
-        - Register
-      abis:
-        - name: V1Factory
-          file: ./abis/V1Factory.json
-        - name: V1Moloch
-          file: ./abis/V1Moloch.json
-        - name: Guildbank
-          file: ./abis/Guildbank.json
-        - name: Erc20
-          file: ./abis/Erc20.json
-        - name: Erc20Bytes32
-          file: ./abis/Erc20Bytes32.json
-      eventHandlers:
-        - event: 'Register(address,indexed address,uint256,string,uint256)'
-          handler: handleRegisterV1
-      file: ./src/factory-mapping.ts
-  - kind: ethereum/contract
-    name: V2Factory
-    network: xdai
-    source:
-      address: '0x124F707B3675b5fdd6208F4483C5B6a0B9bAf316'
-      abi: V2Factory
-      startBlock: 10733005
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      language: wasm/assemblyscript
-      entities:
-        - Register
-      abis:
-        - name: V2Factory
-          file: ./abis/V2Factory.json
-        - name: Erc20
-          file: ./abis/Erc20.json
-        - name: Erc20Bytes32
-          file: ./abis/Erc20Bytes32.json
-      eventHandlers:
-        - event: >-
-            Register(uint256,address,indexed
-            address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256,string,uint256)
-          handler: handleRegisterV2
-        - event: Delete(address)
-          handler: handleDeleteV2
-      file: ./src/factory-mapping.ts
-  - kind: ethereum/contract
     name: V21Factory
-    network: xdai
+    network: matic
     source:
-      address: '0x0F50B2F3165db96614fbB6E4262716acc9F9e098'
+      address: '0x6690C139564144b27ebABA71F9126611a23A31C9'
       abi: V21Factory
       startBlock: 13569775
     mapping:
@@ -88,9 +32,9 @@ dataSources:
       file: ./src/factory-mapping.ts
   - kind: ethereum/contract
     name: MinionFactory
-    network: xdai
+    network: matic
     source:
-      address: '0x9610389d548Ca0224aCaC40eB3241c5ED88D2479'
+      address: '0x91Eb3d16Cb09dC884bB3146e04C1A1cF80EEa548'
       abi: MinionFactory
       startBlock: 13569739
     mapping:
@@ -113,111 +57,8 @@ dataSources:
       file: ./src/minion-factory-mapping.ts
 templates:
   - kind: ethereum/contract
-    name: MolochV1Template
-    network: xdai
-    source:
-      abi: V1Moloch
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      language: wasm/assemblyscript
-      file: ./src/v1-mapping.ts
-      entities:
-        - Moloch
-        - Member
-        - Vote
-        - Proposal
-        - Badge
-      abis:
-        - name: V1Moloch
-          file: ./abis/V1Moloch.json
-        - name: Guildbank
-          file: ./abis/Guildbank.json
-        - name: Erc20
-          file: ./abis/Erc20.json
-        - name: Erc20Bytes32
-          file: ./abis/Erc20Bytes32.json
-      eventHandlers:
-        - event: 'SummonComplete(indexed address,uint256)'
-          handler: handleSummonComplete
-        - event: >-
-            SubmitProposal(uint256,indexed address,indexed address,indexed
-            address,uint256,uint256)
-          handler: handleSubmitProposal
-        - event: 'SubmitVote(indexed uint256,indexed address,indexed address,uint8)'
-          handler: handleSubmitVote
-        - event: >-
-            ProcessProposal(indexed uint256,indexed address,indexed
-            address,uint256,uint256,bool)
-          handler: handleProcessProposal
-        - event: 'Ragequit(indexed address,uint256)'
-          handler: handleRagequit
-        - event: 'Abort(indexed uint256,address)'
-          handler: handleAbort
-        - event: 'UpdateDelegateKey(indexed address,address)'
-          handler: handleUpdateDelegateKey
-  - kind: ethereum/contract
-    name: MolochV2Template
-    network: xdai
-    source:
-      abi: V2Moloch
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      language: wasm/assemblyscript
-      file: ./src/v2-mapping.ts
-      entities:
-        - Moloch
-        - TokenBalance
-        - Token
-        - Member
-        - Vote
-        - Proposal
-        - Badge
-      abis:
-        - name: V2Moloch
-          file: ./abis/V2Moloch.json
-        - name: Erc20
-          file: ./abis/Erc20.json
-        - name: Erc20Bytes32
-          file: ./abis/Erc20Bytes32.json
-      eventHandlers:
-        - event: >-
-            SummonComplete(indexed
-            address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256)
-          handler: handleSummonComplete
-        - event: >-
-            SubmitProposal(indexed
-            address,uint256,uint256,uint256,address,uint256,address,string,bool[6],uint256,indexed
-            address,indexed address)
-          handler: handleSubmitProposal
-        - event: >-
-            SubmitVote(uint256,indexed uint256,indexed address,indexed
-            address,uint8)
-          handler: handleSubmitVote
-        - event: >-
-            SponsorProposal(indexed address,indexed
-            address,uint256,uint256,uint256)
-          handler: handleSponsorProposal
-        - event: 'ProcessProposal(indexed uint256,indexed uint256,bool)'
-          handler: handleProcessProposal
-        - event: 'ProcessGuildKickProposal(indexed uint256,indexed uint256,bool)'
-          handler: handleProcessGuildKickProposal
-        - event: 'ProcessWhitelistProposal(indexed uint256,indexed uint256,bool)'
-          handler: handleProcessWhitelistProposal
-        - event: 'UpdateDelegateKey(indexed address,address)'
-          handler: handleUpdateDelegateKey
-        - event: 'CancelProposal(indexed uint256,address)'
-          handler: handleCancelProposal
-        - event: 'Withdraw(indexed address,address,uint256)'
-          handler: handleWithdraw
-        - event: 'Ragequit(indexed address,uint256,uint256)'
-          handler: handleRagequit
-        - event: 'TokensCollected(indexed address,uint256)'
-          handler: handleTokensCollected
-  - kind: ethereum/contract
     name: MolochV21Template
-    network: xdai
+    network: matic
     source:
       abi: V21Moloch
     mapping:
