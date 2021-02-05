@@ -29,7 +29,7 @@ https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-rinkeby
 
 https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-xdai
 
-http://35.224.233.211/subgraphs/name/matic/daohaus-automation
+http://35.224.233.211/subgraphs/name/matic/daohaus-supergraph
 
 ## Graph explorers
 
@@ -41,7 +41,7 @@ https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-rinkeby
 
 https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-xdai
 
-http://35.224.233.211/subgraphs/name/matic/daohaus-automation/graphql
+http://35.224.233.211/subgraphs/name/matic/daohaus-supergraph/graphql
 
 initial contribution from:
 http://manifesto.designerdao.eth.link/
