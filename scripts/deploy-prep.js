@@ -42,6 +42,12 @@ const config = {
     v21FactoryAddress: "0x38064F40B20347d58b326E767791A6f79cdEddCe",
     v21FactoryStartBlock: 11499150,
   },
+  matic: {
+    minionFactoryAddress: "0x91Eb3d16Cb09dC884bB3146e04C1A1cF80EEa548",
+    minionFactoryStartBlock: 11499121,
+    v21FactoryAddress: "0x6690C139564144b27ebABA71F9126611a23A31C9",
+    v21FactoryStartBlock: 11499150,
+  },
 };
 
 const network = process.argv.slice(2)[0];
