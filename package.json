@@ -13,7 +13,7 @@
     "mega-deploy": "yarn deploy-main && yarn deploy-xdai && yarn deploy-kovan && yarn deploy-rinkeby",
     "create-local": "graph create --node http://localhost:8020/ odyssy-automaton/daohaus",
     "remove-local": "graph remove --node http://localhost:8020/ odyssy-automaton/daohaus",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 odyssy-automaton/daohaus"
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs https://ipfs.infura.io:5001 matic/daohaus-supergraph"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.17.1",
