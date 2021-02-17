@@ -42,6 +42,16 @@ const config = {
     v21FactoryAddress: "0x38064F40B20347d58b326E767791A6f79cdEddCe",
     v21FactoryStartBlock: 11499150,
   },
+  matic: {
+    v1FactoryAddress: "",
+    v1FactoryStartBlock: "",
+    v2FactoryAddress: "",
+    v2FactoryStartBlock: "",
+    minionFactoryAddress: "0x9417470616865De678267DAfA6574A66Fe413451",
+    minionFactoryStartBlock: 10900722,
+    v21FactoryAddress: "0x6690C139564144b27ebABA71F9126611a23A31C9",
+    v21FactoryStartBlock: 10397177,
+  },
 };
 
 const network = process.argv.slice(2)[0];
@@ -74,6 +84,11 @@ try {
   if (network !== "mainnet") {
     // remove molochDao mapping
     data.dataSources.splice(4, 1);
+  }
+
+  if (network === "matic") {
+    data.dataSources.splice(0, 2);
+    data.templates.splice(0, 2);
   }
 
   let yamlStr = yaml.safeDump(data);
