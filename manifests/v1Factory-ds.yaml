@@ -1,0 +1,28 @@
+kind: ethereum/contract
+name: V1Factory
+network: mainnet
+source:
+  address: ""
+  abi: V1Factory
+  startBlock:
+mapping:
+  kind: ethereum/events
+  apiVersion: 0.0.3
+  language: wasm/assemblyscript
+  entities:
+    - Register
+  abis:
+    - name: V1Factory
+      file: ./abis/V1Factory.json
+    - name: V1Moloch
+      file: ./abis/V1Moloch.json
+    - name: Guildbank
+      file: ./abis/Guildbank.json
+    - name: Erc20
+      file: ./abis/Erc20.json
+    - name: Erc20Bytes32
+      file: ./abis/Erc20Bytes32.json
+  eventHandlers:
+    - event: "Register(address,indexed address,uint256,string,uint256)"
+      handler: handleRegisterV1
+  file: ./src/factory-mapping.ts

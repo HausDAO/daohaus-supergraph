@@ -1,0 +1,25 @@
+kind: ethereum/contract
+name: MinionFactory
+network: mainnet
+source:
+  address: ""
+  abi: MinionFactory
+  startBlock:
+mapping:
+  kind: ethereum/events
+  apiVersion: 0.0.3
+  language: wasm/assemblyscript
+  entities:
+    - Moloch
+    - Minion
+  abis:
+    - name: V1Moloch
+      file: ./abis/V1Moloch.json
+    - name: MinionFactory
+      file: ./abis/MinionFactory.json
+    - name: Minion
+      file: ./abis/Minion.json
+  eventHandlers:
+    - event: "SummonMinion(indexed address,indexed address,string,string)"
+      handler: handleSummonedMinion
+  file: ./src/minion-factory-mapping.ts
