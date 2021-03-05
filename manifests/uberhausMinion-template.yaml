@@ -1,0 +1,19 @@
+kind: ethereum/contract
+name: UberhausMinionTemplate
+network:
+source:
+  abi: UberhausMinion
+mapping:
+  kind: ethereum/events
+  apiVersion: 0.0.3
+  language: wasm/assemblyscript
+  file: ./src/uberhaus-minion-mapping.ts
+  entities:
+    - Moloch
+    - Minion
+  abis:
+    - name: UberhausMinion
+      file: ./abis/UberhausMinion.json
+  eventHandlers:
+    - event: "SetUberHaus(address)"
+      handler: handleSetUberHaus

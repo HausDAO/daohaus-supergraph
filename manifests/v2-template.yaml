@@ -1,0 +1,59 @@
+kind: ethereum/contract
+name: MolochV2Template
+network:
+source:
+  abi: V2Moloch
+mapping:
+  kind: ethereum/events
+  apiVersion: 0.0.3
+  language: wasm/assemblyscript
+  file: ./src/v2-mapping.ts
+  entities:
+    - Moloch
+    - TokenBalance
+    - Token
+    - Member
+    - Vote
+    - Proposal
+    - Badge
+  abis:
+    - name: V2Moloch
+      file: ./abis/V2Moloch.json
+    - name: Erc20
+      file: ./abis/Erc20.json
+    - name: Erc20Bytes32
+      file: ./abis/Erc20Bytes32.json
+  eventHandlers:
+    - event: >-
+        SummonComplete(indexed
+        address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256)
+      handler: handleSummonComplete
+    - event: >-
+        SubmitProposal(indexed
+        address,uint256,uint256,uint256,address,uint256,address,string,bool[6],uint256,indexed
+        address,indexed address)
+      handler: handleSubmitProposal
+    - event: >-
+        SubmitVote(uint256,indexed uint256,indexed address,indexed
+        address,uint8)
+      handler: handleSubmitVote
+    - event: >-
+        SponsorProposal(indexed address,indexed
+        address,uint256,uint256,uint256)
+      handler: handleSponsorProposal
+    - event: "ProcessProposal(indexed uint256,indexed uint256,bool)"
+      handler: handleProcessProposal
+    - event: "ProcessGuildKickProposal(indexed uint256,indexed uint256,bool)"
+      handler: handleProcessGuildKickProposal
+    - event: "ProcessWhitelistProposal(indexed uint256,indexed uint256,bool)"
+      handler: handleProcessWhitelistProposal
+    - event: "UpdateDelegateKey(indexed address,address)"
+      handler: handleUpdateDelegateKey
+    - event: "CancelProposal(indexed uint256,address)"
+      handler: handleCancelProposal
+    - event: "Withdraw(indexed address,address,uint256)"
+      handler: handleWithdraw
+    - event: "Ragequit(indexed address,uint256,uint256)"
+      handler: handleRagequit
+    - event: "TokensCollected(indexed address,uint256)"
+      handler: handleTokensCollected
