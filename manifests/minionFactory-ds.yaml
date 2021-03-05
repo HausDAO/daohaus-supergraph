@@ -1,6 +1,6 @@
 kind: ethereum/contract
 name: MinionFactory
-network: mainnet
+network:
 source:
   address: ""
   abi: MinionFactory

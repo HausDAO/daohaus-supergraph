@@ -1856,4 +1856,58 @@ export class Minion extends Entity {
       this.set("proposals", Value.fromStringArray(value as Array<string>));
     }
   }
+
+  get uberHausAddress(): Bytes | null {
+    let value = this.get("uberHausAddress");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set uberHausAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("uberHausAddress");
+    } else {
+      this.set("uberHausAddress", Value.fromBytes(value as Bytes));
+    }
+  }
+
+  get uberHaus(): string | null {
+    let value = this.get("uberHaus");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set uberHaus(value: string | null) {
+    if (value === null) {
+      this.unset("uberHaus");
+    } else {
+      this.set("uberHaus", Value.fromString(value as string));
+    }
+  }
+
+  get uberHausDelegateRewardFactor(): BigInt | null {
+    let value = this.get("uberHausDelegateRewardFactor");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set uberHausDelegateRewardFactor(value: BigInt | null) {
+    if (value === null) {
+      this.unset("uberHausDelegateRewardFactor");
+    } else {
+      this.set(
+        "uberHausDelegateRewardFactor",
+        Value.fromBigInt(value as BigInt)
+      );
+    }
+  }
 }

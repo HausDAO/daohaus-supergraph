@@ -326,7 +326,6 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   let potentialMinionId = molochId
     .concat("-minion-")
-    // .concat(event.transaction.from.toHex());
     .concat(event.params.applicant.toHex());
 
   let minion = Minion.load(potentialMinionId);

@@ -1,4 +1,6 @@
 specVersion: 0.0.2
+description: DAOHaus Supergraph
+repository: 'https://github.com/HausDAO/daohaus-supergraph'
 schema:
   file: ./schema.graphql
 dataSources:

@@ -164,4 +164,7 @@ type Minion @entity {
   details: String!
   minionType: String!
   proposals: [Proposal!] @derivedFrom(field: "minion")
+  uberHausAddress: Bytes
+  uberHaus: Moloch
+  uberHausDelegateRewardFactor: BigInt
 }

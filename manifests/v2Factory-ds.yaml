@@ -1,6 +1,6 @@
 kind: ethereum/contract
 name: V2Factory
-network: mainnet
+network:
 source:
   address: ""
   abi: V2Factory

@@ -1,6 +1,6 @@
 kind: ethereum/contract
 name: MolochV2Template
-network: mainnet
+network:
 source:
   abi: V2Moloch
 mapping:

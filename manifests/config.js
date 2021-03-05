@@ -137,6 +137,12 @@ module.exports.config = {
         address: "0x80ec2dB292E7a6D1D5bECB80e6479b2bE048AC98",
         startBlock: 22640617,
       },
+      {
+        name: "uberMinionFactory",
+        template: "uberMinionFactory-ds.yaml",
+        address: "0xCDD80047C9C329D96917885c9Afb19e985865cD5",
+        startBlock: 23728938,
+      },
     ],
     templates: [
       {
@@ -150,6 +156,10 @@ module.exports.config = {
       {
         name: "v21Template",
         template: "v21-template.yaml",
+      },
+      {
+        name: "uberHausMininTemplate",
+        template: "uberhausMinion-template.yaml",
       },
     ],
   },

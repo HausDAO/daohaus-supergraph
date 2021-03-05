@@ -1,0 +1,21 @@
+kind: ethereum/contract
+name: UberMinionFactory
+network:
+source:
+  address: ""
+  abi: UberMinionFactory
+  startBlock:
+mapping:
+  kind: ethereum/events
+  apiVersion: 0.0.3
+  language: wasm/assemblyscript
+  entities:
+    - Moloch
+    - Minion
+  abis:
+    - name: UberMinionFactory
+      file: ./abis/UberMinionFactory.json
+  eventHandlers:
+    - event: "SummonUberMinion(indexed address,indexed address,address,address,uint256,string,string)"
+      handler: handleSummonedUberMinion
+  file: ./src/minion-factory-mapping.ts

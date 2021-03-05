@@ -1,6 +1,6 @@
 kind: ethereum/contract
 name: MolochDAO
-network: mainnet
+network:
 source:
   address: ""
   abi: V1Moloch
