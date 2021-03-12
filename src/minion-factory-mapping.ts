@@ -34,23 +34,28 @@ export function handleSummonedMinion(event: SummonMinion): void {
 // address indexed dao,
 // address uberHaus,
 // address controller,
+// address initialDelegate,
 // uint256 delegateRewardFactor,
+// uint256 minionId
 // string desc,
 // string name);
+
 export function handleSummonedUberMinion(event: SummonUberMinion): void {
+  log.info("**** summoned uberminion EVENT", []);
   UberhausMinionTemplate.create(event.params.uberminion);
 
   let molochId = event.params.dao.toHexString();
   let moloch = Moloch.load(molochId);
   if (moloch == null) {
+    log.info("**** summoned uberminion missing moloch", []);
     return;
   }
 
-  let minionId = molochId
+  let minionUUId = molochId
     .concat("-minion-")
     .concat(event.params.uberminion.toHex());
-  let minion = new Minion(minionId);
-  log.info("**** summoned uberminion: {}, moloch: {}", [minionId, molochId]);
+  let minion = new Minion(minionUUId);
+  log.info("**** summoned uberminion: {}, moloch: {}", [minionUUId, molochId]);
 
   minion.minionAddress = event.params.uberminion;
   minion.molochAddress = event.params.dao;
@@ -59,6 +64,8 @@ export function handleSummonedUberMinion(event: SummonUberMinion): void {
   minion.moloch = moloch.id;
   minion.createdAt = event.block.timestamp.toString();
   minion.uberHausDelegateRewardFactor = event.params.delegateRewardFactor;
+  minion.uberHausDelegate = event.params.initialDelegate;
+
   let uberHausId = event.params.uberHaus.toHexString();
   let uberHausMoloch = Moloch.load(uberHausId);
   if (uberHausMoloch !== null) {

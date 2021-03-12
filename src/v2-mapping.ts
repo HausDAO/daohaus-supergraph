@@ -720,6 +720,21 @@ export function handleProcessGuildKickProposal(
 }
 
 export function handleRagequit(event: Ragequit): void {
+  if (
+    event.address.toHexString() ==
+      "0xfe1084bc16427e5eb7f13fc19bcd4e641f7d571f" &&
+    event.params.memberAddress.toHex() ==
+      "0x68d36dcbdd7bbf206e27134f28103abe7cf972df"
+  ) {
+    // log.info("### from rage kick, transaction.input: {}, value: {}", [
+    //   event.transaction.input.toString(),
+    //   event.transaction.value.toString(),
+    // ]);
+
+    log.info("### from rage kick, block: {}", [event.block.number.toString()]);
+    return;
+  }
+
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
 

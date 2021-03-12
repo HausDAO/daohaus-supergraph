@@ -16,6 +16,6 @@ mapping:
     - name: UberMinionFactory
       file: ./abis/UberMinionFactory.json
   eventHandlers:
-    - event: "SummonUberMinion(indexed address,indexed address,address,address,uint256,string,string)"
+    - event: "SummonUberMinion(indexed address,indexed address,address,address,address,uint256,uint256,string,string)"
       handler: handleSummonedUberMinion
   file: ./src/minion-factory-mapping.ts

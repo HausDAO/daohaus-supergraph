@@ -17,3 +17,5 @@ mapping:
   eventHandlers:
     - event: "SetUberHaus(address)"
       handler: handleSetUberHaus
+    - event: "DelegateAppointed(uint256,address,address)"
+      handler: handleDelegateAppointed

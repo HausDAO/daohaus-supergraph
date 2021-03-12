@@ -111,28 +111,6 @@ export class ExecuteAction__Params {
   }
 }
 
-export class FinishRageQuit extends EthereumEvent {
-  get params(): FinishRageQuit__Params {
-    return new FinishRageQuit__Params(this);
-  }
-}
-
-export class FinishRageQuit__Params {
-  _event: FinishRageQuit;
-
-  constructor(event: FinishRageQuit) {
-    this._event = event;
-  }
-
-  get quitter(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get claimedHaus(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
-  }
-}
-
 export class HausWithdraw extends EthereumEvent {
   get params(): HausWithdraw__Params {
     return new HausWithdraw__Params(this);
@@ -313,32 +291,6 @@ export class SetUberHaus__Params {
   }
 }
 
-export class SignalRageQuit extends EthereumEvent {
-  get params(): SignalRageQuit__Params {
-    return new SignalRageQuit__Params(this);
-  }
-}
-
-export class SignalRageQuit__Params {
-  _event: SignalRageQuit;
-
-  constructor(event: SignalRageQuit) {
-    this._event = event;
-  }
-
-  get quitter(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get shares(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
-  }
-
-  get loot(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-}
-
 export class UberhausMinion__actionsResult {
   value0: Address;
   value1: BigInt;
@@ -412,72 +364,21 @@ export class UberhausMinion__appointmentsResult {
 }
 
 export class UberhausMinion__delegatesResult {
-  value0: BigInt;
-  value1: BigInt;
+  value0: boolean;
+  value1: boolean;
   value2: boolean;
-  value3: boolean;
-  value4: boolean;
 
-  constructor(
-    value0: BigInt,
-    value1: BigInt,
-    value2: boolean,
-    value3: boolean,
-    value4: boolean
-  ) {
+  constructor(value0: boolean, value1: boolean, value2: boolean) {
     this.value0 = value0;
     this.value1 = value1;
     this.value2 = value2;
-    this.value3 = value3;
-    this.value4 = value4;
   }
 
   toMap(): TypedMap<string, EthereumValue> {
     let map = new TypedMap<string, EthereumValue>();
-    map.set("value0", EthereumValue.fromUnsignedBigInt(this.value0));
-    map.set("value1", EthereumValue.fromUnsignedBigInt(this.value1));
+    map.set("value0", EthereumValue.fromBoolean(this.value0));
+    map.set("value1", EthereumValue.fromBoolean(this.value1));
     map.set("value2", EthereumValue.fromBoolean(this.value2));
-    map.set("value3", EthereumValue.fromBoolean(this.value3));
-    map.set("value4", EthereumValue.fromBoolean(this.value4));
-    return map;
-  }
-}
-
-export class UberhausMinion__quittersResult {
-  value0: BigInt;
-  value1: BigInt;
-  value2: BigInt;
-  value3: BigInt;
-  value4: BigInt;
-  value5: i32;
-
-  constructor(
-    value0: BigInt,
-    value1: BigInt,
-    value2: BigInt,
-    value3: BigInt,
-    value4: BigInt,
-    value5: i32
-  ) {
-    this.value0 = value0;
-    this.value1 = value1;
-    this.value2 = value2;
-    this.value3 = value3;
-    this.value4 = value4;
-    this.value5 = value5;
-  }
-
-  toMap(): TypedMap<string, EthereumValue> {
-    let map = new TypedMap<string, EthereumValue>();
-    map.set("value0", EthereumValue.fromUnsignedBigInt(this.value0));
-    map.set("value1", EthereumValue.fromUnsignedBigInt(this.value1));
-    map.set("value2", EthereumValue.fromUnsignedBigInt(this.value2));
-    map.set("value3", EthereumValue.fromUnsignedBigInt(this.value3));
-    map.set("value4", EthereumValue.fromUnsignedBigInt(this.value4));
-    map.set(
-      "value5",
-      EthereumValue.fromUnsignedBigInt(BigInt.fromI32(this.value5))
-    );
     return map;
   }
 }
@@ -485,6 +386,21 @@ export class UberhausMinion__quittersResult {
 export class UberhausMinion extends SmartContract {
   static bind(address: Address): UberhausMinion {
     return new UberhausMinion("UberhausMinion", address);
+  }
+
+  DIVIDER(): BigInt {
+    let result = super.call("DIVIDER", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_DIVIDER(): CallResult<BigInt> {
+    let result = super.tryCall("DIVIDER", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBigInt());
   }
 
   HAUS(): Address {
@@ -672,11 +588,9 @@ export class UberhausMinion extends SmartContract {
     let result = super.call("delegates", [EthereumValue.fromAddress(param0)]);
 
     return new UberhausMinion__delegatesResult(
-      result[0].toBigInt(),
-      result[1].toBigInt(),
-      result[2].toBoolean(),
-      result[3].toBoolean(),
-      result[4].toBoolean()
+      result[0].toBoolean(),
+      result[1].toBoolean(),
+      result[2].toBoolean()
     );
   }
 
@@ -690,11 +604,9 @@ export class UberhausMinion extends SmartContract {
     let value = result.value;
     return CallResult.fromValue(
       new UberhausMinion__delegatesResult(
-        value[0].toBigInt(),
-        value[1].toBigInt(),
-        value[2].toBoolean(),
-        value[3].toBoolean(),
-        value[4].toBoolean()
+        value[0].toBoolean(),
+        value[1].toBoolean(),
+        value[2].toBoolean()
       )
     );
   }
@@ -752,6 +664,36 @@ export class UberhausMinion extends SmartContract {
     return CallResult.fromValue(value[0].toAddress());
   }
 
+  haus(): Address {
+    let result = super.call("haus", []);
+
+    return result[0].toAddress();
+  }
+
+  try_haus(): CallResult<Address> {
+    let result = super.tryCall("haus", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toAddress());
+  }
+
+  initialDelegate(): Address {
+    let result = super.call("initialDelegate", []);
+
+    return result[0].toAddress();
+  }
+
+  try_initialDelegate(): CallResult<Address> {
+    let result = super.tryCall("initialDelegate", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toAddress());
+  }
+
   isMember(user: Address): boolean {
     let result = super.call("isMember", [EthereumValue.fromAddress(user)]);
 
@@ -765,6 +707,21 @@ export class UberhausMinion extends SmartContract {
     }
     let value = result.value;
     return CallResult.fromValue(value[0].toBoolean());
+  }
+
+  minionId(): BigInt {
+    let result = super.call("minionId", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_minionId(): CallResult<BigInt> {
+    let result = super.tryCall("minionId", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBigInt());
   }
 
   moloch(): Address {
@@ -875,37 +832,6 @@ export class UberhausMinion extends SmartContract {
     return CallResult.fromValue(value[0].toBigInt());
   }
 
-  quitters(param0: Address): UberhausMinion__quittersResult {
-    let result = super.call("quitters", [EthereumValue.fromAddress(param0)]);
-
-    return new UberhausMinion__quittersResult(
-      result[0].toBigInt(),
-      result[1].toBigInt(),
-      result[2].toBigInt(),
-      result[3].toBigInt(),
-      result[4].toBigInt(),
-      result[5].toI32()
-    );
-  }
-
-  try_quitters(param0: Address): CallResult<UberhausMinion__quittersResult> {
-    let result = super.tryCall("quitters", [EthereumValue.fromAddress(param0)]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(
-      new UberhausMinion__quittersResult(
-        value[0].toBigInt(),
-        value[1].toBigInt(),
-        value[2].toBigInt(),
-        value[3].toBigInt(),
-        value[4].toBigInt(),
-        value[5].toI32()
-      )
-    );
-  }
-
   uberHaus(): Address {
     let result = super.call("uberHaus", []);
 
@@ -959,6 +885,32 @@ export class UberhausMinion extends SmartContract {
     }
     let value = result.value;
     return CallResult.fromValue(value[0].toBigInt());
+  }
+}
+
+export class ApproveUberHausCall extends EthereumCall {
+  get inputs(): ApproveUberHausCall__Inputs {
+    return new ApproveUberHausCall__Inputs(this);
+  }
+
+  get outputs(): ApproveUberHausCall__Outputs {
+    return new ApproveUberHausCall__Outputs(this);
+  }
+}
+
+export class ApproveUberHausCall__Inputs {
+  _call: ApproveUberHausCall;
+
+  constructor(call: ApproveUberHausCall) {
+    this._call = call;
+  }
+}
+
+export class ApproveUberHausCall__Outputs {
+  _call: ApproveUberHausCall;
+
+  constructor(call: ApproveUberHausCall) {
+    this._call = call;
   }
 }
 
@@ -1128,32 +1080,6 @@ export class ExecuteAppointmentCall__Outputs {
   }
 }
 
-export class FinishRageQuitCall extends EthereumCall {
-  get inputs(): FinishRageQuitCall__Inputs {
-    return new FinishRageQuitCall__Inputs(this);
-  }
-
-  get outputs(): FinishRageQuitCall__Outputs {
-    return new FinishRageQuitCall__Outputs(this);
-  }
-}
-
-export class FinishRageQuitCall__Inputs {
-  _call: FinishRageQuitCall;
-
-  constructor(call: FinishRageQuitCall) {
-    this._call = call;
-  }
-}
-
-export class FinishRageQuitCall__Outputs {
-  _call: FinishRageQuitCall;
-
-  constructor(call: FinishRageQuitCall) {
-    this._call = call;
-  }
-}
-
 export class ImpeachDelegateCall extends EthereumCall {
   get inputs(): ImpeachDelegateCall__Inputs {
     return new ImpeachDelegateCall__Inputs(this);
@@ -1213,12 +1139,20 @@ export class InitCall__Inputs {
     return this._call.inputValues[2].value.toAddress();
   }
 
+  get _initialDelegate(): Address {
+    return this._call.inputValues[3].value.toAddress();
+  }
+
   get _delegateRewardFactor(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[4].value.toBigInt();
+  }
+
+  get _minionId(): BigInt {
+    return this._call.inputValues[5].value.toBigInt();
   }
 
   get _desc(): string {
-    return this._call.inputValues[4].value.toString();
+    return this._call.inputValues[6].value.toString();
   }
 }
 
@@ -1390,36 +1324,28 @@ export class RenounceOwnershipCall__Outputs {
   }
 }
 
-export class SignalRageQuitCall extends EthereumCall {
-  get inputs(): SignalRageQuitCall__Inputs {
-    return new SignalRageQuitCall__Inputs(this);
+export class SetInitialDelegateCall extends EthereumCall {
+  get inputs(): SetInitialDelegateCall__Inputs {
+    return new SetInitialDelegateCall__Inputs(this);
   }
 
-  get outputs(): SignalRageQuitCall__Outputs {
-    return new SignalRageQuitCall__Outputs(this);
+  get outputs(): SetInitialDelegateCall__Outputs {
+    return new SetInitialDelegateCall__Outputs(this);
   }
 }
 
-export class SignalRageQuitCall__Inputs {
-  _call: SignalRageQuitCall;
+export class SetInitialDelegateCall__Inputs {
+  _call: SetInitialDelegateCall;
 
-  constructor(call: SignalRageQuitCall) {
+  constructor(call: SetInitialDelegateCall) {
     this._call = call;
   }
-
-  get shares(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get loot(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
 }
 
-export class SignalRageQuitCall__Outputs {
-  _call: SignalRageQuitCall;
+export class SetInitialDelegateCall__Outputs {
+  _call: SetInitialDelegateCall;
 
-  constructor(call: SignalRageQuitCall) {
+  constructor(call: SetInitialDelegateCall) {
     this._call = call;
   }
 }
