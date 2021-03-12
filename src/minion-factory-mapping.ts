@@ -39,7 +39,6 @@ export function handleSummonedMinion(event: SummonMinion): void {
 // uint256 minionId
 // string desc,
 // string name);
-
 export function handleSummonedUberMinion(event: SummonUberMinion): void {
   log.info("**** summoned uberminion EVENT", []);
   UberhausMinionTemplate.create(event.params.uberminion);
