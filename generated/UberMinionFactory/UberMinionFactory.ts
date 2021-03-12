@@ -15,28 +15,6 @@ import {
   CallResult
 } from "@graphprotocol/graph-ts";
 
-export class OwnershipTransferred extends EthereumEvent {
-  get params(): OwnershipTransferred__Params {
-    return new OwnershipTransferred__Params(this);
-  }
-}
-
-export class OwnershipTransferred__Params {
-  _event: OwnershipTransferred;
-
-  constructor(event: OwnershipTransferred) {
-    this._event = event;
-  }
-
-  get previousOwner(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get newOwner(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-}
-
 export class SummonUberMinion extends EthereumEvent {
   get params(): SummonUberMinion__Params {
     return new SummonUberMinion__Params(this);
@@ -66,16 +44,24 @@ export class SummonUberMinion__Params {
     return this._event.parameters[3].value.toAddress();
   }
 
+  get initialDelegate(): Address {
+    return this._event.parameters[4].value.toAddress();
+  }
+
   get delegateRewardFactor(): BigInt {
-    return this._event.parameters[4].value.toBigInt();
+    return this._event.parameters[5].value.toBigInt();
+  }
+
+  get minionId(): BigInt {
+    return this._event.parameters[6].value.toBigInt();
   }
 
   get desc(): string {
-    return this._event.parameters[5].value.toString();
+    return this._event.parameters[7].value.toString();
   }
 
   get name(): string {
-    return this._event.parameters[6].value.toString();
+    return this._event.parameters[8].value.toString();
   }
 }
 
@@ -84,15 +70,34 @@ export class UberMinionFactory extends SmartContract {
     return new UberMinionFactory("UberMinionFactory", address);
   }
 
-  ourMinions(param0: Address): Address {
-    let result = super.call("ourMinions", [EthereumValue.fromAddress(param0)]);
+  counter(): BigInt {
+    let result = super.call("counter", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_counter(): CallResult<BigInt> {
+    let result = super.tryCall("counter", []);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toBigInt());
+  }
+
+  ourMinions(param0: Address, param1: BigInt): Address {
+    let result = super.call("ourMinions", [
+      EthereumValue.fromAddress(param0),
+      EthereumValue.fromUnsignedBigInt(param1)
+    ]);
 
     return result[0].toAddress();
   }
 
-  try_ourMinions(param0: Address): CallResult<Address> {
+  try_ourMinions(param0: Address, param1: BigInt): CallResult<Address> {
     let result = super.tryCall("ourMinions", [
-      EthereumValue.fromAddress(param0)
+      EthereumValue.fromAddress(param0),
+      EthereumValue.fromUnsignedBigInt(param1)
     ]);
     if (result.reverted) {
       return new CallResult();
@@ -120,6 +125,7 @@ export class UberMinionFactory extends SmartContract {
     _dao: Address,
     _uberHaus: Address,
     _controller: Address,
+    _initialDelegate: Address,
     _delegateRewardFactor: BigInt,
     _desc: string
   ): Address {
@@ -127,6 +133,7 @@ export class UberMinionFactory extends SmartContract {
       EthereumValue.fromAddress(_dao),
       EthereumValue.fromAddress(_uberHaus),
       EthereumValue.fromAddress(_controller),
+      EthereumValue.fromAddress(_initialDelegate),
       EthereumValue.fromUnsignedBigInt(_delegateRewardFactor),
       EthereumValue.fromString(_desc)
     ]);
@@ -138,6 +145,7 @@ export class UberMinionFactory extends SmartContract {
     _dao: Address,
     _uberHaus: Address,
     _controller: Address,
+    _initialDelegate: Address,
     _delegateRewardFactor: BigInt,
     _desc: string
   ): CallResult<Address> {
@@ -145,6 +153,7 @@ export class UberMinionFactory extends SmartContract {
       EthereumValue.fromAddress(_dao),
       EthereumValue.fromAddress(_uberHaus),
       EthereumValue.fromAddress(_controller),
+      EthereumValue.fromAddress(_initialDelegate),
       EthereumValue.fromUnsignedBigInt(_delegateRewardFactor),
       EthereumValue.fromString(_desc)
     ]);
@@ -188,6 +197,25 @@ export class UberMinionFactory extends SmartContract {
     let value = result.value;
     return CallResult.fromValue(value[0].toAddress());
   }
+
+  updateOwner(_newOwner: Address): Address {
+    let result = super.call("updateOwner", [
+      EthereumValue.fromAddress(_newOwner)
+    ]);
+
+    return result[0].toAddress();
+  }
+
+  try_updateOwner(_newOwner: Address): CallResult<Address> {
+    let result = super.tryCall("updateOwner", [
+      EthereumValue.fromAddress(_newOwner)
+    ]);
+    if (result.reverted) {
+      return new CallResult();
+    }
+    let value = result.value;
+    return CallResult.fromValue(value[0].toAddress());
+  }
 }
 
 export class ConstructorCall extends EthereumCall {
@@ -216,32 +244,6 @@ export class ConstructorCall__Outputs {
   _call: ConstructorCall;
 
   constructor(call: ConstructorCall) {
-    this._call = call;
-  }
-}
-
-export class RenounceOwnershipCall extends EthereumCall {
-  get inputs(): RenounceOwnershipCall__Inputs {
-    return new RenounceOwnershipCall__Inputs(this);
-  }
-
-  get outputs(): RenounceOwnershipCall__Outputs {
-    return new RenounceOwnershipCall__Outputs(this);
-  }
-}
-
-export class RenounceOwnershipCall__Inputs {
-  _call: RenounceOwnershipCall;
-
-  constructor(call: RenounceOwnershipCall) {
-    this._call = call;
-  }
-}
-
-export class RenounceOwnershipCall__Outputs {
-  _call: RenounceOwnershipCall;
-
-  constructor(call: RenounceOwnershipCall) {
     this._call = call;
   }
 }
@@ -275,12 +277,16 @@ export class SummonUberHausMinionCall__Inputs {
     return this._call.inputValues[2].value.toAddress();
   }
 
+  get _initialDelegate(): Address {
+    return this._call.inputValues[3].value.toAddress();
+  }
+
   get _delegateRewardFactor(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[4].value.toBigInt();
   }
 
   get _desc(): string {
-    return this._call.inputValues[4].value.toString();
+    return this._call.inputValues[5].value.toString();
   }
 }
 
@@ -296,32 +302,36 @@ export class SummonUberHausMinionCall__Outputs {
   }
 }
 
-export class TransferOwnershipCall extends EthereumCall {
-  get inputs(): TransferOwnershipCall__Inputs {
-    return new TransferOwnershipCall__Inputs(this);
+export class UpdateOwnerCall extends EthereumCall {
+  get inputs(): UpdateOwnerCall__Inputs {
+    return new UpdateOwnerCall__Inputs(this);
   }
 
-  get outputs(): TransferOwnershipCall__Outputs {
-    return new TransferOwnershipCall__Outputs(this);
+  get outputs(): UpdateOwnerCall__Outputs {
+    return new UpdateOwnerCall__Outputs(this);
   }
 }
 
-export class TransferOwnershipCall__Inputs {
-  _call: TransferOwnershipCall;
+export class UpdateOwnerCall__Inputs {
+  _call: UpdateOwnerCall;
 
-  constructor(call: TransferOwnershipCall) {
+  constructor(call: UpdateOwnerCall) {
     this._call = call;
   }
 
-  get newOwner(): Address {
+  get _newOwner(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 }
 
-export class TransferOwnershipCall__Outputs {
-  _call: TransferOwnershipCall;
+export class UpdateOwnerCall__Outputs {
+  _call: UpdateOwnerCall;
 
-  constructor(call: TransferOwnershipCall) {
+  constructor(call: UpdateOwnerCall) {
     this._call = call;
+  }
+
+  get value0(): Address {
+    return this._call.outputValues[0].value.toAddress();
   }
 }

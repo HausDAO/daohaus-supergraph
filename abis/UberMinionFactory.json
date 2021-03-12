@@ -1,204 +1,139 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_template",
-        "type": "address"
-      }
-    ],
+    "type": "constructor",
     "stateMutability": "nonpayable",
-    "type": "constructor"
+    "inputs": [
+      { "type": "address", "name": "_template", "internalType": "address" }
+    ]
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "previousOwner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "OwnershipTransferred",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "uberminion",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "dao",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "uberHaus",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "controller",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "delegateRewardFactor",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "desc",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      }
-    ],
+    "type": "event",
     "name": "SummonUberMinion",
-    "type": "event"
-  },
-  {
     "inputs": [
       {
+        "type": "address",
+        "name": "uberminion",
         "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "ourMinions",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "renounceOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_dao",
-        "type": "address"
+        "indexed": true
       },
       {
+        "type": "address",
+        "name": "dao",
         "internalType": "address",
-        "name": "_uberHaus",
-        "type": "address"
+        "indexed": true
       },
       {
+        "type": "address",
+        "name": "uberHaus",
         "internalType": "address",
-        "name": "_controller",
-        "type": "address"
+        "indexed": false
       },
       {
+        "type": "address",
+        "name": "controller",
+        "internalType": "address",
+        "indexed": false
+      },
+      {
+        "type": "address",
+        "name": "initialDelegate",
+        "internalType": "address",
+        "indexed": false
+      },
+      {
+        "type": "uint256",
+        "name": "delegateRewardFactor",
         "internalType": "uint256",
-        "name": "_delegateRewardFactor",
-        "type": "uint256"
+        "indexed": false
       },
       {
+        "type": "uint256",
+        "name": "minionId",
+        "internalType": "uint256",
+        "indexed": false
+      },
+      {
+        "type": "string",
+        "name": "desc",
         "internalType": "string",
-        "name": "_desc",
-        "type": "string"
+        "indexed": false
+      },
+      {
+        "type": "string",
+        "name": "name",
+        "internalType": "string",
+        "indexed": false
       }
     ],
+    "anonymous": false
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "outputs": [{ "type": "uint256", "name": "", "internalType": "uint256" }],
+    "name": "counter",
+    "inputs": []
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "outputs": [{ "type": "address", "name": "", "internalType": "address" }],
+    "name": "ourMinions",
+    "inputs": [
+      { "type": "address", "name": "", "internalType": "address" },
+      { "type": "uint256", "name": "", "internalType": "uint256" }
+    ]
+  },
+  {
+    "type": "function",
+    "stateMutability": "view",
+    "outputs": [{ "type": "address", "name": "", "internalType": "address" }],
+    "name": "owner",
+    "inputs": []
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "outputs": [{ "type": "address", "name": "", "internalType": "address" }],
     "name": "summonUberHausMinion",
-    "outputs": [
+    "inputs": [
+      { "type": "address", "name": "_dao", "internalType": "address" },
+      { "type": "address", "name": "_uberHaus", "internalType": "address" },
+      { "type": "address", "name": "_controller", "internalType": "address" },
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
+        "type": "address",
+        "name": "_initialDelegate",
+        "internalType": "address"
+      },
+      {
+        "type": "uint256",
+        "name": "_delegateRewardFactor",
+        "internalType": "uint256"
+      },
+      { "type": "string", "name": "_desc", "internalType": "string" }
+    ]
   },
   {
-    "inputs": [],
+    "type": "function",
+    "stateMutability": "view",
+    "outputs": [{ "type": "address", "name": "", "internalType": "address" }],
     "name": "template",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "inputs": []
+  },
+  {
+    "type": "function",
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "transferOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "type": "address", "name": "", "internalType": "address" }],
     "name": "uberMinions",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "inputs": [{ "type": "uint256", "name": "", "internalType": "uint256" }]
+  },
+  {
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "outputs": [{ "type": "address", "name": "", "internalType": "address" }],
+    "name": "updateOwner",
+    "inputs": [
+      { "type": "address", "name": "_newOwner", "internalType": "address" }
+    ]
   }
 ]

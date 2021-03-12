@@ -1910,4 +1910,13 @@ export class Minion extends Entity {
       );
     }
   }
+
+  get uberHausDelegate(): Bytes {
+    let value = this.get("uberHausDelegate");
+    return value.toBytes();
+  }
+
+  set uberHausDelegate(value: Bytes) {
+    this.set("uberHausDelegate", Value.fromBytes(value));
+  }
 }

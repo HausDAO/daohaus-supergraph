@@ -1,22 +1,29 @@
-import { log } from "@graphprotocol/graph-ts";
+import { Bytes, log, Address } from "@graphprotocol/graph-ts";
 import { Moloch, Minion } from "../generated/schema";
 import {
   SetUberHaus,
   UberhausMinion,
+  DelegateAppointed,
 } from "../generated/templates/UberhausMinionTemplate/UberhausMinion";
 
-export function handleSetUberHaus(event: SetUberHaus): void {
-  let contract = UberhausMinion.bind(event.address);
+function loadMoloch(minionAddress: Bytes): Bytes | null {
+  let contract = UberhausMinion.bind(minionAddress as Address);
   let result = contract.try_dao();
   if (result.reverted) {
-    log.info(
-      "^^^^^ handleSetUberHaus contract call reverted. event.params.uberHaus: {}",
-      [event.params.uberHaus.toHexString()]
-    );
+    log.info("^^^^^ loadMoloch contract call reverted. minionAddress: {}", [
+      minionAddress.toHexString(),
+    ]);
+    return null;
+  }
+
+  return result.value;
+}
+
+export function handleSetUberHaus(event: SetUberHaus): void {
+  let molochAddress = loadMoloch(event.address);
+  if (molochAddress == null) {
     return;
   }
-  let molochAddress = result.value;
-
   let minionId = molochAddress
     .toHexString()
     .concat("-minion-")
@@ -25,14 +32,27 @@ export function handleSetUberHaus(event: SetUberHaus): void {
 
   let uberHausId = event.params.uberHaus.toHexString();
   let uberHausMoloch = Moloch.load(uberHausId);
-  log.info("&&&&& handleSetUberHaus minionId: {}, uberHausId: {}", [
-    minionId,
-    uberHausId,
-  ]);
 
   if (uberHausMoloch !== null) {
     minion.uberHausAddress = event.params.uberHaus;
     minion.uberHaus = uberHausMoloch.id;
     minion.save();
   }
+}
+
+// event DelegateAppointed(uint256 proposalId, address executor, address currentDelegate);
+export function handleDelegateAppointed(event: DelegateAppointed): void {
+  let molochAddress = loadMoloch(event.address);
+  if (molochAddress == null) {
+    return;
+  }
+  let minionId = molochAddress
+    .toHexString()
+    .concat("-minion-")
+    .concat(event.address.toHex());
+  let minion = new Minion(minionId);
+
+  minion.uberHausDelegate = event.params.currentDelegate;
+
+  minion.save();
 }
