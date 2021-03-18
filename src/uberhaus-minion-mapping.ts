@@ -1,10 +1,11 @@
 import { Bytes, log, Address } from "@graphprotocol/graph-ts";
-import { Moloch, Minion } from "../generated/schema";
+import { Moloch, Minion, Proposal } from "../generated/schema";
 import {
   SetUberHaus,
   UberhausMinion,
   DelegateAppointed,
   Impeachment,
+  ExecuteAction,
 } from "../generated/templates/UberhausMinionTemplate/UberhausMinion";
 
 function loadMoloch(minionAddress: Bytes): Bytes | null {
@@ -51,7 +52,7 @@ export function handleDelegateAppointed(event: DelegateAppointed): void {
     .toHexString()
     .concat("-minion-")
     .concat(event.address.toHex());
-  let minion = new Minion(minionId);
+  let minion = Minion.load(minionId);
 
   minion.uberHausDelegate = event.params.currentDelegate;
 
@@ -68,9 +69,27 @@ export function handleImpeachment(event: Impeachment): void {
     .toHexString()
     .concat("-minion-")
     .concat(event.address.toHex());
-  let minion = new Minion(minionId);
+  let minion = Minion.load(minionId);
 
   minion.uberHausDelegate = event.address;
 
   minion.save();
+}
+
+// event ExecuteAction(uint256 proposalId, address executor);
+export function handleExecuteAction(event: ExecuteAction): void {
+  let molochAddress = loadMoloch(event.address);
+  if (molochAddress == null) {
+    return;
+  }
+
+  let processProposalId = molochAddress
+    .toHexString()
+    .concat("-proposal-")
+    .concat(event.params.proposalId.toString());
+  let proposal = Proposal.load(processProposalId);
+
+  proposal.uberHausMinionExecuted = true;
+
+  proposal.save();
 }

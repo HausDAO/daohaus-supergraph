@@ -291,6 +291,7 @@ templates:
       entities:
         - Moloch
         - Minion
+        - Proposal
       abis:
         - name: UberhausMinion
           file: UberhausMinionTemplate/abis/UberhausMinion.json
@@ -299,3 +300,7 @@ templates:
           handler: handleSetUberHaus
         - event: DelegateAppointed(uint256,address,address)
           handler: handleDelegateAppointed
+        - event: Impeachment(address,address)
+          handler: handleImpeachment
+        - event: ExecuteAction(uint256,address)
+          handler: handleExecuteAction

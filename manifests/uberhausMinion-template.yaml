@@ -11,6 +11,7 @@ mapping:
   entities:
     - Moloch
     - Minion
+    - Proposal
   abis:
     - name: UberhausMinion
       file: ./abis/UberhausMinion.json
@@ -21,3 +22,5 @@ mapping:
       handler: handleDelegateAppointed
     - event: "Impeachment(address,address)"
       handler: handleImpeachment
+    - event: "ExecuteAction(uint256,address)"
+      handler: handleExecuteAction

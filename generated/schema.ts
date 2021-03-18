@@ -1528,6 +1528,15 @@ export class Proposal extends Entity {
     this.set("isMinionApplicant", Value.fromBoolean(value));
   }
 
+  get uberHausMinionExecuted(): boolean {
+    let value = this.get("uberHausMinionExecuted");
+    return value.toBoolean();
+  }
+
+  set uberHausMinionExecuted(value: boolean) {
+    this.set("uberHausMinionExecuted", Value.fromBoolean(value));
+  }
+
   get minionAddress(): Bytes | null {
     let value = this.get("minionAddress");
     if (value === null) {
