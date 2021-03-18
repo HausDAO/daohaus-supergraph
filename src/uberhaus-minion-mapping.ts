@@ -4,6 +4,7 @@ import {
   SetUberHaus,
   UberhausMinion,
   DelegateAppointed,
+  Impeachment,
 } from "../generated/templates/UberhausMinionTemplate/UberhausMinion";
 
 function loadMoloch(minionAddress: Bytes): Bytes | null {
@@ -53,6 +54,23 @@ export function handleDelegateAppointed(event: DelegateAppointed): void {
   let minion = new Minion(minionId);
 
   minion.uberHausDelegate = event.params.currentDelegate;
+
+  minion.save();
+}
+
+// event Impeachment(address delegate, address impeacher);
+export function handleImpeachment(event: Impeachment): void {
+  let molochAddress = loadMoloch(event.address);
+  if (molochAddress == null) {
+    return;
+  }
+  let minionId = molochAddress
+    .toHexString()
+    .concat("-minion-")
+    .concat(event.address.toHex());
+  let minion = new Minion(minionId);
+
+  minion.uberHausDelegate = event.address;
 
   minion.save();
 }

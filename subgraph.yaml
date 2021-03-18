@@ -315,3 +315,5 @@ templates:
           handler: handleSetUberHaus
         - event: 'DelegateAppointed(uint256,address,address)'
           handler: handleDelegateAppointed
+        - event: 'Impeachment(address,address)'
+          handler: handleImpeachment
