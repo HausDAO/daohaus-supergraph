@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: V1Factory
-    network: kovan
+    network: rinkeby
     source:
-      address: "0x0C60Cd59f42093c7489BA68BAA4d7A01f2468153"
+      address: "0x610247467d0dfA8B477ad7Dd1644e86CB2a79F8F"
       abi: V1Factory
-      startBlock: 14980875
+      startBlock: 6494343
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -34,11 +34,11 @@ dataSources:
       file: V1Factory/V1Factory.wasm
   - kind: ethereum/contract
     name: V2Factory
-    network: kovan
+    network: rinkeby
     source:
-      address: "0xB47778d3BcCBf5e39dEC075CA5F185fc20567b1e"
+      address: "0x763b61A62EF076ad960E1d513713B2aeD7C1b88e"
       abi: V2Factory
-      startBlock: 16845360
+      startBlock: 6494329
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -61,11 +61,11 @@ dataSources:
       file: V1Factory/V1Factory.wasm
   - kind: ethereum/contract
     name: V21Factory
-    network: kovan
+    network: rinkeby
     source:
-      address: "0x9c5d087f912e7187D9c75e90999b03FB31Ee17f5"
+      address: "0xC33a4EfecB11D2cAD8E7d8d2a6b5E7FEacCC521d"
       abi: V21Factory
-      startBlock: 22640938
+      startBlock: 7771115
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -88,11 +88,11 @@ dataSources:
       file: V1Factory/V1Factory.wasm
   - kind: ethereum/contract
     name: MinionFactory
-    network: kovan
+    network: rinkeby
     source:
-      address: "0x80ec2dB292E7a6D1D5bECB80e6479b2bE048AC98"
+      address: "0x316eFCd421b0654B7aE8E806880D4AE88ecaE206"
       abi: MinionFactory
-      startBlock: 22640617
+      startBlock: 7737496
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -111,32 +111,10 @@ dataSources:
         - event: SummonMinion(indexed address,indexed address,string,string)
           handler: handleSummonedMinion
       file: MinionFactory/MinionFactory.wasm
-  - kind: ethereum/contract
-    name: UberMinionFactory
-    network: kovan
-    source:
-      address: "0x03042577463E3820F9cA6Ca3906BAad599ba9382"
-      abi: UberMinionFactory
-      startBlock: 23861045
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      language: wasm/assemblyscript
-      entities:
-        - Moloch
-        - Minion
-      abis:
-        - name: UberMinionFactory
-          file: UberMinionFactory/abis/UberMinionFactory.json
-      eventHandlers:
-        - event: SummonUberMinion(indexed address,indexed
-            address,address,address,address,uint256,uint256,string,string)
-          handler: handleSummonedUberMinion
-      file: MinionFactory/MinionFactory.wasm
 templates:
   - kind: ethereum/contract
     name: MolochV1Template
-    network: kovan
+    network: rinkeby
     source:
       abi: V1Moloch
     mapping:
@@ -178,7 +156,7 @@ templates:
           handler: handleUpdateDelegateKey
   - kind: ethereum/contract
     name: MolochV2Template
-    network: kovan
+    network: rinkeby
     source:
       abi: V2Moloch
     mapping:
@@ -231,7 +209,7 @@ templates:
           handler: handleTokensCollected
   - kind: ethereum/contract
     name: MolochV21Template
-    network: kovan
+    network: rinkeby
     source:
       abi: V21Moloch
     mapping:
@@ -278,24 +256,3 @@ templates:
           handler: handleRagequit
         - event: TokensCollected(indexed address,uint256)
           handler: handleTokensCollected
-  - kind: ethereum/contract
-    name: UberhausMinionTemplate
-    network: kovan
-    source:
-      abi: UberhausMinion
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.3
-      language: wasm/assemblyscript
-      file: templates/UberhausMinionTemplate/UberhausMinionTemplate.wasm
-      entities:
-        - Moloch
-        - Minion
-      abis:
-        - name: UberhausMinion
-          file: UberhausMinionTemplate/abis/UberhausMinion.json
-      eventHandlers:
-        - event: SetUberHaus(address)
-          handler: handleSetUberHaus
-        - event: DelegateAppointed(uint256,address,address)
-          handler: handleDelegateAppointed

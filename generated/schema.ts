@@ -1528,6 +1528,15 @@ export class Proposal extends Entity {
     this.set("isMinionApplicant", Value.fromBoolean(value));
   }
 
+  get uberHausMinionExecuted(): boolean {
+    let value = this.get("uberHausMinionExecuted");
+    return value.toBoolean();
+  }
+
+  set uberHausMinionExecuted(value: boolean) {
+    this.set("uberHausMinionExecuted", Value.fromBoolean(value));
+  }
+
   get minionAddress(): Bytes | null {
     let value = this.get("minionAddress");
     if (value === null) {
@@ -1911,12 +1920,20 @@ export class Minion extends Entity {
     }
   }
 
-  get uberHausDelegate(): Bytes {
+  get uberHausDelegate(): Bytes | null {
     let value = this.get("uberHausDelegate");
-    return value.toBytes();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set uberHausDelegate(value: Bytes) {
-    this.set("uberHausDelegate", Value.fromBytes(value));
+  set uberHausDelegate(value: Bytes | null) {
+    if (value === null) {
+      this.unset("uberHausDelegate");
+    } else {
+      this.set("uberHausDelegate", Value.fromBytes(value as Bytes));
+    }
   }
 }

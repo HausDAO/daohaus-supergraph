@@ -132,6 +132,7 @@ type Proposal @entity {
   molochVersion: String!
   isMinion: Boolean!
   isMinionApplicant: Boolean
+  uberHausMinionExecuted: Boolean
   minionAddress: Bytes
   minion: Minion
 }
