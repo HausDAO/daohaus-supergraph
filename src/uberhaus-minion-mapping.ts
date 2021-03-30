@@ -8,7 +8,7 @@ import {
   ExecuteAction,
 } from "../generated/templates/UberhausMinionTemplate/UberhausMinion";
 
-function loadMoloch(minionAddress: Bytes): Bytes | null {
+function getMolochAddressFromChildMinion(minionAddress: Bytes): Bytes | null {
   let contract = UberhausMinion.bind(minionAddress as Address);
   let result = contract.try_dao();
   if (result.reverted) {
@@ -22,7 +22,7 @@ function loadMoloch(minionAddress: Bytes): Bytes | null {
 }
 
 export function handleSetUberHaus(event: SetUberHaus): void {
-  let molochAddress = loadMoloch(event.address);
+  let molochAddress = getMolochAddressFromChildMinion(event.address);
   if (molochAddress == null) {
     return;
   }
@@ -30,7 +30,7 @@ export function handleSetUberHaus(event: SetUberHaus): void {
     .toHexString()
     .concat("-minion-")
     .concat(event.address.toHex());
-  let minion = new Minion(minionId);
+  let minion = Minion.load(minionId);
 
   let uberHausId = event.params.uberHaus.toHexString();
   let uberHausMoloch = Moloch.load(uberHausId);
@@ -44,7 +44,7 @@ export function handleSetUberHaus(event: SetUberHaus): void {
 
 // event DelegateAppointed(uint256 proposalId, address executor, address currentDelegate);
 export function handleDelegateAppointed(event: DelegateAppointed): void {
-  let molochAddress = loadMoloch(event.address);
+  let molochAddress = getMolochAddressFromChildMinion(event.address);
   if (molochAddress == null) {
     return;
   }
@@ -61,7 +61,7 @@ export function handleDelegateAppointed(event: DelegateAppointed): void {
 
 // event Impeachment(address delegate, address impeacher);
 export function handleImpeachment(event: Impeachment): void {
-  let molochAddress = loadMoloch(event.address);
+  let molochAddress = getMolochAddressFromChildMinion(event.address);
   if (molochAddress == null) {
     return;
   }
@@ -78,7 +78,7 @@ export function handleImpeachment(event: Impeachment): void {
 
 // event ExecuteAction(uint256 proposalId, address executor);
 export function handleExecuteAction(event: ExecuteAction): void {
-  let molochAddress = loadMoloch(event.address);
+  let molochAddress = getMolochAddressFromChildMinion(event.address);
   if (molochAddress == null) {
     return;
   }
