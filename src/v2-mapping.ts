@@ -558,6 +558,8 @@ export function handleProcessProposal(event: ProcessProposal): void {
     if (isNewMember) {
       let newMember = new Member(applicantId);
 
+      // try to relate to a minion
+
       newMember.moloch = molochId;
       newMember.createdAt = event.block.timestamp.toString();
       newMember.molochAddress = event.address;
@@ -816,7 +818,7 @@ export function handleCancelProposal(event: CancelProposal): void {
       newMember.memberAddress = proposal.applicant;
       newMember.delegateKey = proposal.applicant;
       newMember.shares = BigInt.fromI32(0);
-      newMember.loot = proposal.lootRequested;
+      newMember.loot = BigInt.fromI32(0);
       newMember.exists = false;
       newMember.tokenTribute = BigInt.fromI32(0);
       newMember.didRagequit = false;
