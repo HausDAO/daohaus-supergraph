@@ -1,4 +1,10 @@
-import { BigInt, log, Address, Bytes } from "@graphprotocol/graph-ts";
+import {
+  BigInt,
+  log,
+  Address,
+  Bytes,
+  ByteArray,
+} from "@graphprotocol/graph-ts";
 import {
   SummonComplete,
   SubmitProposal,
@@ -722,27 +728,43 @@ export function handleProcessGuildKickProposal(
 }
 
 export function handleRagequit(event: Ragequit): void {
-  if (
-    event.address.toHexString() ==
-      "0xfe1084bc16427e5eb7f13fc19bcd4e641f7d571f" &&
-    event.params.memberAddress.toHex() ==
-      "0x68d36dcbdd7bbf206e27134f28103abe7cf972df"
-  ) {
-    // log.info("### from rage kick, transaction.input: {}, value: {}", [
-    //   event.transaction.input.toString(),
-    //   event.transaction.value.toString(),
-    // ]);
+  let inputData = event.transaction.input.toHexString();
+  let targetAddress = event.params.memberAddress.toHex();
 
-    log.info("### from rage kick, block: {}", [event.block.number.toString()]);
-    return;
+  if (inputData.length.toString() == "74") {
+    log.info("$$$rage, input: {}, length: {}", [
+      inputData,
+      inputData.length.toString(),
+    ]);
+    targetAddress = "0x".concat(inputData.slice(34));
   }
+
+  log.info("***rage, targetAddress: {}", [targetAddress]);
+  // if (
+  //   event.address.toHexString() ==
+  //     "0xfe1084bc16427e5eb7f13fc19bcd4e641f7d571f" &&
+  //   event.params.memberAddress.toHex() ==
+  //     "0x68d36dcbdd7bbf206e27134f28103abe7cf972df"
+  // ) {
+  //   // log.info("### from rage kick, transaction.input: {}, value: {}", [
+  //   //   event.transaction.input.toString(),
+  //   //   event.transaction.value.toString(),
+  //   // ]);
+
+  //   log.info("### from rage kick, block: {}", [event.block.number.toString()]);
+  //   return;
+  // }
+
+  // get event.transaction.input
+  // if (event.params.memberAddress.toHex() == ) {}
 
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
 
   let memberId = molochId
     .concat("-member-")
-    .concat(event.params.memberAddress.toHex());
+    // .concat(event.params.memberAddress.toHex());
+    .concat(targetAddress);
   let member = Member.load(memberId);
 
   let sharesAndLootToBurn = event.params.sharesToBurn.plus(
@@ -789,7 +811,7 @@ export function handleRagequit(event: Ragequit): void {
   rageQuit.moloch = molochId;
   rageQuit.molochAddress = event.address;
   rageQuit.member = memberId;
-  rageQuit.memberAddress = event.params.memberAddress;
+  rageQuit.memberAddress = ByteArray.fromHexString(targetAddress) as Address;
   rageQuit.shares = event.params.sharesToBurn;
   rageQuit.loot = event.params.lootToBurn;
 

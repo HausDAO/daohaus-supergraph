@@ -10,6 +10,7 @@
     "deploy-minion": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-minion-kovan",
     "deploy-rinkeby": "node manifests/deploy-prep.js rinkeby && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-rinkeby",
     "deploy-xdai": "node manifests/deploy-prep.js xdai && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-xdai",
+    "deploy-sam-dev": "node manifests/deploy-prep.js xdai && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/moloch-v21-playground",
     "deploy-matic": "node manifests/deploy-prep.js matic && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-matic",
     "deploy-bill-dev": "node manifests/deploy-prep.js kovan && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ wswarren12/daohaus-ubergraph-bill --kovan",
     "mega-deploy": "yarn deploy-main && yarn deploy-xdai && yarn deploy-kovan && yarn deploy-rinkeby && yarn deploy-matic",
