@@ -169,4 +169,5 @@ type Minion @entity {
   uberHaus: Moloch
   uberHausDelegateRewardFactor: BigInt
   uberHausDelegate: Bytes
+  version: String
 }

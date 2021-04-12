@@ -1936,4 +1936,21 @@ export class Minion extends Entity {
       this.set("uberHausDelegate", Value.fromBytes(value as Bytes));
     }
   }
+
+  get version(): string | null {
+    let value = this.get("version");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set version(value: string | null) {
+    if (value === null) {
+      this.unset("version");
+    } else {
+      this.set("version", Value.fromString(value as string));
+    }
+  }
 }

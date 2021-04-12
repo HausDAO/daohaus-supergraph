@@ -74,6 +74,12 @@ module.exports.config = {
         startBlock: 13569739,
       },
       {
+        name: "v2minionFactory",
+        template: "v2MinionFactory-ds.yaml",
+        address: "0x53508D981439Ce6A3283597a4775F6f23504d4A2",
+        startBlock: 15503980,
+      },
+      {
         name: "uberMinionFactory",
         template: "uberMinionFactory-ds.yaml",
         address: "0xf5106077892992B84c33C35CA8763895eb80B298",
