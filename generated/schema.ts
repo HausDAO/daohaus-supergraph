@@ -1936,4 +1936,194 @@ export class Minion extends Entity {
       this.set("uberHausDelegate", Value.fromBytes(value as Bytes));
     }
   }
+
+  get streams(): Array<string> | null {
+    let value = this.get("streams");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set streams(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("streams");
+    } else {
+      this.set("streams", Value.fromStringArray(value as Array<string>));
+    }
+  }
+}
+
+export class MinionStream extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save MinionStream entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save MinionStream entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("MinionStream", id.toString(), this);
+  }
+
+  static load(id: string): MinionStream | null {
+    return store.get("MinionStream", id) as MinionStream | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get proposalId(): string {
+    let value = this.get("proposalId");
+    return value.toString();
+  }
+
+  set proposalId(value: string) {
+    this.set("proposalId", Value.fromString(value));
+  }
+
+  get createdAt(): string {
+    let value = this.get("createdAt");
+    return value.toString();
+  }
+
+  set createdAt(value: string) {
+    this.set("createdAt", Value.fromString(value));
+  }
+
+  get to(): Bytes {
+    let value = this.get("to");
+    return value.toBytes();
+  }
+
+  set to(value: Bytes) {
+    this.set("to", Value.fromBytes(value));
+  }
+
+  get tokenAddress(): Bytes {
+    let value = this.get("tokenAddress");
+    return value.toBytes();
+  }
+
+  set tokenAddress(value: Bytes) {
+    this.set("tokenAddress", Value.fromBytes(value));
+  }
+
+  get superTokenAddress(): Bytes {
+    let value = this.get("superTokenAddress");
+    return value.toBytes();
+  }
+
+  set superTokenAddress(value: Bytes) {
+    this.set("superTokenAddress", Value.fromBytes(value));
+  }
+
+  get rate(): BigInt {
+    let value = this.get("rate");
+    return value.toBigInt();
+  }
+
+  set rate(value: BigInt) {
+    this.set("rate", Value.fromBigInt(value));
+  }
+
+  get minDeposit(): BigInt {
+    let value = this.get("minDeposit");
+    return value.toBigInt();
+  }
+
+  set minDeposit(value: BigInt) {
+    this.set("minDeposit", Value.fromBigInt(value));
+  }
+
+  get proposer(): Bytes {
+    let value = this.get("proposer");
+    return value.toBytes();
+  }
+
+  set proposer(value: Bytes) {
+    this.set("proposer", Value.fromBytes(value));
+  }
+
+  get executed(): boolean {
+    let value = this.get("executed");
+    return value.toBoolean();
+  }
+
+  set executed(value: boolean) {
+    this.set("executed", Value.fromBoolean(value));
+  }
+
+  get execTxHash(): Bytes | null {
+    let value = this.get("execTxHash");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set execTxHash(value: Bytes | null) {
+    if (value === null) {
+      this.unset("execTxHash");
+    } else {
+      this.set("execTxHash", Value.fromBytes(value as Bytes));
+    }
+  }
+
+  get active(): boolean {
+    let value = this.get("active");
+    return value.toBoolean();
+  }
+
+  set active(value: boolean) {
+    this.set("active", Value.fromBoolean(value));
+  }
+
+  get ctx(): Bytes {
+    let value = this.get("ctx");
+    return value.toBytes();
+  }
+
+  set ctx(value: Bytes) {
+    this.set("ctx", Value.fromBytes(value));
+  }
+
+  get canceledBy(): Bytes | null {
+    let value = this.get("canceledBy");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set canceledBy(value: Bytes | null) {
+    if (value === null) {
+      this.unset("canceledBy");
+    } else {
+      this.set("canceledBy", Value.fromBytes(value as Bytes));
+    }
+  }
+
+  get minion(): string {
+    let value = this.get("minion");
+    return value.toString();
+  }
+
+  set minion(value: string) {
+    this.set("minion", Value.fromString(value));
+  }
 }

@@ -25,3 +25,9 @@ export class UberhausMinionTemplate extends DataSourceTemplate {
     DataSourceTemplate.create("UberhausMinionTemplate", [address.toHex()]);
   }
 }
+
+export class SuperfluidMinionTemplate extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("SuperfluidMinionTemplate", [address.toHex()]);
+  }
+}
