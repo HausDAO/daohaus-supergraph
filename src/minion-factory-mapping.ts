@@ -2,7 +2,8 @@ import { log } from "@graphprotocol/graph-ts";
 import { SummonMinion } from "../generated/MinionFactory/MinionFactory";
 import { SummonUberMinion } from "../generated/UberMinionFactory/UberMinionFactory";
 import { UberhausMinionTemplate } from "../generated/templates";
-
+import { SummonMinion as SummonSuperfluidMinion } from "../generated/SuperfluidMinionFactory/SuperfluidMinionFactory";
+import { SuperfluidMinionTemplate } from "../generated/templates";
 import { Moloch, Minion } from "../generated/schema";
 
 // event SummonMinion(address indexed minion, address indexed moloch, string details, string minionType);
@@ -73,4 +74,10 @@ export function handleSummonedUberMinion(event: SummonUberMinion): void {
   }
 
   minion.save();
+}
+
+// event SummonMinion(address indexed minion, address indexed moloch, string details, string minionType);
+export function handleSummonedSuperfluidMinion(event: SummonSuperfluidMinion): void {
+  SuperfluidMinionTemplate.create(event.params.minion);
+  handleSummonedMinion(event as SummonMinion);
 }

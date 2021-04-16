@@ -1,0 +1,21 @@
+kind: ethereum/contract
+name: SuperfluidMinionFactory
+network: kovan
+source:
+  address: ""
+  abi: SuperfluidMinionFactory
+  startBlock: 
+mapping:
+  kind: ethereum/events
+  apiVersion: 0.0.3
+  language: wasm/assemblyscript
+  entities:
+    - Moloch
+    - SuperfluidMinion
+  abis:
+    - name: SuperfluidMinionFactory
+      file: ./abis/SuperfluidMinionFactory.json
+  eventHandlers:
+    - event: "SummonMinion(indexed address,indexed address,string,string)"
+      handler: handleSummonedSuperfluidMinion
+  file: ./src/minion-factory-mapping.ts

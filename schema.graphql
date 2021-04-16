@@ -169,4 +169,23 @@ type Minion @entity {
   uberHaus: Moloch
   uberHausDelegateRewardFactor: BigInt
   uberHausDelegate: Bytes
+  streams: [MinionStream!] @derivedFrom(field: "minion")
+}
+
+type MinionStream @entity {
+  id: ID!
+  proposalId: String!
+  createdAt: String!
+  to: Bytes!
+  tokenAddress: Bytes!
+  superTokenAddress: Bytes!
+  rate: BigInt!
+  minDeposit: BigInt!
+  proposer: Bytes!
+  executed: Boolean!
+  execTxHash: Bytes
+  active: Boolean!
+  ctx: Bytes!
+  canceledBy: Bytes
+  minion: Minion!
 }

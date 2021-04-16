@@ -1,0 +1,26 @@
+kind: ethereum/contract
+name: SuperfluidMinionTemplate
+network:
+source:
+  abi: SuperfluidMinion
+mapping:
+  kind: ethereum/events
+  apiVersion: 0.0.3
+  language: wasm/assemblyscript
+  file: ./src/superfluid-minion-mapping.ts
+  entities:
+    - Moloch
+    - Minion
+    - Proposal
+  abis:
+    - name: SuperfluidMinion
+      file: ./abis/SuperfluidMinion.json
+  eventHandlers:
+    - event: "ProposeStream(uint256,address)"
+      handler: handleProposedStream
+    - event: "ExecuteStream(uint256,address)"
+      handler: handleExecutedStream
+    - event: "StreamCanceled(uint256,address)"
+      handler: handleStreamCanceled
+    - event: "ActionCanceled(uint256)"
+      handler: handleStreamProposalCanceled
