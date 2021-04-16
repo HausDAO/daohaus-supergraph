@@ -26,6 +26,12 @@ module.exports.config = {
         startBlock: 11499121,
       },
       {
+        name: "v2minionFactory",
+        template: "v2MinionFactory-ds.yaml",
+        address: "0x88207Daf515e0da1A32399b3f92D128B1BF45294",
+        startBlock: 12227886,
+      },
+      {
         name: "molochDao",
         template: "molochDao-ds.yaml",
         address: "0x1fd169a4f5c59acf79d0fd5d91d1201ef1bce9f1",
@@ -119,6 +125,12 @@ module.exports.config = {
         address: "0x52A67B01f029ED2EfEa7E17Dbb56397a612bf245",
         startBlock: 11318410,
       },
+      {
+        name: "v2minionFactory",
+        template: "v2MinionFactory-ds.yaml",
+        address: "0x02e458B5eEF8f23e78AefaC0F15f5d294C3762e9",
+        startBlock: 13198765,
+      },
     ],
     templates: [
       {
@@ -152,6 +164,12 @@ module.exports.config = {
         template: "minionFactory-ds.yaml",
         address: "0x80ec2dB292E7a6D1D5bECB80e6479b2bE048AC98",
         startBlock: 22640617,
+      },
+      {
+        name: "v2minionFactory",
+        template: "v2MinionFactory-ds.yaml",
+        address: "0xCE63803E265617c55567a7A7b584fF2dbD76210B",
+        startBlock: 24234494,
       },
       {
         name: "uberMinionFactory",
@@ -204,6 +222,12 @@ module.exports.config = {
         template: "minionFactory-ds.yaml",
         address: "0x316eFCd421b0654B7aE8E806880D4AE88ecaE206",
         startBlock: 7737496,
+      },
+      {
+        name: "v2minionFactory",
+        template: "v2MinionFactory-ds.yaml",
+        address: "0x313F02A44089150C9ff7011D4e87b52404A914A9",
+        startBlock: 8402027,
       },
     ],
     templates: [
