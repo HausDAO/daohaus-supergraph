@@ -731,7 +731,10 @@ export function handleRagequit(event: Ragequit): void {
   let inputData = event.transaction.input.toHexString();
   let targetAddress = event.params.memberAddress.toHex();
 
-  if (inputData.length.toString() == "74") {
+  // first part of the string will have '0xc0c1cf55' if coming from the executeAction on a minion
+  let signature = inputData.slice(0, 10);
+
+  if (inputData.length.toString() == "74" && signature != "0xc0c1cf55") {
     log.info("$$$rage, input: {}, length: {}", [
       inputData,
       inputData.length.toString(),
@@ -740,23 +743,6 @@ export function handleRagequit(event: Ragequit): void {
   }
 
   log.info("***rage, targetAddress: {}", [targetAddress]);
-  // if (
-  //   event.address.toHexString() ==
-  //     "0xfe1084bc16427e5eb7f13fc19bcd4e641f7d571f" &&
-  //   event.params.memberAddress.toHex() ==
-  //     "0x68d36dcbdd7bbf206e27134f28103abe7cf972df"
-  // ) {
-  //   // log.info("### from rage kick, transaction.input: {}, value: {}", [
-  //   //   event.transaction.input.toString(),
-  //   //   event.transaction.value.toString(),
-  //   // ]);
-
-  //   log.info("### from rage kick, block: {}", [event.block.number.toString()]);
-  //   return;
-  // }
-
-  // get event.transaction.input
-  // if (event.params.memberAddress.toHex() == ) {}
 
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);

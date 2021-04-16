@@ -18,4 +18,4 @@ mapping:
   eventHandlers:
     - event: "SummonUberMinion(indexed address,indexed address,address,address,address,uint256,uint256,string,string)"
       handler: handleSummonedUberMinion
-  file: ./src/minion-factory-mapping.ts
+  file: ./src/uberhaus-minion-factory-mapping.ts

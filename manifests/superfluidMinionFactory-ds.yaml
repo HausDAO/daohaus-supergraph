@@ -4,7 +4,7 @@ network: kovan
 source:
   address: ""
   abi: SuperfluidMinionFactory
-  startBlock: 
+  startBlock:
 mapping:
   kind: ethereum/events
   apiVersion: 0.0.3
@@ -18,4 +18,4 @@ mapping:
   eventHandlers:
     - event: "SummonMinion(indexed address,indexed address,string,string)"
       handler: handleSummonedSuperfluidMinion
-  file: ./src/minion-factory-mapping.ts
+  file: ./src/superfluid-minion-factory-mapping.ts
