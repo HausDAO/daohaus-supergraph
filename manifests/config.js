@@ -224,17 +224,16 @@ module.exports.config = {
         startBlock: 7737496,
       },
       {
-<<<<<<< HEAD
         name: "v2minionFactory",
         template: "v2MinionFactory-ds.yaml",
         address: "0x313F02A44089150C9ff7011D4e87b52404A914A9",
         startBlock: 8402027,
-=======
+      },
+      {
         name: "superfluidMinionFactory",
         template: "superfluidMinionFactory-ds.yaml",
         address: "0xc4fe30611474Aa737b5B1DBC81aB4Eb9E8959DE1",
         startBlock: 8419515,
->>>>>>> 99dbd91485f57fc495620ed3c68a23b56d47af6b
       },
     ],
     templates: [
