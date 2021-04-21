@@ -184,9 +184,12 @@ type MinionStream @entity {
   minDeposit: BigInt!
   proposer: Bytes!
   executed: Boolean!
+  executedBlock: BigInt
+  executedAt: String
   execTxHash: Bytes
   active: Boolean!
   ctx: Bytes!
+  canceledAt: String
   canceledBy: Bytes
   minion: Minion!
 }
