@@ -692,7 +692,7 @@ export function handleProcessGuildKickProposal(
         .concat(proposal.applicant.toHexString());
       let member = Member.load(memberId);
       let newLoot = member.shares;
-      member.jailed = processProposalId;
+      member.jailed = proposal.proposalIndex;
       member.kicked = true;
       member.shares = BigInt.fromI32(0);
       member.loot = member.loot.plus(newLoot);

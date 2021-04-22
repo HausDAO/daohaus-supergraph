@@ -789,20 +789,20 @@ export class Member extends Entity {
     this.set("kicked", Value.fromBoolean(value));
   }
 
-  get jailed(): string | null {
+  get jailed(): BigInt | null {
     let value = this.get("jailed");
     if (value === null) {
       return null;
     } else {
-      return value.toString();
+      return value.toBigInt();
     }
   }
 
-  set jailed(value: string | null) {
+  set jailed(value: BigInt | null) {
     if (value === null) {
       this.unset("jailed");
     } else {
-      this.set("jailed", Value.fromString(value as string));
+      this.set("jailed", Value.fromBigInt(value as BigInt));
     }
   }
 }

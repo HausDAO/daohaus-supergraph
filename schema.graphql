@@ -66,7 +66,7 @@ type Member @entity {
   rageQuits: [RageQuit!] @derivedFrom(field: "member")
   proposedToKick: Boolean
   kicked: Boolean
-  jailed: Proposal
+  jailed: BigInt
 }
 
 type Vote @entity {
