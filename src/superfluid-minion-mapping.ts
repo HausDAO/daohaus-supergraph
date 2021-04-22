@@ -1,4 +1,4 @@
-import { BigInt, log, store } from "@graphprotocol/graph-ts";
+import { log, store } from "@graphprotocol/graph-ts";
 import { Minion, MinionStream, Proposal } from "../generated/schema";
 import {
     ExecuteStream,
@@ -26,8 +26,8 @@ export function handleProposedStream(event: ProposeStream): void {
     let minionAddress = event.address.toHexString();
 
     let streamId = minionAddress
-    .concat("-stream-")
-    .concat(event.params.proposalId.toString());
+        .concat("-stream-")
+        .concat(event.params.proposalId.toString());
     log.info("handleProposedStream New ID: {}", [streamId]);
 
     let minionId = molochAddress.value
@@ -76,8 +76,8 @@ export function handleProposedStream(event: ProposeStream): void {
 export function handleExecutedStream(event: ExecuteStream): void {
     let minionAddress = event.address.toHexString();
     let streamId = minionAddress
-    .concat("-stream-")
-    .concat(event.params.proposalId.toString());
+        .concat("-stream-")
+        .concat(event.params.proposalId.toString());
     log.info("Running handleExecutedStream: {} => {}", [event.address.toHexString(), streamId]);
     let stream = MinionStream.load(streamId);
     if (stream == null) {
@@ -99,6 +99,8 @@ export function handleExecutedStream(event: ExecuteStream): void {
         streamId,
     ]);
     stream.executed = true;
+    stream.executedBlock = event.block.number;
+    stream.executedAt = event.block.timestamp.toString();
     stream.active = true;
     stream.superTokenAddress = result.value.value2;
     stream.execTxHash = event.transaction.hash;
@@ -108,18 +110,20 @@ export function handleExecutedStream(event: ExecuteStream): void {
 export function handleStreamCanceled(event: StreamCanceled): void {
     let minionAddress = event.address.toHexString();
     let streamId = minionAddress
-    .concat("-stream-")
-    .concat(event.params.proposalId.toString());
+        .concat("-stream-")
+        .concat(event.params.proposalId.toString());
     log.info("Running handleStreamCanceled: {} => {}", [event.address.toHexString(), streamId]);
     let stream = MinionStream.load(streamId);
     if (stream == null) {
         log.info("handleStreamCanceled not found! {}", [streamId]);
+        return;
     }
     log.info("&&&&& handleStreamCanceled streamId: {}", [
         streamId,
     ]);
     stream.active = false;
     stream.canceledBy = event.params.canceledBy;
+    stream.canceledAt = event.block.timestamp.toString();
     stream.save();
 }
 

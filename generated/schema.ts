@@ -2083,6 +2083,40 @@ export class MinionStream extends Entity {
     this.set("executed", Value.fromBoolean(value));
   }
 
+  get executedBlock(): BigInt | null {
+    let value = this.get("executedBlock");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set executedBlock(value: BigInt | null) {
+    if (value === null) {
+      this.unset("executedBlock");
+    } else {
+      this.set("executedBlock", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get executedAt(): string | null {
+    let value = this.get("executedAt");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set executedAt(value: string | null) {
+    if (value === null) {
+      this.unset("executedAt");
+    } else {
+      this.set("executedAt", Value.fromString(value as string));
+    }
+  }
+
   get execTxHash(): Bytes | null {
     let value = this.get("execTxHash");
     if (value === null) {
@@ -2116,6 +2150,23 @@ export class MinionStream extends Entity {
 
   set ctx(value: Bytes) {
     this.set("ctx", Value.fromBytes(value));
+  }
+
+  get canceledAt(): string | null {
+    let value = this.get("canceledAt");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set canceledAt(value: string | null) {
+    if (value === null) {
+      this.unset("canceledAt");
+    } else {
+      this.set("canceledAt", Value.fromString(value as string));
+    }
   }
 
   get canceledBy(): Bytes | null {
