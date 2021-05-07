@@ -130,7 +130,7 @@ export function handleStreamCanceled(event: StreamCanceled): void {
 export function handleStreamProposalCanceled(event: ActionCanceled): void {
     let minionAddress = event.address.toHexString();
     let streamId = minionAddress
-    .concat("-stream-")
-    .concat(event.params.proposalId.toString());
+        .concat("-stream-")
+        .concat(event.params.proposalId.toString());
     store.remove('MinionStream', streamId);
 }
