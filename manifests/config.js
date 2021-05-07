@@ -91,6 +91,12 @@ module.exports.config = {
         address: "0xf5106077892992B84c33C35CA8763895eb80B298",
         startBlock: 14958440,
       },
+      {
+        name: "superfluidMinionFactory",
+        template: "superfluidMinionFactory-ds.yaml",
+        address: "0xfC86DfDd3b2e560729c78b51dF200384cfe87438",
+        startBlock: 15925433,
+      },
     ],
     templates: [
       {
@@ -108,6 +114,10 @@ module.exports.config = {
       {
         name: "uberHausMininTemplate",
         template: "uberhausMinion-template.yaml",
+      },
+      {
+        name: "superfluidMinionTemplate",
+        template: "superfluidMinion-template.yaml",
       },
     ],
   },
@@ -131,11 +141,21 @@ module.exports.config = {
         address: "0x02e458B5eEF8f23e78AefaC0F15f5d294C3762e9",
         startBlock: 13198765,
       },
+      {
+        name: "superfluidMinionFactory",
+        template: "superfluidMinionFactory-ds.yaml",
+        address: "0x52acf023d38A31f7e7bC92cCe5E68d36cC9752d6",
+        startBlock: 14193470,
+      },
     ],
     templates: [
       {
         name: "v21Template",
         template: "v21-template.yaml",
+      },
+      {
+        name: "superfluidMinionTemplate",
+        template: "superfluidMinion-template.yaml",
       },
     ],
   },
@@ -232,8 +252,8 @@ module.exports.config = {
       {
         name: "superfluidMinionFactory",
         template: "superfluidMinionFactory-ds.yaml",
-        address: "0xc4fe30611474Aa737b5B1DBC81aB4Eb9E8959DE1",
-        startBlock: 8419515,
+        address: "0x4b168c1a1E729F4c8e3ae81d09F02d350fc905ca",
+        startBlock: 8541482,
       },
     ],
     templates: [

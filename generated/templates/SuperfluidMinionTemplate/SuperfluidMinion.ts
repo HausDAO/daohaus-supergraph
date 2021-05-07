@@ -90,16 +90,12 @@ export class PulledFunds__Params {
     this._event = event;
   }
 
-  get moloch(): Address {
+  get token(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get token(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
   get amount(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
@@ -146,25 +142,16 @@ export class WithdrawBalance__Params {
     return this._event.parameters[1].value.toAddress();
   }
 
+  get withdrawnBy(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
   get amount(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
-  }
-}
-
-export class SuperfluidMinion__currentTokenBalanceResult {
-  value0: BigInt;
-  value1: BigInt;
-
-  constructor(value0: BigInt, value1: BigInt) {
-    this.value0 = value0;
-    this.value1 = value1;
+    return this._event.parameters[3].value.toBigInt();
   }
 
-  toMap(): TypedMap<string, EthereumValue> {
-    let map = new TypedMap<string, EthereumValue>();
-    map.set("value0", EthereumValue.fromUnsignedBigInt(this.value0));
-    map.set("value1", EthereumValue.fromUnsignedBigInt(this.value1));
-    return map;
+  get downgraded(): boolean {
+    return this._event.parameters[4].value.toBoolean();
   }
 }
 
@@ -221,48 +208,17 @@ export class SuperfluidMinion extends SmartContract {
     return new SuperfluidMinion("SuperfluidMinion", address);
   }
 
-  currentTokenBalance(
-    proposalId: BigInt
-  ): SuperfluidMinion__currentTokenBalanceResult {
-    let result = super.call("currentTokenBalance", [
-      EthereumValue.fromUnsignedBigInt(proposalId)
-    ]);
-
-    return new SuperfluidMinion__currentTokenBalanceResult(
-      result[0].toBigInt(),
-      result[1].toBigInt()
-    );
-  }
-
-  try_currentTokenBalance(
-    proposalId: BigInt
-  ): CallResult<SuperfluidMinion__currentTokenBalanceResult> {
-    let result = super.tryCall("currentTokenBalance", [
-      EthereumValue.fromUnsignedBigInt(proposalId)
-    ]);
-    if (result.reverted) {
-      return new CallResult();
-    }
-    let value = result.value;
-    return CallResult.fromValue(
-      new SuperfluidMinion__currentTokenBalanceResult(
-        value[0].toBigInt(),
-        value[1].toBigInt()
-      )
-    );
-  }
-
-  executeAction(proposalId: BigInt): Bytes {
+  executeAction(_proposalId: BigInt): Bytes {
     let result = super.call("executeAction", [
-      EthereumValue.fromUnsignedBigInt(proposalId)
+      EthereumValue.fromUnsignedBigInt(_proposalId)
     ]);
 
     return result[0].toBytes();
   }
 
-  try_executeAction(proposalId: BigInt): CallResult<Bytes> {
+  try_executeAction(_proposalId: BigInt): CallResult<Bytes> {
     let result = super.tryCall("executeAction", [
-      EthereumValue.fromUnsignedBigInt(proposalId)
+      EthereumValue.fromUnsignedBigInt(_proposalId)
     ]);
     if (result.reverted) {
       return new CallResult();
@@ -271,14 +227,20 @@ export class SuperfluidMinion extends SmartContract {
     return CallResult.fromValue(value[0].toBytes());
   }
 
-  isMember(user: Address): boolean {
-    let result = super.call("isMember", [EthereumValue.fromAddress(user)]);
+  isMember(_moloch: Address, _user: Address): boolean {
+    let result = super.call("isMember", [
+      EthereumValue.fromAddress(_moloch),
+      EthereumValue.fromAddress(_user)
+    ]);
 
     return result[0].toBoolean();
   }
 
-  try_isMember(user: Address): CallResult<boolean> {
-    let result = super.tryCall("isMember", [EthereumValue.fromAddress(user)]);
+  try_isMember(_moloch: Address, _user: Address): CallResult<boolean> {
+    let result = super.tryCall("isMember", [
+      EthereumValue.fromAddress(_moloch),
+      EthereumValue.fromAddress(_user)
+    ]);
     if (result.reverted) {
       return new CallResult();
     }
@@ -301,7 +263,7 @@ export class SuperfluidMinion extends SmartContract {
     return CallResult.fromValue(value[0].toAddress());
   }
 
-  proposeStream(
+  proposeAction(
     _to: Address,
     _token: Address,
     _rate: BigInt,
@@ -309,7 +271,7 @@ export class SuperfluidMinion extends SmartContract {
     _ctx: Bytes,
     details: string
   ): BigInt {
-    let result = super.call("proposeStream", [
+    let result = super.call("proposeAction", [
       EthereumValue.fromAddress(_to),
       EthereumValue.fromAddress(_token),
       EthereumValue.fromUnsignedBigInt(_rate),
@@ -321,7 +283,7 @@ export class SuperfluidMinion extends SmartContract {
     return result[0].toBigInt();
   }
 
-  try_proposeStream(
+  try_proposeAction(
     _to: Address,
     _token: Address,
     _rate: BigInt,
@@ -329,7 +291,7 @@ export class SuperfluidMinion extends SmartContract {
     _ctx: Bytes,
     details: string
   ): CallResult<BigInt> {
-    let result = super.tryCall("proposeStream", [
+    let result = super.tryCall("proposeAction", [
       EthereumValue.fromAddress(_to),
       EthereumValue.fromAddress(_token),
       EthereumValue.fromUnsignedBigInt(_rate),
@@ -504,7 +466,7 @@ export class ExecuteActionCall__Inputs {
     this._call = call;
   }
 
-  get proposalId(): BigInt {
+  get _proposalId(): BigInt {
     return this._call.inputValues[0].value.toBigInt();
   }
 }
@@ -555,20 +517,20 @@ export class InitCall__Outputs {
   }
 }
 
-export class ProposeStreamCall extends EthereumCall {
-  get inputs(): ProposeStreamCall__Inputs {
-    return new ProposeStreamCall__Inputs(this);
+export class ProposeActionCall extends EthereumCall {
+  get inputs(): ProposeActionCall__Inputs {
+    return new ProposeActionCall__Inputs(this);
   }
 
-  get outputs(): ProposeStreamCall__Outputs {
-    return new ProposeStreamCall__Outputs(this);
+  get outputs(): ProposeActionCall__Outputs {
+    return new ProposeActionCall__Outputs(this);
   }
 }
 
-export class ProposeStreamCall__Inputs {
-  _call: ProposeStreamCall;
+export class ProposeActionCall__Inputs {
+  _call: ProposeActionCall;
 
-  constructor(call: ProposeStreamCall) {
+  constructor(call: ProposeActionCall) {
     this._call = call;
   }
 
@@ -597,15 +559,49 @@ export class ProposeStreamCall__Inputs {
   }
 }
 
-export class ProposeStreamCall__Outputs {
-  _call: ProposeStreamCall;
+export class ProposeActionCall__Outputs {
+  _call: ProposeActionCall;
 
-  constructor(call: ProposeStreamCall) {
+  constructor(call: ProposeActionCall) {
     this._call = call;
   }
 
   get value0(): BigInt {
     return this._call.outputValues[0].value.toBigInt();
+  }
+}
+
+export class UpgradeTokenCall extends EthereumCall {
+  get inputs(): UpgradeTokenCall__Inputs {
+    return new UpgradeTokenCall__Inputs(this);
+  }
+
+  get outputs(): UpgradeTokenCall__Outputs {
+    return new UpgradeTokenCall__Outputs(this);
+  }
+}
+
+export class UpgradeTokenCall__Inputs {
+  _call: UpgradeTokenCall;
+
+  constructor(call: UpgradeTokenCall) {
+    this._call = call;
+  }
+
+  get _token(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get value(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+}
+
+export class UpgradeTokenCall__Outputs {
+  _call: UpgradeTokenCall;
+
+  constructor(call: UpgradeTokenCall) {
+    this._call = call;
   }
 }
 
@@ -628,6 +624,10 @@ export class WithdrawRemainingFundsCall__Inputs {
 
   get superToken(): Address {
     return this._call.inputValues[0].value.toAddress();
+  }
+
+  get _downgrade(): boolean {
+    return this._call.inputValues[1].value.toBoolean();
   }
 }
 
