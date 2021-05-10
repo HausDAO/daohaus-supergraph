@@ -19,3 +19,9 @@ export class MolochV21Template extends DataSourceTemplate {
     DataSourceTemplate.create("MolochV21Template", [address.toHex()]);
   }
 }
+
+export class SuperfluidMinionTemplate extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("SuperfluidMinionTemplate", [address.toHex()]);
+  }
+}
