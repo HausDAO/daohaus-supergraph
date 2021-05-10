@@ -843,7 +843,7 @@ export function handleCancelProposal(event: CancelProposal): void {
     internalTransfer(
       molochId,
       ESCROW,
-      proposal.applicant,
+      proposal.proposer,
       tokenId,
       proposal.tributeOffered
     );
