@@ -1,0 +1,21 @@
+kind: ethereum/contract
+name: NiftyMinionFactory
+network: ""
+source:
+  address: ""
+  abi: NiftyMinionFactory
+  startBlock:
+mapping:
+  kind: ethereum/events
+  apiVersion: 0.0.3
+  language: wasm/assemblyscript
+  entities:
+    - Moloch
+    - NiftyMinion
+  abis:
+    - name: NiftyMinionFactory
+      file: ./abis/NiftyMinionFactory.json
+  eventHandlers:
+    - event: "SummonMinion(indexed address,indexed address,string,string)"
+      handler: handleSummonedNiftyMinion
+  file: ./src/nifty-minion-factory-mapping.ts

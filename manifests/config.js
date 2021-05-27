@@ -97,6 +97,12 @@ module.exports.config = {
         address: "0xfC86DfDd3b2e560729c78b51dF200384cfe87438",
         startBlock: 15925433,
       },
+      {
+        name: "niftyMinionFactory",
+        template: "niftyMinionFactory-ds.yaml",
+        address: "0x09FC3E4b1e8015290180Dc2C14E3CC2E8eF28941",
+        startBlock: 16257869,
+      },
     ],
     templates: [
       {
