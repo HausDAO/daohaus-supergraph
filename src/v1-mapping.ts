@@ -21,6 +21,7 @@ import {
   DaoMeta,
 } from "../generated/schema";
 import { createAndApproveToken } from "./v2-mapping";
+import { addTransaction } from "./transactions";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
@@ -89,6 +90,8 @@ export function handleSummonComplete(event: SummonComplete): void {
 
   member.save();
   moloch.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleSubmitProposal(event: SubmitProposal): void {
@@ -165,6 +168,8 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   }
 
   proposal.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleSubmitVote(event: SubmitVote): void {
@@ -213,6 +218,8 @@ export function handleSubmitVote(event: SubmitVote): void {
   }
 
   proposal.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleProcessProposal(event: ProcessProposal): void {
@@ -264,6 +271,8 @@ export function handleProcessProposal(event: ProcessProposal): void {
     moloch.guildBankBalanceV1 = getBalance(moloch.guildBankAddress as Address);
     moloch.save();
   }
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleRagequit(event: Ragequit): void {
@@ -299,6 +308,8 @@ export function handleRagequit(event: Ragequit): void {
   rageQuit.loot = BigInt.fromI32(0);
 
   rageQuit.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleAbort(event: Abort): void {
@@ -315,6 +326,8 @@ export function handleAbort(event: Abort): void {
   let proposal = Proposal.load(proposalId);
   proposal.aborted = true;
   proposal.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleUpdateDelegateKey(event: UpdateDelegateKey): void {
@@ -331,4 +344,6 @@ export function handleUpdateDelegateKey(event: UpdateDelegateKey): void {
   let member = Member.load(memberId);
   member.delegateKey = event.params.newDelegateKey;
   member.save();
+
+  addTransaction(event.block, event.transaction);
 }

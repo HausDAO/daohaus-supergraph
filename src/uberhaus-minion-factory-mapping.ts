@@ -2,6 +2,7 @@ import { log } from "@graphprotocol/graph-ts";
 import { SummonUberMinion } from "../generated/UberMinionFactory/UberMinionFactory";
 import { UberhausMinionTemplate } from "../generated/templates";
 import { Moloch, Minion } from "../generated/schema";
+import { addTransaction } from "./transactions";
 
 // event SummonUberMinion(address indexed uberminion,
 // address indexed dao,
@@ -46,4 +47,6 @@ export function handleSummonedUberMinion(event: SummonUberMinion): void {
   }
 
   minion.save();
+
+  addTransaction(event.block, event.transaction);
 }

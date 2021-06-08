@@ -33,6 +33,7 @@ import {
   DaoMeta,
   Minion,
 } from "../generated/schema";
+import { addTransaction } from "./transactions";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 let ESCROW = Address.fromString("0x000000000000000000000000000000000000beef");
@@ -336,18 +337,11 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 
   let minion = Minion.load(potentialMinionId);
   if (minion !== null) {
-    if (proposal.paymentRequested > BigInt.fromI32(0)) {
-      proposal.isMinionApplicant = true;
-      proposal.isMinion = false;
-    } else {
-      proposal.isMinion = true;
-      proposal.isMinionApplicant = false;
-      proposal.minionAddress = event.params.applicant;
-      proposal.minion = minion.id;
-    }
+    proposal.isMinion = true;
+    proposal.minionAddress = event.params.applicant;
+    proposal.minion = minion.id;
   } else {
     proposal.isMinion = false;
-    proposal.isMinionApplicant = false;
   }
 
   if (event.params.tributeOffered > BigInt.fromI32(0)) {
@@ -376,6 +370,8 @@ export function handleSubmitProposal(event: SubmitProposal): void {
       .concat(event.params.tributeToken.toHex());
     addToBalance(molochId, ESCROW, tokenId, event.params.tributeOffered);
   }
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleSubmitVote(event: SubmitVote): void {
@@ -434,6 +430,8 @@ export function handleSubmitVote(event: SubmitVote): void {
       break;
     }
   }
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleSponsorProposal(event: SponsorProposal): void {
@@ -478,6 +476,8 @@ export function handleSponsorProposal(event: SponsorProposal): void {
   proposal.gracePeriodEnds = gracePeriodEnds;
 
   proposal.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleProcessProposal(event: ProcessProposal): void {
@@ -612,6 +612,8 @@ export function handleProcessProposal(event: ProcessProposal): void {
 
   moloch.save();
   proposal.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleProcessWhitelistProposal(
@@ -671,6 +673,8 @@ export function handleProcessWhitelistProposal(
 
   moloch.save();
   proposal.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleProcessGuildKickProposal(
@@ -725,6 +729,8 @@ export function handleProcessGuildKickProposal(
 
   moloch.save();
   proposal.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleRagequit(event: Ragequit): void {
@@ -802,6 +808,8 @@ export function handleRagequit(event: Ragequit): void {
   rageQuit.loot = event.params.lootToBurn;
 
   rageQuit.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleCancelProposal(event: CancelProposal): void {
@@ -852,6 +860,8 @@ export function handleCancelProposal(event: CancelProposal): void {
   proposal.cancelled = true;
   proposal.cancelledAt = event.block.timestamp.toString();
   proposal.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleUpdateDelegateKey(event: UpdateDelegateKey): void {
@@ -862,6 +872,8 @@ export function handleUpdateDelegateKey(event: UpdateDelegateKey): void {
   let member = Member.load(memberId);
   member.delegateKey = event.params.newDelegateKey;
   member.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleWithdraw(event: Withdraw): void {
@@ -877,6 +889,8 @@ export function handleWithdraw(event: Withdraw): void {
       event.params.amount
     );
   }
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleTokensCollected(event: TokensCollected): void {
@@ -884,4 +898,6 @@ export function handleTokensCollected(event: TokensCollected): void {
   let tokenId = molochId.concat("-token-").concat(event.params.token.toHex());
 
   addToBalance(molochId, GUILD, tokenId, event.params.amountToCollect);
+
+  addTransaction(event.block, event.transaction);
 }

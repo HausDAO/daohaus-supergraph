@@ -7,6 +7,7 @@ import {
   Impeachment,
   ExecuteAction,
 } from "../generated/templates/UberhausMinionTemplate/UberhausMinion";
+import { addTransaction } from "./transactions";
 
 function getMolochAddressFromChildMinion(minionAddress: Bytes): Bytes | null {
   let contract = UberhausMinion.bind(minionAddress as Address);
@@ -40,6 +41,8 @@ export function handleSetUberHaus(event: SetUberHaus): void {
     minion.uberHaus = uberHausMoloch.id;
     minion.save();
   }
+
+  addTransaction(event.block, event.transaction);
 }
 
 // event DelegateAppointed(uint256 proposalId, address executor, address currentDelegate);
@@ -57,6 +60,8 @@ export function handleDelegateAppointed(event: DelegateAppointed): void {
   minion.uberHausDelegate = event.params.currentDelegate;
 
   minion.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 // event Impeachment(address delegate, address impeacher);
@@ -74,6 +79,8 @@ export function handleImpeachment(event: Impeachment): void {
   minion.uberHausDelegate = event.address;
 
   minion.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 // event ExecuteAction(uint256 proposalId, address executor);
@@ -92,4 +99,6 @@ export function handleExecuteAction(event: ExecuteAction): void {
   proposal.uberHausMinionExecuted = true;
 
   proposal.save();
+
+  addTransaction(event.block, event.transaction);
 }

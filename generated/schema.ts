@@ -1519,15 +1519,6 @@ export class Proposal extends Entity {
     this.set("isMinion", Value.fromBoolean(value));
   }
 
-  get isMinionApplicant(): boolean {
-    let value = this.get("isMinionApplicant");
-    return value.toBoolean();
-  }
-
-  set isMinionApplicant(value: boolean) {
-    this.set("isMinionApplicant", Value.fromBoolean(value));
-  }
-
   get uberHausMinionExecuted(): boolean {
     let value = this.get("uberHausMinionExecuted");
     return value.toBoolean();
@@ -2193,5 +2184,45 @@ export class MinionStream extends Entity {
 
   set minion(value: string) {
     this.set("minion", Value.fromString(value));
+  }
+}
+
+export class MolochTransaction extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save MolochTransaction entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save MolochTransaction entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("MolochTransaction", id.toString(), this);
+  }
+
+  static load(id: string): MolochTransaction | null {
+    return store.get("MolochTransaction", id) as MolochTransaction | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get createdAt(): string {
+    let value = this.get("createdAt");
+    return value.toString();
+  }
+
+  set createdAt(value: string) {
+    this.set("createdAt", Value.fromString(value));
   }
 }

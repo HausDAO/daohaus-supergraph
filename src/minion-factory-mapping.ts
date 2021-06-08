@@ -1,6 +1,7 @@
 import { log } from "@graphprotocol/graph-ts";
 import { SummonMinion } from "../generated/MinionFactory/MinionFactory";
 import { Moloch, Minion } from "../generated/schema";
+import { addTransaction } from "./transactions";
 
 // event SummonMinion(address indexed minion, address indexed moloch, string details, string minionType);
 export function handleSummonedMinion(event: SummonMinion): void {
@@ -26,6 +27,8 @@ export function handleSummonedMinion(event: SummonMinion): void {
   minion.version = "1";
 
   minion.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 export function handleSummonedV2Minion(event: SummonMinion): void {
@@ -51,4 +54,6 @@ export function handleSummonedV2Minion(event: SummonMinion): void {
   minion.version = "2";
 
   minion.save();
+
+  addTransaction(event.block, event.transaction);
 }
