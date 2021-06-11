@@ -37,6 +37,12 @@
         "name": "minionType",
         "internalType": "string",
         "indexed": false
+      },
+      {
+        "type": "uint256",
+        "name": "minQuorum",
+        "internalType": "uint256",
+        "indexed": false
       }
     ],
     "anonymous": false
@@ -99,11 +105,6 @@
       {
         "type": "address",
         "name": "moloch",
-        "internalType": "address"
-      },
-      {
-        "type": "address",
-        "name": "wrapper",
         "internalType": "address"
       },
       {

@@ -22,7 +22,7 @@ export function handleSummonedNiftyMinion(event: SummonNiftyMinion): void {
   minion.moloch = moloch.id;
   minion.createdAt = event.block.timestamp.toString();
   minion.version = "1";
-  minion.minQuroum = event.params.minQuorum;
+  minion.minQuorum = event.params.minQuorum;
 
   minion.save();
 
