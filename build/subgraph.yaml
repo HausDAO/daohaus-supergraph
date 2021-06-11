@@ -102,6 +102,27 @@ dataSources:
         - event: SummonMinion(indexed address,indexed address,string,string)
           handler: handleSummonedSuperfluidMinion
       file: SuperfluidMinionFactory/SuperfluidMinionFactory.wasm
+  - kind: ethereum/contract
+    name: NiftyMinionFactory
+    network: matic
+    source:
+      address: "0xA6B75C3EBfA5a5F801F634812ABCb6Fd7055fd6d"
+      abi: NiftyMinionFactory
+      startBlock: 15599778
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Moloch
+        - NiftyMinion
+      abis:
+        - name: NiftyMinionFactory
+          file: NiftyMinionFactory/abis/NiftyMinionFactory.json
+      eventHandlers:
+        - event: SummonMinion(indexed address,indexed address,string,string,uint256)
+          handler: handleSummonedNiftyMinion
+      file: NiftyMinionFactory/NiftyMinionFactory.wasm
 templates:
   - kind: ethereum/contract
     name: MolochV21Template

@@ -168,6 +168,7 @@ type Minion @entity {
   uberHausDelegateRewardFactor: BigInt
   uberHausDelegate: Bytes
   version: String
+  minQuorum: BigInt
   streams: [MinionStream!] @derivedFrom(field: "minion")
 }
 

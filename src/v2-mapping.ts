@@ -301,7 +301,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.memberAddress = event.params.memberAddress;
   proposal.delegateKey = event.params.delegateKey;
   proposal.applicant = event.params.applicant;
-  proposal.proposer = event.transaction.from;
+  proposal.proposer = event.params.delegateKey;
   proposal.sponsor = Address.fromString(ZERO_ADDRESS);
   proposal.processor = Address.fromString(ZERO_ADDRESS);
   proposal.sharesRequested = event.params.sharesRequested;

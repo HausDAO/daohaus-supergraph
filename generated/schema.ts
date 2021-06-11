@@ -1928,6 +1928,23 @@ export class Minion extends Entity {
     }
   }
 
+  get minQuorum(): BigInt | null {
+    let value = this.get("minQuorum");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set minQuorum(value: BigInt | null) {
+    if (value === null) {
+      this.unset("minQuorum");
+    } else {
+      this.set("minQuorum", Value.fromBigInt(value as BigInt));
+    }
+  }
+
   get streams(): Array<string> | null {
     let value = this.get("streams");
     if (value === null) {
