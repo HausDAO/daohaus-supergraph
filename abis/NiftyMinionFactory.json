@@ -37,6 +37,12 @@
         "name": "minionType",
         "internalType": "string",
         "indexed": false
+      },
+      {
+        "type": "uint256",
+        "name": "minQuorum",
+        "internalType": "uint256",
+        "indexed": false
       }
     ],
     "anonymous": false
@@ -65,7 +71,6 @@
     "name": "summonMinion",
     "inputs": [
       { "type": "address", "name": "moloch", "internalType": "address" },
-      { "type": "address", "name": "wrapper", "internalType": "address" },
       { "type": "string", "name": "details", "internalType": "string" },
       { "type": "uint256", "name": "minQuorum", "internalType": "uint256" }
     ]

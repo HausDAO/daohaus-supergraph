@@ -43,6 +43,10 @@ export class SummonMinion__Params {
   get minionType(): string {
     return this._event.parameters[3].value.toString();
   }
+
+  get minQuorum(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
 }
 
 export class NiftyMinionFactory__minionsResult {
@@ -109,15 +113,9 @@ export class NiftyMinionFactory extends SmartContract {
     );
   }
 
-  summonMinion(
-    moloch: Address,
-    wrapper: Address,
-    details: string,
-    minQuorum: BigInt
-  ): Address {
+  summonMinion(moloch: Address, details: string, minQuorum: BigInt): Address {
     let result = super.call("summonMinion", [
       EthereumValue.fromAddress(moloch),
-      EthereumValue.fromAddress(wrapper),
       EthereumValue.fromString(details),
       EthereumValue.fromUnsignedBigInt(minQuorum)
     ]);
@@ -127,13 +125,11 @@ export class NiftyMinionFactory extends SmartContract {
 
   try_summonMinion(
     moloch: Address,
-    wrapper: Address,
     details: string,
     minQuorum: BigInt
   ): CallResult<Address> {
     let result = super.tryCall("summonMinion", [
       EthereumValue.fromAddress(moloch),
-      EthereumValue.fromAddress(wrapper),
       EthereumValue.fromString(details),
       EthereumValue.fromUnsignedBigInt(minQuorum)
     ]);
@@ -211,16 +207,12 @@ export class SummonMinionCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get wrapper(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
   get details(): string {
-    return this._call.inputValues[2].value.toString();
+    return this._call.inputValues[1].value.toString();
   }
 
   get minQuorum(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[2].value.toBigInt();
   }
 }
 

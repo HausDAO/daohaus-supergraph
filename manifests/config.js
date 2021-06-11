@@ -100,8 +100,8 @@ module.exports.config = {
       {
         name: "niftyMinionFactory",
         template: "niftyMinionFactory-ds.yaml",
-        address: "0x166171416d3Cb5a23F719f23c62633e454A32A1b",
-        startBlock: 16287103,
+        address: "0xA6B75C3EBfA5a5F801F634812ABCb6Fd7055fd6d",
+        startBlock: 16507968,
       },
     ],
     templates: [
@@ -152,6 +152,12 @@ module.exports.config = {
         template: "superfluidMinionFactory-ds.yaml",
         address: "0x52acf023d38A31f7e7bC92cCe5E68d36cC9752d6",
         startBlock: 14193470,
+      },
+      {
+        name: "niftyMinionFactory",
+        template: "niftyMinionFactory-ds.yaml",
+        address: "0xA6B75C3EBfA5a5F801F634812ABCb6Fd7055fd6d",
+        startBlock: 15599778,
       },
     ],
     templates: [

@@ -1945,6 +1945,23 @@ export class Minion extends Entity {
     }
   }
 
+  get minQuroum(): BigInt | null {
+    let value = this.get("minQuroum");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set minQuroum(value: BigInt | null) {
+    if (value === null) {
+      this.unset("minQuroum");
+    } else {
+      this.set("minQuroum", Value.fromBigInt(value as BigInt));
+    }
+  }
+
   get streams(): Array<string> | null {
     let value = this.get("streams");
     if (value === null) {
