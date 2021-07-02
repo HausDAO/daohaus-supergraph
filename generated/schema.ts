@@ -42,23 +42,6 @@ export class Moloch extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get title(): string | null {
-    let value = this.get("title");
-    if (value === null) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set title(value: string | null) {
-    if (value === null) {
-      this.unset("title");
-    } else {
-      this.set("title", Value.fromString(value as string));
-    }
-  }
-
   get version(): string | null {
     let value = this.get("version");
     if (value === null) {
@@ -1945,8 +1928,8 @@ export class Minion extends Entity {
     }
   }
 
-  get minQuroum(): BigInt | null {
-    let value = this.get("minQuroum");
+  get minQuorum(): BigInt | null {
+    let value = this.get("minQuorum");
     if (value === null) {
       return null;
     } else {
@@ -1954,11 +1937,11 @@ export class Minion extends Entity {
     }
   }
 
-  set minQuroum(value: BigInt | null) {
+  set minQuorum(value: BigInt | null) {
     if (value === null) {
-      this.unset("minQuroum");
+      this.unset("minQuorum");
     } else {
-      this.set("minQuroum", Value.fromBigInt(value as BigInt));
+      this.set("minQuorum", Value.fromBigInt(value as BigInt));
     }
   }
 

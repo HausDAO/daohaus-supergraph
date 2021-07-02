@@ -1,6 +1,5 @@
 type Moloch @entity {
   id: ID!
-  title: String
   version: String
   summoner: Bytes!
   newContract: String
@@ -169,7 +168,7 @@ type Minion @entity {
   uberHausDelegateRewardFactor: BigInt
   uberHausDelegate: Bytes
   version: String
-  minQuroum: BigInt
+  minQuorum: BigInt
   streams: [MinionStream!] @derivedFrom(field: "minion")
 }
 
