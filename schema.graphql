@@ -1,6 +1,5 @@
 type Moloch @entity {
   id: ID!
-  title: String
   version: String
   summoner: Bytes!
   newContract: String

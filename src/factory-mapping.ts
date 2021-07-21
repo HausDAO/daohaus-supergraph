@@ -9,8 +9,6 @@ import {
   Register as RegisterV21,
 } from "../generated/V21Factory/V21Factory";
 import {
-  MolochV1Template,
-  MolochV2Template,
   MolochV21Template,
 } from "../generated/templates";
 
@@ -28,7 +26,6 @@ export function handleRegisterV1(event: RegisterV1): void {
   if (event.params.newContract.toString() == "0") {
     return;
   }
-  MolochV1Template.create(event.params.moloch);
 
   let daoMeta = new DaoMeta(event.params.moloch.toHex());
   daoMeta.title = event.params.title;
@@ -40,8 +37,6 @@ export function handleRegisterV1(event: RegisterV1): void {
 }
 
 export function handleRegisterV2(event: RegisterV2): void {
-  MolochV2Template.create(event.params.moloch);
-
   let molochId = event.params.moloch.toHex();
   let moloch = new Moloch(molochId);
   let daoMeta = new DaoMeta(event.params.moloch.toHex());
@@ -63,7 +58,6 @@ export function handleRegisterV2(event: RegisterV2): void {
   moloch.summoner = event.params.summoner;
   moloch.summoningTime = event.params._summoningTime;
   moloch.createdAt = event.params._summoningTime.toString();
-  moloch.title = event.params.title;
   moloch.version = "2";
   moloch.deleted = false;
   moloch.newContract = "1";
@@ -172,7 +166,6 @@ export function handleSummonV21(event: SummonComplete): void {
 export function handleRegisterV21(event: RegisterV21): void {
   let molochId = event.params.moloch.toHexString();
   let moloch = Moloch.load(molochId);
-  moloch.title = event.params.title;
   moloch.version = event.params.version.toString();
 
   moloch.save();

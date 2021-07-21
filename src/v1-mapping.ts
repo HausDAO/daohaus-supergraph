@@ -44,7 +44,6 @@ export function handleSummonComplete(event: SummonComplete): void {
   }
 
   moloch.summoner = event.params.summoner;
-  moloch.title = daoMeta.title;
   moloch.newContract = daoMeta.newContract;
   moloch.version = daoMeta.version;
   moloch.deleted = false;
