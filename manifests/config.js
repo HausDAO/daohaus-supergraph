@@ -156,7 +156,7 @@ module.exports.config = {
       {
         name: "niftyMinionFactory",
         template: "niftyMinionFactory-ds.yaml",
-        address: "0xA6B75C3EBfA5a5F801F634812ABCb6Fd7055fd6d",
+        address: "0x4CCaDF3f5734436B28869c27A11B6D0F4776bc8E",
         startBlock: 15599778,
       },
     ],

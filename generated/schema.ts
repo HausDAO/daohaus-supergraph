@@ -1945,8 +1945,8 @@ export class Minion extends Entity {
     }
   }
 
-  get minQuroum(): BigInt | null {
-    let value = this.get("minQuroum");
+  get minQuorum(): BigInt | null {
+    let value = this.get("minQuorum");
     if (value === null) {
       return null;
     } else {
@@ -1954,11 +1954,11 @@ export class Minion extends Entity {
     }
   }
 
-  set minQuroum(value: BigInt | null) {
+  set minQuorum(value: BigInt | null) {
     if (value === null) {
-      this.unset("minQuroum");
+      this.unset("minQuorum");
     } else {
-      this.set("minQuroum", Value.fromBigInt(value as BigInt));
+      this.set("minQuorum", Value.fromBigInt(value as BigInt));
     }
   }
 
