@@ -1,0 +1,25 @@
+kind: ethereum/contract
+name: EscrowMinion
+network:
+source:
+  address: ""
+  abi: EscrowMinion
+  startBlock:
+mapping:
+  kind: ethereum/events
+  apiVersion: 0.0.3
+  language: wasm/assemblyscript
+  entities:
+    - Moloch
+    - Proposal
+  abis:
+    - name: EscrowMinion
+      file: ./abis/EscrowMinion.json
+  eventHandlers:
+    - event: "ProposeAction(uint256,address,address,address[],uint256[3][],address)"
+      handler: handleProposeAction
+    # - event: "ExecuteAction(uint256,address,address)"
+    #   handler: handleExecuteAction
+    # - event: "ActionCanceled(uint256,address)"
+    #   handler: handleCancelAction
+  file: ./src/escrow-minion-mapping.ts

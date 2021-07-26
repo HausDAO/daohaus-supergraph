@@ -1544,6 +1544,40 @@ export class Proposal extends Entity {
       this.set("minion", Value.fromString(value as string));
     }
   }
+
+  get escrow(): string | null {
+    let value = this.get("escrow");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set escrow(value: string | null) {
+    if (value === null) {
+      this.unset("escrow");
+    } else {
+      this.set("escrow", Value.fromString(value as string));
+    }
+  }
+
+  get actions(): Array<string> | null {
+    let value = this.get("actions");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set actions(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("actions");
+    } else {
+      this.set("actions", Value.fromStringArray(value as Array<string>));
+    }
+  }
 }
 
 export class RageQuit extends Entity {
@@ -2224,5 +2258,183 @@ export class MolochTransaction extends Entity {
 
   set createdAt(value: string) {
     this.set("createdAt", Value.fromString(value));
+  }
+}
+
+export class ProposalEscrow extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save ProposalEscrow entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save ProposalEscrow entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("ProposalEscrow", id.toString(), this);
+  }
+
+  static load(id: string): ProposalEscrow | null {
+    return store.get("ProposalEscrow", id) as ProposalEscrow | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get proposal(): string {
+    let value = this.get("proposal");
+    return value.toString();
+  }
+
+  set proposal(value: string) {
+    this.set("proposal", Value.fromString(value));
+  }
+
+  get minionAddress(): Bytes {
+    let value = this.get("minionAddress");
+    return value.toBytes();
+  }
+
+  set minionAddress(value: Bytes) {
+    this.set("minionAddress", Value.fromBytes(value));
+  }
+
+  get molochAddress(): Bytes {
+    let value = this.get("molochAddress");
+    return value.toBytes();
+  }
+
+  set molochAddress(value: Bytes) {
+    this.set("molochAddress", Value.fromBytes(value));
+  }
+
+  get proposer(): Bytes {
+    let value = this.get("proposer");
+    return value.toBytes();
+  }
+
+  set proposer(value: Bytes) {
+    this.set("proposer", Value.fromBytes(value));
+  }
+
+  get tokenAddresses(): Array<Bytes> | null {
+    let value = this.get("tokenAddresses");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytesArray();
+    }
+  }
+
+  set tokenAddresses(value: Array<Bytes> | null) {
+    if (value === null) {
+      this.unset("tokenAddresses");
+    } else {
+      this.set("tokenAddresses", Value.fromBytesArray(value as Array<Bytes>));
+    }
+  }
+}
+
+export class MinionAction extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save MinionAction entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save MinionAction entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("MinionAction", id.toString(), this);
+  }
+
+  static load(id: string): MinionAction | null {
+    return store.get("MinionAction", id) as MinionAction | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get proposal(): string {
+    let value = this.get("proposal");
+    return value.toString();
+  }
+
+  set proposal(value: string) {
+    this.set("proposal", Value.fromString(value));
+  }
+
+  get minionAddress(): Bytes {
+    let value = this.get("minionAddress");
+    return value.toBytes();
+  }
+
+  set minionAddress(value: Bytes) {
+    this.set("minionAddress", Value.fromBytes(value));
+  }
+
+  get molochAddress(): Bytes {
+    let value = this.get("molochAddress");
+    return value.toBytes();
+  }
+
+  set molochAddress(value: Bytes) {
+    this.set("molochAddress", Value.fromBytes(value));
+  }
+
+  get target(): Bytes {
+    let value = this.get("target");
+    return value.toBytes();
+  }
+
+  set target(value: Bytes) {
+    this.set("target", Value.fromBytes(value));
+  }
+
+  get value(): BigInt {
+    let value = this.get("value");
+    return value.toBigInt();
+  }
+
+  set value(value: BigInt) {
+    this.set("value", Value.fromBigInt(value));
+  }
+
+  get data(): Bytes {
+    let value = this.get("data");
+    return value.toBytes();
+  }
+
+  set data(value: Bytes) {
+    this.set("data", Value.fromBytes(value));
+  }
+
+  get index(): BigInt {
+    let value = this.get("index");
+    return value.toBigInt();
+  }
+
+  set index(value: BigInt) {
+    this.set("index", Value.fromBigInt(value));
   }
 }

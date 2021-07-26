@@ -1,0 +1,20 @@
+kind: ethereum/contract
+name: NeopolitanMinionTemplate
+network:
+source:
+  abi: NeopolitanMinion
+mapping:
+  kind: ethereum/events
+  apiVersion: 0.0.3
+  language: wasm/assemblyscript
+  file: ./src/neopolitan-minion-mapping.ts
+  entities:
+    - Moloch
+    - Minion
+    - Proposal
+  abis:
+    - name: NeopolitanMinion
+      file: ./abis/NeopolitanMinion.json
+  eventHandlers:
+    - event: "ProposeAction(indexed bytes32,indexed uint256,uint256,address,uint256,bytes)"
+      handler: handleProposeAction

@@ -1,0 +1,21 @@
+kind: ethereum/contract
+name: NeopolitanMinionFactory
+network:
+source:
+  address: ""
+  abi: NeopolitanMinionFactory
+  startBlock:
+mapping:
+  kind: ethereum/events
+  apiVersion: 0.0.3
+  language: wasm/assemblyscript
+  entities:
+    - Moloch
+    - Minion
+  abis:
+    - name: NeopolitanMinionFactory
+      file: ./abis/NeopolitanMinionFactory.json
+  eventHandlers:
+    - event: "SummonMinion(indexed address,indexed address,string,string,uint256)"
+      handler: handleSummonedNeopolitanMinion
+  file: ./src/neopolitan-minion-factory-mapping.ts
