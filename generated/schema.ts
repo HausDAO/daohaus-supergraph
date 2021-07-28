@@ -44,7 +44,7 @@ export class Moloch extends Entity {
 
   get version(): string | null {
     let value = this.get("version");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -70,7 +70,7 @@ export class Moloch extends Entity {
 
   get newContract(): string | null {
     let value = this.get("newContract");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -168,7 +168,7 @@ export class Moloch extends Entity {
 
   get depositToken(): string | null {
     let value = this.get("depositToken");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -194,7 +194,7 @@ export class Moloch extends Entity {
 
   get guildBankAddress(): Bytes | null {
     let value = this.get("guildBankAddress");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();
@@ -211,7 +211,7 @@ export class Moloch extends Entity {
 
   get guildBankBalanceV1(): BigInt | null {
     let value = this.get("guildBankBalanceV1");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -228,7 +228,7 @@ export class Moloch extends Entity {
 
   get tokens(): Array<string> | null {
     let value = this.get("tokens");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -245,7 +245,7 @@ export class Moloch extends Entity {
 
   get members(): Array<string> | null {
     let value = this.get("members");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -262,7 +262,7 @@ export class Moloch extends Entity {
 
   get tokenBalances(): Array<string> | null {
     let value = this.get("tokenBalances");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -279,7 +279,7 @@ export class Moloch extends Entity {
 
   get proposals(): Array<string> | null {
     let value = this.get("proposals");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -296,7 +296,7 @@ export class Moloch extends Entity {
 
   get rageQuits(): Array<string> | null {
     let value = this.get("rageQuits");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -313,7 +313,7 @@ export class Moloch extends Entity {
 
   get minions(): Array<string> | null {
     let value = this.get("minions");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -406,7 +406,7 @@ export class TokenBalance extends Entity {
 
   get member(): string | null {
     let value = this.get("member");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -508,7 +508,7 @@ export class Token extends Entity {
 
   get symbol(): string | null {
     let value = this.get("symbol");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -525,7 +525,7 @@ export class Token extends Entity {
 
   get decimals(): BigInt | null {
     let value = this.get("decimals");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -627,7 +627,7 @@ export class Member extends Entity {
 
   get loot(): BigInt | null {
     let value = this.get("loot");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -653,7 +653,7 @@ export class Member extends Entity {
 
   get highestIndexYesVote(): string | null {
     let value = this.get("highestIndexYesVote");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -688,7 +688,7 @@ export class Member extends Entity {
 
   get votes(): Array<string> | null {
     let value = this.get("votes");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -705,7 +705,7 @@ export class Member extends Entity {
 
   get submissions(): Array<string> | null {
     let value = this.get("submissions");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -722,7 +722,7 @@ export class Member extends Entity {
 
   get tokenBalances(): Array<string> | null {
     let value = this.get("tokenBalances");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -739,7 +739,7 @@ export class Member extends Entity {
 
   get rageQuits(): Array<string> | null {
     let value = this.get("rageQuits");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -774,7 +774,7 @@ export class Member extends Entity {
 
   get jailed(): BigInt | null {
     let value = this.get("jailed");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -867,7 +867,7 @@ export class Vote extends Entity {
 
   get memberAddress(): Bytes | null {
     let value = this.get("memberAddress");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();
@@ -884,7 +884,7 @@ export class Vote extends Entity {
 
   get memberPower(): BigInt | null {
     let value = this.get("memberPower");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -901,7 +901,7 @@ export class Vote extends Entity {
 
   get proposalIndex(): BigInt | null {
     let value = this.get("proposalIndex");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -918,7 +918,7 @@ export class Vote extends Entity {
 
   get delegateKey(): Bytes | null {
     let value = this.get("delegateKey");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();
@@ -975,7 +975,7 @@ export class Proposal extends Entity {
 
   get proposalIndex(): BigInt | null {
     let value = this.get("proposalIndex");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -1055,7 +1055,7 @@ export class Proposal extends Entity {
 
   get proposer(): Bytes | null {
     let value = this.get("proposer");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();
@@ -1081,7 +1081,7 @@ export class Proposal extends Entity {
 
   get processor(): Bytes | null {
     let value = this.get("processor");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();
@@ -1134,7 +1134,7 @@ export class Proposal extends Entity {
 
   get tributeTokenSymbol(): string | null {
     let value = this.get("tributeTokenSymbol");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1151,7 +1151,7 @@ export class Proposal extends Entity {
 
   get tributeTokenDecimals(): BigInt | null {
     let value = this.get("tributeTokenDecimals");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -1186,7 +1186,7 @@ export class Proposal extends Entity {
 
   get paymentTokenSymbol(): string | null {
     let value = this.get("paymentTokenSymbol");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1203,7 +1203,7 @@ export class Proposal extends Entity {
 
   get paymentTokenDecimals(): BigInt | null {
     let value = this.get("paymentTokenDecimals");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -1220,7 +1220,7 @@ export class Proposal extends Entity {
 
   get startingPeriod(): BigInt | null {
     let value = this.get("startingPeriod");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -1264,7 +1264,7 @@ export class Proposal extends Entity {
 
   get sponsoredAt(): string | null {
     let value = this.get("sponsoredAt");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1290,7 +1290,7 @@ export class Proposal extends Entity {
 
   get processedAt(): string | null {
     let value = this.get("processedAt");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1325,7 +1325,7 @@ export class Proposal extends Entity {
 
   get cancelledAt(): string | null {
     let value = this.get("cancelledAt");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1387,7 +1387,7 @@ export class Proposal extends Entity {
 
   get details(): string | null {
     let value = this.get("details");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1404,7 +1404,7 @@ export class Proposal extends Entity {
 
   get maxTotalSharesAndLootAtYesVote(): BigInt | null {
     let value = this.get("maxTotalSharesAndLootAtYesVote");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -1424,7 +1424,7 @@ export class Proposal extends Entity {
 
   get votes(): Array<string> | null {
     let value = this.get("votes");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -1511,9 +1511,18 @@ export class Proposal extends Entity {
     this.set("uberHausMinionExecuted", Value.fromBoolean(value));
   }
 
+  get executed(): boolean {
+    let value = this.get("executed");
+    return value.toBoolean();
+  }
+
+  set executed(value: boolean) {
+    this.set("executed", Value.fromBoolean(value));
+  }
+
   get minionAddress(): Bytes | null {
     let value = this.get("minionAddress");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();
@@ -1530,7 +1539,7 @@ export class Proposal extends Entity {
 
   get minion(): string | null {
     let value = this.get("minion");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1547,7 +1556,7 @@ export class Proposal extends Entity {
 
   get escrow(): string | null {
     let value = this.get("escrow");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1564,7 +1573,7 @@ export class Proposal extends Entity {
 
   get actions(): Array<string> | null {
     let value = this.get("actions");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -1706,7 +1715,7 @@ export class DaoMeta extends Entity {
 
   get title(): string | null {
     let value = this.get("title");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1723,7 +1732,7 @@ export class DaoMeta extends Entity {
 
   get version(): string | null {
     let value = this.get("version");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1740,7 +1749,7 @@ export class DaoMeta extends Entity {
 
   get newContract(): string | null {
     let value = this.get("newContract");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1757,7 +1766,7 @@ export class DaoMeta extends Entity {
 
   get http(): string | null {
     let value = this.get("http");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1859,7 +1868,7 @@ export class Minion extends Entity {
 
   get proposals(): Array<string> | null {
     let value = this.get("proposals");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -1876,7 +1885,7 @@ export class Minion extends Entity {
 
   get uberHausAddress(): Bytes | null {
     let value = this.get("uberHausAddress");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();
@@ -1893,7 +1902,7 @@ export class Minion extends Entity {
 
   get uberHaus(): string | null {
     let value = this.get("uberHaus");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1910,7 +1919,7 @@ export class Minion extends Entity {
 
   get uberHausDelegateRewardFactor(): BigInt | null {
     let value = this.get("uberHausDelegateRewardFactor");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -1930,7 +1939,7 @@ export class Minion extends Entity {
 
   get uberHausDelegate(): Bytes | null {
     let value = this.get("uberHausDelegate");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();
@@ -1947,7 +1956,7 @@ export class Minion extends Entity {
 
   get version(): string | null {
     let value = this.get("version");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -1964,7 +1973,7 @@ export class Minion extends Entity {
 
   get minQuorum(): BigInt | null {
     let value = this.get("minQuorum");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -1981,7 +1990,7 @@ export class Minion extends Entity {
 
   get streams(): Array<string> | null {
     let value = this.get("streams");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toStringArray();
@@ -2110,7 +2119,7 @@ export class MinionStream extends Entity {
 
   get executedBlock(): BigInt | null {
     let value = this.get("executedBlock");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBigInt();
@@ -2127,7 +2136,7 @@ export class MinionStream extends Entity {
 
   get executedAt(): string | null {
     let value = this.get("executedAt");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -2144,7 +2153,7 @@ export class MinionStream extends Entity {
 
   get execTxHash(): Bytes | null {
     let value = this.get("execTxHash");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();
@@ -2179,7 +2188,7 @@ export class MinionStream extends Entity {
 
   get canceledAt(): string | null {
     let value = this.get("canceledAt");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toString();
@@ -2196,7 +2205,7 @@ export class MinionStream extends Entity {
 
   get canceledBy(): Bytes | null {
     let value = this.get("canceledBy");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();
@@ -2329,7 +2338,7 @@ export class ProposalEscrow extends Entity {
 
   get tokenAddresses(): Array<Bytes> | null {
     let value = this.get("tokenAddresses");
-    if (value === null) {
+    if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytesArray();
@@ -2341,6 +2350,57 @@ export class ProposalEscrow extends Entity {
       this.unset("tokenAddresses");
     } else {
       this.set("tokenAddresses", Value.fromBytesArray(value as Array<Bytes>));
+    }
+  }
+
+  get tokenTypes(): Array<BigInt> | null {
+    let value = this.get("tokenTypes");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigIntArray();
+    }
+  }
+
+  set tokenTypes(value: Array<BigInt> | null) {
+    if (value === null) {
+      this.unset("tokenTypes");
+    } else {
+      this.set("tokenTypes", Value.fromBigIntArray(value as Array<BigInt>));
+    }
+  }
+
+  get tokenIds(): Array<BigInt> | null {
+    let value = this.get("tokenIds");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigIntArray();
+    }
+  }
+
+  set tokenIds(value: Array<BigInt> | null) {
+    if (value === null) {
+      this.unset("tokenIds");
+    } else {
+      this.set("tokenIds", Value.fromBigIntArray(value as Array<BigInt>));
+    }
+  }
+
+  get amounts(): Array<BigInt> | null {
+    let value = this.get("amounts");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigIntArray();
+    }
+  }
+
+  set amounts(value: Array<BigInt> | null) {
+    if (value === null) {
+      this.unset("amounts");
+    } else {
+      this.set("amounts", Value.fromBigIntArray(value as Array<BigInt>));
     }
   }
 }

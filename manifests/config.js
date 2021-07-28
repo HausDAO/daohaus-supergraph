@@ -267,12 +267,12 @@ module.exports.config = {
         address: "0x4b168c1a1E729F4c8e3ae81d09F02d350fc905ca",
         startBlock: 8541482,
       },
-      // {
-      //   name: "escrowMinion",
-      //   template: "escrowMinion-ds.yaml",
-      //   address: "0x6e6c1B6AD5d7B868250cEee3e3cbC6a4a764c56C",
-      //   startBlock: 8948845,
-      // },
+      {
+        name: "escrowMinion",
+        template: "escrowMinion-ds.yaml",
+        address: "0x7E6D03ACF2aCBc78894b706e2CbDC4ab6891c914",
+        startBlock: 9006670,
+      },
       {
         name: "neopolitanMinion",
         template: "neopolitanMinionFactory-ds.yaml",

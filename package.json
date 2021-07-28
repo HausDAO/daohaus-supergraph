@@ -4,6 +4,7 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
+    "deploy-studio": "node manifests/deploy-prep.js rinkeby && graph deploy --studio daohaus",
     "deploy-main": "node manifests/deploy-prep.js mainnet && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus",
     "deploy-kovan": "node manifests/deploy-prep.js kovan && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-kovan",
     "deploy-rinkeby": "node manifests/deploy-prep.js rinkeby && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-rinkeby",

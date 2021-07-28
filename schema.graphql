@@ -131,9 +131,10 @@ type Proposal @entity {
   molochVersion: String!
   isMinion: Boolean!
   uberHausMinionExecuted: Boolean
+  executed: Boolean
   minionAddress: Bytes
   minion: Minion
-  escrow: ProposalEscrow
+  escrow: ProposalEscrow @derivedFrom(field: "proposal")
   actions: [MinionAction!] @derivedFrom(field: "proposal")
 }
 
@@ -207,6 +208,9 @@ type ProposalEscrow @entity {
   molochAddress: Bytes!
   proposer: Bytes!
   tokenAddresses: [Bytes!]
+  tokenTypes: [BigInt!]
+  tokenIds: [BigInt!]
+  amounts: [BigInt!]
 }
 
 type MinionAction @entity {

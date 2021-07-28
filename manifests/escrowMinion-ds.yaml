@@ -16,10 +16,10 @@ mapping:
     - name: EscrowMinion
       file: ./abis/EscrowMinion.json
   eventHandlers:
-    - event: "ProposeAction(uint256,address,address,address[],uint256[3][],address)"
+    - event: "ProposeAction(uint256,address,address,address[],uint256[10],uint256[10],uint256[10],address)"
       handler: handleProposeAction
-    # - event: "ExecuteAction(uint256,address,address)"
-    #   handler: handleExecuteAction
+    - event: "ExecuteAction(uint256,address,address)"
+      handler: handleExecuteAction
     # - event: "ActionCanceled(uint256,address)"
     #   handler: handleCancelAction
   file: ./src/escrow-minion-mapping.ts
