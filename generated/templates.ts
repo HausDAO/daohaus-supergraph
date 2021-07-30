@@ -62,14 +62,14 @@ export class SuperfluidMinionTemplate extends DataSourceTemplate {
   }
 }
 
-export class NeopolitanMinionTemplate extends DataSourceTemplate {
+export class NeapolitanMinionTemplate extends DataSourceTemplate {
   static create(address: Address): void {
-    DataSourceTemplate.create("NeopolitanMinionTemplate", [address.toHex()]);
+    DataSourceTemplate.create("NeapolitanMinionTemplate", [address.toHex()]);
   }
 
   static createWithContext(address: Address, context: DataSourceContext): void {
     DataSourceTemplate.createWithContext(
-      "NeopolitanMinionTemplate",
+      "NeapolitanMinionTemplate",
       [address.toHex()],
       context
     );

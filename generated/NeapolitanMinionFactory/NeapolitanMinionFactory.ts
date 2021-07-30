@@ -44,7 +44,7 @@ export class SummonMinion__Params {
   }
 }
 
-export class NiftyMinionFactory__minionsResult {
+export class NeapolitanMinionFactory__minionsResult {
   value0: Address;
   value1: string;
 
@@ -61,9 +61,9 @@ export class NiftyMinionFactory__minionsResult {
   }
 }
 
-export class NiftyMinionFactory extends ethereum.SmartContract {
-  static bind(address: Address): NiftyMinionFactory {
-    return new NiftyMinionFactory("NiftyMinionFactory", address);
+export class NeapolitanMinionFactory extends ethereum.SmartContract {
+  static bind(address: Address): NeapolitanMinionFactory {
+    return new NeapolitanMinionFactory("NeapolitanMinionFactory", address);
   }
 
   minionList(param0: BigInt): Address {
@@ -85,12 +85,12 @@ export class NiftyMinionFactory extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  minions(param0: Address): NiftyMinionFactory__minionsResult {
+  minions(param0: Address): NeapolitanMinionFactory__minionsResult {
     let result = super.call("minions", "minions(address):(address,string)", [
       ethereum.Value.fromAddress(param0)
     ]);
 
-    return new NiftyMinionFactory__minionsResult(
+    return new NeapolitanMinionFactory__minionsResult(
       result[0].toAddress(),
       result[1].toString()
     );
@@ -98,7 +98,7 @@ export class NiftyMinionFactory extends ethereum.SmartContract {
 
   try_minions(
     param0: Address
-  ): ethereum.CallResult<NiftyMinionFactory__minionsResult> {
+  ): ethereum.CallResult<NeapolitanMinionFactory__minionsResult> {
     let result = super.tryCall("minions", "minions(address):(address,string)", [
       ethereum.Value.fromAddress(param0)
     ]);
@@ -107,7 +107,7 @@ export class NiftyMinionFactory extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(
-      new NiftyMinionFactory__minionsResult(
+      new NeapolitanMinionFactory__minionsResult(
         value[0].toAddress(),
         value[1].toString()
       )

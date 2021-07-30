@@ -274,8 +274,8 @@ module.exports.config = {
         startBlock: 9006670,
       },
       {
-        name: "neopolitanMinion",
-        template: "neopolitanMinionFactory-ds.yaml",
+        name: "neapolitanMinion",
+        template: "neapolitanMinionFactory-ds.yaml",
         address: "0x90311d4030a3756c75E707bE60542cAF6f391c2C",
         startBlock: 8982487,
       },
@@ -298,8 +298,8 @@ module.exports.config = {
         template: "superfluidMinion-template.yaml",
       },
       {
-        name: "neopolitanMinionTemplate",
-        template: "neopolitanMinion-template.yaml",
+        name: "neapolitanMinionTemplate",
+        template: "neapolitanMinion-template.yaml",
       },
     ],
   },

@@ -181,11 +181,11 @@ dataSources:
           handler: handleExecuteAction
       file: EscrowMinion/EscrowMinion.wasm
   - kind: ethereum/contract
-    name: NeopolitanMinionFactory
+    name: NeapolitanMinionFactory
     network: rinkeby
     source:
       address: "0x90311d4030a3756c75E707bE60542cAF6f391c2C"
-      abi: NeopolitanMinionFactory
+      abi: NeapolitanMinionFactory
       startBlock: 8982487
     mapping:
       kind: ethereum/events
@@ -195,12 +195,12 @@ dataSources:
         - Moloch
         - Minion
       abis:
-        - name: NeopolitanMinionFactory
-          file: NeopolitanMinionFactory/abis/NeopolitanMinionFactory.json
+        - name: NeapolitanMinionFactory
+          file: NeapolitanMinionFactory/abis/NeapolitanMinionFactory.json
       eventHandlers:
         - event: SummonMinion(indexed address,indexed address,string,string,uint256)
-          handler: handleSummonedNeopolitanMinion
-      file: NeopolitanMinionFactory/NeopolitanMinionFactory.wasm
+          handler: handleSummonedNeapolitanMinion
+      file: NeapolitanMinionFactory/NeapolitanMinionFactory.wasm
 templates:
   - kind: ethereum/contract
     name: MolochV1Template
@@ -373,22 +373,22 @@ templates:
         - event: ActionCanceled(uint256)
           handler: handleStreamProposalCanceled
   - kind: ethereum/contract
-    name: NeopolitanMinionTemplate
+    name: NeapolitanMinionTemplate
     network: rinkeby
     source:
-      abi: NeopolitanMinion
+      abi: NeapolitanMinion
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: templates/NeopolitanMinionTemplate/NeopolitanMinionTemplate.wasm
+      file: templates/NeapolitanMinionTemplate/NeapolitanMinionTemplate.wasm
       entities:
         - Moloch
         - Minion
         - Proposal
       abis:
-        - name: NeopolitanMinion
-          file: NeopolitanMinionTemplate/abis/NeopolitanMinion.json
+        - name: NeapolitanMinion
+          file: NeapolitanMinionTemplate/abis/NeapolitanMinion.json
       eventHandlers:
         - event: ProposeAction(indexed bytes32,indexed uint256,uint256,address,uint256,bytes)
           handler: handleProposeAction

@@ -1,12 +1,12 @@
 import { log } from "@graphprotocol/graph-ts";
-import { SummonMinion } from "../generated/NeopolitanMinionFactory/NeopolitanMinionFactory";
-import { NeopolitanMinionTemplate } from "../generated/templates";
+import { SummonMinion } from "../generated/NeapolitanMinionFactory/NeapolitanMinionFactory";
+import { NeapolitanMinionTemplate } from "../generated/templates";
 import { Moloch, Minion } from "../generated/schema";
 import { addTransaction } from "./transactions";
 
 // event SummonMinion(address indexed minion, address indexed moloch, string details, string minionType, uint256 minQuorum);
-export function handleSummonedNeopolitanMinion(event: SummonMinion): void {
-  NeopolitanMinionTemplate.create(event.params.minion);
+export function handleSummonedNeapolitanMinion(event: SummonMinion): void {
+  NeapolitanMinionTemplate.create(event.params.minion);
 
   let molochId = event.params.moloch.toHexString();
   let moloch = Moloch.load(molochId);
@@ -19,7 +19,7 @@ export function handleSummonedNeopolitanMinion(event: SummonMinion): void {
     .concat(event.params.minion.toHex());
   let minion = new Minion(minionId);
 
-  log.info("**** summoned neopolitan: {}, moloch: {}", [minionId, molochId]);
+  log.info("**** summoned neapolitan: {}, moloch: {}", [minionId, molochId]);
 
   minion.minionAddress = event.params.minion;
   minion.molochAddress = event.params.moloch;

@@ -7,11 +7,11 @@ import {
 } from "../generated/schema";
 import {
   ProposeAction,
-  NeopolitanMinion,
-} from "../generated/templates/NeopolitanMinionTemplate/NeopolitanMinion";
+  NeapolitanMinion,
+} from "../generated/templates/NeapolitanMinionTemplate/NeapolitanMinion";
 
 function getMolochAddressFromChildMinion(minionAddress: Bytes): Bytes | null {
-  let contract = NeopolitanMinion.bind(minionAddress as Address);
+  let contract = NeapolitanMinion.bind(minionAddress as Address);
   let result = contract.try_moloch();
   if (result.reverted) {
     log.info("^^^^^ loadMoloch contract call reverted. minionAddress: {}", [
@@ -36,7 +36,7 @@ export function handleProposeAction(event: ProposeAction): void {
     .concat(event.params.proposalId.toString());
   let proposal = Proposal.load(proposalId);
 
-  log.info("^^^^^ NeopolitanMinion loaded proposal: {}", [proposal.id]);
+  log.info("^^^^^ NeapolitanMinion loaded proposal: {}", [proposal.id]);
 
   let minionActionId = event.address
     .toHexString()

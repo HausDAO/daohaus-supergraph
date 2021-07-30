@@ -9,7 +9,9 @@ import {
   Register as RegisterV21,
 } from "../generated/V21Factory/V21Factory";
 import {
+  MolochV1Template,
   MolochV21Template,
+  MolochV2Template,
 } from "../generated/templates";
 
 import { Moloch, Member, DaoMeta } from "../generated/schema";
@@ -27,6 +29,8 @@ export function handleRegisterV1(event: RegisterV1): void {
     return;
   }
 
+  MolochV1Template.create(event.params.moloch);
+
   let daoMeta = new DaoMeta(event.params.moloch.toHex());
   daoMeta.title = event.params.title;
   daoMeta.version = "1";
@@ -37,6 +41,9 @@ export function handleRegisterV1(event: RegisterV1): void {
 }
 
 export function handleRegisterV2(event: RegisterV2): void {
+  // testing
+  MolochV2Template.create(event.params.moloch);
+
   let molochId = event.params.moloch.toHex();
   let moloch = new Moloch(molochId);
   let daoMeta = new DaoMeta(event.params.moloch.toHex());
