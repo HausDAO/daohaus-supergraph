@@ -28,6 +28,24 @@ export class ActionCanceled__Params {
   }
 }
 
+export class ActionDeleted extends ethereum.Event {
+  get params(): ActionDeleted__Params {
+    return new ActionDeleted__Params(this);
+  }
+}
+
+export class ActionDeleted__Params {
+  _event: ActionDeleted;
+
+  constructor(event: ActionDeleted) {
+    this._event = event;
+  }
+
+  get proposalId(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+}
+
 export class ChangeOwner extends ethereum.Event {
   get params(): ChangeOwner__Params {
     return new ChangeOwner__Params(this);
@@ -323,22 +341,16 @@ export class NeapolitanMinion__actionsResult {
 export class NeapolitanMinion__signaturesResult {
   value0: Bytes;
   value1: Bytes;
-  value2: BigInt;
-  value3: Address;
 
-  constructor(value0: Bytes, value1: Bytes, value2: BigInt, value3: Address) {
+  constructor(value0: Bytes, value1: Bytes) {
     this.value0 = value0;
     this.value1 = value1;
-    this.value2 = value2;
-    this.value3 = value3;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
     let map = new TypedMap<string, ethereum.Value>();
     map.set("value0", ethereum.Value.fromFixedBytes(this.value0));
     map.set("value1", ethereum.Value.fromFixedBytes(this.value1));
-    map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
-    map.set("value3", ethereum.Value.fromAddress(this.value3));
     return map;
   }
 }
@@ -400,6 +412,25 @@ export class NeapolitanMinion extends ethereum.SmartContract {
   try_changeOwner(_moloch: Address): ethereum.CallResult<boolean> {
     let result = super.tryCall("changeOwner", "changeOwner(address):(bool)", [
       ethereum.Value.fromAddress(_moloch)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  deleteAction(_proposalId: BigInt): boolean {
+    let result = super.call("deleteAction", "deleteAction(uint256):(bool)", [
+      ethereum.Value.fromUnsignedBigInt(_proposalId)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_deleteAction(_proposalId: BigInt): ethereum.CallResult<boolean> {
+    let result = super.tryCall("deleteAction", "deleteAction(uint256):(bool)", [
+      ethereum.Value.fromUnsignedBigInt(_proposalId)
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -797,49 +828,6 @@ export class NeapolitanMinion extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  proposeSignature(
-    msgHash: Bytes,
-    signatureHash: Bytes,
-    magicValue: Bytes,
-    details: string
-  ): BigInt {
-    let result = super.call(
-      "proposeSignature",
-      "proposeSignature(bytes32,bytes32,bytes4,string):(uint256)",
-      [
-        ethereum.Value.fromFixedBytes(msgHash),
-        ethereum.Value.fromFixedBytes(signatureHash),
-        ethereum.Value.fromFixedBytes(magicValue),
-        ethereum.Value.fromString(details)
-      ]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_proposeSignature(
-    msgHash: Bytes,
-    signatureHash: Bytes,
-    magicValue: Bytes,
-    details: string
-  ): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "proposeSignature",
-      "proposeSignature(bytes32,bytes32,bytes4,string):(uint256)",
-      [
-        ethereum.Value.fromFixedBytes(msgHash),
-        ethereum.Value.fromFixedBytes(signatureHash),
-        ethereum.Value.fromFixedBytes(magicValue),
-        ethereum.Value.fromString(details)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
   setModule(_module: Address): boolean {
     let result = super.call("setModule", "setModule(address):(bool)", [
       ethereum.Value.fromAddress(_module)
@@ -862,15 +850,13 @@ export class NeapolitanMinion extends ethereum.SmartContract {
   signatures(param0: Bytes): NeapolitanMinion__signaturesResult {
     let result = super.call(
       "signatures",
-      "signatures(bytes32):(bytes32,bytes4,uint256,address)",
+      "signatures(bytes32):(bytes32,bytes4)",
       [ethereum.Value.fromFixedBytes(param0)]
     );
 
     return new NeapolitanMinion__signaturesResult(
       result[0].toBytes(),
-      result[1].toBytes(),
-      result[2].toBigInt(),
-      result[3].toAddress()
+      result[1].toBytes()
     );
   }
 
@@ -879,7 +865,7 @@ export class NeapolitanMinion extends ethereum.SmartContract {
   ): ethereum.CallResult<NeapolitanMinion__signaturesResult> {
     let result = super.tryCall(
       "signatures",
-      "signatures(bytes32):(bytes32,bytes4,uint256,address)",
+      "signatures(bytes32):(bytes32,bytes4)",
       [ethereum.Value.fromFixedBytes(param0)]
     );
     if (result.reverted) {
@@ -889,9 +875,7 @@ export class NeapolitanMinion extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(
       new NeapolitanMinion__signaturesResult(
         value[0].toBytes(),
-        value[1].toBytes(),
-        value[2].toBigInt(),
-        value[3].toAddress()
+        value[1].toBytes()
       )
     );
   }
@@ -949,36 +933,6 @@ export class CancelActionCall__Outputs {
   _call: CancelActionCall;
 
   constructor(call: CancelActionCall) {
-    this._call = call;
-  }
-}
-
-export class CancelSignatureCall extends ethereum.Call {
-  get inputs(): CancelSignatureCall__Inputs {
-    return new CancelSignatureCall__Inputs(this);
-  }
-
-  get outputs(): CancelSignatureCall__Outputs {
-    return new CancelSignatureCall__Outputs(this);
-  }
-}
-
-export class CancelSignatureCall__Inputs {
-  _call: CancelSignatureCall;
-
-  constructor(call: CancelSignatureCall) {
-    this._call = call;
-  }
-
-  get msgHash(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
-  }
-}
-
-export class CancelSignatureCall__Outputs {
-  _call: CancelSignatureCall;
-
-  constructor(call: CancelSignatureCall) {
     this._call = call;
   }
 }
@@ -1056,6 +1010,40 @@ export class CrossWithdrawCall__Outputs {
 
   constructor(call: CrossWithdrawCall) {
     this._call = call;
+  }
+}
+
+export class DeleteActionCall extends ethereum.Call {
+  get inputs(): DeleteActionCall__Inputs {
+    return new DeleteActionCall__Inputs(this);
+  }
+
+  get outputs(): DeleteActionCall__Outputs {
+    return new DeleteActionCall__Outputs(this);
+  }
+}
+
+export class DeleteActionCall__Inputs {
+  _call: DeleteActionCall;
+
+  constructor(call: DeleteActionCall) {
+    this._call = call;
+  }
+
+  get _proposalId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class DeleteActionCall__Outputs {
+  _call: DeleteActionCall;
+
+  constructor(call: DeleteActionCall) {
+    this._call = call;
+  }
+
+  get value0(): boolean {
+    return this._call.outputValues[0].value.toBoolean();
   }
 }
 
@@ -1227,52 +1215,6 @@ export class ProposeActionCall__Outputs {
   }
 }
 
-export class ProposeSignatureCall extends ethereum.Call {
-  get inputs(): ProposeSignatureCall__Inputs {
-    return new ProposeSignatureCall__Inputs(this);
-  }
-
-  get outputs(): ProposeSignatureCall__Outputs {
-    return new ProposeSignatureCall__Outputs(this);
-  }
-}
-
-export class ProposeSignatureCall__Inputs {
-  _call: ProposeSignatureCall;
-
-  constructor(call: ProposeSignatureCall) {
-    this._call = call;
-  }
-
-  get msgHash(): Bytes {
-    return this._call.inputValues[0].value.toBytes();
-  }
-
-  get signatureHash(): Bytes {
-    return this._call.inputValues[1].value.toBytes();
-  }
-
-  get magicValue(): Bytes {
-    return this._call.inputValues[2].value.toBytes();
-  }
-
-  get details(): string {
-    return this._call.inputValues[3].value.toString();
-  }
-}
-
-export class ProposeSignatureCall__Outputs {
-  _call: ProposeSignatureCall;
-
-  constructor(call: ProposeSignatureCall) {
-    this._call = call;
-  }
-
-  get value0(): BigInt {
-    return this._call.outputValues[0].value.toBigInt();
-  }
-}
-
 export class SetModuleCall extends ethereum.Call {
   get inputs(): SetModuleCall__Inputs {
     return new SetModuleCall__Inputs(this);
@@ -1304,5 +1246,43 @@ export class SetModuleCall__Outputs {
 
   get value0(): boolean {
     return this._call.outputValues[0].value.toBoolean();
+  }
+}
+
+export class SignCall extends ethereum.Call {
+  get inputs(): SignCall__Inputs {
+    return new SignCall__Inputs(this);
+  }
+
+  get outputs(): SignCall__Outputs {
+    return new SignCall__Outputs(this);
+  }
+}
+
+export class SignCall__Inputs {
+  _call: SignCall;
+
+  constructor(call: SignCall) {
+    this._call = call;
+  }
+
+  get permissionHash(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+
+  get signatureHash(): Bytes {
+    return this._call.inputValues[1].value.toBytes();
+  }
+
+  get magicValue(): Bytes {
+    return this._call.inputValues[2].value.toBytes();
+  }
+}
+
+export class SignCall__Outputs {
+  _call: SignCall;
+
+  constructor(call: SignCall) {
+    this._call = call;
   }
 }

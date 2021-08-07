@@ -392,3 +392,6 @@ templates:
       eventHandlers:
         - event: ProposeAction(indexed bytes32,indexed uint256,uint256,address,uint256,bytes)
           handler: handleProposeAction
+        - event: ExecuteAction(indexed bytes32,indexed
+            uint256,uint256,address,uint256,bytes,address)
+          handler: handleExecuteAction

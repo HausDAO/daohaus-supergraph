@@ -7,8 +7,10 @@ import {
 } from "../generated/schema";
 import {
   ProposeAction,
+  ExecuteAction,
   NeapolitanMinion,
 } from "../generated/templates/NeapolitanMinionTemplate/NeapolitanMinion";
+import { addTransaction } from "./transactions";
 
 function getMolochAddressFromChildMinion(minionAddress: Bytes): Bytes | null {
   let contract = NeapolitanMinion.bind(minionAddress as Address);
@@ -57,14 +59,28 @@ export function handleProposeAction(event: ProposeAction): void {
   minionAction.save();
 }
 
+// # event ExecuteAction(bytes32 indexed id, uint256 indexed proposalId, uint256 index, address targets, uint256 values, bytes datas, address executor);
+export function handleExecuteAction(event: ExecuteAction): void {
+  let molochAddress = getMolochAddressFromChildMinion(event.address);
+  if (molochAddress == null) {
+    return;
+  }
+
+  let processProposalId = molochAddress
+    .toHexString()
+    .concat("-proposal-")
+    .concat(event.params.proposalId.toString());
+  let proposal = Proposal.load(processProposalId);
+
+  proposal.executed = true;
+
+  proposal.save();
+
+  addTransaction(event.block, event.transaction);
+}
+
 // TODO: changeowner
 // - moves minion to another dao
 // - new field for 'retired' in old dao so we can hide in ui
 // - create a new minion entity for the new dao
 // SetModel - need info
-
-// # event ExecuteAction(bytes32 indexed id, uint256 indexed proposalId, uint256 index, address targets, uint256 values, bytes datas, address executor);
-// # event ActionCanceled(uint256 proposalId);
-// # event ProposeSignature(uint256 proposalId, bytes32 msgHash, address proposer);
-// # event SignatureCanceled(uint256 proposalId, bytes32 msgHash);
-// # event ExecuteSignature(uint256 proposalId, address executor);
