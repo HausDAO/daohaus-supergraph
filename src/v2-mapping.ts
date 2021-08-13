@@ -530,7 +530,7 @@ export function handleProcessProposal(event: ProcessProposal): void {
         newMember.exists = false;
       }
 
-      newMember.tokenTribute = BigInt.fromI32(0);
+      newMember.tokenTribute = proposal.tributeOffered;
       newMember.didRagequit = false;
       newMember.proposedToKick = false;
       newMember.kicked = false;
@@ -539,6 +539,7 @@ export function handleProcessProposal(event: ProcessProposal): void {
     } else {
       member.shares = member.shares.plus(proposal.sharesRequested);
       member.loot = member.loot.plus(proposal.lootRequested);
+      member.tokenTribute = member.tokenTribute.plus(proposal.tributeOffered);
       member.save();
     }
 
@@ -563,8 +564,6 @@ export function handleProcessProposal(event: ProcessProposal): void {
     if (isNewMember) {
       let newMember = new Member(applicantId);
 
-      // try to relate to a minion
-
       newMember.moloch = molochId;
       newMember.createdAt = event.block.timestamp.toString();
       newMember.molochAddress = event.address;
@@ -573,7 +572,7 @@ export function handleProcessProposal(event: ProcessProposal): void {
       newMember.shares = BigInt.fromI32(0);
       newMember.loot = BigInt.fromI32(0);
       newMember.exists = false;
-      newMember.tokenTribute = BigInt.fromI32(0);
+      newMember.tokenTribute = proposal.tributeOffered;
       newMember.didRagequit = false;
       newMember.proposedToKick = false;
       newMember.kicked = false;
