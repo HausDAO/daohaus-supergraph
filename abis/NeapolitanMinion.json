@@ -136,6 +136,37 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "target",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "executor",
+        "type": "address"
+      }
+    ],
+    "name": "ExecuteEscapeHatch",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "proposalId",
         "type": "uint256"
@@ -191,6 +222,49 @@
       }
     ],
     "name": "ProposeAction",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "proposalId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "withdrawToken",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "withdrawAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "moloch",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "memberOrModule",
+        "type": "bool"
+      }
+    ],
+    "name": "ProposeNewAction",
     "type": "event"
   },
   {
@@ -279,7 +353,8 @@
       { "internalType": "bool", "name": "executed", "type": "bool" },
       { "internalType": "address", "name": "token", "type": "address" },
       { "internalType": "uint256", "name": "amount", "type": "uint256" },
-      { "internalType": "address", "name": "moloch", "type": "address" }
+      { "internalType": "address", "name": "moloch", "type": "address" },
+      { "internalType": "bool", "name": "memberOrModule", "type": "bool" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -330,6 +405,17 @@
     ],
     "name": "doWithdraw",
     "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "actionTo", "type": "address" },
+      { "internalType": "uint256", "name": "actionValue", "type": "uint256" },
+      { "internalType": "bytes", "name": "actionData", "type": "bytes" }
+    ],
+    "name": "escapeHatch",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -478,7 +564,8 @@
         "name": "withdrawAmount",
         "type": "uint256"
       },
-      { "internalType": "string", "name": "details", "type": "string" }
+      { "internalType": "string", "name": "details", "type": "string" },
+      { "internalType": "bool", "name": "memberOrModule", "type": "bool" }
     ],
     "name": "proposeAction",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],

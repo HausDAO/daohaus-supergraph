@@ -85,6 +85,21 @@ export class NeapolitanMinionFactory extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
+  minionType(): string {
+    let result = super.call("minionType", "minionType():(string)", []);
+
+    return result[0].toString();
+  }
+
+  try_minionType(): ethereum.CallResult<string> {
+    let result = super.tryCall("minionType", "minionType():(string)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toString());
+  }
+
   minions(param0: Address): NeapolitanMinionFactory__minionsResult {
     let result = super.call("minions", "minions(address):(address,string)", [
       ethereum.Value.fromAddress(param0)
@@ -184,6 +199,10 @@ export class ConstructorCall__Inputs {
 
   get _template(): Address {
     return this._call.inputValues[0].value.toAddress();
+  }
+
+  get _molochTemplate(): Address {
+    return this._call.inputValues[1].value.toAddress();
   }
 }
 

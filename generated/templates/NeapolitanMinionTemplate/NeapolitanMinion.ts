@@ -154,6 +154,36 @@ export class ExecuteAction__Params {
   }
 }
 
+export class ExecuteEscapeHatch extends ethereum.Event {
+  get params(): ExecuteEscapeHatch__Params {
+    return new ExecuteEscapeHatch__Params(this);
+  }
+}
+
+export class ExecuteEscapeHatch__Params {
+  _event: ExecuteEscapeHatch;
+
+  constructor(event: ExecuteEscapeHatch) {
+    this._event = event;
+  }
+
+  get target(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get value(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+
+  get data(): Bytes {
+    return this._event.parameters[2].value.toBytes();
+  }
+
+  get executor(): Address {
+    return this._event.parameters[3].value.toAddress();
+  }
+}
+
 export class ExecuteSignature extends ethereum.Event {
   get params(): ExecuteSignature__Params {
     return new ExecuteSignature__Params(this);
@@ -211,6 +241,44 @@ export class ProposeAction__Params {
 
   get data(): Bytes {
     return this._event.parameters[5].value.toBytes();
+  }
+}
+
+export class ProposeNewAction extends ethereum.Event {
+  get params(): ProposeNewAction__Params {
+    return new ProposeNewAction__Params(this);
+  }
+}
+
+export class ProposeNewAction__Params {
+  _event: ProposeNewAction;
+
+  constructor(event: ProposeNewAction) {
+    this._event = event;
+  }
+
+  get id(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get proposalId(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+
+  get withdrawToken(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
+  get withdrawAmount(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get moloch(): Address {
+    return this._event.parameters[4].value.toAddress();
+  }
+
+  get memberOrModule(): boolean {
+    return this._event.parameters[5].value.toBoolean();
   }
 }
 
@@ -309,6 +377,7 @@ export class NeapolitanMinion__actionsResult {
   value3: Address;
   value4: BigInt;
   value5: Address;
+  value6: boolean;
 
   constructor(
     value0: Bytes,
@@ -316,7 +385,8 @@ export class NeapolitanMinion__actionsResult {
     value2: boolean,
     value3: Address,
     value4: BigInt,
-    value5: Address
+    value5: Address,
+    value6: boolean
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -324,6 +394,7 @@ export class NeapolitanMinion__actionsResult {
     this.value3 = value3;
     this.value4 = value4;
     this.value5 = value5;
+    this.value6 = value6;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
@@ -334,6 +405,7 @@ export class NeapolitanMinion__actionsResult {
     map.set("value3", ethereum.Value.fromAddress(this.value3));
     map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
     map.set("value5", ethereum.Value.fromAddress(this.value5));
+    map.set("value6", ethereum.Value.fromBoolean(this.value6));
     return map;
   }
 }
@@ -363,7 +435,7 @@ export class NeapolitanMinion extends ethereum.SmartContract {
   actions(param0: BigInt): NeapolitanMinion__actionsResult {
     let result = super.call(
       "actions",
-      "actions(uint256):(bytes32,address,bool,address,uint256,address)",
+      "actions(uint256):(bytes32,address,bool,address,uint256,address,bool)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
 
@@ -373,7 +445,8 @@ export class NeapolitanMinion extends ethereum.SmartContract {
       result[2].toBoolean(),
       result[3].toAddress(),
       result[4].toBigInt(),
-      result[5].toAddress()
+      result[5].toAddress(),
+      result[6].toBoolean()
     );
   }
 
@@ -382,7 +455,7 @@ export class NeapolitanMinion extends ethereum.SmartContract {
   ): ethereum.CallResult<NeapolitanMinion__actionsResult> {
     let result = super.tryCall(
       "actions",
-      "actions(uint256):(bytes32,address,bool,address,uint256,address)",
+      "actions(uint256):(bytes32,address,bool,address,uint256,address,bool)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
     if (result.reverted) {
@@ -396,7 +469,8 @@ export class NeapolitanMinion extends ethereum.SmartContract {
         value[2].toBoolean(),
         value[3].toAddress(),
         value[4].toBigInt(),
-        value[5].toAddress()
+        value[5].toAddress(),
+        value[6].toBoolean()
       )
     );
   }
@@ -432,6 +506,45 @@ export class NeapolitanMinion extends ethereum.SmartContract {
     let result = super.tryCall("deleteAction", "deleteAction(uint256):(bool)", [
       ethereum.Value.fromUnsignedBigInt(_proposalId)
     ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  escapeHatch(
+    actionTo: Address,
+    actionValue: BigInt,
+    actionData: Bytes
+  ): boolean {
+    let result = super.call(
+      "escapeHatch",
+      "escapeHatch(address,uint256,bytes):(bool)",
+      [
+        ethereum.Value.fromAddress(actionTo),
+        ethereum.Value.fromUnsignedBigInt(actionValue),
+        ethereum.Value.fromBytes(actionData)
+      ]
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_escapeHatch(
+    actionTo: Address,
+    actionValue: BigInt,
+    actionData: Bytes
+  ): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "escapeHatch",
+      "escapeHatch(address,uint256,bytes):(bool)",
+      [
+        ethereum.Value.fromAddress(actionTo),
+        ethereum.Value.fromUnsignedBigInt(actionValue),
+        ethereum.Value.fromBytes(actionData)
+      ]
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -783,18 +896,20 @@ export class NeapolitanMinion extends ethereum.SmartContract {
     actionDatas: Array<Bytes>,
     withdrawToken: Address,
     withdrawAmount: BigInt,
-    details: string
+    details: string,
+    memberOrModule: boolean
   ): BigInt {
     let result = super.call(
       "proposeAction",
-      "proposeAction(address[],uint256[],bytes[],address,uint256,string):(uint256)",
+      "proposeAction(address[],uint256[],bytes[],address,uint256,string,bool):(uint256)",
       [
         ethereum.Value.fromAddressArray(actionTos),
         ethereum.Value.fromUnsignedBigIntArray(actionValues),
         ethereum.Value.fromBytesArray(actionDatas),
         ethereum.Value.fromAddress(withdrawToken),
         ethereum.Value.fromUnsignedBigInt(withdrawAmount),
-        ethereum.Value.fromString(details)
+        ethereum.Value.fromString(details),
+        ethereum.Value.fromBoolean(memberOrModule)
       ]
     );
 
@@ -807,18 +922,20 @@ export class NeapolitanMinion extends ethereum.SmartContract {
     actionDatas: Array<Bytes>,
     withdrawToken: Address,
     withdrawAmount: BigInt,
-    details: string
+    details: string,
+    memberOrModule: boolean
   ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "proposeAction",
-      "proposeAction(address[],uint256[],bytes[],address,uint256,string):(uint256)",
+      "proposeAction(address[],uint256[],bytes[],address,uint256,string,bool):(uint256)",
       [
         ethereum.Value.fromAddressArray(actionTos),
         ethereum.Value.fromUnsignedBigIntArray(actionValues),
         ethereum.Value.fromBytesArray(actionDatas),
         ethereum.Value.fromAddress(withdrawToken),
         ethereum.Value.fromUnsignedBigInt(withdrawAmount),
-        ethereum.Value.fromString(details)
+        ethereum.Value.fromString(details),
+        ethereum.Value.fromBoolean(memberOrModule)
       ]
     );
     if (result.reverted) {
@@ -1081,6 +1198,48 @@ export class DoWithdrawCall__Outputs {
   }
 }
 
+export class EscapeHatchCall extends ethereum.Call {
+  get inputs(): EscapeHatchCall__Inputs {
+    return new EscapeHatchCall__Inputs(this);
+  }
+
+  get outputs(): EscapeHatchCall__Outputs {
+    return new EscapeHatchCall__Outputs(this);
+  }
+}
+
+export class EscapeHatchCall__Inputs {
+  _call: EscapeHatchCall;
+
+  constructor(call: EscapeHatchCall) {
+    this._call = call;
+  }
+
+  get actionTo(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get actionValue(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+
+  get actionData(): Bytes {
+    return this._call.inputValues[2].value.toBytes();
+  }
+}
+
+export class EscapeHatchCall__Outputs {
+  _call: EscapeHatchCall;
+
+  constructor(call: EscapeHatchCall) {
+    this._call = call;
+  }
+
+  get value0(): boolean {
+    return this._call.outputValues[0].value.toBoolean();
+  }
+}
+
 export class ExecuteActionCall extends ethereum.Call {
   get inputs(): ExecuteActionCall__Inputs {
     return new ExecuteActionCall__Inputs(this);
@@ -1200,6 +1359,10 @@ export class ProposeActionCall__Inputs {
 
   get details(): string {
     return this._call.inputValues[5].value.toString();
+  }
+
+  get memberOrModule(): boolean {
+    return this._call.inputValues[6].value.toBoolean();
   }
 }
 

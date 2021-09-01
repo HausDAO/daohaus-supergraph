@@ -5,6 +5,11 @@
         "internalType": "address payable",
         "name": "_template",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_molochTemplate",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -61,6 +66,19 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "minionType",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
