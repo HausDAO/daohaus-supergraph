@@ -1954,6 +1954,23 @@ export class Minion extends Entity {
     }
   }
 
+  get safeAddress(): Bytes | null {
+    let value = this.get("safeAddress");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set safeAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("safeAddress");
+    } else {
+      this.set("safeAddress", Value.fromBytes(value as Bytes));
+    }
+  }
+
   get version(): string | null {
     let value = this.get("version");
     if (value === null || value.kind == ValueKind.NULL) {
@@ -2471,13 +2488,22 @@ export class MinionAction extends Entity {
     this.set("target", Value.fromBytes(value));
   }
 
-  get value(): BigInt {
-    let value = this.get("value");
+  get withdrawToken(): Bytes {
+    let value = this.get("withdrawToken");
+    return value.toBytes();
+  }
+
+  set withdrawToken(value: Bytes) {
+    this.set("withdrawToken", Value.fromBytes(value));
+  }
+
+  get withdrawValue(): BigInt {
+    let value = this.get("withdrawValue");
     return value.toBigInt();
   }
 
-  set value(value: BigInt) {
-    this.set("value", Value.fromBigInt(value));
+  set withdrawValue(value: BigInt) {
+    this.set("withdrawValue", Value.fromBigInt(value));
   }
 
   get data(): Bytes {

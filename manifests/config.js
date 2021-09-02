@@ -285,6 +285,12 @@ module.exports.config = {
         address: "0x4050E747Ed393e1Fd89783662C48373421fD0647",
         startBlock: 9110022,
       },
+      {
+        name: "safeMinion",
+        template: "safeMinionFactory-ds.yaml",
+        address: "0x13319a33b862E9B8BA21cb95f15A880247c22Dd2",
+        startBlock: 9218012,
+      },
     ],
     templates: [
       {
@@ -306,6 +312,10 @@ module.exports.config = {
       {
         name: "neapolitanMinionTemplate",
         template: "neapolitanMinion-template.yaml",
+      },
+      {
+        name: "safeMinionTemplate",
+        template: "safeMinion-template.yaml",
       },
     ],
   },

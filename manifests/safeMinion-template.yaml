@@ -1,0 +1,22 @@
+kind: ethereum/contract
+name: SafeMinionTemplate
+network:
+source:
+  abi: SafeMinion
+mapping:
+  kind: ethereum/events
+  apiVersion: 0.0.3
+  language: wasm/assemblyscript
+  file: ./src/safe-minion-mapping.ts
+  entities:
+    - Moloch
+    - Minion
+    - Proposal
+  abis:
+    - name: SafeMinion
+      file: ./abis/SafeMinion.json
+  eventHandlers:
+    - event: "ProposeNewAction(indexed bytes32,indexed uint256,address,uint256,address,bool,bytes)"
+      handler: handleProposeAction
+    - event: "ExecuteAction(indexed bytes32,indexed uint256,bytes,address)"
+      handler: handleExecuteAction
