@@ -488,6 +488,16 @@ export function handleProcessProposal(event: ProcessProposal): void {
     .concat(event.params.proposalId.toString());
   let proposal = Proposal.load(processProposalId);
 
+  if (
+    processProposalId ==
+    "0x746ffb502e7a3e9097112c99b5d74bd192fa7600-proposal-65"
+  ) {
+    log.info(
+      "$$$ hit proposal id 0x746ffb502e7a3e9097112c99b5d74bd192fa7600-proposal-65",
+      []
+    );
+  }
+
   let applicantId = molochId
     .concat("-member-")
     .concat(proposal.applicant.toHex());
