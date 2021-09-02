@@ -170,6 +170,7 @@ type Minion @entity {
   uberHaus: Moloch
   uberHausDelegateRewardFactor: BigInt
   uberHausDelegate: Bytes
+  safeAddress: Bytes
   version: String
   minQuorum: BigInt
   streams: [MinionStream!] @derivedFrom(field: "minion")
@@ -219,7 +220,8 @@ type MinionAction @entity {
   minionAddress: Bytes!
   molochAddress: Bytes!
   target: Bytes!
-  value: BigInt!
+  withdrawToken: Bytes!
+  withdrawValue: BigInt!
   data: Bytes!
   index: BigInt!
 }
