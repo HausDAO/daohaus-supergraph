@@ -15,17 +15,13 @@ export function handleSummonedSafeMinion(event: SummonMinion): void {
   }
 
   let minionAddress = event.params.avatar;
-  let minionModuleAddress = event.params.minion;
 
-  let minionId = molochId
-    .concat("-minion-")
-    .concat(minionAddress.toHex());
+  let minionId = molochId.concat("-minion-").concat(minionAddress.toHex());
   let minion = new Minion(minionId);
 
   log.info("**** summoned safeminion: {}, moloch: {}", [minionId, molochId]);
 
   minion.minionAddress = minionAddress;
-  minion.minionModule = minionModuleAddress;
   minion.molochAddress = event.params.moloch;
   minion.details = event.params.details;
   minion.minionType = event.params.minionType;
