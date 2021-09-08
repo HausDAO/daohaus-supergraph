@@ -109,6 +109,12 @@ module.exports.config = {
         address: "0xA6B75C3EBfA5a5F801F634812ABCb6Fd7055fd6d",
         startBlock: 16507968,
       },
+      {
+        name: "safeMinion",
+        template: "safeMinionFactory-ds.yaml",
+        address: "0xbC37509A283E2bb67fd151c34E72e826C501E108",
+        startBlock: 17992947,
+      },
     ],
     templates: [
       {
@@ -130,6 +136,10 @@ module.exports.config = {
       {
         name: "superfluidMinionTemplate",
         template: "superfluidMinion-template.yaml",
+      },
+      {
+        name: "safeMinionTemplate",
+        template: "safeMinion-template.yaml",
       },
     ],
   },
@@ -165,6 +175,12 @@ module.exports.config = {
         address: "0x4CCaDF3f5734436B28869c27A11B6D0F4776bc8E",
         startBlock: 15599778,
       },
+      {
+        name: "safeMinion",
+        template: "safeMinionFactory-ds.yaml",
+        address: "0xbC37509A283E2bb67fd151c34E72e826C501E108",
+        startBlock: 18892078,
+      },
     ],
     templates: [
       {
@@ -174,6 +190,10 @@ module.exports.config = {
       {
         name: "superfluidMinionTemplate",
         template: "superfluidMinion-template.yaml",
+      },
+      {
+        name: "safeMinionTemplate",
+        template: "safeMinion-template.yaml",
       },
     ],
   },
@@ -215,6 +235,12 @@ module.exports.config = {
         address: "0x03042577463E3820F9cA6Ca3906BAad599ba9382",
         startBlock: 23861045,
       },
+      {
+        name: "safeMinion",
+        template: "safeMinionFactory-ds.yaml",
+        address: "0xbC37509A283E2bb67fd151c34E72e826C501E108",
+        startBlock: 27112682,
+      },
     ],
     templates: [
       {
@@ -232,6 +258,10 @@ module.exports.config = {
       {
         name: "uberHausMininTemplate",
         template: "uberhausMinion-template.yaml",
+      },
+      {
+        name: "safeMinionTemplate",
+        template: "safeMinion-template.yaml",
       },
     ],
   },
