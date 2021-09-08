@@ -14,7 +14,7 @@ export function handleSummonedSafeMinion(event: SummonMinion): void {
     return;
   }
 
-  let minionAddress = event.params.avatar;
+  let minionAddress = event.params.minion;
 
   let minionId = molochId.concat("-minion-").concat(minionAddress.toHex());
   let minion = new Minion(minionId);
@@ -22,6 +22,7 @@ export function handleSummonedSafeMinion(event: SummonMinion): void {
   log.info("**** summoned safeminion: {}, moloch: {}", [minionId, molochId]);
 
   minion.minionAddress = minionAddress;
+  minion.safeAddress = event.params.avatar;
   minion.molochAddress = event.params.moloch;
   minion.details = event.params.details;
   minion.minionType = event.params.minionType;

@@ -48,20 +48,6 @@ export class MolochV21Template extends DataSourceTemplate {
   }
 }
 
-export class UberhausMinionTemplate extends DataSourceTemplate {
-  static create(address: Address): void {
-    DataSourceTemplate.create("UberhausMinionTemplate", [address.toHex()]);
-  }
-
-  static createWithContext(address: Address, context: DataSourceContext): void {
-    DataSourceTemplate.createWithContext(
-      "UberhausMinionTemplate",
-      [address.toHex()],
-      context
-    );
-  }
-}
-
 export class SuperfluidMinionTemplate extends DataSourceTemplate {
   static create(address: Address): void {
     DataSourceTemplate.create("SuperfluidMinionTemplate", [address.toHex()]);
@@ -70,6 +56,34 @@ export class SuperfluidMinionTemplate extends DataSourceTemplate {
   static createWithContext(address: Address, context: DataSourceContext): void {
     DataSourceTemplate.createWithContext(
       "SuperfluidMinionTemplate",
+      [address.toHex()],
+      context
+    );
+  }
+}
+
+export class NeapolitanMinionTemplate extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("NeapolitanMinionTemplate", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext(
+      "NeapolitanMinionTemplate",
+      [address.toHex()],
+      context
+    );
+  }
+}
+
+export class SafeMinionTemplate extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("SafeMinionTemplate", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext(
+      "SafeMinionTemplate",
       [address.toHex()],
       context
     );
