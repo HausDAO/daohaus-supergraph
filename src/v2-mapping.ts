@@ -330,14 +330,22 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.gracePeriodEnds = BigInt.fromI32(0);
   proposal.details = event.params.details.toString();
 
+  let minionAddress = event.params.applicant;
   let potentialMinionId = molochId
     .concat("-minion-")
-    .concat(event.params.applicant.toHex());
-
+    .concat(minionAddress.toHex());
+  
   let minion = Minion.load(potentialMinionId);
+  if (minion == null) { // If null check if msg.sender was a minion
+    minionAddress = event.params.delegateKey;
+    potentialMinionId = molochId
+      .concat("-minion-")
+      .concat(minionAddress.toHex());
+    minion = Minion.load(potentialMinionId);
+  }
   if (minion !== null) {
     proposal.isMinion = true;
-    proposal.minionAddress = event.params.applicant;
+    proposal.minionAddress = minionAddress;
     proposal.minion = minion.id;
   } else {
     proposal.isMinion = false;
