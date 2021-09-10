@@ -43,6 +43,12 @@ module.exports.config = {
         address: "0x7EDfBDED3077Bc035eFcEA1835359736Fa342209",
         startBlock: 13016332,
       },
+      {
+        name: "safeMinion",
+        template: "safeMinionFactory-ds.yaml",
+        address: "0xbC37509A283E2bb67fd151c34E72e826C501E108",
+        startBlock: 13199717,
+      },
     ],
     templates: [
       {
@@ -56,6 +62,10 @@ module.exports.config = {
       {
         name: "v21Template",
         template: "v21-template.yaml",
+      },
+      {
+        name: "safeMinionTemplate",
+        template: "safeMinion-template.yaml",
       },
     ],
   },
@@ -112,8 +122,8 @@ module.exports.config = {
       {
         name: "safeMinion",
         template: "safeMinionFactory-ds.yaml",
-        address: "0xbC37509A283E2bb67fd151c34E72e826C501E108",
-        startBlock: 17992947,
+        address: "0xA1b97D22e22507498B350A9edeA85c44bA7DBC01",
+        startBlock: 18025529,
       },
     ],
     templates: [
@@ -178,8 +188,8 @@ module.exports.config = {
       {
         name: "safeMinion",
         template: "safeMinionFactory-ds.yaml",
-        address: "0xbC37509A283E2bb67fd151c34E72e826C501E108",
-        startBlock: 18892078,
+        address: "0xA1b97D22e22507498B350A9edeA85c44bA7DBC01",
+        startBlock: 18962956,
       },
     ],
     templates: [
@@ -238,8 +248,8 @@ module.exports.config = {
       {
         name: "safeMinion",
         template: "safeMinionFactory-ds.yaml",
-        address: "0xbC37509A283E2bb67fd151c34E72e826C501E108",
-        startBlock: 27112682,
+        address: "0xA1b97D22e22507498B350A9edeA85c44bA7DBC01",
+        startBlock: 27138866,
       },
     ],
     templates: [
@@ -318,8 +328,8 @@ module.exports.config = {
       {
         name: "safeMinion",
         template: "safeMinionFactory-ds.yaml",
-        address: "0x13319a33b862E9B8BA21cb95f15A880247c22Dd2",
-        startBlock: 9218012,
+        address: "0x3f13ABc8931c0e381Ce6d1Be9f978aE6E9d99Cb8",
+        startBlock: 9269583,
       },
     ],
     templates: [
