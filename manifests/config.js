@@ -43,6 +43,12 @@ module.exports.config = {
         address: "0x7EDfBDED3077Bc035eFcEA1835359736Fa342209",
         startBlock: 13016332,
       },
+      {
+        name: "safeMinion",
+        template: "safeMinionFactory-ds.yaml",
+        address: "0xbC37509A283E2bb67fd151c34E72e826C501E108",
+        startBlock: 13199717,
+      },
     ],
     templates: [
       {
@@ -56,6 +62,10 @@ module.exports.config = {
       {
         name: "v21Template",
         template: "v21-template.yaml",
+      },
+      {
+        name: "safeMinionTemplate",
+        template: "safeMinion-template.yaml",
       },
     ],
   },
@@ -109,6 +119,12 @@ module.exports.config = {
         address: "0xA6B75C3EBfA5a5F801F634812ABCb6Fd7055fd6d",
         startBlock: 16507968,
       },
+      {
+        name: "safeMinion",
+        template: "safeMinionFactory-ds.yaml",
+        address: "0xA1b97D22e22507498B350A9edeA85c44bA7DBC01",
+        startBlock: 18025529,
+      },
     ],
     templates: [
       {
@@ -130,6 +146,10 @@ module.exports.config = {
       {
         name: "superfluidMinionTemplate",
         template: "superfluidMinion-template.yaml",
+      },
+      {
+        name: "safeMinionTemplate",
+        template: "safeMinion-template.yaml",
       },
     ],
   },
@@ -165,6 +185,12 @@ module.exports.config = {
         address: "0x4CCaDF3f5734436B28869c27A11B6D0F4776bc8E",
         startBlock: 15599778,
       },
+      {
+        name: "safeMinion",
+        template: "safeMinionFactory-ds.yaml",
+        address: "0xA1b97D22e22507498B350A9edeA85c44bA7DBC01",
+        startBlock: 18962956,
+      },
     ],
     templates: [
       {
@@ -174,6 +200,54 @@ module.exports.config = {
       {
         name: "superfluidMinionTemplate",
         template: "superfluidMinion-template.yaml",
+      },
+      {
+        name: "safeMinionTemplate",
+        template: "safeMinion-template.yaml",
+      },
+    ],
+  },
+  "arbitrum-one": {
+    dataSources: [
+      {
+        name: "v21Factory",
+        template: "v21Factory-ds.yaml",
+        address: "0x9232DeA84E91b49feF6b604EEA0455692FC27Ba8",
+        startBlock: 219866,
+      },
+      {
+        name: "niftyMinionFactory",
+        template: "niftyMinionFactory-ds.yaml",
+        address: "0xA92CbC525EabFa5baE4e0ff7bDa8E011B43B9aCC",
+        startBlock: 361572,
+      },
+    ],
+    templates: [
+      {
+        name: "v21Template",
+        template: "v21-template.yaml",
+      },
+    ],
+  },
+  celo: {
+    dataSources: [
+      {
+        name: "v21Factory",
+        template: "v21Factory-ds.yaml",
+        address: "0x8c47bD2ABae16323054a19aA562efC87A6c26d29",
+        startBlock: 8691191,
+      },
+      {
+        name: "niftyMinionFactory",
+        template: "niftyMinionFactory-ds.yaml",
+        address: "0xaD791Ef059A25b6C82e56977C6489974333C5A0C",
+        startBlock: 8691275,
+      },
+    ],
+    templates: [
+      {
+        name: "v21Template",
+        template: "v21-template.yaml",
       },
     ],
   },
@@ -215,6 +289,12 @@ module.exports.config = {
         address: "0x03042577463E3820F9cA6Ca3906BAad599ba9382",
         startBlock: 23861045,
       },
+      {
+        name: "safeMinion",
+        template: "safeMinionFactory-ds.yaml",
+        address: "0xA1b97D22e22507498B350A9edeA85c44bA7DBC01",
+        startBlock: 27138866,
+      },
     ],
     templates: [
       {
@@ -232,6 +312,10 @@ module.exports.config = {
       {
         name: "uberHausMininTemplate",
         template: "uberhausMinion-template.yaml",
+      },
+      {
+        name: "safeMinionTemplate",
+        template: "safeMinion-template.yaml",
       },
     ],
   },
@@ -285,6 +369,12 @@ module.exports.config = {
         address: "0x4050E747Ed393e1Fd89783662C48373421fD0647",
         startBlock: 9110022,
       },
+      {
+        name: "safeMinion",
+        template: "safeMinionFactory-ds.yaml",
+        address: "0x3f13ABc8931c0e381Ce6d1Be9f978aE6E9d99Cb8",
+        startBlock: 9269583,
+      },
     ],
     templates: [
       {
@@ -306,6 +396,10 @@ module.exports.config = {
       {
         name: "neapolitanMinionTemplate",
         template: "neapolitanMinion-template.yaml",
+      },
+      {
+        name: "safeMinionTemplate",
+        template: "safeMinion-template.yaml",
       },
     ],
   },

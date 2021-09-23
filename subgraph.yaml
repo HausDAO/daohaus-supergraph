@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: V21Factory
-    network: matic
+    network: arbitrum-one
     source:
-      address: '0x6690C139564144b27ebABA71F9126611a23A31C9'
+      address: '0x9232DeA84E91b49feF6b604EEA0455692FC27Ba8'
       abi: V21Factory
-      startBlock: 10397177
+      startBlock: 219866
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -33,83 +33,12 @@ dataSources:
           handler: handleRegisterV21
       file: ./src/factory-mapping.ts
   - kind: ethereum/contract
-    name: MinionFactory
-    network: matic
-    source:
-      address: '0x52A67B01f029ED2EfEa7E17Dbb56397a612bf245'
-      abi: MinionFactory
-      startBlock: 11318410
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - Moloch
-        - Minion
-      abis:
-        - name: V1Moloch
-          file: ./abis/V1Moloch.json
-        - name: MinionFactory
-          file: ./abis/MinionFactory.json
-        - name: Minion
-          file: ./abis/Minion.json
-      eventHandlers:
-        - event: 'SummonMinion(indexed address,indexed address,string,string)'
-          handler: handleSummonedMinion
-      file: ./src/minion-factory-mapping.ts
-  - kind: ethereum/contract
-    name: V2MinionFactory
-    network: matic
-    source:
-      address: '0x02e458B5eEF8f23e78AefaC0F15f5d294C3762e9'
-      abi: MinionFactory
-      startBlock: 13198765
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - Moloch
-        - Minion
-      abis:
-        - name: V1Moloch
-          file: ./abis/V1Moloch.json
-        - name: MinionFactory
-          file: ./abis/V2MinionFactory.json
-        - name: Minion
-          file: ./abis/V2Minion.json
-      eventHandlers:
-        - event: 'SummonMinion(indexed address,indexed address,string,string)'
-          handler: handleSummonedV2Minion
-      file: ./src/minion-factory-mapping.ts
-  - kind: ethereum/contract
-    name: SuperfluidMinionFactory
-    network: matic
-    source:
-      address: '0x52acf023d38A31f7e7bC92cCe5E68d36cC9752d6'
-      abi: SuperfluidMinionFactory
-      startBlock: 14193470
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - Moloch
-        - SuperfluidMinion
-      abis:
-        - name: SuperfluidMinionFactory
-          file: ./abis/SuperfluidMinionFactory.json
-      eventHandlers:
-        - event: 'SummonMinion(indexed address,indexed address,string,string)'
-          handler: handleSummonedSuperfluidMinion
-      file: ./src/superfluid-minion-factory-mapping.ts
-  - kind: ethereum/contract
     name: NiftyMinionFactory
-    network: matic
+    network: arbitrum-one
     source:
-      address: '0x4CCaDF3f5734436B28869c27A11B6D0F4776bc8E'
+      address: '0xA92CbC525EabFa5baE4e0ff7bDa8E011B43B9aCC'
       abi: NiftyMinionFactory
-      startBlock: 15599778
+      startBlock: 361572
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -127,7 +56,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: MolochV21Template
-    network: matic
+    network: arbitrum-one
     source:
       abi: V21Moloch
     mapping:
@@ -179,29 +108,3 @@ templates:
           handler: handleRagequit
         - event: 'TokensCollected(indexed address,uint256)'
           handler: handleTokensCollected
-  - kind: ethereum/contract
-    name: SuperfluidMinionTemplate
-    network: matic
-    source:
-      abi: SuperfluidMinion
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      file: ./src/superfluid-minion-mapping.ts
-      entities:
-        - Moloch
-        - Minion
-        - Proposal
-      abis:
-        - name: SuperfluidMinion
-          file: ./abis/SuperfluidMinion.json
-      eventHandlers:
-        - event: 'ProposeStream(uint256,address)'
-          handler: handleProposedStream
-        - event: 'ExecuteStream(uint256,address)'
-          handler: handleExecutedStream
-        - event: 'StreamCanceled(uint256,address)'
-          handler: handleStreamCanceled
-        - event: ActionCanceled(uint256)
-          handler: handleStreamProposalCanceled
