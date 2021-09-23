@@ -14,11 +14,15 @@
     "prepare:matic": "node manifests/deploy-prep.js matic",
     "prepare:kovan": "node manifests/deploy-prep.js kovan",
     "prepare:rinkeby": "node manifests/deploy-prep.js rinkeby",
+    "prepare:arbitrum": "node manifests/deploy-prep.js arbitrum-one",
+    "prepare:celo": "node manifests/deploy-prep.js celo",
     "deploy:mainnet": "yarn prepare:mainnet && yarn build:all && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus",
     "deploy:xdai": "yarn prepare:xdai && yarn build:all && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-xdai",
     "deploy:matic": "yarn prepare:rinkeby && yarn build:all && yarn prepare:matic && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-matic",
     "deploy:kovan": "yarn prepare:kovan && yarn build:all && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-kovan",
-    "deploy:rinkeby": "yarn prepare:rinkeby && yarn build:all && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-rinkeby"
+    "deploy:rinkeby": "yarn prepare:rinkeby && yarn build:all && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-rinkeby",
+    "deploy:arbitrum": "yarn prepare:rinkeby && yarn build:all && yarn prepare:arbitrum && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-arbitrum",
+    "deploy:celo": "yarn prepare:rinkeby && yarn build:all && yarn prepare:celo && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-celo"
   },
   "dependencies": {
     "@graphprotocol/graph-ts": "^0.20.0",

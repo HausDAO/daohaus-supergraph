@@ -207,6 +207,50 @@ module.exports.config = {
       },
     ],
   },
+  "arbitrum-one": {
+    dataSources: [
+      {
+        name: "v21Factory",
+        template: "v21Factory-ds.yaml",
+        address: "0x9232DeA84E91b49feF6b604EEA0455692FC27Ba8",
+        startBlock: 219866,
+      },
+      {
+        name: "niftyMinionFactory",
+        template: "niftyMinionFactory-ds.yaml",
+        address: "0xA92CbC525EabFa5baE4e0ff7bDa8E011B43B9aCC",
+        startBlock: 361572,
+      },
+    ],
+    templates: [
+      {
+        name: "v21Template",
+        template: "v21-template.yaml",
+      },
+    ],
+  },
+  celo: {
+    dataSources: [
+      {
+        name: "v21Factory",
+        template: "v21Factory-ds.yaml",
+        address: "0x8c47bD2ABae16323054a19aA562efC87A6c26d29",
+        startBlock: 8691191,
+      },
+      {
+        name: "niftyMinionFactory",
+        template: "niftyMinionFactory-ds.yaml",
+        address: "0xaD791Ef059A25b6C82e56977C6489974333C5A0C",
+        startBlock: 8691275,
+      },
+    ],
+    templates: [
+      {
+        name: "v21Template",
+        template: "v21-template.yaml",
+      },
+    ],
+  },
   kovan: {
     dataSources: [
       {
