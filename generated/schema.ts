@@ -973,6 +973,15 @@ export class Proposal extends Entity {
     this.set("createdAt", Value.fromString(value));
   }
 
+  get createdBy(): Bytes {
+    let value = this.get("createdBy");
+    return value.toBytes();
+  }
+
+  set createdBy(value: Bytes) {
+    this.set("createdBy", Value.fromBytes(value));
+  }
+
   get proposalIndex(): BigInt | null {
     let value = this.get("proposalIndex");
     if (value === null || value.kind == ValueKind.NULL) {

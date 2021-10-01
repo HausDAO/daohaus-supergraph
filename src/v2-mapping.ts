@@ -297,6 +297,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.moloch = molochId;
   proposal.molochAddress = event.address;
   proposal.createdAt = event.block.timestamp.toString();
+  proposal.createdBy = event.transaction.from;
   proposal.member = memberId;
   proposal.memberAddress = event.params.memberAddress;
   proposal.delegateKey = event.params.delegateKey;
@@ -334,9 +335,10 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   let potentialMinionId = molochId
     .concat("-minion-")
     .concat(minionAddress.toHex());
-  
+
   let minion = Minion.load(potentialMinionId);
-  if (minion == null) { // If null check if msg.sender was a minion
+  if (minion == null) {
+    // If null check if msg.sender was a minion
     minionAddress = event.params.delegateKey;
     potentialMinionId = molochId
       .concat("-minion-")

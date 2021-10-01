@@ -117,6 +117,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.molochAddress = event.address;
   proposal.moloch = moloch.id;
   proposal.createdAt = event.block.timestamp.toString();
+  proposal.createdBy = event.transaction.from;
   proposal.proposalIndex = event.params.proposalIndex;
   proposal.proposalId = event.params.proposalIndex;
   proposal.startingPeriod = startingPeriod;

@@ -360,8 +360,8 @@ module.exports.config = {
       {
         name: "escrowMinion",
         template: "escrowMinion-ds.yaml",
-        address: "0x7E6D03ACF2aCBc78894b706e2CbDC4ab6891c914",
-        startBlock: 9006670,
+        address: "0x8A6a656EF02Dd592e3Af1521Bc0Ea5f8A38D15d8",
+        startBlock: 9143681,
       },
       {
         name: "neapolitanMinion",

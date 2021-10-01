@@ -20,6 +20,4 @@ mapping:
       handler: handleProposeAction
     - event: "ExecuteAction(uint256,address,address)"
       handler: handleExecuteAction
-    # - event: "ActionCanceled(uint256,address)"
-    #   handler: handleCancelAction
   file: ./src/escrow-minion-mapping.ts

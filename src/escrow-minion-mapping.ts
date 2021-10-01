@@ -50,5 +50,3 @@ export function handleExecuteAction(event: ExecuteAction): void {
 
   addTransaction(event.block, event.transaction);
 }
-
-// # event ActionCanceled(uint256 proposalId, address moloch);
