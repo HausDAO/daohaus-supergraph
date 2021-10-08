@@ -34,6 +34,11 @@ export function handleProposeAction(event: ProposeAction): void {
   escrow.amounts = event.params.amounts;
 
   escrow.save();
+
+  proposal.isMinion = true;
+  proposal.minionAddress = event.address;
+
+  proposal.save();
 }
 
 // # event ExecuteAction(uint256 proposalId, address executor, address moloch);
