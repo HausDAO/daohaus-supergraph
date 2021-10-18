@@ -55,6 +55,7 @@ export function handleProposeAction(event: ProposeAction): void {
   minionAction.withdrawToken = Address.fromString("0x0000000000000000000000000000000000000000");
   minionAction.withdrawValue = event.params.value;
   minionAction.data = event.params.data;
+  minionAction.memberOnly = false;
   minionAction.index = event.params.index;
 
   minionAction.save();

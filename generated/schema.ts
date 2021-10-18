@@ -2524,6 +2524,15 @@ export class MinionAction extends Entity {
     this.set("data", Value.fromBytes(value));
   }
 
+  get memberOnly(): boolean {
+    let value = this.get("memberOnly");
+    return value.toBoolean();
+  }
+
+  set memberOnly(value: boolean) {
+    this.set("memberOnly", Value.fromBoolean(value));
+  }
+
   get index(): BigInt {
     let value = this.get("index");
     return value.toBigInt();
