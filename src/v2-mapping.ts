@@ -782,6 +782,7 @@ export function handleRagequit(event: Ragequit): void {
   );
   let initialTotalSharesAndLoot = moloch.totalShares.plus(moloch.totalLoot);
 
+  member.didRagequit = true;
   member.shares = member.shares.minus(event.params.sharesToBurn);
   member.loot = member.loot.minus(event.params.lootToBurn);
   moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
