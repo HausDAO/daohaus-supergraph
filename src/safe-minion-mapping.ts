@@ -66,6 +66,7 @@ export function handleProposeAction(event: ProposeNewAction): void {
   minionAction.withdrawToken = event.params.withdrawToken;
   minionAction.withdrawValue = event.params.withdrawAmount;
   minionAction.data = event.params.transactions;
+  minionAction.memberOnly = event.params.memberOnly;
   minionAction.index = index;
 
   minionAction.save();
