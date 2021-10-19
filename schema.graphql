@@ -224,5 +224,6 @@ type MinionAction @entity {
   withdrawToken: Bytes!
   withdrawValue: BigInt!
   data: Bytes!
+  memberOnly: Boolean!
   index: BigInt!
 }
