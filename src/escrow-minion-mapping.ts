@@ -6,7 +6,7 @@ import {
 import { Proposal, ProposalEscrow } from "../generated/schema";
 import { addTransaction } from "./transactions";
 
-// event ProposeAction(uint256 proposalId, address proposer, address moloch, address[] tokens, uint256[MAX_LENGTH] types, uint256[MAX_LENGTH] tokenIds, uint256[MAX_LENGTH] amounts, address destinationVault);
+// event ProposeAction(uint256 proposalId, address proposer, address moloch, address[] tokens, uint256[] types, uint256[] tokenIds, uint256[] amounts, address destinationVault);
 export function handleProposeAction(event: ProposeAction): void {
   let actionProposalId = event.params.moloch
     .toHexString()

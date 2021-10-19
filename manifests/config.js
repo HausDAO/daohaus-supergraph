@@ -125,6 +125,12 @@ module.exports.config = {
         address: "0xA1b97D22e22507498B350A9edeA85c44bA7DBC01",
         startBlock: 18025529,
       },
+      {
+        name: "escrowMinion",
+        template: "escrowMinion-ds.yaml",
+        address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7",
+        startBlock: 18589768,
+      },
     ],
     templates: [
       {
@@ -191,6 +197,12 @@ module.exports.config = {
         address: "0xA1b97D22e22507498B350A9edeA85c44bA7DBC01",
         startBlock: 18962956,
       },
+      {
+        name: "escrowMinion",
+        template: "escrowMinion-ds.yaml",
+        address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7",
+        startBlock: 20255100,
+      },
     ],
     templates: [
       {
@@ -221,11 +233,27 @@ module.exports.config = {
         address: "0xA92CbC525EabFa5baE4e0ff7bDa8E011B43B9aCC",
         startBlock: 361572,
       },
+      {
+        name: "safeMinion",
+        template: "safeMinionFactory-ds.yaml",
+        address: "0xa1b97d22e22507498b350a9edea85c44ba7dbc01",
+        startBlock: 1999034,
+      },
+      {
+        name: "escrowMinion",
+        template: "escrowMinion-ds.yaml",
+        address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7",
+        startBlock: 2258277,
+      },
     ],
     templates: [
       {
         name: "v21Template",
         template: "v21-template.yaml",
+      },
+      {
+        name: "safeMinionTemplate",
+        template: "safeMinion-template.yaml",
       },
     ],
   },
@@ -295,6 +323,12 @@ module.exports.config = {
         address: "0xA1b97D22e22507498B350A9edeA85c44bA7DBC01",
         startBlock: 27138866,
       },
+      {
+        name: "escrowMinion",
+        template: "escrowMinion-ds.yaml",
+        address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7",
+        startBlock: 27734158,
+      },
     ],
     templates: [
       {
@@ -360,8 +394,8 @@ module.exports.config = {
       {
         name: "escrowMinion",
         template: "escrowMinion-ds.yaml",
-        address: "0x8A6a656EF02Dd592e3Af1521Bc0Ea5f8A38D15d8",
-        startBlock: 9143681,
+        address: "0xEB28321b7952CC34bFb734413b58496A889C9660",
+        startBlock: 9471294,
       },
       {
         name: "neapolitanMinion",
