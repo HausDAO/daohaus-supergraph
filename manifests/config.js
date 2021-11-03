@@ -49,6 +49,12 @@ module.exports.config = {
         address: "0xbC37509A283E2bb67fd151c34E72e826C501E108",
         startBlock: 13199717,
       },
+      {
+        name: "escrowMinion",
+        template: "escrowMinion-ds.yaml",
+        address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7",
+        startBlock: 13489283,
+      },
     ],
     templates: [
       {
@@ -398,12 +404,6 @@ module.exports.config = {
         startBlock: 9471294,
       },
       {
-        name: "neapolitanMinion",
-        template: "neapolitanMinionFactory-ds.yaml",
-        address: "0x4050E747Ed393e1Fd89783662C48373421fD0647",
-        startBlock: 9110022,
-      },
-      {
         name: "safeMinion",
         template: "safeMinionFactory-ds.yaml",
         address: "0x3f13ABc8931c0e381Ce6d1Be9f978aE6E9d99Cb8",
@@ -426,10 +426,6 @@ module.exports.config = {
       {
         name: "superfluidMinionTemplate",
         template: "superfluidMinion-template.yaml",
-      },
-      {
-        name: "neapolitanMinionTemplate",
-        template: "neapolitanMinion-template.yaml",
       },
       {
         name: "safeMinionTemplate",
