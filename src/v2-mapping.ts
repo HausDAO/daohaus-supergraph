@@ -353,6 +353,9 @@ export function handleSubmitProposal(event: SubmitProposal): void {
     proposal.isMinion = false;
   }
 
+  proposal.guildkickOrWhitelistOrMinion =
+    flags[4] || flags[5] || proposal.isMinion;
+
   if (event.params.tributeOffered > BigInt.fromI32(0)) {
     let tokenId = molochId
       .concat("-token-")

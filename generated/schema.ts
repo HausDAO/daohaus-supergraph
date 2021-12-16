@@ -1394,6 +1394,15 @@ export class Proposal extends Entity {
     this.set("trade", Value.fromBoolean(value));
   }
 
+  get guildkickOrWhitelistOrMinion(): boolean {
+    let value = this.get("guildkickOrWhitelistOrMinion");
+    return value.toBoolean();
+  }
+
+  set guildkickOrWhitelistOrMinion(value: boolean) {
+    this.set("guildkickOrWhitelistOrMinion", Value.fromBoolean(value));
+  }
+
   get details(): string | null {
     let value = this.get("details");
     if (value === null || value.kind == ValueKind.NULL) {
