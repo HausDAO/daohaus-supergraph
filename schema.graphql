@@ -24,6 +24,9 @@ type Moloch @entity {
   minions: [Minion!] @derivedFrom(field: "moloch")
   totalShares: BigInt!
   totalLoot: BigInt!
+  v22Setup: Boolean
+  spamPreventionAddress: Bytes
+  spamPreventionAmount: BigInt
 }
 
 type TokenBalance @entity {

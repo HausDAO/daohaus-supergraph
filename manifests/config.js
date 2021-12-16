@@ -380,6 +380,12 @@ module.exports.config = {
         startBlock: 7771115,
       },
       {
+        name: "v22Factory",
+        template: "v22Factory-ds.yaml",
+        address: "0xed0e6EfbF4F0030a5C641489d2372588B234E582",
+        startBlock: 9825309,
+      },
+      {
         name: "minionFactory",
         template: "minionFactory-ds.yaml",
         address: "0x316eFCd421b0654B7aE8E806880D4AE88ecaE206",
@@ -422,6 +428,10 @@ module.exports.config = {
       {
         name: "v21Template",
         template: "v21-template.yaml",
+      },
+      {
+        name: "v22Template",
+        template: "v22-template.yaml",
       },
       {
         name: "superfluidMinionTemplate",

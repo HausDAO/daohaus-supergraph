@@ -19,6 +19,10 @@ import {
   Withdraw,
   TokensCollected,
 } from "../generated/templates/MolochV2Template/V2Moloch";
+import {
+  Shaman,
+  SpamPrevention,
+} from "../generated/templates/MolochV22Template/V22Moloch";
 import { Erc20 } from "../generated/templates/MolochV2Template/Erc20";
 import { Erc20Bytes32 } from "../generated/templates/MolochV2Template/Erc20Bytes32";
 
@@ -922,4 +926,46 @@ export function handleTokensCollected(event: TokensCollected): void {
   addToBalance(molochId, GUILD, tokenId, event.params.amountToCollect);
 
   addTransaction(event.block, event.transaction);
+}
+
+// event Shaman(
+//   address indexed memberAddress,
+//   uint256 shares,
+//   uint256 loot,
+//   bool mint
+// );
+export function handleShaman(event: Shaman): void {
+  let molochId = event.address.toHexString();
+  let moloch = Moloch.load(molochId);
+  let memberId = molochId
+    .concat("-member-")
+    .concat(event.params.memberAddress.toHex());
+  let member = Member.load(memberId);
+
+  if (event.params.mint) {
+    moloch.totalShares = moloch.totalShares.plus(event.params.shares);
+    moloch.totalLoot = moloch.totalLoot.plus(event.params.loot);
+    member.shares = member.shares.plus(event.params.shares);
+    member.loot = member.loot.plus(event.params.loot);
+  } else {
+    moloch.totalShares = moloch.totalShares.minus(event.params.shares);
+    moloch.totalLoot = moloch.totalLoot.minus(event.params.loot);
+    member.shares = member.shares.minus(event.params.shares);
+    member.loot = member.loot.minus(event.params.loot);
+  }
+
+  moloch.save();
+  member.save();
+}
+
+// event SpamPrevention(
+//   address _spamPreventionAddr,
+//   uint256 _spamPrevention
+// );
+export function handleSpamPrevention(event: SpamPrevention): void {
+  let molochId = event.address.toHexString();
+  let moloch = Moloch.load(molochId);
+
+  moloch.spamPreventionAddress = event.params._spamPreventionAddr;
+  moloch.spamPreventionAmount = event.params._spamPrevention;
 }

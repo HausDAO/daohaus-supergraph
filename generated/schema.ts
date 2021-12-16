@@ -345,6 +345,49 @@ export class Moloch extends Entity {
   set totalLoot(value: BigInt) {
     this.set("totalLoot", Value.fromBigInt(value));
   }
+
+  get v22Setup(): boolean {
+    let value = this.get("v22Setup");
+    return value.toBoolean();
+  }
+
+  set v22Setup(value: boolean) {
+    this.set("v22Setup", Value.fromBoolean(value));
+  }
+
+  get spamPreventionAddress(): Bytes | null {
+    let value = this.get("spamPreventionAddress");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set spamPreventionAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("spamPreventionAddress");
+    } else {
+      this.set("spamPreventionAddress", Value.fromBytes(value as Bytes));
+    }
+  }
+
+  get spamPreventionAmount(): BigInt | null {
+    let value = this.get("spamPreventionAmount");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set spamPreventionAmount(value: BigInt | null) {
+    if (value === null) {
+      this.unset("spamPreventionAmount");
+    } else {
+      this.set("spamPreventionAmount", Value.fromBigInt(value as BigInt));
+    }
+  }
 }
 
 export class TokenBalance extends Entity {
