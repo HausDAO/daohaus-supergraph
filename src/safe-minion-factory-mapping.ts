@@ -1,4 +1,4 @@
-import { log } from "@graphprotocol/graph-ts";
+import { Bytes, log } from "@graphprotocol/graph-ts";
 import { SummonMinion } from "../generated/SafeMinionFactory/SafeMinionFactory";
 import { SafeMinionTemplate } from "../generated/templates";
 import { Moloch, Minion } from "../generated/schema";
@@ -21,10 +21,21 @@ export function handleSummonedSafeMinion(event: SummonMinion): void {
 
   log.info("**** summoned safeminion: {}, moloch: {}", [minionId, molochId]);
 
+  let details = event.params.details;
+  if (details.startsWith("0xab270234")) { // bytes4(keccak256(abi.encodePacked('AMBMinionSafe'))) === 0xab270234
+    let fields = details.split("/");
+    minion.details = fields[1];
+    minion.crossChainMinion = true;
+    minion.foreignChainId = fields[2];
+    minion.foreignSafeAddress = Bytes.fromHexString(fields[3]) as Bytes;
+  } else {
+    minion.details = details;
+    minion.crossChainMinion = false;
+  }
+
   minion.minionAddress = minionAddress;
   minion.safeAddress = event.params.avatar;
   minion.molochAddress = event.params.moloch;
-  minion.details = event.params.details;
   minion.minionType = event.params.minionType;
   minion.moloch = moloch.id;
   minion.createdAt = event.block.timestamp.toString();

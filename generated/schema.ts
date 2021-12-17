@@ -1989,6 +1989,49 @@ export class Minion extends Entity {
     }
   }
 
+  get crossChainMinion(): boolean {
+    let value = this.get("crossChainMinion");
+    return value.toBoolean();
+  }
+
+  set crossChainMinion(value: boolean) {
+    this.set("crossChainMinion", Value.fromBoolean(value));
+  }
+
+  get foreignChainId(): string | null {
+    let value = this.get("foreignChainId");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set foreignChainId(value: string | null) {
+    if (value === null) {
+      this.unset("foreignChainId");
+    } else {
+      this.set("foreignChainId", Value.fromString(value as string));
+    }
+  }
+
+  get foreignSafeAddress(): Bytes | null {
+    let value = this.get("foreignSafeAddress");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set foreignSafeAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("foreignSafeAddress");
+    } else {
+      this.set("foreignSafeAddress", Value.fromBytes(value as Bytes));
+    }
+  }
+
   get version(): string | null {
     let value = this.get("version");
     if (value === null || value.kind == ValueKind.NULL) {
