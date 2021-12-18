@@ -20,6 +20,7 @@ export function handleSummonedMinion(event: SummonMinion): void {
 
   minion.minionAddress = event.params.minion;
   minion.molochAddress = event.params.moloch;
+  minion.crossChainMinion = false;
   minion.details = event.params.details;
   minion.minionType = event.params.minionType;
   minion.moloch = moloch.id;
@@ -47,6 +48,7 @@ export function handleSummonedV2Minion(event: SummonMinion): void {
 
   minion.minionAddress = event.params.minion;
   minion.molochAddress = event.params.moloch;
+  minion.crossChainMinion = false;
   minion.details = event.params.details;
   minion.minionType = event.params.minionType;
   minion.moloch = moloch.id;

@@ -453,10 +453,6 @@ module.exports.config = {
         name: "safeMinionTemplate",
         template: "safeMinion-template.yaml",
       },
-      {
-        name: "yeeterShaman",
-        template: "safeMinion-template.yaml",
-      },
     ],
   },
 };

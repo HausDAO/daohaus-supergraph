@@ -24,13 +24,18 @@ export function handleSummonYeeter(event: SummonYeetComplete): void {
   let shaman = new Shaman(shamanId);
 
   shaman.molochAddress = event.params.moloch;
+  shaman.moloch = moloch.id;
+  shaman.createdAt = event.block.timestamp.toString();
   shaman.shamanAddress = shamanAddress;
+  shaman.shamanType = "yeeter";
   shaman.yeeterUhMoloch = event.params.uhMoloch;
   shaman.yeeterRaiseEndTime = event.params.raiseEndTime;
   shaman.yeeterRaiseStartTime = event.params.raiseStartTime;
   shaman.yeeterMaxUnits = event.params.maxUnits;
   shaman.yeeterMaxTarget = event.params.maxTarget;
-  //   shaman.details = event.params.details;
+
+  // shaman.details = event.params.details;
+  shaman.details = "temp";
 
   shaman.save();
 

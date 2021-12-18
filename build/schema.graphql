@@ -177,6 +177,9 @@ type Minion @entity {
   uberHausDelegateRewardFactor: BigInt
   uberHausDelegate: Bytes
   safeAddress: Bytes
+  crossChainMinion: Boolean!
+  foreignChainId: String
+  foreignSafeAddress: Bytes
   version: String
   minQuorum: BigInt
   streams: [MinionStream!] @derivedFrom(field: "minion")
@@ -242,4 +245,10 @@ type Shaman @entity {
   shamanType: String!
   details: String!
   safeAddress: Bytes
+  yeeterMaxTarget: BigInt
+  yeeterRaiseEndTime: BigInt
+  yeeterRaiseStartTime: BigInt
+  yeeterMaxUnits: BigInt
+  yeeterPricePerUnit: BigInt
+  yeeterUhMoloch: Bytes
 }
