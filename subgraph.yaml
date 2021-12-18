@@ -92,9 +92,9 @@ dataSources:
     name: V22Factory
     network: rinkeby
     source:
-      address: '0xed0e6EfbF4F0030a5C641489d2372588B234E582'
+      address: '0x8071F93Df4647C27A8121d5591E45Aff3b6BD367'
       abi: V22Factory
-      startBlock: 9825309
+      startBlock: 9826323
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -111,7 +111,7 @@ dataSources:
       eventHandlers:
         - event: >-
             SummonComplete(indexed
-            address,address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256)
+            address,address,address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleSummonV22
       file: ./src/v22-factory-mapping.ts
   - kind: ethereum/contract
@@ -232,6 +232,50 @@ dataSources:
             address,string,string,uint256)
           handler: handleSummonedSafeMinion
       file: ./src/safe-minion-factory-mapping.ts
+  - kind: ethereum/contract
+    name: V22AndSafeMinionFactory
+    network: rinkeby
+    source:
+      address: '0x7175Fd51EFB240e7D7eBD429DbCAF0139c5445C1'
+      abi: V22AndSafeMinionFactory
+      startBlock: 9825309
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Shaman
+      abis:
+        - name: V22AndSafeMinionFactory
+          file: ./abis/V22AndSafeMinionFactory.json
+      eventHandlers:
+        - event: 'SummonComplete(address,indexed address,address,address,string)'
+          handler: handleSummonComplete
+        - event: 'SetupComplete(indexed address,address,address[],uint256[],uint256[])'
+          handler: handleSetupComplete
+      file: ./src/v22-safe-minion-factory-mapping.ts
+  - kind: ethereum/contract
+    name: YeeterFactory
+    network: rinkeby
+    source:
+      address: '0xB450E5fd1eFA52265f4Ba49895ceFC3294AB08d2'
+      abi: YeeterFactory
+      startBlock: 9826482
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Shaman
+      abis:
+        - name: YeeterFactory
+          file: ./abis/YeeterFactory.json
+      eventHandlers:
+        - event: >-
+            SummonYeetComplete(indexed
+            address,address,address,uint256,uint256,uint256,uint256,uint256)
+          handler: handleSummonYeeter
+      file: ./src/yeeter-factory-mapping.ts
 templates:
   - kind: ethereum/contract
     name: MolochV1Template
@@ -446,6 +490,8 @@ templates:
           handler: handleTokensCollected
         - event: 'Shaman(indexed address,uint256,uint256,bool)'
           handler: handleShaman
+        - event: 'SpamPrevention(address,uint256)'
+          handler: handleSpamPrevention
   - kind: ethereum/contract
     name: SuperfluidMinionTemplate
     network: rinkeby

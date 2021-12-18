@@ -27,40 +27,44 @@ export class SummonComplete__Params {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get _shaman(): Address {
+  get _summoner(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
+  get _shaman(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
   get tokens(): Array<Address> {
-    return this._event.parameters[2].value.toAddressArray();
+    return this._event.parameters[3].value.toAddressArray();
   }
 
   get summoningTime(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
-  }
-
-  get periodDuration(): BigInt {
     return this._event.parameters[4].value.toBigInt();
   }
 
-  get votingPeriodLength(): BigInt {
+  get periodDuration(): BigInt {
     return this._event.parameters[5].value.toBigInt();
   }
 
-  get gracePeriodLength(): BigInt {
+  get votingPeriodLength(): BigInt {
     return this._event.parameters[6].value.toBigInt();
   }
 
-  get proposalDeposit(): BigInt {
+  get gracePeriodLength(): BigInt {
     return this._event.parameters[7].value.toBigInt();
   }
 
-  get dilutionBound(): BigInt {
+  get proposalDeposit(): BigInt {
     return this._event.parameters[8].value.toBigInt();
   }
 
-  get processingReward(): BigInt {
+  get dilutionBound(): BigInt {
     return this._event.parameters[9].value.toBigInt();
+  }
+
+  get processingReward(): BigInt {
+    return this._event.parameters[10].value.toBigInt();
   }
 }
 

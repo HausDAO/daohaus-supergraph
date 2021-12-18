@@ -22,8 +22,12 @@ type Moloch @entity {
   proposals: [Proposal!] @derivedFrom(field: "moloch")
   rageQuits: [RageQuit!] @derivedFrom(field: "moloch")
   minions: [Minion!] @derivedFrom(field: "moloch")
+  shamans: [Shaman!] @derivedFrom(field: "moloch")
   totalShares: BigInt!
   totalLoot: BigInt!
+  v22Setup: Boolean
+  spamPreventionAddress: Bytes
+  spamPreventionAmount: BigInt
 }
 
 type TokenBalance @entity {
@@ -227,4 +231,15 @@ type MinionAction @entity {
   data: Bytes!
   memberOnly: Boolean!
   index: BigInt!
+}
+
+type Shaman @entity {
+  id: ID!
+  createdAt: String!
+  shamanAddress: Bytes!
+  molochAddress: Bytes!
+  moloch: Moloch!
+  shamanType: String!
+  details: String!
+  safeAddress: Bytes
 }

@@ -942,6 +942,23 @@ export function handleShaman(event: Shaman): void {
     .concat(event.params.memberAddress.toHex());
   let member = Member.load(memberId);
 
+  if (member == null) {
+    member = new Member(memberId);
+
+    member.moloch = molochId;
+    member.createdAt = event.block.timestamp.toString();
+    member.molochAddress = event.address;
+    member.memberAddress = event.params.memberAddress;
+    member.delegateKey = event.params.memberAddress;
+    member.shares = BigInt.fromI32(0);
+    member.loot = BigInt.fromI32(0);
+    member.exists = true;
+    member.tokenTribute = BigInt.fromI32(0);
+    member.didRagequit = false;
+    member.proposedToKick = false;
+    member.kicked = false;
+  }
+
   if (event.params.mint) {
     moloch.totalShares = moloch.totalShares.plus(event.params.shares);
     moloch.totalLoot = moloch.totalLoot.plus(event.params.loot);
@@ -956,6 +973,8 @@ export function handleShaman(event: Shaman): void {
 
   moloch.save();
   member.save();
+
+  addTransaction(event.block, event.transaction);
 }
 
 // event SpamPrevention(
@@ -968,4 +987,6 @@ export function handleSpamPrevention(event: SpamPrevention): void {
 
   moloch.spamPreventionAddress = event.params._spamPreventionAddr;
   moloch.spamPreventionAmount = event.params._spamPrevention;
+
+  addTransaction(event.block, event.transaction);
 }

@@ -6,7 +6,11 @@
         "name": "_minionSummoner",
         "type": "address"
       },
-      { "internalType": "address", "name": "_daoSummoner", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_daoSummoner",
+        "type": "address"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -88,7 +92,13 @@
   {
     "inputs": [],
     "name": "daoIdx",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -106,14 +116,40 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "name": "daos",
     "outputs": [
-      { "internalType": "address", "name": "summoner", "type": "address" },
-      { "internalType": "address", "name": "moloch", "type": "address" },
-      { "internalType": "address", "name": "minion", "type": "address" },
-      { "internalType": "address", "name": "avatar", "type": "address" },
-      { "internalType": "bool", "name": "initialized", "type": "bool" }
+      {
+        "internalType": "address",
+        "name": "summoner",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "moloch",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "minion",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "avatar",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "initialized",
+        "type": "bool"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -133,7 +169,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "id", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
       {
         "internalType": "address[]",
         "name": "_summoners",
@@ -157,7 +197,16 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_saltNonce", "type": "uint256" },
+      {
+        "internalType": "address",
+        "name": "_summoner",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_saltNonce",
+        "type": "uint256"
+      },
       {
         "internalType": "uint256",
         "name": "_periodDuration",
@@ -178,12 +227,24 @@
         "name": "_approvedTokens",
         "type": "address[]"
       },
-      { "internalType": "string", "name": "details", "type": "string" }
+      {
+        "internalType": "string",
+        "name": "details",
+        "type": "string"
+      }
     ],
     "name": "summonDaoMinionAndSafe",
     "outputs": [
-      { "internalType": "address", "name": "_moloch", "type": "address" },
-      { "internalType": "address", "name": "_minion", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_moloch",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_minion",
+        "type": "address"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "function"

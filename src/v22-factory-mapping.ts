@@ -13,19 +13,20 @@ import {
 import { addTransaction } from "./transactions";
 
 // event SummonComplete(
-//     address indexed moloch,
-//     address _shaman,
-//     address[] tokens,
-//     uint256 summoningTime,
-//     uint256 periodDuration,
-//     uint256 votingPeriodLength,
-//     uint256 gracePeriodLength,
-//     uint256 proposalDeposit,
-//     uint256 dilutionBound,
-//     uint256 processingReward
+//   address indexed moloch,
+//   address _summoner,
+//   address _shaman,
+//   address[] tokens,
+//   uint256 summoningTime,
+//   uint256 periodDuration,
+//   uint256 votingPeriodLength,
+//   uint256 gracePeriodLength,
+//   uint256 proposalDeposit,
+//   uint256 dilutionBound,
+//   uint256 processingReward
 // );
 
-export function handleSummonV21(event: SummonComplete): void {
+export function handleSummonV22(event: SummonComplete): void {
   MolochV22Template.create(event.params.moloch);
   let molochId = event.params.moloch.toHexString();
   let moloch = new Moloch(molochId);
@@ -36,7 +37,7 @@ export function handleSummonV21(event: SummonComplete): void {
   daoMeta.save();
 
   // TODO: change to summoner param
-  let creator: Address = event.transaction.from;
+  let creator: Address = event.params._summoner;
   moloch.summoner = creator;
 
   createAndAddSummoner(molochId, creator, BigInt.fromI32(1), event);
@@ -54,7 +55,7 @@ export function handleSummonV21(event: SummonComplete): void {
   moloch.createdAt = event.params.summoningTime.toString();
   moloch.deleted = false;
   moloch.newContract = "1";
-  moloch.version = "2.1";
+  moloch.version = "2.2";
   moloch.periodDuration = event.params.periodDuration;
   moloch.votingPeriodLength = event.params.votingPeriodLength;
   moloch.gracePeriodLength = event.params.gracePeriodLength;

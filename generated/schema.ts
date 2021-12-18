@@ -328,6 +328,23 @@ export class Moloch extends Entity {
     }
   }
 
+  get shamans(): Array<string> | null {
+    let value = this.get("shamans");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set shamans(value: Array<string> | null) {
+    if (value === null) {
+      this.unset("shamans");
+    } else {
+      this.set("shamans", Value.fromStringArray(value as Array<string>));
+    }
+  }
+
   get totalShares(): BigInt {
     let value = this.get("totalShares");
     return value.toBigInt();
@@ -2592,5 +2609,209 @@ export class MinionAction extends Entity {
 
   set index(value: BigInt) {
     this.set("index", Value.fromBigInt(value));
+  }
+}
+
+export class Shaman extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Shaman entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Shaman entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Shaman", id.toString(), this);
+  }
+
+  static load(id: string): Shaman | null {
+    return store.get("Shaman", id) as Shaman | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get createdAt(): string {
+    let value = this.get("createdAt");
+    return value.toString();
+  }
+
+  set createdAt(value: string) {
+    this.set("createdAt", Value.fromString(value));
+  }
+
+  get shamanAddress(): Bytes {
+    let value = this.get("shamanAddress");
+    return value.toBytes();
+  }
+
+  set shamanAddress(value: Bytes) {
+    this.set("shamanAddress", Value.fromBytes(value));
+  }
+
+  get molochAddress(): Bytes {
+    let value = this.get("molochAddress");
+    return value.toBytes();
+  }
+
+  set molochAddress(value: Bytes) {
+    this.set("molochAddress", Value.fromBytes(value));
+  }
+
+  get moloch(): string {
+    let value = this.get("moloch");
+    return value.toString();
+  }
+
+  set moloch(value: string) {
+    this.set("moloch", Value.fromString(value));
+  }
+
+  get shamanType(): string {
+    let value = this.get("shamanType");
+    return value.toString();
+  }
+
+  set shamanType(value: string) {
+    this.set("shamanType", Value.fromString(value));
+  }
+
+  get details(): string {
+    let value = this.get("details");
+    return value.toString();
+  }
+
+  set details(value: string) {
+    this.set("details", Value.fromString(value));
+  }
+
+  get safeAddress(): Bytes | null {
+    let value = this.get("safeAddress");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set safeAddress(value: Bytes | null) {
+    if (value === null) {
+      this.unset("safeAddress");
+    } else {
+      this.set("safeAddress", Value.fromBytes(value as Bytes));
+    }
+  }
+
+  get yeeterMaxTarget(): BigInt | null {
+    let value = this.get("yeeterMaxTarget");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set yeeterMaxTarget(value: BigInt | null) {
+    if (value === null) {
+      this.unset("yeeterMaxTarget");
+    } else {
+      this.set("yeeterMaxTarget", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get yeeterRaiseEndTime(): BigInt | null {
+    let value = this.get("yeeterRaiseEndTime");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set yeeterRaiseEndTime(value: BigInt | null) {
+    if (value === null) {
+      this.unset("yeeterRaiseEndTime");
+    } else {
+      this.set("yeeterRaiseEndTime", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get yeeterRaiseStartTime(): BigInt | null {
+    let value = this.get("yeeterRaiseStartTime");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set yeeterRaiseStartTime(value: BigInt | null) {
+    if (value === null) {
+      this.unset("yeeterRaiseStartTime");
+    } else {
+      this.set("yeeterRaiseStartTime", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get yeeterMaxUnits(): BigInt | null {
+    let value = this.get("yeeterMaxUnits");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set yeeterMaxUnits(value: BigInt | null) {
+    if (value === null) {
+      this.unset("yeeterMaxUnits");
+    } else {
+      this.set("yeeterMaxUnits", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get yeeterPricePerUnit(): BigInt | null {
+    let value = this.get("yeeterPricePerUnit");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set yeeterPricePerUnit(value: BigInt | null) {
+    if (value === null) {
+      this.unset("yeeterPricePerUnit");
+    } else {
+      this.set("yeeterPricePerUnit", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get yeeterUhMoloch(): Bytes | null {
+    let value = this.get("yeeterUhMoloch");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set yeeterUhMoloch(value: Bytes | null) {
+    if (value === null) {
+      this.unset("yeeterUhMoloch");
+    } else {
+      this.set("yeeterUhMoloch", Value.fromBytes(value as Bytes));
+    }
   }
 }
