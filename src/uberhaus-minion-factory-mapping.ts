@@ -32,6 +32,7 @@ export function handleSummonedUberMinion(event: SummonUberMinion): void {
 
   minion.minionAddress = event.params.uberminion;
   minion.molochAddress = event.params.dao;
+  minion.crossChainMinion = false;
   minion.details = event.params.desc;
   minion.minionType = event.params.name;
   minion.moloch = moloch.id;
