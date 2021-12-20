@@ -415,12 +415,6 @@ export function handleSubmitVote(event: SubmitVote): void {
   let memberVoteWeight = member.shares;
   vote.memberPower = memberVoteWeight;
 
-  log.info("??? vote propid:{}, txhash: {}, member.shares: {}", [
-    proposalVotedId,
-    event.transaction.hash.toHexString(),
-    member.shares.toString(),
-  ]);
-
   vote.save();
 
   let moloch = Moloch.load(molochId);
@@ -434,22 +428,11 @@ export function handleSubmitVote(event: SubmitVote): void {
         moloch.totalShares
       );
       member.highestIndexYesVote = proposalVotedId;
-      log.info(
-        "??? ** made it to yes vote, proposal.yesShares:{}, proposal.noShares: {}, proposal.max: {}, moloch.loot: {}",
-        [
-          proposal.yesShares.toString(),
-          proposal.yesVotes.toString(),
-          proposal.maxTotalSharesAndLootAtYesVote.toString(),
-          moloch.totalLoot.toString(),
-        ]
-      );
       proposal.save();
       member.save();
       break;
     }
     case 2: {
-      log.info("??? ** made it to no vote", []);
-
       proposal.noShares = proposal.noShares.plus(member.shares);
       proposal.noVotes = proposal.noVotes.plus(BigInt.fromI32(1));
       proposal.save();
@@ -790,7 +773,7 @@ export function handleRagequit(event: Ragequit): void {
     targetAddress = "0x".concat(inputData.slice(34));
   }
 
-  log.info("***rage, targetAddress: {}", [targetAddress]);
+  // log.info("***rage, targetAddress: {}", [targetAddress]);
 
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);

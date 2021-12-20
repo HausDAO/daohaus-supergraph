@@ -13,7 +13,7 @@ dataSources:
       startBlock: 10733005
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Register
@@ -41,7 +41,7 @@ dataSources:
       startBlock: 10733005
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Register
@@ -69,7 +69,7 @@ dataSources:
       startBlock: 13569775
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Register
@@ -97,7 +97,7 @@ dataSources:
       startBlock: 13569739
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Moloch
@@ -122,7 +122,7 @@ dataSources:
       startBlock: 15503980
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Moloch
@@ -147,7 +147,7 @@ dataSources:
       startBlock: 14958440
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Moloch
@@ -170,7 +170,7 @@ dataSources:
       startBlock: 15925433
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Moloch
@@ -191,7 +191,7 @@ dataSources:
       startBlock: 16507968
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Moloch
@@ -212,7 +212,7 @@ dataSources:
       startBlock: 18025529
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Moloch
@@ -235,7 +235,7 @@ dataSources:
       startBlock: 18589768
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       entities:
         - Moloch
@@ -258,7 +258,7 @@ templates:
       abi: V1Moloch
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       file: ./src/v1-mapping.ts
       entities:
@@ -302,7 +302,7 @@ templates:
       abi: V2Moloch
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       file: ./src/v2-mapping.ts
       entities:
@@ -361,7 +361,7 @@ templates:
       abi: V21Moloch
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       file: ./src/v2-mapping.ts
       entities:
@@ -415,7 +415,7 @@ templates:
       abi: UberhausMinion
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       file: ./src/uberhaus-minion-mapping.ts
       entities:
@@ -441,7 +441,7 @@ templates:
       abi: SuperfluidMinion
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       file: ./src/superfluid-minion-mapping.ts
       entities:
@@ -467,7 +467,7 @@ templates:
       abi: SafeMinion
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.3
       language: wasm/assemblyscript
       file: ./src/safe-minion-mapping.ts
       entities:
