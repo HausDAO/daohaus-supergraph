@@ -5,7 +5,7 @@ source:
   abi: V1Moloch
 mapping:
   kind: ethereum/events
-  apiVersion: 0.0.3
+  apiVersion: 0.0.5
   language: wasm/assemblyscript
   file: ./src/v1-mapping.ts
   entities:
