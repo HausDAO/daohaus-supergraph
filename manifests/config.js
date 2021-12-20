@@ -380,6 +380,12 @@ module.exports.config = {
         startBlock: 7771115,
       },
       {
+        name: "v22Factory",
+        template: "v22Factory-ds.yaml",
+        address: "0x8071F93Df4647C27A8121d5591E45Aff3b6BD367",
+        startBlock: 9826323,
+      },
+      {
         name: "minionFactory",
         template: "minionFactory-ds.yaml",
         address: "0x316eFCd421b0654B7aE8E806880D4AE88ecaE206",
@@ -409,6 +415,18 @@ module.exports.config = {
         address: "0x3f13ABc8931c0e381Ce6d1Be9f978aE6E9d99Cb8",
         startBlock: 9269583,
       },
+      {
+        name: "v22AndSafeMinion",
+        template: "v22AndSafeMinion-ds.yaml",
+        address: "0x7175Fd51EFB240e7D7eBD429DbCAF0139c5445C1",
+        startBlock: 9825309,
+      },
+      {
+        name: "YeeterFactory",
+        template: "yeeterFactory-ds.yaml",
+        address: "0xB450E5fd1eFA52265f4Ba49895ceFC3294AB08d2",
+        startBlock: 9826482,
+      },
     ],
     templates: [
       {
@@ -422,6 +440,10 @@ module.exports.config = {
       {
         name: "v21Template",
         template: "v21-template.yaml",
+      },
+      {
+        name: "v22Template",
+        template: "v22-template.yaml",
       },
       {
         name: "superfluidMinionTemplate",
