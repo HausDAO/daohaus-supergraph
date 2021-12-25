@@ -122,6 +122,49 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "periodDuration",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "votingPeriodLength",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "gracePeriodLength",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "proposalDeposit",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "dilutionBound",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "processingReward",
+        "type": "uint256"
+      }
+    ],
+    "name": "SetConfig",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "shaman",
@@ -135,6 +178,25 @@
       }
     ],
     "name": "SetShaman",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "spamPreventionAddr",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "spamPrevention",
+        "type": "uint256"
+      }
+    ],
+    "name": "SetSpamPrevention",
     "type": "event"
   },
   {
@@ -166,25 +228,6 @@
       }
     ],
     "name": "Shaman",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "_spamPreventionAddr",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_spamPrevention",
-        "type": "uint256"
-      }
-    ],
-    "name": "SpamPrevention",
     "type": "event"
   },
   {
@@ -607,7 +650,6 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_summoner", "type": "address" },
       { "internalType": "address", "name": "_shaman", "type": "address" },
       {
         "internalType": "address[]",
@@ -851,22 +893,42 @@
     "inputs": [
       {
         "internalType": "address[]",
-        "name": "_summoners",
+        "name": "_applicants",
         "type": "address[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "_summonerShares",
+        "name": "_applicantShares",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "_summonerLoot",
+        "name": "_applicantLoot",
         "type": "uint256[]"
       },
       { "internalType": "bool", "name": "mint", "type": "bool" }
     ],
     "name": "setSharesLoot",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_applicant", "type": "address" },
+      {
+        "internalType": "uint256",
+        "name": "_applicantShares",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_applicantLoot",
+        "type": "uint256"
+      },
+      { "internalType": "bool", "name": "mint", "type": "bool" }
+    ],
+    "name": "setSingleSharesLoot",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

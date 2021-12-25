@@ -242,13 +242,13 @@ type Shaman @entity {
   shamanAddress: Bytes!
   molochAddress: Bytes!
   moloch: Moloch!
-  shamanType: String!
-  details: String!
+  enabled: Boolean!
+  shamanType: String
+  details: String
   safeAddress: Bytes
   yeeterMaxTarget: BigInt
   yeeterRaiseEndTime: BigInt
   yeeterRaiseStartTime: BigInt
   yeeterMaxUnits: BigInt
   yeeterPricePerUnit: BigInt
-  yeeterUhMoloch: Bytes
 }

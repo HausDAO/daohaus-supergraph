@@ -22,7 +22,7 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "uhMoloch",
+        "name": "yeeter",
         "type": "address"
       },
       {
@@ -60,6 +60,12 @@
         "internalType": "uint256",
         "name": "pricePerUnit",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "details",
+        "type": "string"
       }
     ],
     "name": "SummonYeetComplete",
@@ -68,7 +74,6 @@
   {
     "inputs": [
       { "internalType": "address", "name": "_moloch", "type": "address" },
-      { "internalType": "address", "name": "_uhMoloch", "type": "address" },
       {
         "internalType": "address payable",
         "name": "_wrapper",
@@ -82,7 +87,8 @@
         "type": "uint256"
       },
       { "internalType": "uint256", "name": "_maxUnits", "type": "uint256" },
-      { "internalType": "uint256", "name": "_pricePerUnit", "type": "uint256" }
+      { "internalType": "uint256", "name": "_pricePerUnit", "type": "uint256" },
+      { "internalType": "string", "name": "_details", "type": "string" }
     ],
     "name": "summonYeet",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],

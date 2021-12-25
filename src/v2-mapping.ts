@@ -20,8 +20,9 @@ import {
   TokensCollected,
 } from "../generated/templates/MolochV2Template/V2Moloch";
 import {
-  Shaman,
-  SpamPrevention,
+  Shaman as ShamanEvent,
+  SetSpamPrevention,
+  SetShaman,
 } from "../generated/templates/MolochV22Template/V22Moloch";
 import { Erc20 } from "../generated/templates/MolochV2Template/Erc20";
 import { Erc20Bytes32 } from "../generated/templates/MolochV2Template/Erc20Bytes32";
@@ -36,6 +37,7 @@ import {
   RageQuit,
   DaoMeta,
   Minion,
+  Shaman,
 } from "../generated/schema";
 import { addTransaction } from "./transactions";
 
@@ -934,7 +936,7 @@ export function handleTokensCollected(event: TokensCollected): void {
 //   uint256 loot,
 //   bool mint
 // );
-export function handleShaman(event: Shaman): void {
+export function handleShaman(event: ShamanEvent): void {
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
   let memberId = molochId
@@ -981,12 +983,31 @@ export function handleShaman(event: Shaman): void {
 //   address _spamPreventionAddr,
 //   uint256 _spamPrevention
 // );
-export function handleSpamPrevention(event: SpamPrevention): void {
+export function handleSpamPrevention(event: SetSpamPrevention): void {
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
 
-  moloch.spamPreventionAddress = event.params._spamPreventionAddr;
-  moloch.spamPreventionAmount = event.params._spamPrevention;
+  moloch.spamPreventionAddress = event.params.spamPreventionAddr;
+  moloch.spamPreventionAmount = event.params.spamPrevention;
+
+  addTransaction(event.block, event.transaction);
+}
+
+// event SetShaman(address indexed shaman, bool isEnabled);
+export function handleSetShaman(event: SetShaman): void {
+  let molochId = event.address.toHexString();
+
+  let shamanId = molochId
+    .concat("-shaman-")
+    .concat(event.params.shaman.toHex());
+  let shaman = Shaman.load(shamanId);
+
+  log.info("shaman, {}", [shamanId]);
+  log.info("molochId, {}", [molochId]);
+
+  shaman.enabled = event.params.isEnabled;
+
+  shaman.save();
 
   addTransaction(event.block, event.transaction);
 }

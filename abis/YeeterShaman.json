@@ -19,6 +19,13 @@
     "type": "event"
   },
   {
+    "inputs": [],
+    "name": "balance",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "name": "deposits",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -35,7 +42,6 @@
   {
     "inputs": [
       { "internalType": "address", "name": "_moloch", "type": "address" },
-      { "internalType": "address", "name": "_uhMoloch", "type": "address" },
       {
         "internalType": "address payable",
         "name": "_wrapper",
@@ -49,11 +55,33 @@
         "type": "uint256"
       },
       { "internalType": "uint256", "name": "_maxUnits", "type": "uint256" },
-      { "internalType": "uint256", "name": "_pricePerUnit", "type": "uint256" }
+      { "internalType": "uint256", "name": "_pricePerUnit", "type": "uint256" },
+      { "internalType": "uint256", "name": "_lootPerUnit", "type": "uint256" }
     ],
     "name": "init",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lootPerUnit",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxTarget",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxUnitsPerAddr",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -67,8 +95,22 @@
   },
   {
     "inputs": [],
-    "name": "uhMoloch",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "pricePerUnit",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "raiseEndTime",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "raiseStartTime",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },

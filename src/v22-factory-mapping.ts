@@ -36,11 +36,11 @@ export function handleSummonV22(event: SummonComplete): void {
   daoMeta.newContract = "1";
   daoMeta.save();
 
-  // TODO: change to summoner param
   let creator: Address = event.params._summoner;
   moloch.summoner = creator;
 
-  createAndAddSummoner(molochId, creator, BigInt.fromI32(1), event);
+  // create summoner with 0 shares
+  createAndAddSummoner(molochId, creator, BigInt.fromI32(0), event);
 
   let tokens = event.params.tokens;
   let approvedTokens: string[] = [];
@@ -82,6 +82,7 @@ export function createAndAddSummoner(
   event: SummonComplete
 ): string {
   let memberId = molochId.concat("-member-").concat(summoner.toHex());
+
   let member = new Member(memberId);
 
   member.moloch = molochId;

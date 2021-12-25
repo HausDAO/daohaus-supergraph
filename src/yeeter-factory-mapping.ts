@@ -2,16 +2,18 @@ import { SummonYeetComplete } from "../generated/YeeterFactory/YeeterFactory";
 import { Moloch, Shaman } from "../generated/schema";
 import { addTransaction } from "./transactions";
 
-// event SummonYeetComplete(
-//     address indexed moloch,
-//     address uhMoloch,
-//     address wrapper,
-//     uint256 maxTarget,
-//     uint256 raiseEndTime,
-//     uint256 raiseStartTime,
-//     uint256 maxUnits,
-//     uint256 pricePerUnit
+//  event SummonYeetComplete(
+//   address indexed moloch,
+//   address yeeter,
+//   address wrapper,
+//   uint256 maxTarget,
+//   uint256 raiseEndTime,
+//   uint256 raiseStartTime,
+//   uint256 maxUnits,
+//   uint256 pricePerUnit,
+//   string details
 // );
+
 export function handleSummonYeeter(event: SummonYeetComplete): void {
   let molochId = event.params.moloch.toHexString();
   let moloch = Moloch.load(molochId);
@@ -19,7 +21,7 @@ export function handleSummonYeeter(event: SummonYeetComplete): void {
     return;
   }
 
-  let shamanAddress = event.params.uhMoloch;
+  let shamanAddress = event.params.yeeter;
   let shamanId = molochId.concat("-shaman-").concat(shamanAddress.toHex());
   let shaman = new Shaman(shamanId);
 
@@ -28,14 +30,13 @@ export function handleSummonYeeter(event: SummonYeetComplete): void {
   shaman.createdAt = event.block.timestamp.toString();
   shaman.shamanAddress = shamanAddress;
   shaman.shamanType = "yeeter";
-  shaman.yeeterUhMoloch = event.params.uhMoloch;
+  // shaman.yeeterUhMoloch = event.params.uhMoloch;
   shaman.yeeterRaiseEndTime = event.params.raiseEndTime;
   shaman.yeeterRaiseStartTime = event.params.raiseStartTime;
   shaman.yeeterMaxUnits = event.params.maxUnits;
   shaman.yeeterMaxTarget = event.params.maxTarget;
 
-  // shaman.details = event.params.details;
-  shaman.details = "temp";
+  shaman.details = event.params.details;
 
   shaman.save();
 

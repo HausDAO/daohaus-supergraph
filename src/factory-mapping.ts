@@ -173,17 +173,21 @@ export function handleSummonV21(event: SummonComplete): void {
 export function handleRegisterV21(event: RegisterV21): void {
   let molochId = event.params.moloch.toHexString();
   let moloch = Moloch.load(molochId);
-  moloch.version = event.params.version.toString();
 
-  moloch.save();
+  if (moloch) {
+    moloch.version = event.params.version.toString();
+    moloch.save();
+  }
 
   let daoMeta = DaoMeta.load(event.params.moloch.toHex());
-  daoMeta.title = event.params.title;
-  daoMeta.version = event.params.version.toString();
-  daoMeta.newContract = event.params.daoIdx.toString();
-  daoMeta.http = event.params.http.toString();
+  if (daoMeta) {
+    daoMeta.title = event.params.title;
+    daoMeta.version = event.params.version.toString();
+    daoMeta.newContract = event.params.daoIdx.toString();
+    daoMeta.http = event.params.http.toString();
 
-  daoMeta.save();
+    daoMeta.save();
+  }
 
   addTransaction(event.block, event.transaction);
 }
@@ -191,8 +195,11 @@ export function handleRegisterV21(event: RegisterV21): void {
 export function handleDelete(event: Delete): void {
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
-  moloch.deleted = true;
-  moloch.save();
+
+  if (moloch) {
+    moloch.deleted = true;
+    moloch.save();
+  }
 
   addTransaction(event.block, event.transaction);
 }

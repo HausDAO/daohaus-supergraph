@@ -382,8 +382,8 @@ module.exports.config = {
       {
         name: "v22Factory",
         template: "v22Factory-ds.yaml",
-        address: "0x8071F93Df4647C27A8121d5591E45Aff3b6BD367",
-        startBlock: 9826323,
+        address: "0x35dDDa3938A063f5827428C170f015De78548C8d",
+        startBlock: 9854098,
       },
       {
         name: "minionFactory",
@@ -418,14 +418,14 @@ module.exports.config = {
       {
         name: "v22AndSafeMinion",
         template: "v22AndSafeMinion-ds.yaml",
-        address: "0x7175Fd51EFB240e7D7eBD429DbCAF0139c5445C1",
-        startBlock: 9825309,
+        address: "0xE8d33d1047B7D8C8016ad1E5E3E201cb3F38F5d4",
+        startBlock: 9854107,
       },
       {
         name: "YeeterFactory",
         template: "yeeterFactory-ds.yaml",
-        address: "0xB450E5fd1eFA52265f4Ba49895ceFC3294AB08d2",
-        startBlock: 9826482,
+        address: "0xcb457EAe937061c9Bca9A8691fc84104C0Ad726B",
+        startBlock: 9854421,
       },
     ],
     templates: [
