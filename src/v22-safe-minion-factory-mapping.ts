@@ -38,7 +38,10 @@ function loadOrCreateSummonerV22(
   member.loot = loot;
 
   //this tokens array might be tokenIds
-  let tokens = moloch.tokens as string[];
+  let tokens: string[] = [];
+  if (moloch) {
+    tokens = moloch.tokens as string[];
+  }
 
   for (let i = 0; i < tokens.length; i++) {
     // let token = tokens[i];
@@ -103,32 +106,34 @@ export function handleSetupComplete(event: SetupComplete): void {
   let molochId = event.params.moloch.toHexString();
   let moloch = Moloch.load(molochId);
 
-  let eventSummoners: Address[] = event.params.summoners;
-  let summoners: string[] = [];
+  if (moloch) {
+    let eventSummoners: Address[] = event.params.summoners;
+    let summoners: string[] = [];
 
-  let eventSummonerShares = event.params.summonerShares;
-  let eventSummonerLoot = event.params.summonerLoot;
+    let eventSummonerShares = event.params.summonerShares;
+    let eventSummonerLoot = event.params.summonerLoot;
 
-  let mTotalShares = moloch.totalShares;
-  let mTotalLoot = moloch.totalLoot;
+    let mTotalShares = moloch.totalShares;
+    let mTotalLoot = moloch.totalLoot;
 
-  for (let i = 0; i < eventSummoners.length; i++) {
-    let summoner = eventSummoners[i];
-    let shares = eventSummonerShares[i];
-    let loot = eventSummonerLoot[i];
-    mTotalShares = mTotalShares.plus(shares);
-    mTotalLoot = mTotalLoot.plus(loot);
+    for (let i = 0; i < eventSummoners.length; i++) {
+      let summoner = eventSummoners[i];
+      let shares = eventSummonerShares[i];
+      let loot = eventSummonerLoot[i];
+      mTotalShares = mTotalShares.plus(shares);
+      mTotalLoot = mTotalLoot.plus(loot);
 
-    summoners.push(
-      loadOrCreateSummonerV22(molochId, summoner, shares, loot, event)
-    );
+      summoners.push(
+        loadOrCreateSummonerV22(molochId, summoner, shares, loot, event)
+      );
+    }
+
+    // do we need to do anything with extraShamans;
+
+    moloch.v22Setup = true;
+
+    moloch.save();
   }
-
-  // do we need to do anything with extraShamans;
-
-  moloch.v22Setup = true;
-
-  moloch.save();
 
   addTransaction(event.block, event.transaction);
 }
