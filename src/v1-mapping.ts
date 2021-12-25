@@ -39,56 +39,59 @@ export function handleSummonComplete(event: SummonComplete): void {
   let molochId = event.address.toHex();
   let moloch = new Moloch(molochId);
   let daoMeta = DaoMeta.load(molochId);
-  if (daoMeta.newContract == "0") {
-    return;
+
+  if (moloch && daoMeta) {
+    if (daoMeta.newContract == "0") {
+      return;
+    }
+
+    moloch.summoner = event.params.summoner;
+    moloch.newContract = daoMeta.newContract;
+    moloch.version = daoMeta.version;
+    moloch.deleted = false;
+    moloch.totalShares = BigInt.fromI32(1);
+    moloch.totalLoot = BigInt.fromI32(0);
+    moloch.proposalDeposit = BigInt.fromI32(0);
+    moloch.dilutionBound = BigInt.fromI32(0);
+    moloch.processingReward = BigInt.fromI32(0);
+
+    let contract = Contract.bind(event.address);
+    moloch.periodDuration = contract.periodDuration();
+    moloch.votingPeriodLength = contract.votingPeriodLength();
+    moloch.gracePeriodLength = contract.gracePeriodLength();
+    moloch.proposalDeposit = contract.proposalDeposit();
+    moloch.dilutionBound = contract.dilutionBound();
+    moloch.processingReward = contract.processingReward();
+    moloch.summoningTime = contract.summoningTime();
+    moloch.createdAt = contract.summoningTime().toString();
+    moloch.guildBankAddress = contract.guildBank();
+    moloch.guildBankBalanceV1 = BigInt.fromI32(0);
+
+    let gbContract = Guildbank.bind(moloch.guildBankAddress as Address);
+    let depositTokenAddress = gbContract.approvedToken();
+    let approvedTokens: string[] = [];
+    approvedTokens.push(createAndApproveToken(molochId, depositTokenAddress));
+    moloch.approvedTokens = approvedTokens;
+    moloch.depositToken = approvedTokens[0];
+
+    let memberId = molochId
+      .concat("-member-")
+      .concat(event.params.summoner.toHex());
+
+    let member = new Member(memberId);
+    member.molochAddress = event.address;
+    member.moloch = moloch.id;
+    member.memberAddress = event.params.summoner;
+    member.createdAt = event.block.timestamp.toString();
+    member.delegateKey = event.params.summoner;
+    member.shares = event.params.shares;
+    member.exists = true;
+    member.tokenTribute = BigInt.fromI32(0);
+    member.didRagequit = false;
+
+    member.save();
+    moloch.save();
   }
-
-  moloch.summoner = event.params.summoner;
-  moloch.newContract = daoMeta.newContract;
-  moloch.version = daoMeta.version;
-  moloch.deleted = false;
-  moloch.totalShares = BigInt.fromI32(1);
-  moloch.totalLoot = BigInt.fromI32(0);
-  moloch.proposalDeposit = BigInt.fromI32(0);
-  moloch.dilutionBound = BigInt.fromI32(0);
-  moloch.processingReward = BigInt.fromI32(0);
-
-  let contract = Contract.bind(event.address);
-  moloch.periodDuration = contract.periodDuration();
-  moloch.votingPeriodLength = contract.votingPeriodLength();
-  moloch.gracePeriodLength = contract.gracePeriodLength();
-  moloch.proposalDeposit = contract.proposalDeposit();
-  moloch.dilutionBound = contract.dilutionBound();
-  moloch.processingReward = contract.processingReward();
-  moloch.summoningTime = contract.summoningTime();
-  moloch.createdAt = contract.summoningTime().toString();
-  moloch.guildBankAddress = contract.guildBank();
-  moloch.guildBankBalanceV1 = BigInt.fromI32(0);
-
-  let gbContract = Guildbank.bind(moloch.guildBankAddress as Address);
-  let depositTokenAddress = gbContract.approvedToken();
-  let approvedTokens: string[] = [];
-  approvedTokens.push(createAndApproveToken(molochId, depositTokenAddress));
-  moloch.approvedTokens = approvedTokens;
-  moloch.depositToken = approvedTokens[0];
-
-  let memberId = molochId
-    .concat("-member-")
-    .concat(event.params.summoner.toHex());
-
-  let member = new Member(memberId);
-  member.molochAddress = event.address;
-  member.moloch = moloch.id;
-  member.memberAddress = event.params.summoner;
-  member.createdAt = event.block.timestamp.toString();
-  member.delegateKey = event.params.summoner;
-  member.shares = event.params.shares;
-  member.exists = true;
-  member.tokenTribute = BigInt.fromI32(0);
-  member.didRagequit = false;
-
-  member.save();
-  moloch.save();
 
   addTransaction(event.block, event.transaction);
 }
@@ -96,7 +99,7 @@ export function handleSummonComplete(event: SummonComplete): void {
 export function handleSubmitProposal(event: SubmitProposal): void {
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
-  if (moloch.newContract == "0") {
+  if (moloch == null || moloch.newContract == "0") {
     return;
   }
 
@@ -147,7 +150,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   proposal.isMinion = false;
 
   let votingPeriodStarts = moloch.summoningTime.plus(
-    proposal.startingPeriod.times(moloch.periodDuration)
+    startingPeriod.times(moloch.periodDuration)
   );
   let votingPeriodEnds = votingPeriodStarts.plus(
     moloch.votingPeriodLength.times(moloch.periodDuration)
@@ -163,8 +166,10 @@ export function handleSubmitProposal(event: SubmitProposal): void {
   if (event.params.tokenTribute > BigInt.fromI32(0)) {
     let tokenId = molochId.concat("-token-").concat(approvedToken.toHex());
     let token = Token.load(tokenId);
-    proposal.tributeTokenSymbol = token.symbol;
-    proposal.tributeTokenDecimals = token.decimals;
+    if (token) {
+      proposal.tributeTokenSymbol = token.symbol;
+      proposal.tributeTokenDecimals = token.decimals;
+    }
   }
 
   proposal.save();
@@ -175,7 +180,7 @@ export function handleSubmitProposal(event: SubmitProposal): void {
 export function handleSubmitVote(event: SubmitVote): void {
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
-  if (moloch.newContract == "0") {
+  if (moloch == null || moloch.newContract == "0") {
     return;
   }
 
@@ -191,6 +196,17 @@ export function handleSubmitVote(event: SubmitVote): void {
     .concat("-vote-")
     .concat(event.params.proposalIndex.toString());
 
+  let proposalId = molochId
+    .concat("-proposal-")
+    .concat(event.params.proposalIndex.toString());
+
+  let proposal = Proposal.load(proposalId);
+  let member = Member.load(memberId);
+
+  if (proposal == null || member == null) {
+    return;
+  }
+
   let vote = new Vote(voteID);
   vote.molochAddress = event.address;
   vote.createdAt = event.block.timestamp.toString();
@@ -202,19 +218,17 @@ export function handleSubmitVote(event: SubmitVote): void {
   vote.member = memberId;
   vote.save();
 
-  let proposalId = molochId
-    .concat("-proposal-")
-    .concat(event.params.proposalIndex.toString());
-
-  let proposal = Proposal.load(proposalId);
-  let member = Member.load(memberId);
   if (event.params.uintVote == 1) {
-    proposal.yesVotes = proposal.yesVotes.plus(BigInt.fromI32(1));
-    proposal.yesShares = proposal.yesShares.plus(member.shares);
+    let proposalYesVotes = proposal.yesVotes;
+    let proposalYesShares = proposal.yesShares;
+    proposal.yesVotes = proposalYesVotes.plus(BigInt.fromI32(1));
+    proposal.yesShares = proposalYesShares.plus(member.shares);
   }
   if (event.params.uintVote == 2) {
-    proposal.noVotes = proposal.noVotes.plus(BigInt.fromI32(1));
-    proposal.noShares = proposal.noShares.plus(member.shares);
+    let proposalNoVotes = proposal.noVotes;
+    let proposalNoShares = proposal.noShares;
+    proposal.noVotes = proposalNoVotes.plus(BigInt.fromI32(1));
+    proposal.noShares = proposalNoShares.plus(member.shares);
   }
 
   proposal.save();
@@ -225,7 +239,7 @@ export function handleSubmitVote(event: SubmitVote): void {
 export function handleProcessProposal(event: ProcessProposal): void {
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
-  if (moloch.newContract == "0") {
+  if (moloch == null || moloch.newContract == "0") {
     return;
   }
 
@@ -234,6 +248,10 @@ export function handleProcessProposal(event: ProcessProposal): void {
     .concat(event.params.proposalIndex.toString());
 
   let proposal = Proposal.load(proposalId);
+
+  if (proposal == null) {
+    return;
+  }
   proposal.applicant = event.params.applicant;
   proposal.memberAddress = event.params.memberAddress;
   proposal.tributeOffered = event.params.tokenTribute;
@@ -278,7 +296,7 @@ export function handleProcessProposal(event: ProcessProposal): void {
 export function handleRagequit(event: Ragequit): void {
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
-  if (moloch.newContract == "0") {
+  if (moloch == null || moloch.newContract == "0") {
     return;
   }
 
@@ -287,6 +305,10 @@ export function handleRagequit(event: Ragequit): void {
     .concat(event.params.memberAddress.toHex());
 
   let member = Member.load(memberId);
+
+  if (member == null) {
+    return;
+  }
   member.shares = member.shares.minus(event.params.sharesToBurn);
   member.save();
 
@@ -315,7 +337,7 @@ export function handleRagequit(event: Ragequit): void {
 export function handleAbort(event: Abort): void {
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
-  if (moloch.newContract == "0") {
+  if (moloch == null || moloch.newContract == "0") {
     return;
   }
 
@@ -324,6 +346,9 @@ export function handleAbort(event: Abort): void {
     .concat(event.params.proposalIndex.toString());
 
   let proposal = Proposal.load(proposalId);
+  if (proposal == null) {
+    return;
+  }
   proposal.aborted = true;
   proposal.save();
 
@@ -333,7 +358,7 @@ export function handleAbort(event: Abort): void {
 export function handleUpdateDelegateKey(event: UpdateDelegateKey): void {
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
-  if (moloch.newContract == "0") {
+  if (moloch == null || moloch.newContract == "0") {
     return;
   }
 
@@ -342,6 +367,9 @@ export function handleUpdateDelegateKey(event: UpdateDelegateKey): void {
     .concat(event.params.memberAddress.toHex());
 
   let member = Member.load(memberId);
+  if (member == null) {
+    return;
+  }
   member.delegateKey = event.params.newDelegateKey;
   member.save();
 

@@ -199,9 +199,9 @@ export function handleDelete(event: Delete): void {
   if (moloch) {
     moloch.deleted = true;
     moloch.save();
-  }
 
-  addTransaction(event.block, event.transaction);
+    addTransaction(event.block, event.transaction);
+  }
 }
 
 // used to create multiple summoners at time of summoning

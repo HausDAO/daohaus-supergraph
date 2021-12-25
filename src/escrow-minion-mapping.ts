@@ -53,7 +53,7 @@ export function handleExecuteAction(event: ExecuteAction): void {
     proposal.executed = true;
 
     proposal.save();
-  }
 
-  addTransaction(event.block, event.transaction);
+    addTransaction(event.block, event.transaction);
+  }
 }
