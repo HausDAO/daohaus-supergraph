@@ -67,7 +67,10 @@ export function handleSummonComplete(event: SummonComplete): void {
     moloch.guildBankAddress = contract.guildBank();
     moloch.guildBankBalanceV1 = BigInt.fromI32(0);
 
-    let gbContract = Guildbank.bind(moloch.guildBankAddress as Address);
+    let address = changetype<Address>(moloch.guildBankAddress);
+    // let gbContract = Guildbank.bind(moloch.guildBankAddress as Address);
+    let gbContract = Guildbank.bind(address);
+
     let depositTokenAddress = gbContract.approvedToken();
     let approvedTokens: string[] = [];
     approvedTokens.push(createAndApproveToken(molochId, depositTokenAddress));
@@ -288,7 +291,10 @@ export function handleProcessProposal(event: ProcessProposal): void {
     }
 
     moloch.totalShares = moloch.totalShares.plus(proposal.sharesRequested);
-    moloch.guildBankBalanceV1 = getBalance(moloch.guildBankAddress as Address);
+    // moloch.guildBankBalanceV1 = getBalance(moloch.guildBankAddress as Address);
+    let address = changetype<Address>(moloch.guildBankAddress);
+    moloch.guildBankBalanceV1 = getBalance(address);
+
     moloch.save();
   }
 
@@ -315,7 +321,9 @@ export function handleRagequit(event: Ragequit): void {
   member.save();
 
   moloch.totalShares = moloch.totalShares.minus(event.params.sharesToBurn);
-  moloch.guildBankBalanceV1 = getBalance(moloch.guildBankAddress as Address);
+  // moloch.guildBankBalanceV1 = getBalance(moloch.guildBankAddress as Address);
+  let address = changetype<Address>(moloch.guildBankAddress);
+  moloch.guildBankBalanceV1 = getBalance(address);
   moloch.save();
 
   let rageQuitId = memberId

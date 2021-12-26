@@ -179,10 +179,15 @@ export function createAndApproveToken(molochId: string, token: Bytes): string {
   createToken.tokenAddress = token;
   createToken.whitelisted = true;
 
-  let erc20 = Erc20.bind(token as Address);
+  let address = changetype<Address>(token);
+  // let erc20 = Erc20.bind(token as Address);
+  let erc20 = Erc20.bind(address);
+
   let symbol = erc20.try_symbol();
   if (symbol.reverted) {
-    let erc20Bytes32 = Erc20Bytes32.bind(token as Address);
+    let erc20Bytes32 = Erc20Bytes32.bind(address);
+    // let erc20Bytes32 = Erc20Bytes32.bind(token as Address);
+
     let otherSymbol = erc20Bytes32.try_symbol();
     if (otherSymbol.reverted) {
       log.info("other symbol reverted molochId {}, token, {}", [
@@ -878,7 +883,11 @@ export function handleRagequit(event: Ragequit): void {
   rageQuit.moloch = molochId;
   rageQuit.molochAddress = event.address;
   rageQuit.member = memberId;
-  rageQuit.memberAddress = ByteArray.fromHexString(targetAddress) as Address;
+
+  // rageQuit.memberAddress = ByteArray.fromHexString(targetAddress) as Address;
+  let address = changetype<Address>(ByteArray.fromHexString(targetAddress));
+  rageQuit.memberAddress = address;
+
   rageQuit.shares = event.params.sharesToBurn;
   rageQuit.loot = event.params.lootToBurn;
 
@@ -927,10 +936,13 @@ export function handleCancelProposal(event: CancelProposal): void {
       .concat("-token-")
       .concat(proposal.tributeToken.toHex());
 
+    let address = changetype<Address>(proposal.proposer);
+
     internalTransfer(
       molochId,
       ESCROW,
-      proposal.proposer as Address,
+      // proposal.proposer as Address,
+      address,
       tokenId,
       proposal.tributeOffered
     );

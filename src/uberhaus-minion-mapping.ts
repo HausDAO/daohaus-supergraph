@@ -10,7 +10,10 @@ import {
 import { addTransaction } from "./transactions";
 
 function getMolochAddressFromChildMinion(minionAddress: Bytes): Bytes | null {
-  let contract = UberhausMinion.bind(minionAddress as Address);
+  // let contract = UberhausMinion.bind(minionAddress as Address);
+  let address = changetype<Address>(minionAddress);
+  let contract = UberhausMinion.bind(address);
+
   let result = contract.try_dao();
   if (result.reverted) {
     log.info("^^^^^ loadMoloch contract call reverted. minionAddress: {}", [
