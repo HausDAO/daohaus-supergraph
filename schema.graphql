@@ -12,7 +12,7 @@ type Moloch @entity {
   proposalDeposit: BigInt!
   dilutionBound: BigInt!
   processingReward: BigInt!
-  depositToken: Token
+  depositToken: Token!
   approvedTokens: [Token!]!
   guildBankAddress: Bytes
   guildBankBalanceV1: BigInt
@@ -58,7 +58,7 @@ type Member @entity {
   memberAddress: Bytes!
   delegateKey: Bytes!
   shares: BigInt!
-  loot: BigInt
+  loot: BigInt!
   exists: Boolean!
   highestIndexYesVote: Proposal
   tokenTribute: BigInt!

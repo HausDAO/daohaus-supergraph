@@ -85,15 +85,16 @@ export function handleSummonComplete(event: SummonComplete): void {
     member.createdAt = event.block.timestamp.toString();
     member.delegateKey = event.params.summoner;
     member.shares = event.params.shares;
+    member.loot = BigInt.fromI32(0);
     member.exists = true;
     member.tokenTribute = BigInt.fromI32(0);
     member.didRagequit = false;
 
     member.save();
     moloch.save();
-  }
 
-  addTransaction(event.block, event.transaction);
+    addTransaction(event.block, event.transaction);
+  }
 }
 
 export function handleSubmitProposal(event: SubmitProposal): void {
@@ -275,6 +276,7 @@ export function handleProcessProposal(event: ProcessProposal): void {
       newMember.createdAt = event.block.timestamp.toString();
       newMember.delegateKey = event.params.applicant;
       newMember.shares = event.params.sharesRequested;
+      newMember.loot = BigInt.fromI32(0);
       newMember.exists = true;
       newMember.tokenTribute = event.params.tokenTribute;
       newMember.didRagequit = false;

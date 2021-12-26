@@ -27,6 +27,7 @@ export class Moloch extends Entity {
     this.set("proposalDeposit", Value.fromBigInt(BigInt.zero()));
     this.set("dilutionBound", Value.fromBigInt(BigInt.zero()));
     this.set("processingReward", Value.fromBigInt(BigInt.zero()));
+    this.set("depositToken", Value.fromString(""));
     this.set("approvedTokens", Value.fromStringArray(new Array(0)));
     this.set("totalShares", Value.fromBigInt(BigInt.zero()));
     this.set("totalLoot", Value.fromBigInt(BigInt.zero()));
@@ -183,21 +184,13 @@ export class Moloch extends Entity {
     this.set("processingReward", Value.fromBigInt(value));
   }
 
-  get depositToken(): string | null {
+  get depositToken(): string {
     let value = this.get("depositToken");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
+    return value!.toString();
   }
 
-  set depositToken(value: string | null) {
-    if (!value) {
-      this.unset("depositToken");
-    } else {
-      this.set("depositToken", Value.fromString(<string>value));
-    }
+  set depositToken(value: string) {
+    this.set("depositToken", Value.fromString(value));
   }
 
   get approvedTokens(): Array<string> {
@@ -644,6 +637,7 @@ export class Member extends Entity {
     this.set("memberAddress", Value.fromBytes(Bytes.empty()));
     this.set("delegateKey", Value.fromBytes(Bytes.empty()));
     this.set("shares", Value.fromBigInt(BigInt.zero()));
+    this.set("loot", Value.fromBigInt(BigInt.zero()));
     this.set("exists", Value.fromBoolean(false));
     this.set("tokenTribute", Value.fromBigInt(BigInt.zero()));
     this.set("didRagequit", Value.fromBoolean(false));
@@ -731,21 +725,13 @@ export class Member extends Entity {
     this.set("shares", Value.fromBigInt(value));
   }
 
-  get loot(): BigInt | null {
+  get loot(): BigInt {
     let value = this.get("loot");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+    return value!.toBigInt();
   }
 
-  set loot(value: BigInt | null) {
-    if (!value) {
-      this.unset("loot");
-    } else {
-      this.set("loot", Value.fromBigInt(<BigInt>value));
-    }
+  set loot(value: BigInt) {
+    this.set("loot", Value.fromBigInt(value));
   }
 
   get exists(): boolean {
