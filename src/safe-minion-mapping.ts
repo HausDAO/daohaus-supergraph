@@ -93,20 +93,19 @@ export function handleProposeAction(event: ProposeNewAction): void {
 
 // # event ExecuteAction(bytes32 indexed id, uint256 indexed proposalId, bytes transactions, address avatar);
 export function handleExecuteAction(event: ExecuteAction): void {
-  // let molochAddress = getMolochAddressFromChildMinion(event.address);
-  // if (molochAddress == null) {
-  //   return;
-  // }
-  // let processProposalId = molochAddress
-  //   .toHexString()
-  //   .concat("-proposal-")
-  //   .concat(event.params.proposalId.toString());
-  // let proposal = Proposal.load(processProposalId);
-  // if (proposal) {
-  //   proposal.executed = true;
-  //   proposal.save();
-  //   addTransaction(event.block, event.transaction);
-  // }
+  let molochAddress = getMolochAddressFromChildMinion(event.address);
+  if (molochAddress) {
+    let processProposalId = molochAddress
+      .toHexString()
+      .concat("-proposal-")
+      .concat(event.params.proposalId.toString());
+    let proposal = Proposal.load(processProposalId);
+    if (proposal) {
+      proposal.executed = true;
+      proposal.save();
+      addTransaction(event.block, event.transaction);
+    }
+  }
 }
 
 // TODO: changeowner

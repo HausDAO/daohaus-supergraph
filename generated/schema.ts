@@ -236,21 +236,13 @@ export class Moloch extends Entity {
     }
   }
 
-  get tokens(): Array<string> | null {
+  get tokens(): Array<string> {
     let value = this.get("tokens");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toStringArray();
-    }
+    return value!.toStringArray();
   }
 
-  set tokens(value: Array<string> | null) {
-    if (!value) {
-      this.unset("tokens");
-    } else {
-      this.set("tokens", Value.fromStringArray(<Array<string>>value));
-    }
+  set tokens(value: Array<string>) {
+    this.set("tokens", Value.fromStringArray(value));
   }
 
   get members(): Array<string> | null {

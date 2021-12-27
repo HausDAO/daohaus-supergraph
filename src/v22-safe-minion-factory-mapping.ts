@@ -17,6 +17,10 @@ function loadOrCreateSummonerV22(
   let memberId = molochId.concat("-member-").concat(summoner.toHex());
   let moloch = Moloch.load(molochId);
 
+  if (moloch == null) {
+    return;
+  }
+
   let member = Member.load(memberId);
 
   if (member === null) {
@@ -37,11 +41,18 @@ function loadOrCreateSummonerV22(
   member.shares = shares;
   member.loot = loot;
 
-  //this tokens array might be tokenIds
-  let tokens: string[] = [];
-  if (moloch) {
-    tokens = moloch.tokens as string[];
-  }
+  // TODO: not working
+
+  // let tokens: string[] = [];
+  // if (moloch) {
+  //   tokens = moloch.tokens;
+  // }
+
+  let tokens: string[] = moloch.tokens ? moloch.tokens : [];
+
+  // let somethingOrElse: string = data ? data : 'else'
+
+  // let tokens = moloch.tokens;
 
   for (let i = 0; i < tokens.length; i++) {
     // let token = tokens[i];
@@ -118,6 +129,8 @@ export function handleSetupComplete(event: SetupComplete): void {
   let mTotalShares = moloch.totalShares;
   let mTotalLoot = moloch.totalLoot;
 
+  // TODO: do we give the summoner an extra share?
+
   for (let i = 0; i < eventSummoners.length; i++) {
     let summoner = eventSummoners[i];
     let shares = eventSummonerShares[i];
@@ -125,9 +138,11 @@ export function handleSetupComplete(event: SetupComplete): void {
     mTotalShares = mTotalShares.plus(shares);
     mTotalLoot = mTotalLoot.plus(loot);
 
-    summoners.push(
-      loadOrCreateSummonerV22(molochId, summoner, shares, loot, event)
-    );
+    // maybe try here to check on moloch.tokens?
+
+    // summoners.push(
+    //   loadOrCreateSummonerV22(molochId, summoner, shares, loot, event)
+    // );
   }
 
   // do we need to do anything with extraShamans;
