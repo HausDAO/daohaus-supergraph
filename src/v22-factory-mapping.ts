@@ -65,7 +65,7 @@ export function handleSummonV22(event: SummonComplete): void {
   moloch.approvedTokens = approvedTokens;
   moloch.depositToken = approvedTokens[0];
   moloch.totalLoot = BigInt.fromI32(0);
-  moloch.totalShares = BigInt.fromI32(1);
+  moloch.totalShares = BigInt.fromI32(0);
   moloch.v22Setup = false;
   moloch.spamPreventionAmount = BigInt.fromI32(0);
 
@@ -87,12 +87,10 @@ export function createAndAddSummoner(
 
   member.moloch = molochId;
   member.createdAt = event.block.timestamp.toString();
-  log.info("*** Member CreatedAt {}***", [member.createdAt.toString()]);
   member.molochAddress = event.params.moloch;
   member.memberAddress = summoner;
   member.delegateKey = summoner;
   member.shares = shares;
-  log.info("*** Member Shares {}***", [member.shares.toString()]);
   member.loot = BigInt.fromI32(0);
   member.tokenTribute = BigInt.fromI32(0);
   member.didRagequit = false;

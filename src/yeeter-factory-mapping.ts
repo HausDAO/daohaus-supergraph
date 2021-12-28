@@ -14,31 +14,27 @@ import { addTransaction } from "./transactions";
 //   string details
 // );
 
+// TODO: track the platform fee and loot per unit
 export function handleSummonYeeter(event: SummonYeetComplete): void {
-  let molochId = event.params.moloch.toHexString();
-  let moloch = Moloch.load(molochId);
-  if (moloch == null) {
-    return;
-  }
-
-  let shamanAddress = event.params.yeeter;
-  let shamanId = molochId.concat("-shaman-").concat(shamanAddress.toHex());
-  let shaman = new Shaman(shamanId);
-
-  shaman.molochAddress = event.params.moloch;
-  shaman.moloch = moloch.id;
-  shaman.createdAt = event.block.timestamp.toString();
-  shaman.shamanAddress = shamanAddress;
-  shaman.shamanType = "yeeter";
-  // shaman.yeeterUhMoloch = event.params.uhMoloch;
-  shaman.yeeterRaiseEndTime = event.params.raiseEndTime;
-  shaman.yeeterRaiseStartTime = event.params.raiseStartTime;
-  shaman.yeeterMaxUnits = event.params.maxUnits;
-  shaman.yeeterMaxTarget = event.params.maxTarget;
-
-  shaman.details = event.params.details;
-
-  shaman.save();
-
-  addTransaction(event.block, event.transaction);
+  // let molochId = event.params.moloch.toHexString();
+  // let moloch = Moloch.load(molochId);
+  // if (moloch == null) {
+  //   return;
+  // }
+  // let shamanAddress = event.params.yeeter;
+  // let shamanId = molochId.concat("-shaman-").concat(shamanAddress.toHex());
+  // let shaman = new Shaman(shamanId);
+  // shaman.molochAddress = event.params.moloch;
+  // shaman.moloch = moloch.id;
+  // shaman.createdAt = event.block.timestamp.toString();
+  // shaman.shamanAddress = shamanAddress;
+  // shaman.shamanType = "yeeter";
+  // // shaman.yeeterUhMoloch = event.params.uhMoloch;
+  // shaman.yeeterRaiseEndTime = event.params.raiseEndTime;
+  // shaman.yeeterRaiseStartTime = event.params.raiseStartTime;
+  // shaman.yeeterMaxUnits = event.params.maxUnits;
+  // shaman.yeeterMaxTarget = event.params.maxTarget;
+  // shaman.details = event.params.details;
+  // shaman.save();
+  // addTransaction(event.block, event.transaction);
 }

@@ -1078,13 +1078,13 @@ export function handleSetShaman(event: SetShaman): void {
   let shaman = Shaman.load(shamanId);
 
   if (shaman == null) {
-    return;
+    shaman = new Shaman(shamanId);
+    shaman.createdAt = event.block.timestamp.toString();
+    shaman.molochAddress = event.address;
+    shaman.moloch = molochId;
+    shaman.shamanAddress = event.params.shaman;
   }
-
-  log.info("shaman, {}", [shamanId]);
-  log.info("molochId, {}", [molochId]);
-
-  shaman.enabled = event.params.isEnabled;
+  shaman.enabled = true;
 
   shaman.save();
 

@@ -41,7 +41,6 @@ export function handleRegisterV1(event: RegisterV1): void {
 }
 
 export function handleRegisterV2(event: RegisterV2): void {
-  // testing
   MolochV2Template.create(event.params.moloch);
 
   let molochId = event.params.moloch.toHex();
@@ -212,17 +211,14 @@ export function createAndAddSummoner(
   event: SummonComplete
 ): string {
   let memberId = molochId.concat("-member-").concat(summoner.toHex());
-  let moloch = Moloch.load(molochId);
   let member = new Member(memberId);
 
   member.moloch = molochId;
   member.createdAt = event.block.timestamp.toString();
-  log.info("*** Member CreatedAt {}***", [member.createdAt.toString()]);
   member.molochAddress = event.params.moloch;
   member.memberAddress = summoner;
   member.delegateKey = summoner;
   member.shares = shares;
-  log.info("*** Member Shares {}***", [member.shares.toString()]);
   member.loot = BigInt.fromI32(0);
   member.tokenTribute = BigInt.fromI32(0);
   member.didRagequit = false;
@@ -230,7 +226,7 @@ export function createAndAddSummoner(
   member.proposedToKick = false;
   member.kicked = false;
 
-  //Set summoner summoner balances for approved tokens to zero
+  //Set summoner summoner balances for approved tokens to zero, is this needed?
   let tokens = event.params.tokens;
 
   for (let i = 0; i < tokens.length; i++) {
@@ -245,9 +241,6 @@ export function createAndAddSummoner(
   }
 
   member.save();
-
-  // moloch.totalShares = moloch.totalShares.plus(shares);
-  // moloch.save();
 
   return memberId;
 }

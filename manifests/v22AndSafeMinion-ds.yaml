@@ -15,8 +15,6 @@ mapping:
     - name: V22AndSafeMinionFactory
       file: ./abis/V22AndSafeMinionFactory.json
   eventHandlers:
-    - event: SummonComplete(address,indexed address,address,address,string)
-      handler: handleSummonComplete
     - event: SetupComplete(indexed address,address,address[],address[],uint256[],uint256[])
       handler: handleSetupComplete
   file: ./src/v22-safe-minion-factory-mapping.ts

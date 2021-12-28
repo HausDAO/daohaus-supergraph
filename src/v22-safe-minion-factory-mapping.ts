@@ -1,10 +1,6 @@
-import {
-  SummonComplete,
-  SetupComplete,
-} from "../generated/V22AndSafeMinionFactory/V22AndSafeMinionFactory";
-import { Shaman, Moloch, Member } from "../generated/schema";
+import { SetupComplete } from "../generated/V22AndSafeMinionFactory/V22AndSafeMinionFactory";
+import { Moloch, Member } from "../generated/schema";
 import { Address, BigInt } from "@graphprotocol/graph-ts";
-import { createMemberTokenBalance } from "./v2-mapping";
 import { addTransaction } from "./transactions";
 
 function loadOrCreateSummonerV22(
@@ -15,11 +11,6 @@ function loadOrCreateSummonerV22(
   event: SetupComplete
 ): string {
   let memberId = molochId.concat("-member-").concat(summoner.toHex());
-  let moloch = Moloch.load(molochId);
-
-  if (moloch == null) {
-    return;
-  }
 
   let member = Member.load(memberId);
 
@@ -36,74 +27,34 @@ function loadOrCreateSummonerV22(
     member.exists = true;
     member.proposedToKick = false;
     member.kicked = false;
+    member.shares = shares;
+  } else {
+    member.shares = member.shares.plus(shares);
   }
 
-  member.shares = shares;
   member.loot = loot;
 
-  // TODO: not working
-
+  // Leaving this out as all token balances will be 0
   // let tokens: string[] = [];
   // if (moloch) {
   //   tokens = moloch.tokens;
   // }
 
-  let tokens: string[] = moloch.tokens ? moloch.tokens : [];
-
-  // let somethingOrElse: string = data ? data : 'else'
-
-  // let tokens = moloch.tokens;
-
-  for (let i = 0; i < tokens.length; i++) {
-    // let token = tokens[i];
-    // let tokenId = molochId.concat("-token-").concat(token);
-    let tokenId = tokens[i] as string;
-    createMemberTokenBalance(
-      molochId,
-      member.memberAddress,
-      tokenId,
-      BigInt.fromI32(0)
-    );
-  }
+  // for (let i = 0; i < tokens.length; i++) {
+  //   let token = tokens[i];
+  //   let tokenId = molochId.concat("-token-").concat(token);
+  //   createMemberTokenBalance(
+  //     molochId,
+  //     member.memberAddress,
+  //     tokenId,
+  //     BigInt.fromI32(0)
+  //   );
+  // }
 
   member.save();
 
-  // moloch.totalShares = moloch.totalShares.plus(shares);
-  // moloch.save();
-
   return memberId;
 }
-
-// event SummonComplete(
-//   address summoner,
-//   address indexed moloch,
-//   address minion,
-//   address avatar,
-//   string details
-// );
-export function handleSummonComplete(event: SummonComplete): void {
-  let molochId = event.params.moloch.toHexString();
-
-  let shamanId = molochId
-    .concat("-shaman-")
-    .concat(event.params.minion.toHex());
-  let shaman = new Shaman(shamanId);
-
-  shaman.createdAt = event.block.timestamp.toString();
-  shaman.shamanAddress = event.params.minion;
-  shaman.molochAddress = event.params.moloch;
-  shaman.moloch = molochId;
-  shaman.details = event.params.details;
-  shaman.shamanType = "safe minion";
-  shaman.details = event.params.details;
-  shaman.safeAddress = event.params.avatar;
-
-  shaman.save();
-
-  addTransaction(event.block, event.transaction);
-}
-
-// shamans always created in factory before setshaman event
 
 // event SetupComplete(
 //   address indexed moloch,
@@ -113,6 +64,7 @@ export function handleSummonComplete(event: SummonComplete): void {
 //   uint256[] summonerShares,
 //   uint256[] summonerLoot
 // );
+
 export function handleSetupComplete(event: SetupComplete): void {
   let molochId = event.params.moloch.toHexString();
   let moloch = Moloch.load(molochId);
@@ -129,7 +81,14 @@ export function handleSetupComplete(event: SetupComplete): void {
   let mTotalShares = moloch.totalShares;
   let mTotalLoot = moloch.totalLoot;
 
-  // TODO: do we give the summoner an extra share?
+  let summonerAddress = changetype<Address>(moloch.summoner);
+  loadOrCreateSummonerV22(
+    molochId,
+    summonerAddress,
+    BigInt.fromI32(1),
+    BigInt.fromI32(0),
+    event
+  );
 
   for (let i = 0; i < eventSummoners.length; i++) {
     let summoner = eventSummoners[i];
@@ -138,40 +97,16 @@ export function handleSetupComplete(event: SetupComplete): void {
     mTotalShares = mTotalShares.plus(shares);
     mTotalLoot = mTotalLoot.plus(loot);
 
-    // maybe try here to check on moloch.tokens?
-
-    // summoners.push(
-    //   loadOrCreateSummonerV22(molochId, summoner, shares, loot, event)
-    // );
+    summoners.push(
+      loadOrCreateSummonerV22(molochId, summoner, shares, loot, event)
+    );
   }
 
-  // do we need to do anything with extraShamans;
-
   moloch.v22Setup = true;
+  moloch.totalShares = mTotalShares;
+  moloch.totalLoot = mTotalLoot;
 
   moloch.save();
 
   addTransaction(event.block, event.transaction);
 }
-
-// yeeter
-//  event SummonYeetComplete(
-//   address indexed moloch,
-//   address yeeter,
-//   address wrapper,
-//   uint256 maxTarget,
-//   uint256 raiseEndTime,
-//   uint256 raiseStartTime,
-//   uint256 maxUnits,
-//   uint256 pricePerUnit,
-//   string details
-// );
-
-// summoner will get one and extra if needed
-
-// 1. moloch factory summonComplete - moloch mapping - w/out summoner shares
-// 2. safemin factory - normal minion mapping
-// 3. v22safeminfactory summonComplete - add minion as a shaman
-// 4. shamana factories (yeeter in this case) - adds shaman to moloch
-// 5. v22safeminfactory SetupComplete - moloch v22 setupComplete flag, summoner gets 1 share, other summoners get shares
-// // need to check if member is created here - summoner might be there but with no shares
