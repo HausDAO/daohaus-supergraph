@@ -421,12 +421,6 @@ module.exports.config = {
         address: "0xE8d33d1047B7D8C8016ad1E5E3E201cb3F38F5d4",
         startBlock: 9854107,
       },
-      // {
-      //   name: "YeeterFactory",
-      //   template: "yeeterFactory-ds.yaml",
-      //   address: "0xcb457EAe937061c9Bca9A8691fc84104C0Ad726B",
-      //   startBlock: 9854421,
-      // },
     ],
     templates: [
       {
