@@ -48,14 +48,28 @@ export class MolochV21Template extends DataSourceTemplate {
   }
 }
 
-export class UberhausMinionTemplate extends DataSourceTemplate {
+export class MolochV22Template extends DataSourceTemplate {
   static create(address: Address): void {
-    DataSourceTemplate.create("UberhausMinionTemplate", [address.toHex()]);
+    DataSourceTemplate.create("MolochV22Template", [address.toHex()]);
   }
 
   static createWithContext(address: Address, context: DataSourceContext): void {
     DataSourceTemplate.createWithContext(
-      "UberhausMinionTemplate",
+      "MolochV22Template",
+      [address.toHex()],
+      context
+    );
+  }
+}
+
+export class SuperfluidMinionTemplate extends DataSourceTemplate {
+  static create(address: Address): void {
+    DataSourceTemplate.create("SuperfluidMinionTemplate", [address.toHex()]);
+  }
+
+  static createWithContext(address: Address, context: DataSourceContext): void {
+    DataSourceTemplate.createWithContext(
+      "SuperfluidMinionTemplate",
       [address.toHex()],
       context
     );

@@ -382,8 +382,8 @@ module.exports.config = {
       {
         name: "v22Factory",
         template: "v22Factory-ds.yaml",
-        address: "0x35dDDa3938A063f5827428C170f015De78548C8d",
-        startBlock: 9854098,
+        address: "0xa24012Bcfc53b3C5c448726d99B68044cdADD77A",
+        startBlock: 9901589,
       },
       {
         name: "minionFactory",
@@ -415,12 +415,12 @@ module.exports.config = {
         address: "0x3f13ABc8931c0e381Ce6d1Be9f978aE6E9d99Cb8",
         startBlock: 9269583,
       },
-      {
-        name: "v22AndSafeMinion",
-        template: "v22AndSafeMinion-ds.yaml",
-        address: "0xE8d33d1047B7D8C8016ad1E5E3E201cb3F38F5d4",
-        startBlock: 9854107,
-      },
+      // {
+      //   name: "v22AndSafeMinion",
+      //   template: "v22AndSafeMinion-ds.yaml",
+      //   address: "0xf734feCA5A2441103E6a8B4Ae9172Dfe92cA145a",
+      //   startBlock: 9901609,
+      // },
     ],
     templates: [
       {

@@ -1084,7 +1084,7 @@ export function handleSetShaman(event: SetShaman): void {
     shaman.moloch = molochId;
     shaman.shamanAddress = event.params.shaman;
   }
-  shaman.enabled = true;
+  shaman.enabled = event.params.isEnabled;
 
   shaman.save();
 
