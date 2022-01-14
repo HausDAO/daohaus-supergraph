@@ -1,0 +1,20 @@
+kind: ethereum/contract
+name: MinionTemplate
+network:
+source:
+  abi: Minion
+mapping:
+  kind: ethereum/events
+  apiVersion: 0.0.5
+  language: wasm/assemblyscript
+  file: ./src/minion-mapping.ts
+  entities:
+    - Moloch
+    - Minion
+    - Proposal
+  abis:
+    - name: Minion
+      file: ./abis/GenericMinion.json
+  eventHandlers:
+    - event: "ExecuteAction(uint256,address)"
+      handler: handleExecuteAction

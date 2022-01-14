@@ -73,6 +73,10 @@ module.exports.config = {
         name: "safeMinionTemplate",
         template: "safeMinion-template.yaml",
       },
+      {
+        name: "minionTemplate",
+        template: "minion-template.yaml",
+      },
     ],
   },
   xdai: {
@@ -94,6 +98,12 @@ module.exports.config = {
         template: "v21Factory-ds.yaml",
         address: "0x0F50B2F3165db96614fbB6E4262716acc9F9e098",
         startBlock: 13569775,
+      },
+      {
+        name: "v22Factory",
+        template: "v22Factory-ds.yaml",
+        address: "0x56fAA6aDcf15C5033f9b576426543522e5FD3e59",
+        startBlock: 19988087,
       },
       {
         name: "minionFactory",
@@ -152,6 +162,10 @@ module.exports.config = {
         template: "v21-template.yaml",
       },
       {
+        name: "v22Template",
+        template: "v22-template.yaml",
+      },
+      {
         name: "uberHausMininTemplate",
         template: "uberhausMinion-template.yaml",
       },
@@ -162,6 +176,10 @@ module.exports.config = {
       {
         name: "safeMinionTemplate",
         template: "safeMinion-template.yaml",
+      },
+      {
+        name: "minionTemplate",
+        template: "minion-template.yaml",
       },
     ],
   },
@@ -223,6 +241,10 @@ module.exports.config = {
         name: "safeMinionTemplate",
         template: "safeMinion-template.yaml",
       },
+      {
+        name: "minionTemplate",
+        template: "minion-template.yaml",
+      },
     ],
   },
   "arbitrum-one": {
@@ -261,6 +283,10 @@ module.exports.config = {
         name: "safeMinionTemplate",
         template: "safeMinion-template.yaml",
       },
+      {
+        name: "minionTemplate",
+        template: "minion-template.yaml",
+      },
     ],
   },
   celo: {
@@ -282,6 +308,10 @@ module.exports.config = {
       {
         name: "v21Template",
         template: "v21-template.yaml",
+      },
+      {
+        name: "minionTemplate",
+        template: "minion-template.yaml",
       },
     ],
   },
@@ -357,6 +387,10 @@ module.exports.config = {
         name: "safeMinionTemplate",
         template: "safeMinion-template.yaml",
       },
+      {
+        name: "minionTemplate",
+        template: "minion-template.yaml",
+      },
     ],
   },
   rinkeby: {
@@ -415,12 +449,6 @@ module.exports.config = {
         address: "0x3f13ABc8931c0e381Ce6d1Be9f978aE6E9d99Cb8",
         startBlock: 9269583,
       },
-      // {
-      //   name: "v22AndSafeMinion",
-      //   template: "v22AndSafeMinion-ds.yaml",
-      //   address: "0xf734feCA5A2441103E6a8B4Ae9172Dfe92cA145a",
-      //   startBlock: 9901609,
-      // },
     ],
     templates: [
       {
@@ -446,6 +474,10 @@ module.exports.config = {
       {
         name: "safeMinionTemplate",
         template: "safeMinion-template.yaml",
+      },
+      {
+        name: "minionTemplate",
+        template: "minion-template.yaml",
       },
     ],
   },

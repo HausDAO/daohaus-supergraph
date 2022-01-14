@@ -1,10 +1,13 @@
 import { log } from "@graphprotocol/graph-ts";
 import { SummonMinion } from "../generated/MinionFactory/MinionFactory";
+import { MinionTemplate } from "../generated/templates";
 import { Moloch, Minion } from "../generated/schema";
 import { addTransaction } from "./transactions";
 
 // event SummonMinion(address indexed minion, address indexed moloch, string details, string minionType);
 export function handleSummonedMinion(event: SummonMinion): void {
+  MinionTemplate.create(event.params.minion);
+
   let molochId = event.params.moloch.toHexString();
   let moloch = Moloch.load(molochId);
   if (moloch == null) {

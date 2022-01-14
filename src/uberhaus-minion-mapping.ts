@@ -110,6 +110,7 @@ export function handleExecuteAction(event: ExecuteAction): void {
     }
 
     proposal.uberHausMinionExecuted = true;
+    proposal.executed = true;
 
     proposal.save();
 
