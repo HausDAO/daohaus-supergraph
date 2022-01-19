@@ -6,13 +6,13 @@ import { addTransaction } from "./transactions";
 
 // event SummonMinion(address indexed minion, address indexed moloch, string details, string minionType);
 export function handleSummonedMinion(event: SummonMinion): void {
-  MinionTemplate.create(event.params.minion);
-
   let molochId = event.params.moloch.toHexString();
   let moloch = Moloch.load(molochId);
   if (moloch == null) {
     return;
   }
+
+  MinionTemplate.create(event.params.minion);
 
   let minionId = molochId
     .concat("-minion-")
@@ -41,6 +41,8 @@ export function handleSummonedV2Minion(event: SummonMinion): void {
   if (moloch == null) {
     return;
   }
+
+  MinionTemplate.create(event.params.minion);
 
   let minionId = molochId
     .concat("-minion-")
