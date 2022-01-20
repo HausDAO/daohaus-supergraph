@@ -17,31 +17,37 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_moloch",
+        "name": "moloch",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "address",
-        "name": "_shaman",
+        "name": "shaman",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "address[]",
-        "name": "_summoners",
+        "name": "extraShamans",
+        "type": "address[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "address[]",
+        "name": "summoners",
         "type": "address[]"
       },
       {
         "indexed": false,
         "internalType": "uint256[]",
-        "name": "_summonerShares",
+        "name": "summonerShares",
         "type": "uint256[]"
       },
       {
         "indexed": false,
         "internalType": "uint256[]",
-        "name": "_summonerLoot",
+        "name": "summonerLoot",
         "type": "uint256[]"
       }
     ],
@@ -66,13 +72,13 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "_minion",
+        "name": "minion",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "address",
-        "name": "_avatar",
+        "name": "avatar",
         "type": "address"
       },
       {
@@ -148,7 +154,8 @@
         "internalType": "uint256[]",
         "name": "_summonerLoot",
         "type": "uint256[]"
-      }
+      },
+      { "internalType": "address[]", "name": "_shamans", "type": "address[]" }
     ],
     "name": "setUpDaoMinionAndSafe",
     "outputs": [],
@@ -157,7 +164,6 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_summoner", "type": "address" },
       { "internalType": "uint256", "name": "_saltNonce", "type": "uint256" },
       {
         "internalType": "uint256",

@@ -38,14 +38,15 @@ export function handleProposedStream(event: ProposeStream): void {
     .concat(minionAddress);
   let minion = Minion.load(minionId);
 
-  log.info("Running handleProposedStream => minion ID {}", [minion.id]);
-
   let processProposalId = molochAddress.value
     .toHexString()
     .concat("-proposal-")
     .concat(event.params.proposalId.toString());
   let proposal = Proposal.load(processProposalId);
-  log.info("Running handleProposedStream => proposal ID {}", [proposal.id]);
+
+  if (proposal == null || minion == null) {
+    return;
+  }
 
   proposal.isMinion = true;
   proposal.minionAddress = event.address;

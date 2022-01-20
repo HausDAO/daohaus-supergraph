@@ -1,9 +1,13 @@
 import { Moloch, Minion } from "../generated/schema";
+import { MinionTemplate } from "../generated/templates";
+
 import { SummonMinion as SummonNiftyMinion } from "../generated/NiftyMinionFactory/NiftyMinionFactory";
 import { addTransaction } from "./transactions";
 
 // event SummonMinion(address indexed minion, address indexed moloch, string details, string minionType);
 export function handleSummonedNiftyMinion(event: SummonNiftyMinion): void {
+  MinionTemplate.create(event.params.minion);
+
   let molochId = event.params.moloch.toHexString();
   let moloch = Moloch.load(molochId);
   if (moloch == null) {

@@ -1,72 +1,16 @@
 specVersion: 0.0.2
 description: DAOHaus Supergraph
-repository: "https://github.com/HausDAO/daohaus-supergraph"
+repository: 'https://github.com/HausDAO/daohaus-supergraph'
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: V1Factory
-    network: xdai
-    source:
-      address: "0x9232DeA84E91b49feF6b604EEA0455692FC27Ba8"
-      abi: V1Factory
-      startBlock: 10733005
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Register
-      abis:
-        - name: V1Factory
-          file: ./abis/V1Factory.json
-        - name: V1Moloch
-          file: ./abis/V1Moloch.json
-        - name: Guildbank
-          file: ./abis/Guildbank.json
-        - name: Erc20
-          file: ./abis/Erc20.json
-        - name: Erc20Bytes32
-          file: ./abis/Erc20Bytes32.json
-      eventHandlers:
-        - event: "Register(address,indexed address,uint256,string,uint256)"
-          handler: handleRegisterV1
-      file: ./src/factory-mapping.ts
-  - kind: ethereum/contract
-    name: V2Factory
-    network: xdai
-    source:
-      address: "0x124F707B3675b5fdd6208F4483C5B6a0B9bAf316"
-      abi: V2Factory
-      startBlock: 10733005
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Register
-      abis:
-        - name: V2Factory
-          file: ./abis/V2Factory.json
-        - name: Erc20
-          file: ./abis/Erc20.json
-        - name: Erc20Bytes32
-          file: ./abis/Erc20Bytes32.json
-      eventHandlers:
-        - event: >-
-            Register(uint256,address,indexed
-            address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256,string,uint256)
-          handler: handleRegisterV2
-        - event: Delete(address)
-          handler: handleDeleteV2
-      file: ./src/factory-mapping.ts
-  - kind: ethereum/contract
     name: V21Factory
-    network: xdai
+    network: celo
     source:
-      address: "0x0F50B2F3165db96614fbB6E4262716acc9F9e098"
+      address: '0x8c47bD2ABae16323054a19aA562efC87A6c26d29'
       abi: V21Factory
-      startBlock: 13569775
+      startBlock: 8691191
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -85,110 +29,16 @@ dataSources:
             SummonComplete(indexed
             address,address[],address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256[])
           handler: handleSummonV21
-        - event: "Register(uint256,address,string,string,uint256)"
+        - event: 'Register(uint256,address,string,string,uint256)'
           handler: handleRegisterV21
       file: ./src/factory-mapping.ts
   - kind: ethereum/contract
-    name: MinionFactory
-    network: xdai
-    source:
-      address: "0x9610389d548Ca0224aCaC40eB3241c5ED88D2479"
-      abi: MinionFactory
-      startBlock: 13569739
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Moloch
-        - Minion
-      abis:
-        - name: V1Moloch
-          file: ./abis/V1Moloch.json
-        - name: MinionFactory
-          file: ./abis/MinionFactory.json
-        - name: Minion
-          file: ./abis/Minion.json
-      eventHandlers:
-        - event: "SummonMinion(indexed address,indexed address,string,string)"
-          handler: handleSummonedMinion
-      file: ./src/minion-factory-mapping.ts
-  - kind: ethereum/contract
-    name: V2MinionFactory
-    network: xdai
-    source:
-      address: "0x53508D981439Ce6A3283597a4775F6f23504d4A2"
-      abi: MinionFactory
-      startBlock: 15503980
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Moloch
-        - Minion
-      abis:
-        - name: V1Moloch
-          file: ./abis/V1Moloch.json
-        - name: MinionFactory
-          file: ./abis/V2MinionFactory.json
-        - name: Minion
-          file: ./abis/V2Minion.json
-      eventHandlers:
-        - event: "SummonMinion(indexed address,indexed address,string,string)"
-          handler: handleSummonedV2Minion
-      file: ./src/minion-factory-mapping.ts
-  - kind: ethereum/contract
-    name: UberMinionFactory
-    network: xdai
-    source:
-      address: "0xf5106077892992B84c33C35CA8763895eb80B298"
-      abi: UberMinionFactory
-      startBlock: 14958440
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Moloch
-        - Minion
-      abis:
-        - name: UberMinionFactory
-          file: ./abis/UberMinionFactory.json
-      eventHandlers:
-        - event: >-
-            SummonUberMinion(indexed address,indexed
-            address,address,address,address,uint256,uint256,string,string)
-          handler: handleSummonedUberMinion
-      file: ./src/uberhaus-minion-factory-mapping.ts
-  - kind: ethereum/contract
-    name: SuperfluidMinionFactory
-    network: xdai
-    source:
-      address: "0xfC86DfDd3b2e560729c78b51dF200384cfe87438"
-      abi: SuperfluidMinionFactory
-      startBlock: 15925433
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Moloch
-        - SuperfluidMinion
-      abis:
-        - name: SuperfluidMinionFactory
-          file: ./abis/SuperfluidMinionFactory.json
-      eventHandlers:
-        - event: "SummonMinion(indexed address,indexed address,string,string)"
-          handler: handleSummonedSuperfluidMinion
-      file: ./src/superfluid-minion-factory-mapping.ts
-  - kind: ethereum/contract
     name: NiftyMinionFactory
-    network: xdai
+    network: celo
     source:
-      address: "0xA6B75C3EBfA5a5F801F634812ABCb6Fd7055fd6d"
+      address: '0xaD791Ef059A25b6C82e56977C6489974333C5A0C'
       abi: NiftyMinionFactory
-      startBlock: 16507968
+      startBlock: 8691275
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -200,163 +50,13 @@ dataSources:
         - name: NiftyMinionFactory
           file: ./abis/NiftyMinionFactory.json
       eventHandlers:
-        - event: "SummonMinion(indexed address,indexed address,string,string,uint256)"
+        - event: 'SummonMinion(indexed address,indexed address,string,string,uint256)'
           handler: handleSummonedNiftyMinion
       file: ./src/nifty-minion-factory-mapping.ts
-  - kind: ethereum/contract
-    name: SafeMinionFactory
-    network: xdai
-    source:
-      address: "0xA1b97D22e22507498B350A9edeA85c44bA7DBC01"
-      abi: SafeMinionFactory
-      startBlock: 18025529
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Moloch
-        - Minion
-      abis:
-        - name: SafeMinionFactory
-          file: ./abis/SafeMinionFactory.json
-      eventHandlers:
-        - event: >-
-            SummonMinion(indexed address,indexed address,indexed
-            address,string,string,uint256)
-          handler: handleSummonedSafeMinion
-      file: ./src/safe-minion-factory-mapping.ts
-  - kind: ethereum/contract
-    name: EscrowMinion
-    network: xdai
-    source:
-      address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7"
-      abi: EscrowMinion
-      startBlock: 18589768
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Moloch
-        - Proposal
-      abis:
-        - name: EscrowMinion
-          file: ./abis/EscrowMinion.json
-      eventHandlers:
-        - event: >-
-            ProposeAction(uint256,address,address,address[],uint256[],uint256[],uint256[],address)
-          handler: handleProposeAction
-        - event: "ExecuteAction(uint256,address,address)"
-          handler: handleExecuteAction
-      file: ./src/escrow-minion-mapping.ts
 templates:
   - kind: ethereum/contract
-    name: MolochV1Template
-    network: xdai
-    source:
-      abi: V1Moloch
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      file: ./src/v1-mapping.ts
-      entities:
-        - Moloch
-        - Member
-        - Vote
-        - Proposal
-        - Badge
-      abis:
-        - name: V1Moloch
-          file: ./abis/V1Moloch.json
-        - name: Guildbank
-          file: ./abis/Guildbank.json
-        - name: Erc20
-          file: ./abis/Erc20.json
-        - name: Erc20Bytes32
-          file: ./abis/Erc20Bytes32.json
-      eventHandlers:
-        - event: "SummonComplete(indexed address,uint256)"
-          handler: handleSummonComplete
-        - event: >-
-            SubmitProposal(uint256,indexed address,indexed address,indexed
-            address,uint256,uint256)
-          handler: handleSubmitProposal
-        - event: "SubmitVote(indexed uint256,indexed address,indexed address,uint8)"
-          handler: handleSubmitVote
-        - event: >-
-            ProcessProposal(indexed uint256,indexed address,indexed
-            address,uint256,uint256,bool)
-          handler: handleProcessProposal
-        - event: "Ragequit(indexed address,uint256)"
-          handler: handleRagequit
-        - event: "Abort(indexed uint256,address)"
-          handler: handleAbort
-        - event: "UpdateDelegateKey(indexed address,address)"
-          handler: handleUpdateDelegateKey
-  - kind: ethereum/contract
-    name: MolochV2Template
-    network: xdai
-    source:
-      abi: V2Moloch
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      file: ./src/v2-mapping.ts
-      entities:
-        - Moloch
-        - TokenBalance
-        - Token
-        - Member
-        - Vote
-        - Proposal
-        - Badge
-      abis:
-        - name: V2Moloch
-          file: ./abis/V2Moloch.json
-        - name: Erc20
-          file: ./abis/Erc20.json
-        - name: Erc20Bytes32
-          file: ./abis/Erc20Bytes32.json
-      eventHandlers:
-        - event: >-
-            SummonComplete(indexed
-            address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256)
-          handler: handleSummonComplete
-        - event: >-
-            SubmitProposal(indexed
-            address,uint256,uint256,uint256,address,uint256,address,string,bool[6],uint256,indexed
-            address,indexed address)
-          handler: handleSubmitProposal
-        - event: >-
-            SubmitVote(uint256,indexed uint256,indexed address,indexed
-            address,uint8)
-          handler: handleSubmitVote
-        - event: >-
-            SponsorProposal(indexed address,indexed
-            address,uint256,uint256,uint256)
-          handler: handleSponsorProposal
-        - event: "ProcessProposal(indexed uint256,indexed uint256,bool)"
-          handler: handleProcessProposal
-        - event: "ProcessGuildKickProposal(indexed uint256,indexed uint256,bool)"
-          handler: handleProcessGuildKickProposal
-        - event: "ProcessWhitelistProposal(indexed uint256,indexed uint256,bool)"
-          handler: handleProcessWhitelistProposal
-        - event: "UpdateDelegateKey(indexed address,address)"
-          handler: handleUpdateDelegateKey
-        - event: "CancelProposal(indexed uint256,address)"
-          handler: handleCancelProposal
-        - event: "Withdraw(indexed address,address,uint256)"
-          handler: handleWithdraw
-        - event: "Ragequit(indexed address,uint256,uint256)"
-          handler: handleRagequit
-        - event: "TokensCollected(indexed address,uint256)"
-          handler: handleTokensCollected
-  - kind: ethereum/contract
     name: MolochV21Template
-    network: xdai
+    network: celo
     source:
       abi: V21Moloch
     mapping:
@@ -392,95 +92,39 @@ templates:
             SponsorProposal(indexed address,indexed
             address,uint256,uint256,uint256)
           handler: handleSponsorProposal
-        - event: "ProcessProposal(indexed uint256,indexed uint256,bool)"
+        - event: 'ProcessProposal(indexed uint256,indexed uint256,bool)'
           handler: handleProcessProposal
-        - event: "ProcessGuildKickProposal(indexed uint256,indexed uint256,bool)"
+        - event: 'ProcessGuildKickProposal(indexed uint256,indexed uint256,bool)'
           handler: handleProcessGuildKickProposal
-        - event: "ProcessWhitelistProposal(indexed uint256,indexed uint256,bool)"
+        - event: 'ProcessWhitelistProposal(indexed uint256,indexed uint256,bool)'
           handler: handleProcessWhitelistProposal
-        - event: "UpdateDelegateKey(indexed address,address)"
+        - event: 'UpdateDelegateKey(indexed address,address)'
           handler: handleUpdateDelegateKey
-        - event: "CancelProposal(indexed uint256,address)"
+        - event: 'CancelProposal(indexed uint256,address)'
           handler: handleCancelProposal
-        - event: "Withdraw(indexed address,address,uint256)"
+        - event: 'Withdraw(indexed address,address,uint256)'
           handler: handleWithdraw
-        - event: "Ragequit(indexed address,uint256,uint256)"
+        - event: 'Ragequit(indexed address,uint256,uint256)'
           handler: handleRagequit
-        - event: "TokensCollected(indexed address,uint256)"
+        - event: 'TokensCollected(indexed address,uint256)'
           handler: handleTokensCollected
   - kind: ethereum/contract
-    name: UberhausMinionTemplate
-    network: xdai
+    name: MinionTemplate
+    network: celo
     source:
-      abi: UberhausMinion
+      abi: Minion
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: ./src/uberhaus-minion-mapping.ts
+      file: ./src/minion-mapping.ts
       entities:
         - Moloch
         - Minion
         - Proposal
       abis:
-        - name: UberhausMinion
-          file: ./abis/UberhausMinion.json
+        - name: Minion
+          file: ./abis/GenericMinion.json
       eventHandlers:
-        - event: SetUberHaus(address)
-          handler: handleSetUberHaus
-        - event: "DelegateAppointed(uint256,address,address)"
-          handler: handleDelegateAppointed
-        - event: "Impeachment(address,address)"
-          handler: handleImpeachment
-        - event: "ExecuteAction(uint256,address)"
-          handler: handleExecuteAction
-  - kind: ethereum/contract
-    name: SuperfluidMinionTemplate
-    network: xdai
-    source:
-      abi: SuperfluidMinion
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      file: ./src/superfluid-minion-mapping.ts
-      entities:
-        - Moloch
-        - Minion
-        - Proposal
-      abis:
-        - name: SuperfluidMinion
-          file: ./abis/SuperfluidMinion.json
-      eventHandlers:
-        - event: "ProposeStream(uint256,address)"
-          handler: handleProposedStream
-        - event: "ExecuteStream(uint256,address)"
-          handler: handleExecutedStream
-        - event: "StreamCanceled(uint256,address)"
-          handler: handleStreamCanceled
-        - event: ActionCanceled(uint256)
-          handler: handleStreamProposalCanceled
-  - kind: ethereum/contract
-    name: SafeMinionTemplate
-    network: xdai
-    source:
-      abi: SafeMinion
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      file: ./src/safe-minion-mapping.ts
-      entities:
-        - Moloch
-        - Minion
-        - Proposal
-      abis:
-        - name: SafeMinion
-          file: ./abis/SafeMinion.json
-      eventHandlers:
-        - event: >-
-            ProposeNewAction(indexed bytes32,indexed
-            uint256,address,uint256,address,bool,bytes)
-          handler: handleProposeAction
-        - event: "ExecuteAction(indexed bytes32,indexed uint256,bytes,address)"
+        - event: 'ExecuteAction(uint256,address)'
           handler: handleExecuteAction

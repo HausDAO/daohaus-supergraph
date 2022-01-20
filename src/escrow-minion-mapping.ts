@@ -1,4 +1,4 @@
-import { Bytes, log } from "@graphprotocol/graph-ts";
+import { ByteArray, Bytes, log } from "@graphprotocol/graph-ts";
 import {
   ProposeAction,
   ExecuteAction,
@@ -15,30 +15,30 @@ export function handleProposeAction(event: ProposeAction): void {
 
   let proposal = Proposal.load(actionProposalId);
 
-  log.info("^^^^^ escrow found proposal {}", [proposal.id]);
+  if (proposal) {
+    let escrowId = event.params.moloch
+      .toHexString()
+      .concat("-proposalEscrow-")
+      .concat(event.params.proposalId.toString());
 
-  let escrowId = event.params.moloch
-    .toHexString()
-    .concat("-proposalEscrow-")
-    .concat(event.params.proposalId.toString());
+    let escrow = new ProposalEscrow(escrowId);
 
-  let escrow = new ProposalEscrow(escrowId);
+    escrow.proposal = proposal.id;
+    escrow.minionAddress = event.params.destinationVault;
+    escrow.molochAddress = event.params.moloch;
+    escrow.proposer = event.params.proposer;
+    escrow.tokenAddresses = event.params.tokens.map<Bytes>((a) => a as Bytes);
+    escrow.tokenTypes = event.params.types;
+    escrow.tokenIds = event.params.tokenIds;
+    escrow.amounts = event.params.amounts;
 
-  escrow.proposal = proposal.id;
-  escrow.minionAddress = event.params.destinationVault;
-  escrow.molochAddress = event.params.moloch;
-  escrow.proposer = event.params.proposer;
-  escrow.tokenAddresses = event.params.tokens as Bytes[];
-  escrow.tokenTypes = event.params.types;
-  escrow.tokenIds = event.params.tokenIds;
-  escrow.amounts = event.params.amounts;
+    escrow.save();
 
-  escrow.save();
+    proposal.isMinion = true;
+    proposal.minionAddress = event.address;
 
-  proposal.isMinion = true;
-  proposal.minionAddress = event.address;
-
-  proposal.save();
+    proposal.save();
+  }
 }
 
 // # event ExecuteAction(uint256 proposalId, address executor, address moloch);
@@ -49,9 +49,11 @@ export function handleExecuteAction(event: ExecuteAction): void {
     .concat(event.params.proposalId.toString());
   let proposal = Proposal.load(processProposalId);
 
-  proposal.executed = true;
+  if (proposal) {
+    proposal.executed = true;
 
-  proposal.save();
+    proposal.save();
 
-  addTransaction(event.block, event.transaction);
+    addTransaction(event.block, event.transaction);
+  }
 }

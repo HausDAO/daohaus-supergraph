@@ -21,13 +21,13 @@
     "deploy:matic": "yarn prepare:rinkeby && yarn build:all && yarn prepare:matic && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-matic",
     "deploy:kovan": "yarn prepare:kovan && yarn build:all && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-kovan",
     "deploy:rinkeby": "yarn prepare:rinkeby && yarn build:all && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-rinkeby",
-    "deploy:test": "yarn prepare:xdai && yarn build:all && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/monster-maps",
+    "deploy:test": "yarn prepare:rinkeby && yarn build:all && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-sandbox",
     "deploy:arbitrum": "yarn prepare:rinkeby && yarn build:all && yarn prepare:arbitrum && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-arbitrum",
     "deploy:celo": "yarn prepare:rinkeby && yarn build:all && yarn prepare:celo && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-celo",
     "deploy:all": "yarn deploy:mainnet && yarn deploy:xdai && yarn deploy:matic && yarn deploy:kovan && yarn deploy:rinkeby && yarn deploy:arbitrum && yarn deploy:celo"
   },
   "dependencies": {
-    "@graphprotocol/graph-ts": "^0.20.0",
+    "@graphprotocol/graph-ts": "^0.22.1",
     "js-yaml": "^3.13.1",
     "minimist": "^1.2.5"
   }

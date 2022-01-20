@@ -20,8 +20,9 @@ import {
   TokensCollected,
 } from "../generated/templates/MolochV2Template/V2Moloch";
 import {
-  Shaman,
-  SpamPrevention,
+  Shaman as ShamanEvent,
+  SetSpamPrevention,
+  SetShaman,
 } from "../generated/templates/MolochV22Template/V22Moloch";
 import { Erc20 } from "../generated/templates/MolochV2Template/Erc20";
 import { Erc20Bytes32 } from "../generated/templates/MolochV2Template/Erc20Bytes32";
@@ -36,6 +37,7 @@ import {
   RageQuit,
   DaoMeta,
   Minion,
+  Shaman,
 } from "../generated/schema";
 import { addTransaction } from "./transactions";
 
@@ -70,8 +72,11 @@ function addToBalance(
     member,
     token
   );
-  balance.tokenBalance = balance.tokenBalance.plus(amount);
-  balance.save();
+  if (balance) {
+    balance.tokenBalance = balance.tokenBalance.plus(amount);
+    balance.save();
+  }
+
   return tokenBalanceId;
 }
 function subtractFromBalance(
@@ -86,8 +91,10 @@ function subtractFromBalance(
     member,
     token
   );
-  balance.tokenBalance = balance.tokenBalance.minus(amount);
-  balance.save();
+  if (balance) {
+    balance.tokenBalance = balance.tokenBalance.minus(amount);
+    balance.save();
+  }
   return tokenBalanceId;
 }
 
@@ -172,10 +179,15 @@ export function createAndApproveToken(molochId: string, token: Bytes): string {
   createToken.tokenAddress = token;
   createToken.whitelisted = true;
 
-  let erc20 = Erc20.bind(token as Address);
+  let address = changetype<Address>(token);
+  // let erc20 = Erc20.bind(token as Address);
+  let erc20 = Erc20.bind(address);
+
   let symbol = erc20.try_symbol();
   if (symbol.reverted) {
-    let erc20Bytes32 = Erc20Bytes32.bind(token as Address);
+    let erc20Bytes32 = Erc20Bytes32.bind(address);
+    // let erc20Bytes32 = Erc20Bytes32.bind(token as Address);
+
     let otherSymbol = erc20Bytes32.try_symbol();
     if (otherSymbol.reverted) {
       log.info("other symbol reverted molochId {}, token, {}", [
@@ -219,11 +231,14 @@ export function handleSummonComplete(event: SummonComplete): void {
     createGuildTokenBalance(molochId, token);
   }
 
+  if (daoMeta) {
+    moloch.version = daoMeta.version;
+    moloch.newContract = daoMeta.newContract;
+  }
+
   moloch.summoner = event.params.summoner;
   moloch.summoningTime = event.params.summoningTime;
   moloch.createdAt = event.params.summoningTime.toString();
-  moloch.version = daoMeta.version;
-  moloch.newContract = daoMeta.newContract;
   moloch.deleted = false;
   moloch.periodDuration = event.params.periodDuration;
   moloch.votingPeriodLength = event.params.votingPeriodLength;
@@ -365,8 +380,10 @@ export function handleSubmitProposal(event: SubmitProposal): void {
       .concat("-token-")
       .concat(event.params.tributeToken.toHex());
     let token = Token.load(tokenId);
-    proposal.tributeTokenSymbol = token.symbol;
-    proposal.tributeTokenDecimals = token.decimals;
+    if (token) {
+      proposal.tributeTokenSymbol = token.symbol;
+      proposal.tributeTokenDecimals = token.decimals;
+    }
   }
 
   if (event.params.paymentRequested > BigInt.fromI32(0)) {
@@ -374,8 +391,10 @@ export function handleSubmitProposal(event: SubmitProposal): void {
       .concat("-token-")
       .concat(event.params.paymentToken.toHex());
     let token = Token.load(tokenId);
-    proposal.paymentTokenSymbol = token.symbol;
-    proposal.paymentTokenDecimals = token.decimals;
+    if (token) {
+      proposal.paymentTokenSymbol = token.symbol;
+      proposal.paymentTokenDecimals = token.decimals;
+    }
   }
 
   proposal.save();
@@ -403,6 +422,11 @@ export function handleSubmitVote(event: SubmitVote): void {
     .concat(event.params.proposalId.toString());
 
   let vote = new Vote(voteId);
+  let member = Member.load(memberId);
+
+  if (member == null) {
+    return;
+  }
 
   vote.createdAt = event.block.timestamp.toString();
   vote.proposal = proposalVotedId;
@@ -411,7 +435,6 @@ export function handleSubmitVote(event: SubmitVote): void {
   vote.molochAddress = event.address;
   vote.uintVote = event.params.uintVote;
 
-  let member = Member.load(memberId);
   let memberVoteWeight = member.shares;
   vote.memberPower = memberVoteWeight;
 
@@ -419,6 +442,10 @@ export function handleSubmitVote(event: SubmitVote): void {
 
   let moloch = Moloch.load(molochId);
   let proposal = Proposal.load(proposalVotedId);
+
+  if (proposal == null || member == null || moloch == null) {
+    return;
+  }
 
   switch (event.params.uintVote) {
     case 1: {
@@ -460,15 +487,20 @@ export function handleSponsorProposal(event: SponsorProposal): void {
     .concat(event.params.proposalId.toString());
 
   let moloch = Moloch.load(molochId);
+  let proposal = Proposal.load(sponsorProposalId);
+
+  if (moloch == null || proposal == null) {
+    return;
+  }
 
   addToBalance(molochId, ESCROW, moloch.depositToken, moloch.proposalDeposit);
 
-  let proposal = Proposal.load(sponsorProposalId);
-
   if (proposal.guildkick) {
     let member = Member.load(memberId);
-    member.proposedToKick = true;
-    member.save();
+    if (member) {
+      member.proposedToKick = true;
+      member.save();
+    }
   }
 
   proposal.proposalIndex = event.params.proposalIndex;
@@ -478,7 +510,7 @@ export function handleSponsorProposal(event: SponsorProposal): void {
   proposal.sponsored = true;
 
   let votingPeriodStarts = moloch.summoningTime.plus(
-    proposal.startingPeriod.times(moloch.periodDuration)
+    event.params.startingPeriod.times(moloch.periodDuration)
   );
   let votingPeriodEnds = votingPeriodStarts.plus(
     moloch.votingPeriodLength.times(moloch.periodDuration)
@@ -499,11 +531,14 @@ export function handleSponsorProposal(event: SponsorProposal): void {
 export function handleProcessProposal(event: ProcessProposal): void {
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
-
   let processProposalId = molochId
     .concat("-proposal-")
     .concat(event.params.proposalId.toString());
   let proposal = Proposal.load(processProposalId);
+
+  if (moloch == null || proposal == null) {
+    return;
+  }
 
   if (
     processProposalId ==
@@ -564,10 +599,12 @@ export function handleProcessProposal(event: ProcessProposal): void {
 
       newMember.save();
     } else {
-      member.shares = member.shares.plus(proposal.sharesRequested);
-      member.loot = member.loot.plus(proposal.lootRequested);
-      member.tokenTribute = member.tokenTribute.plus(proposal.tributeOffered);
-      member.save();
+      if (member) {
+        member.shares = member.shares.plus(proposal.sharesRequested);
+        member.loot = member.loot.plus(proposal.lootRequested);
+        member.tokenTribute = member.tokenTribute.plus(proposal.tributeOffered);
+        member.save();
+      }
     }
 
     moloch.totalShares = moloch.totalShares.plus(proposal.sharesRequested);
@@ -652,6 +689,10 @@ export function handleProcessWhitelistProposal(
     .concat(event.params.proposalId.toString());
   let proposal = Proposal.load(processProposalId);
 
+  if (moloch == null || proposal == null) {
+    return;
+  }
+
   let tokenId = molochId
     .concat("-token-")
     .concat(proposal.tributeToken.toHex());
@@ -713,6 +754,10 @@ export function handleProcessGuildKickProposal(
     .concat(event.params.proposalId.toString());
   let proposal = Proposal.load(processProposalId);
 
+  if (moloch == null || proposal == null) {
+    return;
+  }
+
   if (event.params.didPass) {
     proposal.didPass = true;
     if (proposal.guildkick) {
@@ -720,15 +765,18 @@ export function handleProcessGuildKickProposal(
         .concat("-member-")
         .concat(proposal.applicant.toHexString());
       let member = Member.load(memberId);
-      let newLoot = member.shares;
-      member.jailed = proposal.proposalIndex;
-      member.kicked = true;
-      member.shares = BigInt.fromI32(0);
-      member.loot = member.loot.plus(newLoot);
-      moloch.totalLoot = moloch.totalLoot.plus(newLoot);
-      moloch.totalShares = moloch.totalShares.minus(newLoot);
 
-      member.save();
+      if (member) {
+        let newLoot = member.shares;
+        member.jailed = proposal.proposalIndex;
+        member.kicked = true;
+        member.shares = BigInt.fromI32(0);
+        member.loot = member.loot.plus(newLoot);
+        moloch.totalLoot = moloch.totalLoot.plus(newLoot);
+        moloch.totalShares = moloch.totalShares.minus(newLoot);
+
+        member.save();
+      }
     }
   } else {
     proposal.didPass = false;
@@ -784,6 +832,10 @@ export function handleRagequit(event: Ragequit): void {
     .concat(targetAddress);
   let member = Member.load(memberId);
 
+  if (moloch == null || member == null) {
+    return;
+  }
+
   let sharesAndLootToBurn = event.params.sharesToBurn.plus(
     event.params.lootToBurn
   );
@@ -805,16 +857,18 @@ export function handleRagequit(event: Ragequit): void {
       token
     );
 
-    let balanceTimesBurn = balance.tokenBalance.times(sharesAndLootToBurn);
-    let amountToRageQuit = balanceTimesBurn.div(initialTotalSharesAndLoot);
+    if (balance) {
+      let balanceTimesBurn = balance.tokenBalance.times(sharesAndLootToBurn);
+      let amountToRageQuit = balanceTimesBurn.div(initialTotalSharesAndLoot);
 
-    internalTransfer(
-      molochId,
-      GUILD,
-      member.memberAddress,
-      token,
-      amountToRageQuit
-    );
+      internalTransfer(
+        molochId,
+        GUILD,
+        member.memberAddress,
+        token,
+        amountToRageQuit
+      );
+    }
   }
 
   member.save();
@@ -829,7 +883,11 @@ export function handleRagequit(event: Ragequit): void {
   rageQuit.moloch = molochId;
   rageQuit.molochAddress = event.address;
   rageQuit.member = memberId;
-  rageQuit.memberAddress = ByteArray.fromHexString(targetAddress) as Address;
+
+  // rageQuit.memberAddress = ByteArray.fromHexString(targetAddress) as Address;
+  let address = changetype<Address>(ByteArray.fromHexString(targetAddress));
+  rageQuit.memberAddress = address;
+
   rageQuit.shares = event.params.sharesToBurn;
   rageQuit.loot = event.params.lootToBurn;
 
@@ -844,6 +902,10 @@ export function handleCancelProposal(event: CancelProposal): void {
     .concat("-proposal-")
     .concat(event.params.proposalId.toString());
   let proposal = Proposal.load(processProposalId);
+
+  if (proposal == null) {
+    return;
+  }
 
   if (proposal.tributeOffered > BigInt.fromI32(0)) {
     let applicantId = molochId
@@ -874,10 +936,13 @@ export function handleCancelProposal(event: CancelProposal): void {
       .concat("-token-")
       .concat(proposal.tributeToken.toHex());
 
+    let address = changetype<Address>(proposal.proposer);
+
     internalTransfer(
       molochId,
       ESCROW,
-      proposal.proposer as Address,
+      // proposal.proposer as Address,
+      address,
       tokenId,
       proposal.tributeOffered
     );
@@ -896,6 +961,10 @@ export function handleUpdateDelegateKey(event: UpdateDelegateKey): void {
     .concat("-member-")
     .concat(event.params.memberAddress.toHex());
   let member = Member.load(memberId);
+
+  if (member == null) {
+    return;
+  }
   member.delegateKey = event.params.newDelegateKey;
   member.save();
 
@@ -934,13 +1003,17 @@ export function handleTokensCollected(event: TokensCollected): void {
 //   uint256 loot,
 //   bool mint
 // );
-export function handleShaman(event: Shaman): void {
+export function handleShaman(event: ShamanEvent): void {
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
   let memberId = molochId
     .concat("-member-")
     .concat(event.params.memberAddress.toHex());
   let member = Member.load(memberId);
+
+  if (moloch == null) {
+    return;
+  }
 
   if (member == null) {
     member = new Member(memberId);
@@ -981,12 +1054,39 @@ export function handleShaman(event: Shaman): void {
 //   address _spamPreventionAddr,
 //   uint256 _spamPrevention
 // );
-export function handleSpamPrevention(event: SpamPrevention): void {
+export function handleSpamPrevention(event: SetSpamPrevention): void {
   let molochId = event.address.toHexString();
   let moloch = Moloch.load(molochId);
 
-  moloch.spamPreventionAddress = event.params._spamPreventionAddr;
-  moloch.spamPreventionAmount = event.params._spamPrevention;
+  if (moloch == null) {
+    return;
+  }
+
+  moloch.spamPreventionAddress = event.params.spamPreventionAddr;
+  moloch.spamPreventionAmount = event.params.spamPrevention;
+
+  addTransaction(event.block, event.transaction);
+}
+
+// event SetShaman(address indexed shaman, bool isEnabled);
+export function handleSetShaman(event: SetShaman): void {
+  let molochId = event.address.toHexString();
+
+  let shamanId = molochId
+    .concat("-shaman-")
+    .concat(event.params.shaman.toHex());
+  let shaman = Shaman.load(shamanId);
+
+  if (shaman == null) {
+    shaman = new Shaman(shamanId);
+    shaman.createdAt = event.block.timestamp.toString();
+    shaman.molochAddress = event.address;
+    shaman.moloch = molochId;
+    shaman.shamanAddress = event.params.shaman;
+  }
+  shaman.enabled = event.params.isEnabled;
+
+  shaman.save();
 
   addTransaction(event.block, event.transaction);
 }

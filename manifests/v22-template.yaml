@@ -15,6 +15,7 @@ mapping:
     - Member
     - Vote
     - Proposal
+    - Shaman
   abis:
     - name: V22Moloch
       file: ./abis/V22Moloch.json
@@ -52,7 +53,9 @@ mapping:
       handler: handleRagequit
     - event: "TokensCollected(indexed address,uint256)"
       handler: handleTokensCollected
+    - event: "SetSpamPrevention(address,uint256)"
+      handler: handleSpamPrevention
+    - event: "SetShaman(indexed address,bool)"
+      handler: handleSetShaman
     - event: "Shaman(indexed address,uint256,uint256,bool)"
       handler: handleShaman
-    - event: "SpamPrevention(address,uint256)"
-      handler: handleSpamPrevention

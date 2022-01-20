@@ -1,5 +1,6 @@
 import { log } from "@graphprotocol/graph-ts";
 import { SummonMinion } from "../generated/MinionFactory/MinionFactory";
+import { MinionTemplate } from "../generated/templates";
 import { Moloch, Minion } from "../generated/schema";
 import { addTransaction } from "./transactions";
 
@@ -10,6 +11,8 @@ export function handleSummonedMinion(event: SummonMinion): void {
   if (moloch == null) {
     return;
   }
+
+  MinionTemplate.create(event.params.minion);
 
   let minionId = molochId
     .concat("-minion-")
@@ -38,6 +41,8 @@ export function handleSummonedV2Minion(event: SummonMinion): void {
   if (moloch == null) {
     return;
   }
+
+  MinionTemplate.create(event.params.minion);
 
   let minionId = molochId
     .concat("-minion-")
