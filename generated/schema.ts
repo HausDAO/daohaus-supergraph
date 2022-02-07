@@ -1687,6 +1687,23 @@ export class Proposal extends Entity {
     }
   }
 
+  get minionExecuteActionTx(): string | null {
+    let value = this.get("minionExecuteActionTx");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set minionExecuteActionTx(value: string | null) {
+    if (!value) {
+      this.unset("minionExecuteActionTx");
+    } else {
+      this.set("minionExecuteActionTx", Value.fromString(<string>value));
+    }
+  }
+
   get minion(): string | null {
     let value = this.get("minion");
     if (!value || value.kind == ValueKind.NULL) {
