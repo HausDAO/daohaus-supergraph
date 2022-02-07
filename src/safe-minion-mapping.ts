@@ -101,9 +101,10 @@ export function handleExecuteAction(event: ExecuteAction): void {
       .concat(event.params.proposalId.toString());
     let proposal = Proposal.load(processProposalId);
     if (proposal) {
-      proposal.executed = true;
-      proposal.save();
       addTransaction(event.block, event.transaction);
+      proposal.executed = true;
+      proposal.minionExecuteActionTx = event.transaction.hash.toHex();
+      proposal.save();
     }
   }
 }
