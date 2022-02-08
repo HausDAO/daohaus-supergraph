@@ -65,6 +65,21 @@ export function handleDelegateAppointed(event: DelegateAppointed): void {
       return;
     }
 
+    let processProposalId = molochAddress
+      .toHexString()
+      .concat("-proposal-")
+      .concat(event.params.proposalId.toString());
+    let proposal = Proposal.load(processProposalId);
+
+    if (proposal == null) {
+      return;
+    }
+
+    proposal.uberHausMinionExecuted = true;
+    proposal.executed = true;
+
+    proposal.save();
+
     minion.uberHausDelegate = event.params.currentDelegate;
 
     minion.save();
