@@ -20,6 +20,12 @@ module.exports.config = {
         startBlock: 11499150,
       },
       {
+        name: "v22Factory",
+        template: "v22Factory-ds.yaml",
+        address: "0xf5add874c8c79b7fa8a86291549a4add50553e52",
+        startBlock: 14062775,
+      },
+      {
         name: "minionFactory",
         template: "minionFactory-ds.yaml",
         address: "0x2A0D29d0a9e5DE91512805c3E2B58c1e95700dDa",
@@ -68,6 +74,10 @@ module.exports.config = {
       {
         name: "v21Template",
         template: "v21-template.yaml",
+      },
+      {
+        name: "v22Template",
+        template: "v22-template.yaml",
       },
       {
         name: "safeMinionTemplate",
