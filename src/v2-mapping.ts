@@ -364,6 +364,8 @@ export function handleSubmitProposal(event: SubmitProposal): void {
       .concat(minionAddress.toHex());
     minion = Minion.load(potentialMinionId);
   }
+  // TESTING
+  // if (minion !== null && event.params.delegateKey ===  proposal.proposer) {
   if (minion !== null) {
     proposal.isMinion = true;
     proposal.minionAddress = minionAddress;
