@@ -2690,7 +2690,7 @@ export class MinionAction extends Entity {
     this.set("target", Value.fromBytes(Bytes.empty()));
     this.set("withdrawToken", Value.fromBytes(Bytes.empty()));
     this.set("withdrawValue", Value.fromBigInt(BigInt.zero()));
-    this.set("data", Value.fromBytes(Bytes.empty()));
+    this.set("data", Value.fromString(""));
     this.set("memberOnly", Value.fromBoolean(false));
     this.set("index", Value.fromBigInt(BigInt.zero()));
   }
@@ -2775,13 +2775,13 @@ export class MinionAction extends Entity {
     this.set("withdrawValue", Value.fromBigInt(value));
   }
 
-  get data(): Bytes {
+  get data(): string {
     let value = this.get("data");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set data(value: Bytes) {
-    this.set("data", Value.fromBytes(value));
+  set data(value: string) {
+    this.set("data", Value.fromString(value));
   }
 
   get memberOnly(): boolean {
@@ -2884,5 +2884,170 @@ export class Shaman extends Entity {
 
   set enabled(value: boolean) {
     this.set("enabled", Value.fromBoolean(value));
+  }
+}
+
+export class Content extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("createdAt", Value.fromString(""));
+    this.set("transactionHash", Value.fromBytes(Bytes.empty()));
+    this.set("memberAddress", Value.fromBytes(Bytes.empty()));
+    this.set("content", Value.fromString(""));
+    this.set("contentType", Value.fromString(""));
+    this.set("location", Value.fromString(""));
+    this.set("ratified", Value.fromBoolean(false));
+    this.set("rawData", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Content entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Content entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Content", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Content | null {
+    return changetype<Content | null>(store.get("Content", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get createdAt(): string {
+    let value = this.get("createdAt");
+    return value!.toString();
+  }
+
+  set createdAt(value: string) {
+    this.set("createdAt", Value.fromString(value));
+  }
+
+  get transactionHash(): Bytes {
+    let value = this.get("transactionHash");
+    return value!.toBytes();
+  }
+
+  set transactionHash(value: Bytes) {
+    this.set("transactionHash", Value.fromBytes(value));
+  }
+
+  get molochAddress(): string | null {
+    let value = this.get("molochAddress");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set molochAddress(value: string | null) {
+    if (!value) {
+      this.unset("molochAddress");
+    } else {
+      this.set("molochAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get memberAddress(): Bytes {
+    let value = this.get("memberAddress");
+    return value!.toBytes();
+  }
+
+  set memberAddress(value: Bytes) {
+    this.set("memberAddress", Value.fromBytes(value));
+  }
+
+  get content(): string {
+    let value = this.get("content");
+    return value!.toString();
+  }
+
+  set content(value: string) {
+    this.set("content", Value.fromString(value));
+  }
+
+  get contentType(): string {
+    let value = this.get("contentType");
+    return value!.toString();
+  }
+
+  set contentType(value: string) {
+    this.set("contentType", Value.fromString(value));
+  }
+
+  get location(): string {
+    let value = this.get("location");
+    return value!.toString();
+  }
+
+  set location(value: string) {
+    this.set("location", Value.fromString(value));
+  }
+
+  get title(): string | null {
+    let value = this.get("title");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set title(value: string | null) {
+    if (!value) {
+      this.unset("title");
+    } else {
+      this.set("title", Value.fromString(<string>value));
+    }
+  }
+
+  get description(): string | null {
+    let value = this.get("description");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set description(value: string | null) {
+    if (!value) {
+      this.unset("description");
+    } else {
+      this.set("description", Value.fromString(<string>value));
+    }
+  }
+
+  get ratified(): boolean {
+    let value = this.get("ratified");
+    return value!.toBoolean();
+  }
+
+  set ratified(value: boolean) {
+    this.set("ratified", Value.fromBoolean(value));
+  }
+
+  get rawData(): string {
+    let value = this.get("rawData");
+    return value!.toString();
+  }
+
+  set rawData(value: string) {
+    this.set("rawData", Value.fromString(value));
   }
 }

@@ -58,6 +58,10 @@ export function handleProposeAction(event: ProposeNewAction): void {
     return;
   }
 
+  log.info("!!! minion action prop id: {}}", [
+    event.params.proposalId.toString(),
+  ]);
+
   let avatarAddress = getAvatarAddressFromChildMinion(event.address);
   let proposalId = molochAddress
     .concat("-proposal-")
@@ -84,7 +88,7 @@ export function handleProposeAction(event: ProposeNewAction): void {
   minionAction.target = avatarAddress as Bytes;
   minionAction.withdrawToken = event.params.withdrawToken;
   minionAction.withdrawValue = event.params.withdrawAmount;
-  minionAction.data = event.params.transactions;
+  minionAction.data = event.params.transactions.toHexString();
   minionAction.memberOnly = event.params.memberOnly;
   minionAction.index = index;
 

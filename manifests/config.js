@@ -61,6 +61,12 @@ module.exports.config = {
         address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7",
         startBlock: 13489283,
       },
+      {
+        name: "poster",
+        template: "poster-ds.yaml",
+        address: "0x000000000000cd17345801aa8147b8D3950260FF",
+        startBlock: 14308417,
+      },
     ],
     templates: [
       {
@@ -157,6 +163,12 @@ module.exports.config = {
         address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7",
         startBlock: 18589768,
       },
+      {
+        name: "poster",
+        template: "poster-ds.yaml",
+        address: "0x000000000000cd17345801aa8147b8D3950260FF",
+        startBlock: 20904275,
+      },
     ],
     templates: [
       {
@@ -237,6 +249,12 @@ module.exports.config = {
         address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7",
         startBlock: 20255100,
       },
+      // {
+      //   name: "poster",
+      //   template: "poster-ds.yaml",
+      //   address: "0x000000000000cd17345801aa8147b8D3950260FF",
+      //   startBlock: 20904275,
+      // },
     ],
     templates: [
       {
@@ -283,6 +301,12 @@ module.exports.config = {
         address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7",
         startBlock: 2258277,
       },
+      // {
+      //   name: "poster",
+      //   template: "poster-ds.yaml",
+      //   address: "0x000000000000cd17345801aa8147b8D3950260FF",
+      //   startBlock: 20904275,
+      // },
     ],
     templates: [
       {
@@ -375,6 +399,12 @@ module.exports.config = {
         address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7",
         startBlock: 27734158,
       },
+      // {
+      //   name: "poster",
+      //   template: "poster-ds.yaml",
+      //   address: "0x000000000000cd17345801aa8147b8D3950260FF",
+      //   startBlock: 20904275,
+      // },
     ],
     templates: [
       {
@@ -458,6 +488,12 @@ module.exports.config = {
         template: "safeMinionFactory-ds.yaml",
         address: "0x3f13ABc8931c0e381Ce6d1Be9f978aE6E9d99Cb8",
         startBlock: 9269583,
+      },
+      {
+        name: "poster",
+        template: "poster-ds.yaml",
+        address: "0x917d84787A266F9D649d519A7Ec8445eA43514D8",
+        startBlock: 10226613,
       },
     ],
     templates: [

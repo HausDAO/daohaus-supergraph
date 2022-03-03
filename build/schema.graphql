@@ -232,7 +232,7 @@ type MinionAction @entity {
   target: Bytes!
   withdrawToken: Bytes!
   withdrawValue: BigInt!
-  data: Bytes!
+  data: String!
   memberOnly: Boolean!
   index: BigInt!
 }
@@ -244,4 +244,19 @@ type Shaman @entity {
   molochAddress: Bytes!
   moloch: Moloch!
   enabled: Boolean!
+}
+
+type Content @entity {
+  id: ID!
+  createdAt: String!
+  transactionHash: Bytes!
+  molochAddress: String
+  memberAddress: Bytes!
+  content: String!
+  contentType: String!
+  location: String!
+  title: String
+  description: String
+  ratified: Boolean!
+  rawData: String!
 }
