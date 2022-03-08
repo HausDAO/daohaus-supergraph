@@ -347,6 +347,23 @@ export class Moloch extends Entity {
     }
   }
 
+  get documents(): Array<string> | null {
+    let value = this.get("documents");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set documents(value: Array<string> | null) {
+    if (!value) {
+      this.unset("documents");
+    } else {
+      this.set("documents", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
   get totalShares(): BigInt {
     let value = this.get("totalShares");
     return value!.toBigInt();
@@ -2960,6 +2977,23 @@ export class Content extends Entity {
       this.unset("molochAddress");
     } else {
       this.set("molochAddress", Value.fromString(<string>value));
+    }
+  }
+
+  get moloch(): string | null {
+    let value = this.get("moloch");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set moloch(value: string | null) {
+    if (!value) {
+      this.unset("moloch");
+    } else {
+      this.set("moloch", Value.fromString(<string>value));
     }
   }
 

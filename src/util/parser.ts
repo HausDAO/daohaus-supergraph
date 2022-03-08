@@ -23,7 +23,13 @@ export namespace parser {
   export function getResultFromJson(content: string): JsonResult {
     let result: JsonResult;
     result.error = "none";
-    let jsonResult = json.try_fromBytes(ByteArray.fromUTF8(content) as Bytes);
+    // let jsonResult = json.try_fromBytes(ByteArray.fromUTF8(content) as Bytes);
+
+    let bytes = changetype<Bytes>(ByteArray.fromUTF8(content));
+
+    // let jsonResult = json.try_fromBytes(ByteArray.fromUTF8(content) as Bytes);
+    let jsonResult = json.try_fromBytes(bytes);
+
     if (jsonResult.isError) {
       result.error = "Failed to parse JSON";
       return result;
@@ -93,6 +99,7 @@ export namespace parser {
     entity.createdAt = event.block.timestamp.toString();
     entity.transactionHash = event.transaction.hash;
     entity.molochAddress = molochAddress;
+    entity.moloch = molochAddress;
     entity.memberAddress = event.transaction.from;
     entity.rawData = event.params.content;
     entity.ratified = ratified;

@@ -23,6 +23,7 @@ type Moloch @entity {
   rageQuits: [RageQuit!] @derivedFrom(field: "moloch")
   minions: [Minion!] @derivedFrom(field: "moloch")
   shamans: [Shaman!] @derivedFrom(field: "moloch")
+  documents: [Content!] @derivedFrom(field: "moloch")
   totalShares: BigInt!
   totalLoot: BigInt!
   v22Setup: Boolean
@@ -251,6 +252,7 @@ type Content @entity {
   createdAt: String!
   transactionHash: Bytes!
   molochAddress: String
+  moloch: Moloch
   memberAddress: Bytes!
   content: String!
   contentType: String!

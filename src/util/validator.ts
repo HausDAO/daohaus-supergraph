@@ -1,6 +1,6 @@
 import { Address, Bytes, log } from "@graphprotocol/graph-ts";
 import { Minion } from "../../generated/Poster/Minion";
-import { Moloch } from "../../generated/Poster/Moloch";
+import { Member } from "../../generated/schema";
 import { constants } from "./constants";
 
 export namespace validator {
@@ -32,36 +32,20 @@ export namespace validator {
     molochAddress: string,
     senderAddress: Address
   ): boolean {
-    // TODO: rework this to use mapping/member entity lookup
-    let address = changetype<Address>(molochAddress);
-    let molochContract = Moloch.bind(address);
+    let memberId = molochAddress
+      .concat("-member-")
+      .concat(senderAddress.toHexString());
 
-    log.info("^^^^^ calling member; {}, moloch: {}", [
-      senderAddress.toHexString(),
-      molochAddress,
-    ]);
+    let member = Member.load(memberId);
 
-    let result = molochContract.try_getCurrentPeriod();
-
-    // let result = molochContract.try_members(senderAddress);
-    if (result.reverted) {
-      log.info("^^^^^ member call failed; {}", [senderAddress.toHexString()]);
+    if (member === null) {
       return false;
     }
 
-    log.info("^^^^^ member call success; {}", [result.value.toString()]);
+    if (member.shares === constants.BIGINT_ZERO) {
+      return false;
+    }
 
     return true;
-
-    // log.info("^^^^^ member found 1; {}", []);
-    // if (result.value.value1 !== null) {
-    //   log.info("^^^^^ member found 2; {}", [result.value.value1.toString()]);
-
-    //   return result.value.value1 > constants.BIGINT_ZERO;
-    // } else {
-    //   log.info("^^^^^ member not found; {}", []);
-
-    //   return false;
-    // }
   }
 }
