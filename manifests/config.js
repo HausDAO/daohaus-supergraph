@@ -527,4 +527,77 @@ module.exports.config = {
       },
     ],
   },
+  kovanOptimism: {
+    dataSources: [
+      {
+        name: "v21Factory",
+        template: "v21Factory-ds.yaml",
+        address: "0xf89f79A0E5aF89BFa5c4d4FC6F7fD25700bC4905",
+        startBlock: 30606471,
+      },
+      {
+        name: "niftyMinionFactory",
+        template: "niftyMinionFactory-ds.yaml",
+        address: "",  // TODO
+        startBlock: "",  // TODO chanage to number
+      },
+    ],
+    templates: [
+      {
+        name: "v21Template",
+        template: "v21-template.yaml",
+      },
+      {
+        name: "minionTemplate",
+        template: "minion-template.yaml",
+      },
+    ],
+  },
+  optimism: {
+    dataSources: [
+      {
+        name: "v21Factory",
+        template: "v21Factory-ds.yaml",
+        address: "",  // TODO
+        startBlock: "",  // TODO chanage to number
+      },
+      // {
+      //   name: "niftyMinionFactory",
+      //   template: "niftyMinionFactory-ds.yaml",
+      //   address: "0xaD791Ef059A25b6C82e56977C6489974333C5A0C",
+      //   startBlock: 8691275,
+      // },
+      // TODO - superfluid is on optimism, is this a desired feature?
+      // {
+      //   name: "superfluidMinionFactory",
+      //   template: "superfluidMinionFactory-ds.yaml",
+      //   address: "0x4b168c1a1E729F4c8e3ae81d09F02d350fc905ca",
+      //   startBlock: 8541482,
+      // },
+      {
+        name: "safeMinion",
+        template: "safeMinionFactory-ds.yaml",
+        address: "", // TODO
+        startBlock: "",  // TODO chanage to number
+      },
+    ],
+    templates: [
+      {
+        name: "v21Template",
+        template: "v21-template.yaml",
+      },
+      // {
+      //   name: "minionTemplate",
+      //   template: "minion-template.yaml",
+      // },
+      // {
+      //   name: "superfluidMinionTemplate",
+      //   template: "superfluidMinion-template.yaml",
+      // },
+      {
+        name: "safeMinionTemplate",
+        template: "safeMinion-template.yaml",
+      },
+    ],
+  },
 };
