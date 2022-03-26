@@ -532,7 +532,7 @@ module.exports.config = {
       {
         name: "v21Factory",
         template: "v21Factory-ds.yaml",
-        address: "0xf89f79A0E5aF89BFa5c4d4FC6F7fD25700bC4905",
+        address: "0x72B8Bf40C8B316753a3E470689DA625759D2b025",
         startBlock: 1710095,
       },
       // {
