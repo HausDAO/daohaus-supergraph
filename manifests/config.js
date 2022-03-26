@@ -533,13 +533,19 @@ module.exports.config = {
         name: "v21Factory",
         template: "v21Factory-ds.yaml",
         address: "0xf89f79A0E5aF89BFa5c4d4FC6F7fD25700bC4905",
-        startBlock: 30606471,
+        startBlock: 1710095,
       },
+      // {
+      //   name: "niftyMinionFactory",
+      //   template: "niftyMinionFactory-ds.yaml",
+      //   address: "",  // TODO
+      //   startBlock: "",  // TODO chanage to number
+      // },
       {
-        name: "niftyMinionFactory",
-        template: "niftyMinionFactory-ds.yaml",
-        address: "",  // TODO
-        startBlock: "",  // TODO chanage to number
+        name: "safeMinion",
+        template: "safeMinionFactory-ds.yaml",
+        address: "0x19b36b818380ae482256bEd9953266d9720a4212",
+        startBlock: 1721393, // TODO using Transaction Index - is this correct?
       },
     ],
     templates: [
@@ -558,8 +564,8 @@ module.exports.config = {
       {
         name: "v21Factory",
         template: "v21Factory-ds.yaml",
-        address: "",  // TODO
-        startBlock: "",  // TODO chanage to number
+        address: "0x032865ACfc05E769902Fe90Bcc9d511875a74E66",
+        startBlock: 4864699, // TODO using Transaction Index - is this correct?
       },
       // {
       //   name: "niftyMinionFactory",
@@ -577,8 +583,8 @@ module.exports.config = {
       {
         name: "safeMinion",
         template: "safeMinionFactory-ds.yaml",
-        address: "", // TODO
-        startBlock: "",  // TODO chanage to number
+        address: "0xE01F3F0F09E778e1AD83Fbdaa00e86676F317C6e",
+        startBlock: 4865989, // TODO using Transaction Index - is this correct?
       },
     ],
     templates: [
