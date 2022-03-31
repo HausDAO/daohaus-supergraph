@@ -535,12 +535,6 @@ module.exports.config = {
         address: "0x72B8Bf40C8B316753a3E470689DA625759D2b025",
         startBlock: 1710095,
       },
-      // {
-      //   name: "niftyMinionFactory",
-      //   template: "niftyMinionFactory-ds.yaml",
-      //   address: "",  // TODO
-      //   startBlock: "",  // TODO chanage to number
-      // },
       {
         name: "safeMinion",
         template: "safeMinionFactory-ds.yaml",
@@ -567,19 +561,6 @@ module.exports.config = {
         address: "0x032865ACfc05E769902Fe90Bcc9d511875a74E66",
         startBlock: 4864699, // TODO using Transaction Index - is this correct?
       },
-      // {
-      //   name: "niftyMinionFactory",
-      //   template: "niftyMinionFactory-ds.yaml",
-      //   address: "0xaD791Ef059A25b6C82e56977C6489974333C5A0C",
-      //   startBlock: 8691275,
-      // },
-      // TODO - superfluid is on optimism, is this a desired feature?
-      // {
-      //   name: "superfluidMinionFactory",
-      //   template: "superfluidMinionFactory-ds.yaml",
-      //   address: "0x4b168c1a1E729F4c8e3ae81d09F02d350fc905ca",
-      //   startBlock: 8541482,
-      // },
       {
         name: "safeMinion",
         template: "safeMinionFactory-ds.yaml",
@@ -592,14 +573,6 @@ module.exports.config = {
         name: "v21Template",
         template: "v21-template.yaml",
       },
-      // {
-      //   name: "minionTemplate",
-      //   template: "minion-template.yaml",
-      // },
-      // {
-      //   name: "superfluidMinionTemplate",
-      //   template: "superfluidMinion-template.yaml",
-      // },
       {
         name: "safeMinionTemplate",
         template: "safeMinion-template.yaml",
