@@ -29,6 +29,10 @@ https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-rinkeby
 
 https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-xdai
 
+https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-kovan-optimism
+
+https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-optimism
+
 ## Graph explorers
 
 https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus
@@ -38,6 +42,10 @@ https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-kovan
 https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-rinkeby
 
 https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-xdai
+
+https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-kovan-optimism
+
+https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-optimism
 
 initial contribution from:
 http://manifesto.designerdao.eth.link/
