@@ -3,6 +3,7 @@ import { log } from "@graphprotocol/graph-ts";
 import { parser } from "./util/parser";
 import { constants } from "./util/constants";
 import { validator } from "./util/validator";
+import { addTransaction } from "./transactions";
 
 // event NewPost(address indexed user, string content, string indexed tag);
 export function handleNewPost(event: NewPost): void {
@@ -56,6 +57,7 @@ export function handleNewPost(event: NewPost): void {
     }
 
     parser.createBasicContent(object, molochAddress, event, true);
+    addTransaction(event.block, event.transaction);
   }
 
   if (event.params.tag.toHexString() == constants.DAOHAUS_DOCUMENT_MEMBER) {
@@ -70,5 +72,6 @@ export function handleNewPost(event: NewPost): void {
     }
 
     parser.createBasicContent(object, molochAddress, event, false);
+    addTransaction(event.block, event.transaction);
   }
 }
