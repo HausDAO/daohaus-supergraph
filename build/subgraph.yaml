@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: V21Factory
-    network: optimism
+    network: celo
     source:
-      address: "0x032865ACfc05E769902Fe90Bcc9d511875a74E66"
+      address: "0x8c47bD2ABae16323054a19aA562efC87A6c26d29"
       abi: V21Factory
-      startBlock: 4864699
+      startBlock: 8691191
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -32,30 +32,30 @@ dataSources:
           handler: handleRegisterV21
       file: V21Factory/V21Factory.wasm
   - kind: ethereum/contract
-    name: SafeMinionFactory
-    network: optimism
+    name: NiftyMinionFactory
+    network: celo
     source:
-      address: "0xE01F3F0F09E778e1AD83Fbdaa00e86676F317C6e"
-      abi: SafeMinionFactory
-      startBlock: 4865989
+      address: "0xaD791Ef059A25b6C82e56977C6489974333C5A0C"
+      abi: NiftyMinionFactory
+      startBlock: 8691275
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - Moloch
-        - Minion
+        - NiftyMinion
       abis:
-        - name: SafeMinionFactory
-          file: SafeMinionFactory/abis/SafeMinionFactory.json
+        - name: NiftyMinionFactory
+          file: NiftyMinionFactory/abis/NiftyMinionFactory.json
       eventHandlers:
-        - event: SummonMinion(indexed address,indexed address,indexed address,string,string,uint256)
-          handler: handleSummonedSafeMinion
-      file: SafeMinionFactory/SafeMinionFactory.wasm
+        - event: SummonMinion(indexed address,indexed address,string,string,uint256)
+          handler: handleSummonedNiftyMinion
+      file: NiftyMinionFactory/NiftyMinionFactory.wasm
 templates:
   - kind: ethereum/contract
     name: MolochV21Template
-    network: optimism
+    network: celo
     source:
       abi: V21Moloch
     mapping:
@@ -103,25 +103,22 @@ templates:
         - event: TokensCollected(indexed address,uint256)
           handler: handleTokensCollected
   - kind: ethereum/contract
-    name: SafeMinionTemplate
-    network: optimism
+    name: MinionTemplate
+    network: celo
     source:
-      abi: SafeMinion
+      abi: Minion
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: templates/SafeMinionTemplate/SafeMinionTemplate.wasm
+      file: templates/MinionTemplate/MinionTemplate.wasm
       entities:
         - Moloch
         - Minion
         - Proposal
       abis:
-        - name: SafeMinion
-          file: SafeMinionTemplate/abis/SafeMinion.json
+        - name: Minion
+          file: MinionTemplate/abis/GenericMinion.json
       eventHandlers:
-        - event: ProposeNewAction(indexed bytes32,indexed
-            uint256,address,uint256,address,bool,bytes)
-          handler: handleProposeAction
-        - event: ExecuteAction(indexed bytes32,indexed uint256,bytes,address)
+        - event: ExecuteAction(uint256,address)
           handler: handleExecuteAction

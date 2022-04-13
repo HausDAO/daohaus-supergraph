@@ -61,12 +61,12 @@ module.exports.config = {
         address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7",
         startBlock: 13489283,
       },
-      // {
-      //   name: "poster",
-      //   template: "poster-ds.yaml",
-      //   address: "0x000000000000cd17345801aa8147b8D3950260FF",
-      //   startBlock: 14308417,
-      // },
+      {
+        name: "poster",
+        template: "poster-ds.yaml",
+        address: "0x000000000000cd17345801aa8147b8D3950260FF",
+        startBlock: 14573288,
+      },
     ],
     templates: [
       {
