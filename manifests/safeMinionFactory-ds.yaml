@@ -12,6 +12,7 @@ mapping:
   entities:
     - Moloch
     - Minion
+    - SafeMinion
   abis:
     - name: SafeMinionFactory
       file: ./abis/SafeMinionFactory.json
