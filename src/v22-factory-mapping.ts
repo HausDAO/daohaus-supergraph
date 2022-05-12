@@ -2,7 +2,7 @@ import { BigInt, Address, log } from "@graphprotocol/graph-ts";
 import { SummonComplete } from "../generated/V22Factory/V22Factory";
 import { MolochV22Template } from "../generated/templates";
 
-import { Moloch, Member, DaoMeta } from "../generated/schema";
+import { Moloch, Member, DaoMeta, SafeMinion } from "../generated/schema";
 
 import {
   createAndApproveToken,
@@ -97,6 +97,8 @@ export function createAndAddSummoner(
   member.exists = true;
   member.proposedToKick = false;
   member.kicked = false;
+  member.isDao = Moloch.load(summoner.toHex()) ? summoner.toHexString() : null;
+  member.isSafeMinion = SafeMinion.load(summoner.toHex()) ? summoner.toHexString() : null;
 
   //Set summoner summoner balances for approved tokens to zero
   let tokens = event.params.tokens;

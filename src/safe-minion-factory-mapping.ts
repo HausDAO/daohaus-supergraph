@@ -1,7 +1,7 @@
 import { Bytes, log } from "@graphprotocol/graph-ts";
 import { SummonMinion } from "../generated/SafeMinionFactory/SafeMinionFactory";
 import { SafeMinionTemplate } from "../generated/templates";
-import { Moloch, Minion } from "../generated/schema";
+import { Moloch, Minion, SafeMinion } from "../generated/schema";
 import { addTransaction } from "./transactions";
 
 // event SummonMinion(address indexed minion, address indexed moloch, address indexed avatar, string details, string minionType, uint256 minQuorum);
@@ -43,6 +43,18 @@ export function handleSummonedSafeMinion(event: SummonMinion): void {
   minion.minQuorum = event.params.minQuorum;
 
   minion.save();
+
+  let safeMinion = SafeMinion.load(event.params.avatar.toHex());
+  if (safeMinion == null) {
+    safeMinion = new SafeMinion(event.params.avatar.toHex());
+    safeMinion.minions = [minionId];
+  } else {
+    let currMinions = safeMinion.minions;
+    currMinions.push(minionId);
+    safeMinion.minions = currMinions;
+  }
+
+  safeMinion.save();
 
   addTransaction(event.block, event.transaction);
 }

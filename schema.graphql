@@ -71,6 +71,8 @@ type Member @entity {
   proposedToKick: Boolean
   kicked: Boolean
   jailed: BigInt
+  isDao: Moloch
+  isSafeMinion: SafeMinion
 }
 
 type Vote @entity {
@@ -206,6 +208,11 @@ type MinionStream @entity {
   canceledAt: String
   canceledBy: Bytes
   minion: Minion!
+}
+
+type SafeMinion @entity {
+  id: ID!
+  minions: [Minion!]!
 }
 
 type MolochTransaction @entity {

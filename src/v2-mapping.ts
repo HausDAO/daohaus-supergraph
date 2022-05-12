@@ -37,6 +37,7 @@ import {
   RageQuit,
   DaoMeta,
   Minion,
+  SafeMinion,
   Shaman,
 } from "../generated/schema";
 import { addTransaction } from "./transactions";
@@ -269,6 +270,12 @@ export function handleSummonComplete(event: SummonComplete): void {
   newMember.didRagequit = false;
   newMember.proposedToKick = false;
   newMember.kicked = false;
+  newMember.isDao = Moloch.load(event.params.summoner.toHex())
+    ? event.params.summoner.toHexString()
+    : null;
+  newMember.isSafeMinion = SafeMinion.load(event.params.summoner.toHex())
+    ? event.params.summoner.toHexString()
+    : null;
 
   newMember.save();
 
@@ -598,6 +605,12 @@ export function handleProcessProposal(event: ProcessProposal): void {
       newMember.didRagequit = false;
       newMember.proposedToKick = false;
       newMember.kicked = false;
+      newMember.isDao = Moloch.load(proposal.applicant.toHex())
+        ? proposal.applicant.toHexString()
+        : null;
+      newMember.isSafeMinion = SafeMinion.load(proposal.applicant.toHex())
+        ? proposal.applicant.toHexString()
+        : null;
 
       newMember.save();
     } else {
@@ -642,6 +655,12 @@ export function handleProcessProposal(event: ProcessProposal): void {
       newMember.didRagequit = false;
       newMember.proposedToKick = false;
       newMember.kicked = false;
+      newMember.isDao = Moloch.load(proposal.applicant.toHex())
+        ? proposal.applicant.toHexString()
+        : null;
+      newMember.isSafeMinion = SafeMinion.load(proposal.applicant.toHex())
+        ? proposal.applicant.toHexString()
+        : null;
 
       newMember.save();
     }
@@ -930,6 +949,12 @@ export function handleCancelProposal(event: CancelProposal): void {
       newMember.didRagequit = false;
       newMember.proposedToKick = false;
       newMember.kicked = false;
+      newMember.isDao = Moloch.load(proposal.applicant.toHex())
+        ? proposal.applicant.toHexString()
+        : null;
+      newMember.isSafeMinion = SafeMinion.load(proposal.applicant.toHex())
+        ? proposal.applicant.toHexString()
+        : null;
 
       newMember.save();
     }
@@ -1032,6 +1057,12 @@ export function handleShaman(event: ShamanEvent): void {
     member.didRagequit = false;
     member.proposedToKick = false;
     member.kicked = false;
+    member.isDao = Moloch.load(event.params.memberAddress.toHex())
+      ? event.params.memberAddress.toHexString()
+      : null;
+    member.isSafeMinion = SafeMinion.load(event.params.memberAddress.toHex())
+      ? event.params.memberAddress.toHexString()
+      : null;;
   }
 
   if (event.params.mint) {
