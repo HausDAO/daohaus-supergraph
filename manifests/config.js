@@ -490,6 +490,12 @@ module.exports.config = {
         startBlock: 9269583,
       },
       {
+        name: "v2safeMinion",
+        template: "v2safeMinionFactory-ds.yaml",
+        address: "0x2adD83F65e6eB1015a5Cf77407EA1797CCC4E8fc",
+        startBlock: 10779461,
+      },
+      {
         name: "poster",
         template: "poster-ds.yaml",
         address: "0x917d84787A266F9D649d519A7Ec8445eA43514D8",

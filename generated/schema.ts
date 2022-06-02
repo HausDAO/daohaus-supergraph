@@ -889,6 +889,40 @@ export class Member extends Entity {
       this.set("jailed", Value.fromBigInt(<BigInt>value));
     }
   }
+
+  get isDao(): string | null {
+    let value = this.get("isDao");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set isDao(value: string | null) {
+    if (!value) {
+      this.unset("isDao");
+    } else {
+      this.set("isDao", Value.fromString(<string>value));
+    }
+  }
+
+  get isSafeMinion(): string | null {
+    let value = this.get("isSafeMinion");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set isSafeMinion(value: string | null) {
+    if (!value) {
+      this.unset("isSafeMinion");
+    } else {
+      this.set("isSafeMinion", Value.fromString(<string>value));
+    }
+  }
 }
 
 export class Vote extends Entity {
@@ -2174,6 +2208,23 @@ export class Minion extends Entity {
     }
   }
 
+  get safeMinionVersion(): string | null {
+    let value = this.get("safeMinionVersion");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set safeMinionVersion(value: string | null) {
+    if (!value) {
+      this.unset("safeMinionVersion");
+    } else {
+      this.set("safeMinionVersion", Value.fromString(<string>value));
+    }
+  }
+
   get crossChainMinion(): boolean {
     let value = this.get("crossChainMinion");
     return value!.toBoolean();
@@ -2505,6 +2556,50 @@ export class MinionStream extends Entity {
 
   set minion(value: string) {
     this.set("minion", Value.fromString(value));
+  }
+}
+
+export class SafeMinion extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("minions", Value.fromStringArray(new Array(0)));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save SafeMinion entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save SafeMinion entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("SafeMinion", id.toString(), this);
+    }
+  }
+
+  static load(id: string): SafeMinion | null {
+    return changetype<SafeMinion | null>(store.get("SafeMinion", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get minions(): Array<string> {
+    let value = this.get("minions");
+    return value!.toStringArray();
+  }
+
+  set minions(value: Array<string>) {
+    this.set("minions", Value.fromStringArray(value));
   }
 }
 

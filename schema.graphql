@@ -181,6 +181,7 @@ type Minion @entity {
   uberHausDelegateRewardFactor: BigInt
   uberHausDelegate: Bytes
   safeAddress: Bytes
+  safeMinionVersion: String
   crossChainMinion: Boolean!
   foreignChainId: String
   foreignSafeAddress: Bytes

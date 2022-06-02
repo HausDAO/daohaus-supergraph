@@ -4,10 +4,7 @@ import { SafeMinionTemplate } from "../generated/templates";
 import { Moloch, Minion, SafeMinion } from "../generated/schema";
 import { addTransaction } from "./transactions";
 
-// event SummonMinion(address indexed minion, address indexed moloch, address indexed avatar, string details, string minionType, uint256 minQuorum);
-export function handleSummonedSafeMinion(event: SummonMinion): void {
-  SafeMinionTemplate.create(event.params.minion);
-
+function setupMinion(event: SummonMinion, version: string): void {
   let molochId = event.params.moloch.toHexString();
   let moloch = Moloch.load(molochId);
   if (moloch == null) {
@@ -22,7 +19,8 @@ export function handleSummonedSafeMinion(event: SummonMinion): void {
   log.info("**** summoned safeminion: {}, moloch: {}", [minionId, molochId]);
 
   let details = event.params.details;
-  if (details.startsWith("0xab270234")) { // bytes4(keccak256(abi.encodePacked('AMBMinionSafe'))) === 0xab270234
+  if (details.startsWith("0xab270234")) {
+    // bytes4(keccak256(abi.encodePacked('AMBMinionSafe'))) === 0xab270234
     let fields = details.split("/");
     minion.details = fields[1];
     minion.crossChainMinion = true;
@@ -35,6 +33,7 @@ export function handleSummonedSafeMinion(event: SummonMinion): void {
 
   minion.minionAddress = minionAddress;
   minion.safeAddress = event.params.avatar;
+  minion.safeMinionVersion = version;
   minion.molochAddress = event.params.moloch;
   minion.minionType = event.params.minionType;
   minion.moloch = moloch.id;
@@ -57,4 +56,14 @@ export function handleSummonedSafeMinion(event: SummonMinion): void {
   safeMinion.save();
 
   addTransaction(event.block, event.transaction);
+}
+
+export function handleSummonedSafeMinion(event: SummonMinion): void {
+  SafeMinionTemplate.create(event.params.minion);
+  setupMinion(event, "1");
+}
+
+export function handleSummonedSafeMinionV2(event: SummonMinion): void {
+  SafeMinionTemplate.create(event.params.minion);
+  setupMinion(event, "2");
 }
