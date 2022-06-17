@@ -573,6 +573,12 @@ module.exports.config = {
         address: "0xE01F3F0F09E778e1AD83Fbdaa00e86676F317C6e",
         startBlock: 4865989, // TODO using Transaction Index - is this correct?
       },
+       {
+        name: "v22Factory",
+        template: "v22Factory-ds.yaml",
+        address: "0x9425f47e808d9d4fE56f5F9f517CbBDd802DcdFb",
+        startBlock: 10877151,
+      },
     ],
     templates: [
       {
@@ -583,6 +589,10 @@ module.exports.config = {
         name: "safeMinionTemplate",
         template: "safeMinion-template.yaml",
       },
+      {
+        name: "v22Factory",
+        template: "v22Factory-ds.yaml",
+      }
     ],
   },
 };
