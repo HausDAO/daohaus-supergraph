@@ -284,6 +284,12 @@ module.exports.config = {
         startBlock: 219866,
       },
       {
+        name: "v22Factory",
+        template: "v22Factory-ds.yaml",
+        address: "0x3840453a3907916113dB88bFAc2349533a736c64",
+        startBlock: 14012626,
+      },
+      {
         name: "niftyMinionFactory",
         template: "niftyMinionFactory-ds.yaml",
         address: "0xA92CbC525EabFa5baE4e0ff7bDa8E011B43B9aCC",
@@ -301,6 +307,7 @@ module.exports.config = {
         address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7",
         startBlock: 2258277,
       },
+
       // {
       //   name: "poster",
       //   template: "poster-ds.yaml",
@@ -312,6 +319,10 @@ module.exports.config = {
       {
         name: "v21Template",
         template: "v21-template.yaml",
+      },
+            {
+        name: "v22Template",
+        template: "v22-template.yaml",
       },
       {
         name: "safeMinionTemplate",
