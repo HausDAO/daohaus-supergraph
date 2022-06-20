@@ -67,6 +67,12 @@ module.exports.config = {
         address: "0x000000000000cd17345801aa8147b8D3950260FF",
         startBlock: 14573288,
       },
+      {
+        name: "v2safeMinion",
+        template: "v2safeMinionFactory-ds.yaml",
+        address: "0x594AF060c08EeA9f559Bc668484E50596BcB2CFB",
+        startBlock: 14932271,
+      },
     ],
     templates: [
       {
@@ -169,6 +175,12 @@ module.exports.config = {
         address: "0x000000000000cd17345801aa8147b8d3950260ff",
         startBlock: 20936410,
       },
+      {
+        name: "v2safeMinion",
+        template: "v2safeMinionFactory-ds.yaml",
+        address: "0xBD090EF169c0C8589Acb33406C29C20d22bb4a55",
+        startBlock: 22521240,
+      },
     ],
     templates: [
       {
@@ -249,6 +261,12 @@ module.exports.config = {
         address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7",
         startBlock: 20255100,
       },
+      {
+        name: "v2safeMinion",
+        template: "v2safeMinionFactory-ds.yaml",
+        address: "0x594AF060c08EeA9f559Bc668484E50596BcB2CFB",
+        startBlock: 29282563,
+      },
       // {
       //   name: "poster",
       //   template: "poster-ds.yaml",
@@ -301,6 +319,12 @@ module.exports.config = {
         address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7",
         startBlock: 2258277,
       },
+      {
+        name: "v2safeMinion",
+        template: "v2safeMinionFactory-ds.yaml",
+        address: "0x51498dDdd2A8cdeC82932E08A37eBaF346C38EFd",
+        startBlock: 14004160,
+      },
       // {
       //   name: "poster",
       //   template: "poster-ds.yaml",
@@ -336,6 +360,12 @@ module.exports.config = {
         template: "niftyMinionFactory-ds.yaml",
         address: "0xaD791Ef059A25b6C82e56977C6489974333C5A0C",
         startBlock: 8691275,
+      },
+      {
+        name: "v2safeMinion",
+        template: "v2safeMinionFactory-ds.yaml",
+        address: "0x51498dDdd2A8cdeC82932E08A37eBaF346C38EFd",
+        startBlock: 13424760,
       },
     ],
     templates: [
@@ -398,6 +428,12 @@ module.exports.config = {
         template: "escrowMinion-ds.yaml",
         address: "0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7",
         startBlock: 27734158,
+      },
+      {
+        name: "v2safeMinion",
+        template: "v2safeMinionFactory-ds.yaml",
+        address: "0x98B550caBec2602eE2c2259179d1A935777Ff257",
+        startBlock: 32055269,
       },
       // {
       //   name: "poster",
@@ -492,8 +528,8 @@ module.exports.config = {
       {
         name: "v2safeMinion",
         template: "v2safeMinionFactory-ds.yaml",
-        address: "0x2adD83F65e6eB1015a5Cf77407EA1797CCC4E8fc",
-        startBlock: 10779461,
+        address: "0x4916aC39D4835aB7C21B93F332eCD56021942329",
+        startBlock: 10789134,
       },
       {
         name: "poster",
@@ -533,45 +569,25 @@ module.exports.config = {
       },
     ],
   },
-  kovanOptimism: {
-    dataSources: [
-      {
-        name: "v21Factory",
-        template: "v21Factory-ds.yaml",
-        address: "0x72B8Bf40C8B316753a3E470689DA625759D2b025",
-        startBlock: 1710095,
-      },
-      {
-        name: "safeMinion",
-        template: "safeMinionFactory-ds.yaml",
-        address: "0x19b36b818380ae482256bEd9953266d9720a4212",
-        startBlock: 1721393, // TODO using Transaction Index - is this correct?
-      },
-    ],
-    templates: [
-      {
-        name: "v21Template",
-        template: "v21-template.yaml",
-      },
-      {
-        name: "minionTemplate",
-        template: "minion-template.yaml",
-      },
-    ],
-  },
   optimism: {
     dataSources: [
       {
         name: "v21Factory",
         template: "v21Factory-ds.yaml",
         address: "0x032865ACfc05E769902Fe90Bcc9d511875a74E66",
-        startBlock: 4864699, // TODO using Transaction Index - is this correct?
+        startBlock: 4864699,
       },
       {
         name: "safeMinion",
         template: "safeMinionFactory-ds.yaml",
         address: "0xE01F3F0F09E778e1AD83Fbdaa00e86676F317C6e",
-        startBlock: 4865989, // TODO using Transaction Index - is this correct?
+        startBlock: 4865989,
+      },
+      {
+        name: "v2safeMinion",
+        template: "v2safeMinionFactory-ds.yaml",
+        address: "0x8C0463EAfc0B91d7A246CA391Dc4f81E9E6Bd029",
+        startBlock: 10872276,
       },
     ],
     templates: [

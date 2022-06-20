@@ -37,6 +37,8 @@ export function handleRegisterV1(event: RegisterV1): void {
   daoMeta.newContract = event.params.newContract.toString();
   daoMeta.save();
 
+  event.block.timestamp.toHexString().concat(event.logIndex.toHexString());
+
   addTransaction(event.block, event.transaction);
 }
 

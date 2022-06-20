@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: V1Factory
-    network: rinkeby
+    network: mainnet
     source:
-      address: '0x610247467d0dfA8B477ad7Dd1644e86CB2a79F8F'
+      address: '0x2840d12d926cc686217bb42b80b662c7d72ee787'
       abi: V1Factory
-      startBlock: 6494343
+      startBlock: 8625240
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -34,11 +34,11 @@ dataSources:
       file: ./src/factory-mapping.ts
   - kind: ethereum/contract
     name: V2Factory
-    network: rinkeby
+    network: mainnet
     source:
-      address: '0x763b61A62EF076ad960E1d513713B2aeD7C1b88e'
+      address: '0x1782a13f176e84Be200842Ade79daAA0B09F0418'
       abi: V2Factory
-      startBlock: 6494329
+      startBlock: 9484660
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -62,11 +62,11 @@ dataSources:
       file: ./src/factory-mapping.ts
   - kind: ethereum/contract
     name: V21Factory
-    network: rinkeby
+    network: mainnet
     source:
-      address: '0xC33a4EfecB11D2cAD8E7d8d2a6b5E7FEacCC521d'
+      address: '0x38064F40B20347d58b326E767791A6f79cdEddCe'
       abi: V21Factory
-      startBlock: 7771115
+      startBlock: 11499150
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -90,11 +90,11 @@ dataSources:
       file: ./src/factory-mapping.ts
   - kind: ethereum/contract
     name: V22Factory
-    network: rinkeby
+    network: mainnet
     source:
-      address: '0xa24012Bcfc53b3C5c448726d99B68044cdADD77A'
+      address: '0xf5add874c8c79b7fa8a86291549a4add50553e52'
       abi: V22Factory
-      startBlock: 9901589
+      startBlock: 14062775
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -116,11 +116,11 @@ dataSources:
       file: ./src/v22-factory-mapping.ts
   - kind: ethereum/contract
     name: MinionFactory
-    network: rinkeby
+    network: mainnet
     source:
-      address: '0x316eFCd421b0654B7aE8E806880D4AE88ecaE206'
+      address: '0x2A0D29d0a9e5DE91512805c3E2B58c1e95700dDa'
       abi: MinionFactory
-      startBlock: 7737496
+      startBlock: 11499121
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -141,11 +141,11 @@ dataSources:
       file: ./src/minion-factory-mapping.ts
   - kind: ethereum/contract
     name: V2MinionFactory
-    network: rinkeby
+    network: mainnet
     source:
-      address: '0x313F02A44089150C9ff7011D4e87b52404A914A9'
+      address: '0x88207Daf515e0da1A32399b3f92D128B1BF45294'
       abi: MinionFactory
-      startBlock: 8402027
+      startBlock: 12227886
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -165,57 +165,60 @@ dataSources:
           handler: handleSummonedV2Minion
       file: ./src/minion-factory-mapping.ts
   - kind: ethereum/contract
-    name: SuperfluidMinionFactory
-    network: rinkeby
+    name: MolochDAO
+    network: mainnet
     source:
-      address: '0x4b168c1a1E729F4c8e3ae81d09F02d350fc905ca'
-      abi: SuperfluidMinionFactory
-      startBlock: 8541482
+      address: '0x1fd169a4f5c59acf79d0fd5d91d1201ef1bce9f1'
+      abi: V1Moloch
+      startBlock: 7218560
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - Moloch
-        - SuperfluidMinion
+        - Member
       abis:
-        - name: SuperfluidMinionFactory
-          file: ./abis/SuperfluidMinionFactory.json
+        - name: V1Moloch
+          file: ./abis/V1Moloch.json
+        - name: Guildbank
+          file: ./abis/Guildbank.json
+        - name: Erc20
+          file: ./abis/Erc20.json
+        - name: Erc20Bytes32
+          file: ./abis/Erc20Bytes32.json
       eventHandlers:
-        - event: 'SummonMinion(indexed address,indexed address,string,string)'
-          handler: handleSummonedSuperfluidMinion
-      file: ./src/superfluid-minion-factory-mapping.ts
+        - event: 'SummonComplete(indexed address,uint256)'
+          handler: handleSummonCompleteMoloch
+      file: ./src/legacy-mapping.ts
   - kind: ethereum/contract
-    name: EscrowMinion
-    network: rinkeby
+    name: NiftyMinionFactory
+    network: mainnet
     source:
-      address: '0xEB28321b7952CC34bFb734413b58496A889C9660'
-      abi: EscrowMinion
-      startBlock: 9471294
+      address: '0x7EDfBDED3077Bc035eFcEA1835359736Fa342209'
+      abi: NiftyMinionFactory
+      startBlock: 13016332
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - Moloch
-        - Proposal
+        - NiftyMinion
       abis:
-        - name: EscrowMinion
-          file: ./abis/EscrowMinion.json
+        - name: NiftyMinionFactory
+          file: ./abis/NiftyMinionFactory.json
       eventHandlers:
-        - event: >-
-            ProposeAction(uint256,address,address,address[],uint256[],uint256[],uint256[],address)
-          handler: handleProposeAction
-        - event: 'ExecuteAction(uint256,address,address)'
-          handler: handleExecuteAction
-      file: ./src/escrow-minion-mapping.ts
+        - event: 'SummonMinion(indexed address,indexed address,string,string,uint256)'
+          handler: handleSummonedNiftyMinion
+      file: ./src/nifty-minion-factory-mapping.ts
   - kind: ethereum/contract
     name: SafeMinionFactory
-    network: rinkeby
+    network: mainnet
     source:
-      address: '0x3f13ABc8931c0e381Ce6d1Be9f978aE6E9d99Cb8'
+      address: '0xbC37509A283E2bb67fd151c34E72e826C501E108'
       abi: SafeMinionFactory
-      startBlock: 9269583
+      startBlock: 13199717
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -234,36 +237,36 @@ dataSources:
           handler: handleSummonedSafeMinion
       file: ./src/safe-minion-factory-mapping.ts
   - kind: ethereum/contract
-    name: V2SafeMinionFactory
-    network: rinkeby
+    name: EscrowMinion
+    network: mainnet
     source:
-      address: '0x2adD83F65e6eB1015a5Cf77407EA1797CCC4E8fc'
-      abi: V2SafeMinionFactory
-      startBlock: 10779461
+      address: '0xc9f9E7FC92A7D3B2b3554be850fFF462B7b382E7'
+      abi: EscrowMinion
+      startBlock: 13489283
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - Moloch
-        - Minion
-        - SafeMinion
+        - Proposal
       abis:
-        - name: V2SafeMinionFactory
-          file: ./abis/V2SafeMinionFactory.json
+        - name: EscrowMinion
+          file: ./abis/EscrowMinion.json
       eventHandlers:
         - event: >-
-            SummonMinion(indexed address,indexed address,indexed
-            address,string,string,uint256)
-          handler: handleSummonedSafeMinionV2
-      file: ./src/safe-minion-factory-mapping.ts
+            ProposeAction(uint256,address,address,address[],uint256[],uint256[],uint256[],address)
+          handler: handleProposeAction
+        - event: 'ExecuteAction(uint256,address,address)'
+          handler: handleExecuteAction
+      file: ./src/escrow-minion-mapping.ts
   - kind: ethereum/contract
     name: Poster
-    network: rinkeby
+    network: mainnet
     source:
-      address: '0x917d84787A266F9D649d519A7Ec8445eA43514D8'
+      address: '0x000000000000cd17345801aa8147b8D3950260FF'
       abi: Poster
-      startBlock: 10226613
+      startBlock: 14573288
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -282,10 +285,34 @@ dataSources:
         - event: 'NewPost(indexed address,string,indexed string)'
           handler: handleNewPost
       file: ./src/poster-mapping.ts
+  - kind: ethereum/contract
+    name: V2SafeMinionFactory
+    network: mainnet
+    source:
+      address: '0x594AF060c08EeA9f559Bc668484E50596BcB2CFB'
+      abi: V2SafeMinionFactory
+      startBlock: 14932271
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Moloch
+        - Minion
+        - SafeMinion
+      abis:
+        - name: V2SafeMinionFactory
+          file: ./abis/V2SafeMinionFactory.json
+      eventHandlers:
+        - event: >-
+            SummonMinion(indexed address,indexed address,indexed
+            address,string,string,uint256)
+          handler: handleSummonedSafeMinionV2
+      file: ./src/safe-minion-factory-mapping.ts
 templates:
   - kind: ethereum/contract
     name: MolochV1Template
-    network: rinkeby
+    network: mainnet
     source:
       abi: V1Moloch
     mapping:
@@ -329,7 +356,7 @@ templates:
           handler: handleUpdateDelegateKey
   - kind: ethereum/contract
     name: MolochV2Template
-    network: rinkeby
+    network: mainnet
     source:
       abi: V2Moloch
     mapping:
@@ -388,7 +415,7 @@ templates:
           handler: handleTokensCollected
   - kind: ethereum/contract
     name: MolochV21Template
-    network: rinkeby
+    network: mainnet
     source:
       abi: V21Moloch
     mapping:
@@ -442,7 +469,7 @@ templates:
           handler: handleTokensCollected
   - kind: ethereum/contract
     name: MolochV22Template
-    network: rinkeby
+    network: mainnet
     source:
       abi: V22Moloch
     mapping:
@@ -502,34 +529,8 @@ templates:
         - event: 'Shaman(indexed address,uint256,uint256,bool)'
           handler: handleShaman
   - kind: ethereum/contract
-    name: SuperfluidMinionTemplate
-    network: rinkeby
-    source:
-      abi: SuperfluidMinion
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      file: ./src/superfluid-minion-mapping.ts
-      entities:
-        - Moloch
-        - Minion
-        - Proposal
-      abis:
-        - name: SuperfluidMinion
-          file: ./abis/SuperfluidMinion.json
-      eventHandlers:
-        - event: 'ProposeStream(uint256,address)'
-          handler: handleProposedStream
-        - event: 'ExecuteStream(uint256,address)'
-          handler: handleExecutedStream
-        - event: 'StreamCanceled(uint256,address)'
-          handler: handleStreamCanceled
-        - event: ActionCanceled(uint256)
-          handler: handleStreamProposalCanceled
-  - kind: ethereum/contract
     name: SafeMinionTemplate
-    network: rinkeby
+    network: mainnet
     source:
       abi: SafeMinion
     mapping:
@@ -553,7 +554,7 @@ templates:
           handler: handleExecuteAction
   - kind: ethereum/contract
     name: MinionTemplate
-    network: rinkeby
+    network: mainnet
     source:
       abi: Minion
     mapping:
