@@ -616,8 +616,8 @@ module.exports.config = {
         template: "safeMinion-template.yaml",
       },
       {
-        name: "v22Factory",
-        template: "v22Factory-ds.yaml",
+        name: "v22Template",
+        template: "v22-template.yaml",
       },
     ],
   },
