@@ -185,6 +185,7 @@ type Minion @entity {
   crossChainMinion: Boolean!
   foreignChainId: String
   foreignSafeAddress: Bytes
+  bridgeModule: String
   version: String
   minQuorum: BigInt
   streams: [MinionStream!] @derivedFrom(field: "minion")

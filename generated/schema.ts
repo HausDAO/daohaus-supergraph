@@ -2268,6 +2268,23 @@ export class Minion extends Entity {
     }
   }
 
+  get bridgeModule(): string | null {
+    let value = this.get("bridgeModule");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set bridgeModule(value: string | null) {
+    if (!value) {
+      this.unset("bridgeModule");
+    } else {
+      this.set("bridgeModule", Value.fromString(<string>value));
+    }
+  }
+
   get version(): string | null {
     let value = this.get("version");
     if (!value || value.kind == ValueKind.NULL) {

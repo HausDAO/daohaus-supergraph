@@ -5,12 +5,67 @@ schema:
   file: schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: V21Factory
-    network: optimism
+    name: V1Factory
+    network: rinkeby
     source:
-      address: "0x032865ACfc05E769902Fe90Bcc9d511875a74E66"
+      address: "0x610247467d0dfA8B477ad7Dd1644e86CB2a79F8F"
+      abi: V1Factory
+      startBlock: 6494343
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Register
+      abis:
+        - name: V1Factory
+          file: V1Factory/abis/V1Factory.json
+        - name: V1Moloch
+          file: V1Factory/abis/V1Moloch.json
+        - name: Guildbank
+          file: V1Factory/abis/Guildbank.json
+        - name: Erc20
+          file: V1Factory/abis/Erc20.json
+        - name: Erc20Bytes32
+          file: V1Factory/abis/Erc20Bytes32.json
+      eventHandlers:
+        - event: Register(address,indexed address,uint256,string,uint256)
+          handler: handleRegisterV1
+      file: V1Factory/V1Factory.wasm
+  - kind: ethereum/contract
+    name: V2Factory
+    network: rinkeby
+    source:
+      address: "0x763b61A62EF076ad960E1d513713B2aeD7C1b88e"
+      abi: V2Factory
+      startBlock: 6494329
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Register
+      abis:
+        - name: V2Factory
+          file: V2Factory/abis/V2Factory.json
+        - name: Erc20
+          file: V2Factory/abis/Erc20.json
+        - name: Erc20Bytes32
+          file: V2Factory/abis/Erc20Bytes32.json
+      eventHandlers:
+        - event: Register(uint256,address,indexed
+            address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256,string,uint256)
+          handler: handleRegisterV2
+        - event: Delete(address)
+          handler: handleDeleteV2
+      file: V1Factory/V1Factory.wasm
+  - kind: ethereum/contract
+    name: V21Factory
+    network: rinkeby
+    source:
+      address: "0xC33a4EfecB11D2cAD8E7d8d2a6b5E7FEacCC521d"
       abi: V21Factory
-      startBlock: 4864699
+      startBlock: 7771115
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -30,58 +85,14 @@ dataSources:
           handler: handleSummonV21
         - event: Register(uint256,address,string,string,uint256)
           handler: handleRegisterV21
-      file: V21Factory/V21Factory.wasm
-  - kind: ethereum/contract
-    name: SafeMinionFactory
-    network: optimism
-    source:
-      address: "0xE01F3F0F09E778e1AD83Fbdaa00e86676F317C6e"
-      abi: SafeMinionFactory
-      startBlock: 4865989
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Moloch
-        - Minion
-        - SafeMinion
-      abis:
-        - name: SafeMinionFactory
-          file: SafeMinionFactory/abis/SafeMinionFactory.json
-      eventHandlers:
-        - event: SummonMinion(indexed address,indexed address,indexed address,string,string,uint256)
-          handler: handleSummonedSafeMinion
-      file: SafeMinionFactory/SafeMinionFactory.wasm
-  - kind: ethereum/contract
-    name: V2SafeMinionFactory
-    network: optimism
-    source:
-      address: "0x8C0463EAfc0B91d7A246CA391Dc4f81E9E6Bd029"
-      abi: V2SafeMinionFactory
-      startBlock: 10872276
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Moloch
-        - Minion
-        - SafeMinion
-      abis:
-        - name: V2SafeMinionFactory
-          file: V2SafeMinionFactory/abis/V2SafeMinionFactory.json
-      eventHandlers:
-        - event: SummonMinion(indexed address,indexed address,indexed address,string,string,uint256)
-          handler: handleSummonedSafeMinionV2
-      file: SafeMinionFactory/SafeMinionFactory.wasm
+      file: V1Factory/V1Factory.wasm
   - kind: ethereum/contract
     name: V22Factory
-    network: optimism
+    network: rinkeby
     source:
-      address: "0x9425f47e808d9d4fE56f5F9f517CbBDd802DcdFb"
+      address: "0xa24012Bcfc53b3C5c448726d99B68044cdADD77A"
       abi: V22Factory
-      startBlock: 10877151
+      startBlock: 9901589
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -100,17 +111,275 @@ dataSources:
             address,address,address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleSummonV22
       file: V22Factory/V22Factory.wasm
+  - kind: ethereum/contract
+    name: MinionFactory
+    network: rinkeby
+    source:
+      address: "0x316eFCd421b0654B7aE8E806880D4AE88ecaE206"
+      abi: MinionFactory
+      startBlock: 7737496
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Moloch
+        - Minion
+      abis:
+        - name: V1Moloch
+          file: MinionFactory/abis/V1Moloch.json
+        - name: MinionFactory
+          file: MinionFactory/abis/MinionFactory.json
+        - name: Minion
+          file: MinionFactory/abis/Minion.json
+      eventHandlers:
+        - event: SummonMinion(indexed address,indexed address,string,string)
+          handler: handleSummonedMinion
+      file: MinionFactory/MinionFactory.wasm
+  - kind: ethereum/contract
+    name: V2MinionFactory
+    network: rinkeby
+    source:
+      address: "0x313F02A44089150C9ff7011D4e87b52404A914A9"
+      abi: MinionFactory
+      startBlock: 8402027
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Moloch
+        - Minion
+      abis:
+        - name: V1Moloch
+          file: V2MinionFactory/abis/V1Moloch.json
+        - name: MinionFactory
+          file: V2MinionFactory/abis/V2MinionFactory.json
+        - name: Minion
+          file: V2MinionFactory/abis/V2Minion.json
+      eventHandlers:
+        - event: SummonMinion(indexed address,indexed address,string,string)
+          handler: handleSummonedV2Minion
+      file: MinionFactory/MinionFactory.wasm
+  - kind: ethereum/contract
+    name: SuperfluidMinionFactory
+    network: rinkeby
+    source:
+      address: "0x4b168c1a1E729F4c8e3ae81d09F02d350fc905ca"
+      abi: SuperfluidMinionFactory
+      startBlock: 8541482
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Moloch
+        - SuperfluidMinion
+      abis:
+        - name: SuperfluidMinionFactory
+          file: SuperfluidMinionFactory/abis/SuperfluidMinionFactory.json
+      eventHandlers:
+        - event: SummonMinion(indexed address,indexed address,string,string)
+          handler: handleSummonedSuperfluidMinion
+      file: SuperfluidMinionFactory/SuperfluidMinionFactory.wasm
+  - kind: ethereum/contract
+    name: EscrowMinion
+    network: rinkeby
+    source:
+      address: "0xEB28321b7952CC34bFb734413b58496A889C9660"
+      abi: EscrowMinion
+      startBlock: 9471294
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Moloch
+        - Proposal
+      abis:
+        - name: EscrowMinion
+          file: EscrowMinion/abis/EscrowMinion.json
+      eventHandlers:
+        - event: ProposeAction(uint256,address,address,address[],uint256[],uint256[],uint256[],address)
+          handler: handleProposeAction
+        - event: ExecuteAction(uint256,address,address)
+          handler: handleExecuteAction
+      file: EscrowMinion/EscrowMinion.wasm
+  - kind: ethereum/contract
+    name: SafeMinionFactory
+    network: rinkeby
+    source:
+      address: "0x3f13ABc8931c0e381Ce6d1Be9f978aE6E9d99Cb8"
+      abi: SafeMinionFactory
+      startBlock: 9269583
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Moloch
+        - Minion
+        - SafeMinion
+      abis:
+        - name: SafeMinionFactory
+          file: SafeMinionFactory/abis/SafeMinionFactory.json
+      eventHandlers:
+        - event: SummonMinion(indexed address,indexed address,indexed address,string,string,uint256)
+          handler: handleSummonedSafeMinion
+      file: SafeMinionFactory/SafeMinionFactory.wasm
+  - kind: ethereum/contract
+    name: V2SafeMinionFactory
+    network: rinkeby
+    source:
+      address: "0x4916aC39D4835aB7C21B93F332eCD56021942329"
+      abi: V2SafeMinionFactory
+      startBlock: 10789134
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Moloch
+        - Minion
+        - SafeMinion
+      abis:
+        - name: V2SafeMinionFactory
+          file: V2SafeMinionFactory/abis/V2SafeMinionFactory.json
+      eventHandlers:
+        - event: SummonMinion(indexed address,indexed address,indexed address,string,string,uint256)
+          handler: handleSummonedSafeMinionV2
+      file: SafeMinionFactory/SafeMinionFactory.wasm
+  - kind: ethereum/contract
+    name: Poster
+    network: rinkeby
+    source:
+      address: "0x917d84787A266F9D649d519A7Ec8445eA43514D8"
+      abi: Poster
+      startBlock: 10226613
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Post
+        - Minion
+      abis:
+        - name: Poster
+          file: Poster/abis/Poster.json
+        - name: Minion
+          file: Poster/abis/V2Minion.json
+        - name: Moloch
+          file: Poster/abis/V21Moloch.json
+      eventHandlers:
+        - event: NewPost(indexed address,string,indexed string)
+          handler: handleNewPost
+      file: Poster/Poster.wasm
 templates:
   - kind: ethereum/contract
+    name: MolochV1Template
+    network: rinkeby
+    source:
+      abi: V1Moloch
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: templates/MolochV1Template/MolochV1Template.wasm
+      entities:
+        - Moloch
+        - Member
+        - Vote
+        - Proposal
+        - Badge
+      abis:
+        - name: V1Moloch
+          file: MolochV1Template/abis/V1Moloch.json
+        - name: Guildbank
+          file: MolochV1Template/abis/Guildbank.json
+        - name: Erc20
+          file: MolochV1Template/abis/Erc20.json
+        - name: Erc20Bytes32
+          file: MolochV1Template/abis/Erc20Bytes32.json
+      eventHandlers:
+        - event: SummonComplete(indexed address,uint256)
+          handler: handleSummonComplete
+        - event: SubmitProposal(uint256,indexed address,indexed address,indexed
+            address,uint256,uint256)
+          handler: handleSubmitProposal
+        - event: SubmitVote(indexed uint256,indexed address,indexed address,uint8)
+          handler: handleSubmitVote
+        - event: ProcessProposal(indexed uint256,indexed address,indexed
+            address,uint256,uint256,bool)
+          handler: handleProcessProposal
+        - event: Ragequit(indexed address,uint256)
+          handler: handleRagequit
+        - event: Abort(indexed uint256,address)
+          handler: handleAbort
+        - event: UpdateDelegateKey(indexed address,address)
+          handler: handleUpdateDelegateKey
+  - kind: ethereum/contract
+    name: MolochV2Template
+    network: rinkeby
+    source:
+      abi: V2Moloch
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: templates/MolochV2Template/MolochV2Template.wasm
+      entities:
+        - Moloch
+        - TokenBalance
+        - Token
+        - Member
+        - Vote
+        - Proposal
+        - Badge
+      abis:
+        - name: V2Moloch
+          file: MolochV2Template/abis/V2Moloch.json
+        - name: Erc20
+          file: MolochV2Template/abis/Erc20.json
+        - name: Erc20Bytes32
+          file: MolochV2Template/abis/Erc20Bytes32.json
+      eventHandlers:
+        - event: SummonComplete(indexed
+            address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleSummonComplete
+        - event: SubmitProposal(indexed
+            address,uint256,uint256,uint256,address,uint256,address,string,bool[6],uint256,indexed
+            address,indexed address)
+          handler: handleSubmitProposal
+        - event: SubmitVote(uint256,indexed uint256,indexed address,indexed address,uint8)
+          handler: handleSubmitVote
+        - event: SponsorProposal(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleSponsorProposal
+        - event: ProcessProposal(indexed uint256,indexed uint256,bool)
+          handler: handleProcessProposal
+        - event: ProcessGuildKickProposal(indexed uint256,indexed uint256,bool)
+          handler: handleProcessGuildKickProposal
+        - event: ProcessWhitelistProposal(indexed uint256,indexed uint256,bool)
+          handler: handleProcessWhitelistProposal
+        - event: UpdateDelegateKey(indexed address,address)
+          handler: handleUpdateDelegateKey
+        - event: CancelProposal(indexed uint256,address)
+          handler: handleCancelProposal
+        - event: Withdraw(indexed address,address,uint256)
+          handler: handleWithdraw
+        - event: Ragequit(indexed address,uint256,uint256)
+          handler: handleRagequit
+        - event: TokensCollected(indexed address,uint256)
+          handler: handleTokensCollected
+  - kind: ethereum/contract
     name: MolochV21Template
-    network: optimism
+    network: rinkeby
     source:
       abi: V21Moloch
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: templates/MolochV21Template/MolochV21Template.wasm
+      file: templates/MolochV2Template/MolochV2Template.wasm
       entities:
         - Moloch
         - TokenBalance
@@ -151,38 +420,15 @@ templates:
         - event: TokensCollected(indexed address,uint256)
           handler: handleTokensCollected
   - kind: ethereum/contract
-    name: SafeMinionTemplate
-    network: optimism
-    source:
-      abi: SafeMinion
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      file: templates/SafeMinionTemplate/SafeMinionTemplate.wasm
-      entities:
-        - Moloch
-        - Minion
-        - Proposal
-      abis:
-        - name: SafeMinion
-          file: SafeMinionTemplate/abis/SafeMinion.json
-      eventHandlers:
-        - event: ProposeNewAction(indexed bytes32,indexed
-            uint256,address,uint256,address,bool,bytes)
-          handler: handleProposeAction
-        - event: ExecuteAction(indexed bytes32,indexed uint256,bytes,address)
-          handler: handleExecuteAction
-  - kind: ethereum/contract
     name: MolochV22Template
-    network: optimism
+    network: rinkeby
     source:
       abi: V22Moloch
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
-      file: templates/MolochV21Template/MolochV21Template.wasm
+      file: templates/MolochV2Template/MolochV2Template.wasm
       entities:
         - Moloch
         - TokenBalance
@@ -229,3 +475,72 @@ templates:
           handler: handleSetShaman
         - event: Shaman(indexed address,uint256,uint256,bool)
           handler: handleShaman
+  - kind: ethereum/contract
+    name: SuperfluidMinionTemplate
+    network: rinkeby
+    source:
+      abi: SuperfluidMinion
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: templates/SuperfluidMinionTemplate/SuperfluidMinionTemplate.wasm
+      entities:
+        - Moloch
+        - Minion
+        - Proposal
+      abis:
+        - name: SuperfluidMinion
+          file: SuperfluidMinionTemplate/abis/SuperfluidMinion.json
+      eventHandlers:
+        - event: ProposeStream(uint256,address)
+          handler: handleProposedStream
+        - event: ExecuteStream(uint256,address)
+          handler: handleExecutedStream
+        - event: StreamCanceled(uint256,address)
+          handler: handleStreamCanceled
+        - event: ActionCanceled(uint256)
+          handler: handleStreamProposalCanceled
+  - kind: ethereum/contract
+    name: SafeMinionTemplate
+    network: rinkeby
+    source:
+      abi: SafeMinion
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: templates/SafeMinionTemplate/SafeMinionTemplate.wasm
+      entities:
+        - Moloch
+        - Minion
+        - Proposal
+      abis:
+        - name: SafeMinion
+          file: SafeMinionTemplate/abis/SafeMinion.json
+      eventHandlers:
+        - event: ProposeNewAction(indexed bytes32,indexed
+            uint256,address,uint256,address,bool,bytes)
+          handler: handleProposeAction
+        - event: ExecuteAction(indexed bytes32,indexed uint256,bytes,address)
+          handler: handleExecuteAction
+  - kind: ethereum/contract
+    name: MinionTemplate
+    network: rinkeby
+    source:
+      abi: Minion
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: templates/MinionTemplate/MinionTemplate.wasm
+      entities:
+        - Moloch
+        - Minion
+        - Proposal
+      abis:
+        - name: Minion
+          file: MinionTemplate/abis/GenericMinion.json
+      eventHandlers:
+        - event: ExecuteAction(uint256,address)
+          handler: handleExecuteAction
