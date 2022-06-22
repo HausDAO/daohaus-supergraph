@@ -1,4 +1,4 @@
-module.exports.config = {
+ainmodule.exports.config = {
   mainnet: {
     dataSources: [
       {
@@ -569,6 +569,106 @@ module.exports.config = {
         name: "superfluidMinionTemplate",
         template: "superfluidMinion-template.yaml",
       },
+      {
+        name: "safeMinionTemplate",
+        template: "safeMinion-template.yaml",
+      },
+      {
+        name: "minionTemplate",
+        template: "minion-template.yaml",
+      },
+    ],
+  },
+  goerli: {
+    dataSources: [
+      // {
+      //   name: "v1Factory",
+      //   template: "v1Factory-ds.yaml",
+      //   address: "",
+      //   startBlock: 1,
+      // },
+      // {
+      //   name: "v2Factory",
+      //   template: "v2Factory-ds.yaml",
+      //   address: "",
+      //   startBlock: 1,
+      // },
+      {
+        name: "v21Factory",
+        template: "v21Factory-ds.yaml",
+        address: "0x72B8Bf40C8B316753a3E470689DA625759D2b025",
+        startBlock: 7103207,
+      },
+      {
+        name: "v22Factory",
+        template: "v22Factory-ds.yaml",
+        address: "0xA8680d0E43aDe8BC32eCCF6C446eCe4CA15d4258",
+        startBlock: 7104213,
+      },
+      // {
+      //   name: "minionFactory",
+      //   template: "minionFactory-ds.yaml",
+      //   address: "",
+      //   startBlock: 1,
+      // },
+      {
+        name: "v2minionFactory",
+        template: "v2MinionFactory-ds.yaml",
+        address: "0x25D59ad2b29e25221b844Ae3F406Ff9B3bC90f14",
+        startBlock: 7104377,
+      },
+      // {
+      //   name: "superfluidMinionFactory",
+      //   template: "superfluidMinionFactory-ds.yaml",
+      //   address: "",
+      //   startBlock: 1,
+      // },
+      // {
+      //   name: "escrowMinion",
+      //   template: "escrowMinion-ds.yaml",
+      //   address: "",
+      //   startBlock: 1,
+      // },
+      // {
+      //   name: "safeMinion",
+      //   template: "safeMinionFactory-ds.yaml",
+      //   address: "",
+      //   startBlock: 1,
+      // },
+      {
+        name: "poster",
+        template: "poster-ds.yaml",
+        address: "0x3c1f4802be7e26d95b31ef7a566e18f42e360cab",
+        startBlock: 7103940,
+      },
+      {
+        name: "v2safeMinion",
+        template: "v2safeMinionFactory-ds.yaml",
+        address: "0x121931c0Bc458A5f13F3861444AeB036cc8a5363",
+        startBlock: 7021834,
+      },
+    ],
+    templates: [
+      // {
+      //   name: "v1Template",
+      //   template: "v1-template.yaml",
+      // },
+      // {
+      //   name: "v2Template",
+      //   template: "v2-template.yaml",
+      // },
+      {
+        name: "v21Template",
+        template: "v21-template.yaml",
+      },
+      {
+        name: "v22Template",
+        template: "v22-template.yaml",
+      },
+      // {
+      //   name: "superfluidMinionTemplate",
+      //   template: "superfluidMinion-template.yaml",
+      // },
       {
         name: "safeMinionTemplate",
         template: "safeMinion-template.yaml",

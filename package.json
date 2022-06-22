@@ -18,6 +18,7 @@
     "prepare:celo": "node manifests/deploy-prep.js celo",
     "prepare:kovan-optimism": "node manifests/deploy-prep.js kovan-optimism",
     "prepare:optimism": "node manifests/deploy-prep.js optimism",
+    "prepare:goerli": "node manifests/deploy-prep.js goerli",
     "deploy:mainnet": "yarn prepare:mainnet && yarn build:all && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus",
     "deploy:xdai": "yarn prepare:xdai && yarn build:all && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-xdai",
     "deploy:matic": "yarn prepare:rinkeby && yarn build:all && yarn prepare:matic && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-matic",
@@ -28,7 +29,8 @@
     "deploy:celo": "yarn prepare:rinkeby && yarn build:all && yarn prepare:celo && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-celo",
     "deploy:kovan-optimism": "yarn prepare:rinkeby && yarn build:all && yarn prepare:kovan-optimism && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-kovan-optimism",
     "deploy:optimism": "yarn prepare:rinkeby && yarn build:all && yarn prepare:optimism && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-optimism",
-    "deploy:all": "yarn deploy:mainnet && yarn deploy:xdai && yarn deploy:matic && yarn deploy:kovan && yarn deploy:rinkeby && yarn deploy:arbitrum && yarn deploy:celo && yarn deploy:optimism"
+    "deploy:goerli": "yarn prepare:rinkeby && yarn build:all && yarn prepare:goerli && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-goerli",
+    "deploy:all": "yarn deploy:mainnet && yarn deploy:xdai && yarn deploy:matic && yarn deploy:kovan && yarn deploy:rinkeby && yarn deploy:arbitrum && yarn deploy:celo && yarn deploy:optimism && yarn deploy:goerli"
   },
   "dependencies": {
     "@graphprotocol/graph-ts": "^0.22.1",
