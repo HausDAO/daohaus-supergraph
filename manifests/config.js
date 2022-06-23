@@ -1,4 +1,4 @@
-ainmodule.exports.config = {
+module.exports.config = {
   mainnet: {
     dataSources: [
       {
