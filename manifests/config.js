@@ -581,18 +581,6 @@ module.exports.config = {
   },
   goerli: {
     dataSources: [
-      // {
-      //   name: "v1Factory",
-      //   template: "v1Factory-ds.yaml",
-      //   address: "",
-      //   startBlock: 1,
-      // },
-      // {
-      //   name: "v2Factory",
-      //   template: "v2Factory-ds.yaml",
-      //   address: "",
-      //   startBlock: 1,
-      // },
       {
         name: "v21Factory",
         template: "v21Factory-ds.yaml",
@@ -606,32 +594,8 @@ module.exports.config = {
         startBlock: 7104213,
       },
       // {
-      //   name: "minionFactory",
-      //   template: "minionFactory-ds.yaml",
-      //   address: "",
-      //   startBlock: 1,
-      // },
-      {
-        name: "v2minionFactory",
-        template: "v2MinionFactory-ds.yaml",
-        address: "0x25D59ad2b29e25221b844Ae3F406Ff9B3bC90f14",
-        startBlock: 7104377,
-      },
-      // {
-      //   name: "superfluidMinionFactory",
-      //   template: "superfluidMinionFactory-ds.yaml",
-      //   address: "",
-      //   startBlock: 1,
-      // },
-      // {
       //   name: "escrowMinion",
       //   template: "escrowMinion-ds.yaml",
-      //   address: "",
-      //   startBlock: 1,
-      // },
-      // {
-      //   name: "safeMinion",
-      //   template: "safeMinionFactory-ds.yaml",
       //   address: "",
       //   startBlock: 1,
       // },
@@ -649,14 +613,6 @@ module.exports.config = {
       },
     ],
     templates: [
-      // {
-      //   name: "v1Template",
-      //   template: "v1-template.yaml",
-      // },
-      // {
-      //   name: "v2Template",
-      //   template: "v2-template.yaml",
-      // },
       {
         name: "v21Template",
         template: "v21-template.yaml",
@@ -665,17 +621,9 @@ module.exports.config = {
         name: "v22Template",
         template: "v22-template.yaml",
       },
-      // {
-      //   name: "superfluidMinionTemplate",
-      //   template: "superfluidMinion-template.yaml",
-      // },
       {
         name: "safeMinionTemplate",
         template: "safeMinion-template.yaml",
-      },
-      {
-        name: "minionTemplate",
-        template: "minion-template.yaml",
       },
     ],
   },
