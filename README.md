@@ -21,31 +21,35 @@ work here: https://github.com/MolochVentures/moloch-monorepo/blob/master/package
 
 ## Endpoints
 
-https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus
+[daohaus](https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus)
 
-https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-kovan
+[daohaus-kovan](https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-kovan)
 
-https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-rinkeby
+[daohaus-rinkeby](https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-rinkeby)
 
-https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-xdai
+[daohaus-xdai](https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-xdai)
 
-https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-kovan-optimism
+[daohaus-kovan-optimism](https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-kovan-optimism)
 
-https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-optimism
+[daohaus-optimism](https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-optimism)
+
+[daohaus-goerli](https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-goerli)
 
 ## Graph explorers
 
-https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus
+[daohaus](https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus)
 
-https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-kovan
+[daohaus-kovan](https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-kovan)
 
-https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-rinkeby
+[daohaus-rinkeby](https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-rinkeby)
 
-https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-xdai
+[daohaus-xdai](https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-xdai)
 
-https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-kovan-optimism
+[daohaus-kovan-optimism](https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-kovan-optimism)
 
-https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-optimism
+[daohaus-optimism](https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-optimism)
+
+[daohaus-goerli](https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-goerli)
 
 initial contribution from:
 http://manifesto.designerdao.eth.link/

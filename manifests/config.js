@@ -579,6 +579,54 @@ module.exports.config = {
       },
     ],
   },
+  goerli: {
+    dataSources: [
+      {
+        name: "v21Factory",
+        template: "v21Factory-ds.yaml",
+        address: "0x72B8Bf40C8B316753a3E470689DA625759D2b025",
+        startBlock: 7103207,
+      },
+      {
+        name: "v22Factory",
+        template: "v22Factory-ds.yaml",
+        address: "0xA8680d0E43aDe8BC32eCCF6C446eCe4CA15d4258",
+        startBlock: 7104213,
+      },
+      // {
+      //   name: "escrowMinion",
+      //   template: "escrowMinion-ds.yaml",
+      //   address: "",
+      //   startBlock: 1,
+      // },
+      {
+        name: "poster",
+        template: "poster-ds.yaml",
+        address: "0x3c1f4802be7e26d95b31ef7a566e18f42e360cab",
+        startBlock: 7103940,
+      },
+      {
+        name: "v2safeMinion",
+        template: "v2safeMinionFactory-ds.yaml",
+        address: "0x121931c0Bc458A5f13F3861444AeB036cc8a5363",
+        startBlock: 7021834,
+      },
+    ],
+    templates: [
+      {
+        name: "v21Template",
+        template: "v21-template.yaml",
+      },
+      {
+        name: "v22Template",
+        template: "v22-template.yaml",
+      },
+      {
+        name: "safeMinionTemplate",
+        template: "safeMinion-template.yaml",
+      },
+    ],
+  },
   optimism: {
     dataSources: [
       {
