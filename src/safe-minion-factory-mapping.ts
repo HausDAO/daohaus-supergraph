@@ -38,9 +38,7 @@ function setupMinion(event: SummonMinion, version: string): void {
   minion.safeAddress = event.params.avatar;
   minion.safeMinionVersion = version;
   minion.molochAddress = event.params.moloch;
-  // minion.minionType = event.params.minionType;
-  minion.minionType =
-    version == "1" ? event.params.minionType : "SAFE MINION V1";
+  minion.minionType = event.params.minionType;
   minion.moloch = moloch.id;
   minion.createdAt = event.block.timestamp.toString();
   minion.version = "3";
