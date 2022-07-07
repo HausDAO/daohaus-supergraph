@@ -23,7 +23,8 @@ function setupMinion(event: SummonMinion, version: string): void {
     // bytes4(keccak256(abi.encodePacked('AMBMinionSafe'))) === 0xab270234
     // bytes4(keccak256(abi.encodePacked("NomadMinionSafe"))) === 0xfc3b5b76
     let fields = details.split("/");
-    minion.bridgeModule = fields[0] == "0xab270234" ? "AMBModule" : "NomadModule";
+    minion.bridgeModule =
+      fields[0] == "0xab270234" ? "AMBModule" : "NomadModule";
     minion.details = fields[1];
     minion.crossChainMinion = true;
     minion.foreignChainId = fields[2];

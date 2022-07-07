@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: V21Factory
-    network: optimism
+    network: goerli
     source:
-      address: '0x032865ACfc05E769902Fe90Bcc9d511875a74E66'
+      address: '0x72B8Bf40C8B316753a3E470689DA625759D2b025'
       abi: V21Factory
-      startBlock: 4864699
+      startBlock: 7103207
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -33,60 +33,12 @@ dataSources:
           handler: handleRegisterV21
       file: ./src/factory-mapping.ts
   - kind: ethereum/contract
-    name: SafeMinionFactory
-    network: optimism
-    source:
-      address: '0xE01F3F0F09E778e1AD83Fbdaa00e86676F317C6e'
-      abi: SafeMinionFactory
-      startBlock: 4865989
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Moloch
-        - Minion
-        - SafeMinion
-      abis:
-        - name: SafeMinionFactory
-          file: ./abis/SafeMinionFactory.json
-      eventHandlers:
-        - event: >-
-            SummonMinion(indexed address,indexed address,indexed
-            address,string,string,uint256)
-          handler: handleSummonedSafeMinion
-      file: ./src/safe-minion-factory-mapping.ts
-  - kind: ethereum/contract
-    name: V2SafeMinionFactory
-    network: optimism
-    source:
-      address: '0x8C0463EAfc0B91d7A246CA391Dc4f81E9E6Bd029'
-      abi: V2SafeMinionFactory
-      startBlock: 10872276
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Moloch
-        - Minion
-        - SafeMinion
-      abis:
-        - name: V2SafeMinionFactory
-          file: ./abis/V2SafeMinionFactory.json
-      eventHandlers:
-        - event: >-
-            SummonMinion(indexed address,indexed address,indexed
-            address,string,string,uint256)
-          handler: handleSummonedSafeMinionV2
-      file: ./src/safe-minion-factory-mapping.ts
-  - kind: ethereum/contract
     name: V22Factory
-    network: optimism
+    network: goerli
     source:
-      address: '0x9425f47e808d9d4fE56f5F9f517CbBDd802DcdFb'
+      address: '0xA8680d0E43aDe8BC32eCCF6C446eCe4CA15d4258'
       abi: V22Factory
-      startBlock: 10877151
+      startBlock: 7104213
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -106,10 +58,59 @@ dataSources:
             address,address,address,address[],uint256,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleSummonV22
       file: ./src/v22-factory-mapping.ts
+  - kind: ethereum/contract
+    name: Poster
+    network: goerli
+    source:
+      address: '0x3c1f4802be7e26d95b31ef7a566e18f42e360cab'
+      abi: Poster
+      startBlock: 7103940
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Post
+        - Minion
+      abis:
+        - name: Poster
+          file: ./abis/Poster.json
+        - name: Minion
+          file: ./abis/V2Minion.json
+        - name: Moloch
+          file: ./abis/V21Moloch.json
+      eventHandlers:
+        - event: 'NewPost(indexed address,string,indexed string)'
+          handler: handleNewPost
+      file: ./src/poster-mapping.ts
+  - kind: ethereum/contract
+    name: V2SafeMinionFactory
+    network: goerli
+    source:
+      address: '0x121931c0Bc458A5f13F3861444AeB036cc8a5363'
+      abi: V2SafeMinionFactory
+      startBlock: 7021834
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Moloch
+        - Minion
+        - SafeMinion
+      abis:
+        - name: V2SafeMinionFactory
+          file: ./abis/V2SafeMinionFactory.json
+      eventHandlers:
+        - event: >-
+            SummonMinion(indexed address,indexed address,indexed
+            address,string,string,uint256)
+          handler: handleSummonedSafeMinionV2
+      file: ./src/safe-minion-factory-mapping.ts
 templates:
   - kind: ethereum/contract
     name: MolochV21Template
-    network: optimism
+    network: goerli
     source:
       abi: V21Moloch
     mapping:
@@ -162,32 +163,8 @@ templates:
         - event: 'TokensCollected(indexed address,uint256)'
           handler: handleTokensCollected
   - kind: ethereum/contract
-    name: SafeMinionTemplate
-    network: optimism
-    source:
-      abi: SafeMinion
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      file: ./src/safe-minion-mapping.ts
-      entities:
-        - Moloch
-        - Minion
-        - Proposal
-      abis:
-        - name: SafeMinion
-          file: ./abis/SafeMinion.json
-      eventHandlers:
-        - event: >-
-            ProposeNewAction(indexed bytes32,indexed
-            uint256,address,uint256,address,bool,bytes)
-          handler: handleProposeAction
-        - event: 'ExecuteAction(indexed bytes32,indexed uint256,bytes,address)'
-          handler: handleExecuteAction
-  - kind: ethereum/contract
     name: MolochV22Template
-    network: optimism
+    network: goerli
     source:
       abi: V22Moloch
     mapping:
@@ -246,3 +223,27 @@ templates:
           handler: handleSetShaman
         - event: 'Shaman(indexed address,uint256,uint256,bool)'
           handler: handleShaman
+  - kind: ethereum/contract
+    name: SafeMinionTemplate
+    network: goerli
+    source:
+      abi: SafeMinion
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      file: ./src/safe-minion-mapping.ts
+      entities:
+        - Moloch
+        - Minion
+        - Proposal
+      abis:
+        - name: SafeMinion
+          file: ./abis/SafeMinion.json
+      eventHandlers:
+        - event: >-
+            ProposeNewAction(indexed bytes32,indexed
+            uint256,address,uint256,address,bool,bytes)
+          handler: handleProposeAction
+        - event: 'ExecuteAction(indexed bytes32,indexed uint256,bytes,address)'
+          handler: handleExecuteAction
