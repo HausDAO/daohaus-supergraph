@@ -13,4 +13,6 @@ export namespace constants {
   // daohaus.document.member
   export const DAOHAUS_DOCUMENT_MEMBER =
     "0xfb49a9ea2a00dc3bbd1a1564686946d45e9cb59dbfa6424024b100a00982041e";
+  export const DAOHAUS_MEMBER_CUSTOMTHEME =
+    "0xb93c4766ef624db783979c787d31e43c0f80dc611a097713e36d258339811b4c";
 }

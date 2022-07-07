@@ -8,7 +8,7 @@ import {
   ByteArray,
 } from "@graphprotocol/graph-ts";
 import { NewPost } from "../../generated/Poster/Poster";
-import { Content } from "../../generated/schema";
+import { Content, Record } from "../../generated/schema";
 
 class JsonStringResult {
   data: string;
@@ -107,5 +107,30 @@ export namespace parser {
     entity.save();
 
     return entity;
+  }
+
+  export function createBasicRecord(
+    molochAddress: string,
+    event: NewPost,
+    table: string
+  ): Record {
+    let recordId = molochAddress
+      .concat("-record-")
+      .concat(event.block.timestamp.toString())
+      .concat("-")
+      .concat(event.logIndex.toString());
+    let record = new Record(recordId);
+
+    record.createdAt = event.block.timestamp.toString();
+    record.createdBy = event.params.user;
+    record.moloch = molochAddress;
+    record.contentType = "json";
+    record.content = event.params.content;
+    record.tag = event.params.tag;
+    record.table = table;
+
+    record.save();
+
+    return record;
   }
 }

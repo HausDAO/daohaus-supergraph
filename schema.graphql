@@ -24,7 +24,7 @@ type Moloch @entity {
   minions: [Minion!] @derivedFrom(field: "moloch")
   shamans: [Shaman!] @derivedFrom(field: "moloch")
   documents: [Content!] @derivedFrom(field: "moloch")
-  records: [Record!] @derivedFrom(field: "dao")
+  records: [Record!] @derivedFrom(field: "moloch")
   totalShares: BigInt!
   totalLoot: BigInt!
   v22Setup: Boolean
@@ -277,7 +277,7 @@ type Record @entity {
   id: ID!
   createdAt: String!
   createdBy: Bytes!
-  dao: Dao!
+  moloch: Moloch!
   tag: Bytes!
   table: String!
   contentType: String!

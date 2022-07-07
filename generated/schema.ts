@@ -364,6 +364,23 @@ export class Moloch extends Entity {
     }
   }
 
+  get records(): Array<string> | null {
+    let value = this.get("records");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
+  }
+
+  set records(value: Array<string> | null) {
+    if (!value) {
+      this.unset("records");
+    } else {
+      this.set("records", Value.fromStringArray(<Array<string>>value));
+    }
+  }
+
   get totalShares(): BigInt {
     let value = this.get("totalShares");
     return value!.toBigInt();
@@ -3195,5 +3212,109 @@ export class Content extends Entity {
 
   set rawData(value: string) {
     this.set("rawData", Value.fromString(value));
+  }
+}
+
+export class Record extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("createdAt", Value.fromString(""));
+    this.set("createdBy", Value.fromBytes(Bytes.empty()));
+    this.set("moloch", Value.fromString(""));
+    this.set("tag", Value.fromBytes(Bytes.empty()));
+    this.set("table", Value.fromString(""));
+    this.set("contentType", Value.fromString(""));
+    this.set("content", Value.fromString(""));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Record entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Record entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Record", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Record | null {
+    return changetype<Record | null>(store.get("Record", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get createdAt(): string {
+    let value = this.get("createdAt");
+    return value!.toString();
+  }
+
+  set createdAt(value: string) {
+    this.set("createdAt", Value.fromString(value));
+  }
+
+  get createdBy(): Bytes {
+    let value = this.get("createdBy");
+    return value!.toBytes();
+  }
+
+  set createdBy(value: Bytes) {
+    this.set("createdBy", Value.fromBytes(value));
+  }
+
+  get moloch(): string {
+    let value = this.get("moloch");
+    return value!.toString();
+  }
+
+  set moloch(value: string) {
+    this.set("moloch", Value.fromString(value));
+  }
+
+  get tag(): Bytes {
+    let value = this.get("tag");
+    return value!.toBytes();
+  }
+
+  set tag(value: Bytes) {
+    this.set("tag", Value.fromBytes(value));
+  }
+
+  get table(): string {
+    let value = this.get("table");
+    return value!.toString();
+  }
+
+  set table(value: string) {
+    this.set("table", Value.fromString(value));
+  }
+
+  get contentType(): string {
+    let value = this.get("contentType");
+    return value!.toString();
+  }
+
+  set contentType(value: string) {
+    this.set("contentType", Value.fromString(value));
+  }
+
+  get content(): string {
+    let value = this.get("content");
+    return value!.toString();
+  }
+
+  set content(value: string) {
+    this.set("content", Value.fromString(value));
   }
 }
