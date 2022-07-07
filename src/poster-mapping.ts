@@ -5,6 +5,15 @@ import { constants } from "./util/constants";
 import { validator } from "./util/validator";
 import { addTransaction } from "./transactions";
 
+const POSTER_TABLE_REFERENCES = {
+  [constants.DAOHAUS_MEMBER_CUSTOMTHEME]: "customTheme",
+  [constants.DAOHAUS_MEMBER_PROPOSALCONFIG]: "proposalConfig",
+  [constants.DAOHAUS_MEMBER_BOOSTS]: "boosts",
+  [constants.DAOHAUS_MEMBER_DAOPROFILE]: "daoProfile",
+}
+
+const POSTER_CONSTANTS = Object.keys(POSTER_TABLE_REFERENCES);
+
 // event NewPost(address indexed user, string content, string indexed tag);
 export function handleNewPost(event: NewPost): void {
   log.info("^^^handleNewPost tag, {}", [event.params.tag.toHexString()]);
@@ -12,8 +21,9 @@ export function handleNewPost(event: NewPost): void {
   let validTags: string[] = [
     constants.DAOHAUS_DOCUMENT_MINION,
     constants.DAOHAUS_DOCUMENT_MEMBER,
-    constants.DAOHAUS_MEMBER_CUSTOMTHEME,
+    ...POSTER_CONSTANTS,
   ];
+
   let validTag = validTags.includes(event.params.tag.toHexString());
   if (!validTag) {
     log.info("^^^invalidTag", []);
@@ -64,7 +74,7 @@ export function handleNewPost(event: NewPost): void {
     addTransaction(event.block, event.transaction);
   }
 
-  if (event.params.tag.toHexString() == constants.DAOHAUS_MEMBER_CUSTOMTHEME) {
+  if (POSTER_CONSTANTS.includes(event.params.tag.toHexString())) {
     log.info("validating member", []);
 
     let isValid = validator.isMolochMember(
@@ -75,7 +85,7 @@ export function handleNewPost(event: NewPost): void {
       return;
     }
 
-    parser.createBasicRecord(molochAddress, event, "customTheme");
+    parser.createBasicRecord(molochAddress, event, POSTER_TABLE_REFERENCES[event.params.tag.toHexString()]);
     addTransaction(event.block, event.transaction);
   }
 }
