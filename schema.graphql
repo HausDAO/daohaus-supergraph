@@ -1,275 +1,502 @@
 type Moloch @entity {
+    "unique identifier and primary key of the entity" 
   id: ID!
+    "version of moloch contract (v1, v2, v2.1, v2.2)"
   version: String
+    "address that created the dao"
   summoner: Bytes!
+    "deprecated"
   newContract: String
+    "deprecated"
   deleted: Boolean
+    "timestamp of the block when the dao was summoned - duplicated"
   summoningTime: BigInt!
+     "timestamp of the block when the dao was summoned"
   createdAt: String!
+    "length in seconds of the current voting period and grace period"
   periodDuration: BigInt!
+    "length in seconds of the current voting period"
   votingPeriodLength: BigInt!
+    "length in seconds of the current grace period"
   gracePeriodLength: BigInt!
+    "deposit amount required to submit a proposal"
   proposalDeposit: BigInt!
+    "(1/dilutionBound) is the minimum membership treshold for a ragequit to pass"
   dilutionBound: BigInt!
+    "reward amount for processing a proposal"
   processingReward: BigInt!
+    "token address for the dao's primary token"
   depositToken: Token!
+    "approved tokens scoped to this dao"
   approvedTokens: [Token!]!
+    "the dao's treasury address"
   guildBankAddress: Bytes
+    "deprecated"
   guildBankBalanceV1: BigInt
+    "tokens scoped to this dao"
   tokens: [Token!]! @derivedFrom(field: "moloch")
+    "member addresses scoped to this dao"
   members: [Member!] @derivedFrom(field: "moloch")
+    "token balances scoped to this dao"
   tokenBalances: [TokenBalance!] @derivedFrom(field: "moloch")
+    "proposals scoped to this dao"
   proposals: [Proposal!] @derivedFrom(field: "moloch")
+    "ragequits scoped to this dao"
   rageQuits: [RageQuit!] @derivedFrom(field: "moloch")
+    "minion addresses scoped to this dao"
   minions: [Minion!] @derivedFrom(field: "moloch")
+    "shamans scoped to this dao"
   shamans: [Shaman!] @derivedFrom(field: "moloch")
+    "documents scoped to this dao"
   documents: [Content!] @derivedFrom(field: "moloch")
+    "records scoped to this dao"
   records: [Record!] @derivedFrom(field: "moloch")
+    "total circulating shares tokens"
   totalShares: BigInt!
+    "total circulating loot tokens"
   totalLoot: BigInt!
+    "boolean value of whether v2.2 is set up"
   v22Setup: Boolean
+    "unused - address that receives tributes for submitting a proposal"
   spamPreventionAddress: Bytes
+    "unused - tribute amount required for submitting a proposal"
   spamPreventionAmount: BigInt
 }
 
 type TokenBalance @entity {
+    "unique identifier and primary key of the entity"
   id: ID!
+    "moloch dao scoped to this token balance"
   moloch: Moloch!
+    "token scoped to this token balance"
   token: Token!
+    "amount of tokens in balance"
   tokenBalance: BigInt!
+    "address of the associated member"
   member: Member
+    "boolean value of whether the token balance belongs to the moloch dao"
   guildBank: Boolean!
+    "boolean value of whether the token balance belongs in the escrow"
   ecrowBank: Boolean!
+    "boolean value of whether the token balance belongs to the member"
   memberBank: Boolean!
 }
 
 type Token @entity {
+    "unique identifier and primary key of the entity"
   id: ID!
+    "moloch dao scoped to this token"
   moloch: Moloch!
+    "token address"
   tokenAddress: Bytes!
+    "boolean value of whether token is whitelisted"
   whitelisted: Boolean!
+    "token symbol"
   symbol: String
+    "token decimals"
   decimals: BigInt
 }
 
 type Member @entity {
+     "unique identifier and primary key of the entity"
   id: ID!
+    "timestamp when the member was created"
   createdAt: String!
+    "moloch dao scoped to this member"
   moloch: Moloch!
+    "related dao address"
   molochAddress: Bytes!
+    "address of the member"
   memberAddress: Bytes!
+    "address that has received delegated shares from the member (most often, the member's own address)
   delegateKey: Bytes!
+    "current shares held by the member"
   shares: BigInt!
+    "current loot held by the member"
   loot: BigInt!
+    "deprecated"
   exists: Boolean!
+    "latest proposal that the member has voted yes on (helper value for disabling ragequit if member has a yes vote on an active proposal)"
   highestIndexYesVote: Proposal
+    "amount of token tributed when the member first joined the dao"
   tokenTribute: BigInt!
+    "boolean value of whether member ragequit from the dao"
   didRagequit: Boolean!
+    "votes scoped to this member"
   votes: [Vote!] @derivedFrom(field: "member")
+    "submitted proposals scoped to this member"
   submissions: [Proposal!] @derivedFrom(field: "member")
+    "token balances scoped to this member"
   tokenBalances: [TokenBalance!] @derivedFrom(field: "member")
+    "rage quits scoped to this member"
   rageQuits: [RageQuit!] @derivedFrom(field: "member")
+    "boolean value of whether member was proposed to be kicked from the dao"
   proposedToKick: Boolean
+    "boolean value of whether member was kicked from the dao"
   kicked: Boolean
+    "proposal index of the proposal that kicked the member from the dao (0 if member is unkicked)"
   jailed: BigInt
+    "moloch dao address (if the member is a dao)"
   isDao: Moloch
+    "safe minion address (if the member is a safe minion)"
   isSafeMinion: SafeMinion
 }
 
 type Vote @entity {
+    "unique identifier and primary key of the entity"
   id: ID!
+    "block timestamp when the vote was submitted"
   createdAt: String!
+    "related proposal"
   proposal: Proposal!
+    "related/voting member"
   member: Member!
+    "whether the dao member has voted yes or no (1 for yes, 2 for no)"
   uintVote: Int!
+    "contract address of the DAO related to this vote"
   molochAddress: Bytes!
+    "related/voting member address"
   memberAddress: Bytes
+    "member's proportional share of all dao shares at time of vote"
   memberPower: BigInt
+    "order that the proposal went through sponsorship process"
   proposalIndex: BigInt
+    "address that has received delegated shares from the member (most often, the member's own address)"
   delegateKey: Bytes
 }
 
 type Proposal @entity {
+    "unique identifier and primary key of the entity"
   id: ID!
+    "block timestamp when the proposal was submitted"
   createdAt: String!
+    "address that submitted the proposal"
   createdBy: Bytes!
+    "order that the proposal went through sponsorship process"
   proposalIndex: BigInt
+    "id of the proposal"
   proposalId: BigInt!
+    "moloch dao scoped to this proposal"
   moloch: Moloch!
+    "contract address of the DAO related to this proposal"
   molochAddress: Bytes!
+    "member scoped to this proposal"
   member: Member!
+    "address of associated member"
   memberAddress: Bytes!
+    "address that has received delegated shares from the member (most often, the member's own address)
   delegateKey: Bytes!
+    "address of the proposal applicant"
   applicant: Bytes!
+    "address of the proposal proposer"
   proposer: Bytes
+    "address of the proposal sponsor"
   sponsor: Bytes!
+    "address of the proposal processor"
   processor: Bytes
+    "amount of shares requested in this proposal"
   sharesRequested: BigInt!
+    "amount of loot requested in this proposal"
   lootRequested: BigInt!
+    "amount of tribute offered in this proposal"
   tributeOffered: BigInt!
+    "address of tribute token"
   tributeToken: Bytes!
+    "symbol of tribute token"
   tributeTokenSymbol: String
+    "decimals of tribute token"
   tributeTokenDecimals: BigInt
+    "amount of payment requested"
   paymentRequested: BigInt!
+    "address of payment token requested"
   paymentToken: Bytes!
+    "symbol of payment token requested"
   paymentTokenSymbol: String
+    "decimals of payment token"
   paymentTokenDecimals: BigInt
+    "timestamp when the proposal enters the proposal queue"
   startingPeriod: BigInt
+    "amount of current shares that have voted yes"
   yesVotes: BigInt!
+    "amount of current shares that have voted no"
   noVotes: BigInt!
+    "boolean value of whether proposal was sponsored"
   sponsored: Boolean!
+    "block timestamp when the proposal was sponsored"
   sponsoredAt: String
+    "boolean value of whether proposal was processed"
   processed: Boolean!
+    "block timestamp when the proposal was processed"
   processedAt: String
+    "boolean value of whether proposal was passed"
   didPass: Boolean!
+    "boolean value of whether proposal was cancelled"
   cancelled: Boolean
+    "block timestamp when the proposal was cancelled"
   cancelledAt: String
+    "boolean value of whether this proposal is aborted"
   aborted: Boolean
+    "boolean value of whether this proposal is a whitelist token proposal"
   whitelist: Boolean
+    "boolean value of whether this proposal is a guildkick proposal"
   guildkick: Boolean
+    "boolean value of whether this proposal is a new member proposal"
   newMember: Boolean
+    "boolean value of whether this proposal is a trade proposal"
   trade: Boolean
+    "unused"
   guildkickOrWhitelistOrMinion: Boolean
+    "proposal details scoped to this proposal"
   details: String
+    "total dao shares and loot at time of yes vote (helper value for dilution bound calculation)"
   maxTotalSharesAndLootAtYesVote: BigInt
+    "votes scoped to this proposal"
   votes: [Vote!] @derivedFrom(field: "proposal")
+    "number of shares that voted yes"
   yesShares: BigInt!
+    "number of shares that voted no"
   noShares: BigInt!
+    "timestamp when the voting period starts"
   votingPeriodStarts: BigInt!
+    "timestamp when the voting period ends"
   votingPeriodEnds: BigInt!
+    "timestamp when the grace period ends"
   gracePeriodEnds: BigInt!
+    "version of the moloch dao"
   molochVersion: String!
+    "boolean value of whether this is a minion proposal"
   isMinion: Boolean!
+    "unused"
   uberHausMinionExecuted: Boolean
+    "boolean value of whether the proposal is executed (for minion proposals only)"
   executed: Boolean
+    "minion address"
   minionAddress: Bytes
+    "transaction hash scoped to the minion execution for this proposal"
   minionExecuteActionTx: MolochTransaction
+    "minion object scoped to this proposal"
   minion: Minion
+    "escrow minion that holds a nft tribute for a new member proposal"
   escrow: ProposalEscrow @derivedFrom(field: "proposal")
+    "minion action scoped to this proposal"
   actions: [MinionAction!] @derivedFrom(field: "proposal")
 }
 
 type RageQuit @entity {
+    "unique identifier and primary key of the entity"
   id: ID!
+    "block timestamp when the member rage quit"
   createdAt: String!
+    "moloch dao scoped to this ragequit"
   moloch: Moloch!
+    "related dao address"
   molochAddress: Bytes!
+    "member scoped to this ragequit"
   member: Member!
+    "related member address"
   memberAddress: Bytes!
+    "number of shares ragequit"
   shares: BigInt!
+    "number of loot ragequit"
   loot: BigInt!
 }
 
 type DaoMeta @entity {
+    "unique identifier and primary key of the entity"
   id: ID!
+    "deprecated"
   title: String
+    "deprecated"
   version: String
+    "deprecated"
   newContract: String
+    "deprecated"
   http: String
 }
 
 type Minion @entity {
+    "unique identifier and primary key of the entity"
   id: ID!
+    "timestamp of the block when the minion was summoned"
   createdAt: String!
+    "minion address"
   minionAddress: Bytes!
+    "related dao address"
   molochAddress: Bytes!
+    "moloch dao scoped to this minion"
   moloch: Moloch!
+    "name of the minion"
   details: String!
+    "type of minion"
   minionType: String!
+    "proposals scoped to this minion"
   proposals: [Proposal!] @derivedFrom(field: "minion")
+    "address of uberhaus dao"
   uberHausAddress: Bytes
+    "deprecated"
   uberHaus: Moloch
+    "deprecated"
   uberHausDelegateRewardFactor: BigInt
+    "deprecated"
   uberHausDelegate: Bytes
+    "address of related safe"
   safeAddress: Bytes
+    "version of the safe minion"
   safeMinionVersion: String
+    "boolean value of whether this minion is a cross-chain minion"
   crossChainMinion: Boolean!
+    "chain id of the foreign chain"
   foreignChainId: String
+    "safe address on the foreign chain"
   foreignSafeAddress: Bytes
+    "bridge module address for a cross-chain minion"
   bridgeModule: String
+    "version of the minion"
   version: String
+    "minimum quorum percentage of the minion"
   minQuorum: BigInt
+    "minion stream scoped to this minion"
   streams: [MinionStream!] @derivedFrom(field: "minion")
 }
 
 type MinionStream @entity {
+    "unique identifier and primary key of the entity"
   id: ID!
+    "related proposal id"
   proposalId: String!
+    "block id when the minion stream was created"
   createdAt: String!
+    "recipient address of minion stream"
   to: Bytes!
+    "token address of minion stream"
   tokenAddress: Bytes!
+    "token address of super token"
   superTokenAddress: Bytes!
+    "rate of minion stream per block"
   rate: BigInt!
+    "minimum deposit amount to start the minion stream"
   minDeposit: BigInt!
+    "member address that proposed the minion stream"
   proposer: Bytes!
+    "boolean value of whether the minion stream was executed"
   executed: Boolean!
+    "block id when the minion stream was executed"
   executedBlock: BigInt
+    "block timestamp when the minion stream was executed"
   executedAt: String
+    "transaction hash when the minion stream was executed"
   execTxHash: Bytes
+    "boolean value of whether the minion stream is active"
   active: Boolean!
+    "transaction hash of cancellation of the minion stream"
   ctx: Bytes!
+    "block timestamp when the minion stream was cancelled"
   canceledAt: String
+    "transaction hash hen the minion stream was cancelled"
   canceledBy: Bytes
+    "minion scoped to this minion stream"
   minion: Minion!
 }
 
 type SafeMinion @entity {
+    "unique identifier and primary key of the entity"
   id: ID!
+    "minion scoped to this safe minion"
   minions: [Minion!]!
 }
 
 type MolochTransaction @entity {
+    "unique identifier and primary key of the entity"
   id: ID!
+    "block timestamp when the moloch transaction was created"
   createdAt: String!
 }
 
 type ProposalEscrow @entity {
+    "unique identifier and primary key of the entity"
   id: ID!
+    "proposal scoped to this proposal escrow"
   proposal: Proposal!
+    "address of the associated minion"
   minionAddress: Bytes!
+    "address of the associated moloch dao"
   molochAddress: Bytes!
+    "address of the user who proposed this proposal escrow"
   proposer: Bytes!
+    "address of the associated token"
   tokenAddresses: [Bytes!]
+    "token standards for tokens in escrow (1 for erc-20, 2 for erc-721, 3 for erc-1155)"
   tokenTypes: [BigInt!]
+    "token IDs for tokens in escrow"
   tokenIds: [BigInt!]
+    "amounts for tokens in escrow"
   amounts: [BigInt!]
 }
 
 type MinionAction @entity {
+    "unique identifier and primary key of the entity"
   id: ID!
+    "proposal scoped to this minion action"
   proposal: Proposal!
+    "related minion address"
   minionAddress: Bytes!
+    "related dao address"
   molochAddress: Bytes!
+    "target address of the minion action"
   target: Bytes!
+    "address of the token withdrawn from this minion action"
   withdrawToken: Bytes!
+    "value of the token withdrawn from this minion action"
   withdrawValue: BigInt!
+    "encoded data for minion action"
   data: String!
+    "boolean value on whether the proposal can be executed by members only"
   memberOnly: Boolean!
+    "order of the minion action"
   index: BigInt!
 }
 
 type Shaman @entity {
+    "unique identifier and primary key of the entity"
   id: ID!
+    "block timestamp when the shaman was added"
   createdAt: String!
+     "address of the shaman"
   shamanAddress: Bytes!
+    "related dao address"
   molochAddress: Bytes!
+    "moloch dao scoped to this shaman"
   moloch: Moloch!
+    "boolean value of whether this shaman is enabled"
   enabled: Boolean!
 }
 
 type Content @entity {
+    "unique identifier and primary key of the entity"
   id: ID!
+    "block timestamp when the content was created"
   createdAt: String!
+    "transaction hash when the content was created"
   transactionHash: Bytes!
+    "related dao address"
   molochAddress: String
+    "moloch dao scoped to this content"
   moloch: Moloch
+    "related member address"
   memberAddress: Bytes!
+    "content of the content"
   content: String!
+    "type of the content"
   contentType: String!
+    "location of the content"
   location: String!
+    "title of the content"
   title: String
+    "description of the content"
   description: String
+    "boolean value of whether the content is ratified by the dao"
   ratified: Boolean!
+    "raw content of the content before parsing"
   rawData: String!
 }
 
