@@ -18,13 +18,13 @@
     "prepare:goerli": "node manifests/deploy-prep.js goerli",
     "deploy:mainnet": "yarn prepare:mainnet && yarn build:all && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus",
     "deploy:xdai": "yarn prepare:xdai && yarn build:all && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-xdai",
-    "deploy:matic": "yarn prepare:rinkeby && yarn build:all && yarn prepare:matic && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-matic",
+    "deploy:matic": "yarn prepare:mainnet && yarn build:all && yarn prepare:matic && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-matic",
     "deploy:test": "yarn prepare:xdai && yarn build:all && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-sandbox",
-    "deploy:arbitrum": "yarn prepare:rinkeby && yarn build:all && yarn prepare:arbitrum && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-arbitrum",
-    "deploy:celo": "yarn prepare:rinkeby && yarn build:all && yarn prepare:celo && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-celo",
-    "deploy:optimism": "yarn prepare:rinkeby && yarn build:all && yarn prepare:optimism && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-optimism",
-    "deploy:goerli": "yarn prepare:rinkeby && yarn build:all && yarn prepare:goerli && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-goerli",
-    "deploy:all": "yarn deploy:mainnet && yarn deploy:xdai && yarn deploy:matic && yarn deploy:arbitrum && yarn deploy:celo && yarn deploy:optimism && yarn deploy:goerli"
+    "deploy:arbitrum": "yarn prepare:mainnet && yarn build:all && yarn prepare:arbitrum && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-arbitrum",
+    "deploy:celo": "yarn prepare:mainnet && yarn build:all && yarn prepare:celo && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-celo",
+    "deploy:optimism": "yarn prepare:mainnet && yarn build:all && yarn prepare:optimism && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-optimism",
+    "deploy:goerli": "yarn prepare:mainnet && yarn build:all && yarn prepare:goerli && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ odyssy-automaton/daohaus-goerli",
+    "deploy:all": "yarn deploy:xdai && yarn deploy:matic && yarn deploy:arbitrum && yarn deploy:celo && yarn deploy:optimism && yarn deploy:goerli"
   },
   "dependencies": {
     "@graphprotocol/graph-ts": "^0.22.1",

@@ -50,6 +50,12 @@ module.exports.config = {
         startBlock: 13016332,
       },
       {
+        name: "superfluidMinionFactory",
+        template: "superfluidMinionFactory-ds.yaml",
+        address: "0x0000000000000000000000000000000000000000",
+        startBlock: 15726105,
+      },
+      {
         name: "safeMinion",
         template: "safeMinionFactory-ds.yaml",
         address: "0xbC37509A283E2bb67fd151c34E72e826C501E108",
@@ -94,6 +100,10 @@ module.exports.config = {
       {
         name: "safeMinionTemplate",
         template: "safeMinion-template.yaml",
+      },
+      {
+        name: "superfluidMinionTemplate",
+        template: "superfluidMinion-template.yaml",
       },
       {
         name: "minionTemplate",
