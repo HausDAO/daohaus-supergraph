@@ -23,10 +23,6 @@ work here: https://github.com/MolochVentures/moloch-monorepo/blob/master/package
 
 [daohaus](https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus)
 
-[daohaus-kovan](https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-kovan)
-
-[daohaus-rinkeby](https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-rinkeby)
-
 [daohaus-xdai](https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-xdai)
 
 [daohaus-kovan-optimism](https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-kovan-optimism)
@@ -38,10 +34,6 @@ work here: https://github.com/MolochVentures/moloch-monorepo/blob/master/package
 ## Graph explorers
 
 [daohaus](https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus)
-
-[daohaus-kovan](https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-kovan)
-
-[daohaus-rinkeby](https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-rinkeby)
 
 [daohaus-xdai](https://thegraph.com/explorer/subgraph/odyssy-automaton/daohaus-xdai)
 
