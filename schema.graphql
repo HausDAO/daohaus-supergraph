@@ -49,6 +49,8 @@ type Moloch @entity {
   shamans: [Shaman!] @derivedFrom(field: "moloch")
     "documents scoped to this dao"
   documents: [Content!] @derivedFrom(field: "moloch")
+    "records scoped to this dao"
+  records: [Record!] @derivedFrom(field: "moloch")
     "total circulating shares tokens"
   totalShares: BigInt!
     "total circulating loot tokens"
@@ -496,4 +498,15 @@ type Content @entity {
   ratified: Boolean!
     "raw content of the content before parsing"
   rawData: String!
+}
+
+type Record @entity {
+  id: ID!
+  createdAt: String!
+  createdBy: Bytes!
+  moloch: Moloch!
+  tag: Bytes!
+  table: String!
+  contentType: String!
+  content: String!
 }
