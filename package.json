@@ -4,7 +4,7 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy:studio": "node manifests/deploy-prep.js rinkeby && graph deploy --studio daohaus",
+    "deploy:studio": "node manifests/deploy-prep.js mainnet && graph deploy --studio daohaus",
     "create-local": "graph create --node http://localhost:8020/ odyssy-automaton/daohaus",
     "remove-local": "graph remove --node http://localhost:8020/ odyssy-automaton/daohaus",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 odyssy-automaton/daohaus",
