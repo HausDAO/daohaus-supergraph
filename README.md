@@ -1,5 +1,7 @@
 # Daohaus Moloch V2 Factory Graph
 
+## 🪜 This project has been packed away in the attic — not actively maintained, but preserved for reference
+
 Caching dao data for all moloch daos summoned on daohaus.club.
 
 ## Attribution
